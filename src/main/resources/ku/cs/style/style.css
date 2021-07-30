@@ -1,0 +1,66 @@
+@import "style-color.css";
+
+.text-btn{
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-text-fill: primary-color;
+}
+
+.contained-btn{
+    -fx-border-color: transparent;
+    -fx-background-color: primary-color;
+    -fx-text-fill: primary-text-color;
+    -fx-font-weight: 500;
+}
+
+.icon-btn{
+    -fx-border: 0;
+    -fx-padding: 0;
+    -fx-background-color: transpatent;
+    -fx-text-fill: primary-color;
+}
+
+.icon-primary-color{
+    -fx-fill: primary-color;
+}
+
+.text-field{
+    -fx-background-color: surface-overlay;
+    -fx-text-fill: primary-color;
+    -fx-border-radius: 4px 4px 0px 0px;
+    -fx-border-color: transparent;
+}
+
+.text-field:hover, .text-field:focused{
+    -fx-border-color: primary-color;
+}
+
+.outline-text-fiel{
+    -fx-background-color: transparent;
+    -fx-border-radius: 4px;
+    -fx-border-color: rgba(0, 0, 0, 0.12);
+ }
+
+ .assistive-text{
+     -fx-fill: rgba(0, 0, 0, 0.6);
+ }
+
+.h2{
+    -fx-font-weight: 300;
+    -fx-font-size: 60px;
+}
+
+.h3{
+    -fx-font-weight: normal;
+    -fx-font-size: 48px;
+}
+
+.root{
+    -fx-background-color: app-background-color;
+    -fx-font-family: app-font-family;
+}
+
+.warning{
+    -fx-fill: error-color;
+}
+

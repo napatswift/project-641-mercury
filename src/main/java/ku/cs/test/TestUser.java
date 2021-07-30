@@ -15,6 +15,7 @@ public class TestUser {
                 "abcd",
                 "}+M<YQJB2_u~wqQ:",
                 "*#%W9wzU:W+dvWJA",
+                "1345#abr",
                 "1234",
                 "123456",
                 "1234ab"
@@ -23,5 +24,7 @@ public class TestUser {
         for(String tp: testPasswords){
             System.out.println(tp + " " + napat.setPassword(tp));
         }
+
+        System.out.println(napat.login("1234ab"));
     }
 }

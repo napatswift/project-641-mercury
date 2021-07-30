@@ -19,14 +19,15 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        String stylePath = "style/style.css";
         scene = new Scene(loadFXML("login"), 459, 599);
         stage.setScene(scene);
+        stage.getScene().getStylesheets().add(stylePath);
         stage.show();
     }
 
     public static void setRoot(String fxml) throws IOException {
-        Parent ase = loadFXML(fxml);
-        scene.setRoot(ase);
+        scene.setRoot(loadFXML(fxml));
     }
 
     private static Parent loadFXML(String fxml) throws IOException {

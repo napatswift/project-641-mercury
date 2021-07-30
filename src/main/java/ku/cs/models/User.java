@@ -46,7 +46,7 @@ public class User {
             this.loginAttempt++;
             return 0;
         } else{
-            if (this.password.equals(password)){
+            if (password.equals(this.password)){
                 return 2;
             } else{
                 return 1;
@@ -73,8 +73,7 @@ public class User {
 
     public boolean setPassword(String password) {
 
-        /*Minimum 6 characters, maximum 15 characters, at least one letter, one number and one special character:*/
-        Pattern passwordPattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{6,15}$");
+        Pattern passwordPattern = Pattern.compile("^[A-Za-z0-9@$!%*#?&:+~{}<>_-]{6,25}$");
         Matcher matcher = passwordPattern.matcher(password);
         if (matcher.find()){
             this.password = password;
