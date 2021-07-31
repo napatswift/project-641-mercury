@@ -1,6 +1,5 @@
 package ku.cs.controllers;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +13,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ku.cs.App;
 import ku.cs.models.Accounts;
+import ku.cs.models.CSVReader;
 import ku.cs.models.User;
 
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class LoginController {
         this.accounts = accounts;
     }
 
-    public void handleLogin(ActionEvent event){
+    public void handleLogin(ActionEvent event) throws IOException {
         if (accounts == null) {
             populateUsers();
         }
@@ -59,30 +59,34 @@ public class LoginController {
 
         if (loginSuccess == 2){
             loginText.setText("Login success");
+            System.out.println(accounts.toCSV("data/users.csv"));
         } else if (loginSuccess == 0) {
             loginText.setText("Account has been banned");
         } else{
             loginText.setText("Password not correct");
         }
+        System.out.println(accounts.toCSV("data/users.csv"));
     }
 
-    private void populateUsers(){
+    private void populateUsers() throws IOException {
         this.accounts = new Accounts();
-        String [] lines = {
-                "Napat,napatswift,napat_123",
-                "Nong,nongswift,nong_123",
-                "napatSwift,napatswift,napat_123",
-                "napatS,napat,napat_123",
-                "eie,neiio,40kvro"
-        };
+        // username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
+        String [] lines = CSVReader.getLines("data/users.csv");
+
+        for(String line: lines){
+            System.out.println(line);
+        }
+
         for(String line: lines){
             String [] entries = line.split(",");
-            User newUser = new User(entries[0], entries[1], entries[2]);
+            System.out.println(line);
+            User newUser = new User(entries[0], entries[1] , entries[2],
+                    entries[3], entries[4], entries[5], entries[6], entries[7], entries[8], entries[9]);
+
             accounts.addAccount(newUser);
         }
     }
 
-    @FXML
     public void handleSignUp(ActionEvent event) throws IOException {
         Button signUpBtn = (Button) event.getSource();
 

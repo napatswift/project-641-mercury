@@ -12,6 +12,14 @@ public class Store {
         this.owner = user;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
     public void addProduct(Product product){
         products.add(product);
     }

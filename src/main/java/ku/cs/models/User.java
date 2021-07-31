@@ -1,5 +1,7 @@
 package ku.cs.models;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,6 +12,7 @@ public class User implements Comparable<User>{
     private String password;
     private String name;
     private String picturePath;
+    private LocalDateTime loginDateTime;
     private boolean isBanned;
     private int loginAttempt;
     private boolean hasStore;
@@ -36,16 +39,21 @@ public class User implements Comparable<User>{
         this.setPassword(password);
     }
 
-    public User(Role role, String username, String password, String name, String picturePath, boolean isBanned, int loginAttempt, boolean hasStore, Store store) {
-        this.role = role;
+    // username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
+    public User(String username, String role, String name, String password, String picturePath, String loginDateTime, String isBanned, String loginAttempt, String hasStore, String store) {
+        this.role = role.equals("USER") ? Role.USER : Role.ADMIN;
         this.username = username;
         this.password = password;
         this.name = name;
-        this.picturePath = picturePath;
-        this.isBanned = isBanned;
-        this.loginAttempt = loginAttempt;
-        this.hasStore = hasStore;
-        this.store = store;
+        this.picturePath = picturePath.equals("null") ? null : picturePath;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this.loginDateTime = loginDateTime.equals("null") ? null : LocalDateTime.parse(loginDateTime, formatter);
+
+        this.isBanned = isBanned.equals("TRUE");
+        this.loginAttempt = Integer.parseInt(loginAttempt);
+        this.hasStore = hasStore.equals("TRUE");
+        this.store = this.hasStore ? new Store(store, this) : null;
     }
 
     //getter
@@ -54,7 +62,7 @@ public class User implements Comparable<User>{
     }
 
     public int login(String password){
-        /*
+        /***
          * return value description
          *
          * 0 user is being banned
@@ -67,6 +75,7 @@ public class User implements Comparable<User>{
             return 0;
         } else{
             if (password.equals(this.password)){
+                this.loginDateTime = LocalDateTime.now();
                 return 2;
             } else{
                 return 1;
@@ -124,5 +133,20 @@ public class User implements Comparable<User>{
     public void openStore(String name){
         this.store = new Store(name, this);
         this.hasStore = true;
+    }
+
+    public String toCSV(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        //username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
+        return username + ","
+                + role + ","
+                + name + ","
+                + password + ","
+                + picturePath + ","
+                + (loginDateTime == null ? null : loginDateTime.format(formatter)) + ","
+                + isBanned + ","
+                + loginAttempt + ","
+                + hasStore + ","
+                + (hasStore ? store.getName() : null);
     }
 }

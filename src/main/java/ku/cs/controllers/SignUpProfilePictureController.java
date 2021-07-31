@@ -26,6 +26,7 @@ public class SignUpProfilePictureController {
 
     public void handleConfirmBtn(ActionEvent event) throws IOException{
         if (accounts.addAccount(currUser)){
+            System.out.println(accounts.toCSV("data/users.csv"));
             System.out.println(accounts.toList());
             Button confirmBtn = (Button) event.getSource();
 
@@ -42,7 +43,6 @@ public class SignUpProfilePictureController {
 
             Stage stage = (Stage) confirmBtn.getScene().getWindow();
             stage.setScene(new Scene(root, 450, 650));
-
             stage.show();
         }
     }

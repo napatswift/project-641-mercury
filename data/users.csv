@@ -1,0 +1,7 @@
+username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
+Napat,USER,napatswift,napat_123,null,null,false,0,false,null
+Nong,USER,nongswift,nong_123,null,null,false,0,false,null
+napatSwift,USER,napatswift,napat_123,null,2021-11-09 11:44:44,false,0,false,null
+napatS,ADMIN,napat,napat_123,null,2021-07-31 16:00:41,false,0,false,null
+eie,USER,neiio,40kvro,null,null,false,0,false,null
+knw4,USER,Kitnawee,tip345,null,2021-07-31 17:38:59,false,0,false,null

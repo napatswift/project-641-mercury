@@ -58,7 +58,7 @@ public class SignUpController {
 
     public void handleFillUsername(KeyEvent event){
         String username = usernameTF.getText();
-        if(username.length() < 5){
+        if(username.length() < 4){
             usernameAssistiveText.setText("");
             return;
         }
@@ -71,6 +71,19 @@ public class SignUpController {
     }
 
     public void handleFillPassword(KeyEvent event){
+        String password = passwordPF.getText();
+
+        if (this.password != null){
+            String confirmPassword = confirmPasswordPF.getText();
+                if (!confirmPassword.equals(password)){
+                    this.password = "";
+                    confirmPasswordAssistiveText.setText("Password not match!");
+                } else{
+                    this.password = password;
+                    confirmPasswordAssistiveText.setText("Password matched!");
+                }
+        }
+
         if (this.username == null || this.name == null || this.username.equals("") || this.name.equals("")) {
             if (this.username == null || username.equals("")) {
                 usernameAssistiveText.setText("this must be filled");
@@ -80,9 +93,13 @@ public class SignUpController {
             }
             return;
         }
+
         if (User.isPassword(passwordPF.getText())){
             passwordAssistiveText.setStyle("-fx-fill: rgba(0, 0, 0, 0.6);");
+        } else{
+            passwordAssistiveText.setStyle("-fx-fill: error-color;");
         }
+
     }
 
     public void handleFillConfirmPassword(KeyEvent event) {
@@ -106,6 +123,15 @@ public class SignUpController {
         if(this.password == null || this.username == null || this.name == null){
             return;
         }
+
+        String password = passwordPF.getText();
+        String confirmPassword = confirmPasswordPF.getText();
+
+        if(!password.equals(confirmPassword)){
+            confirmPasswordAssistiveText.setText("Password not match!");
+            return;
+        }
+
         User newUser = new User(this.username, this.name);
         if (newUser.setPassword(this.password)){
             Button signUpBtn = (Button) event.getSource();
