@@ -9,25 +9,23 @@ import ku.cs.test.TestUser;
 
 import java.io.IOException;
 
-/**
- * JavaFX App
- */
-
 public class App extends Application {
 
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        String stylePath = "style/style.css";
-        scene = new Scene(loadFXML("login"), 459, 599);
+        scene = new Scene(loadFXML("login"), 450, 650);
         stage.setScene(scene);
-        stage.getScene().getStylesheets().add(stylePath);
         stage.show();
     }
 
     public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
+    }
+
+    public static void setRoot(FXMLLoader loader) throws IOException{
+        scene.setRoot(loader.load());
     }
 
     private static Parent loadFXML(String fxml) throws IOException {

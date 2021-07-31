@@ -1,4 +1,11 @@
 @import "style-color.css";
+@import "Fonts.css";
+
+.button{
+    -fx-font-family: 'Roboto Medium';
+    -fx-font-weight: 500;
+}
+
 
 .text-btn{
     -fx-border-color: transparent;
@@ -10,14 +17,22 @@
     -fx-border-color: transparent;
     -fx-background-color: primary-color;
     -fx-text-fill: primary-text-color;
-    -fx-font-weight: 500;
 }
+
+.outline-btn{
+     -fx-border-color: primary-color;
+     -fx-border-width: .5px;
+     -fx-border-radius: 4px;
+     -fx-background-color: transparent;
+     -fx-text-fill: primary-color;
+ }
+
 
 .icon-btn{
     -fx-border: 0;
     -fx-padding: 0;
-    -fx-background-color: transpatent;
     -fx-text-fill: primary-color;
+    -fx-background-color: transparent;
 }
 
 .icon-primary-color{
@@ -26,7 +41,7 @@
 
 .text-field{
     -fx-background-color: surface-overlay;
-    -fx-text-fill: primary-color;
+    -fx-text-fill: on-surface-color;
     -fx-border-radius: 4px 4px 0px 0px;
     -fx-border-color: transparent;
 }
@@ -46,18 +61,18 @@
  }
 
 .h2{
-    -fx-font-weight: 300;
+    -fx-font-family: 'Roboto Light';
     -fx-font-size: 60px;
 }
 
 .h3{
-    -fx-font-weight: normal;
+    -fx-font-family: 'Roboto Light';
     -fx-font-size: 48px;
 }
 
 .root{
+    -fx-font-family: 'Roboto Light';
     -fx-background-color: app-background-color;
-    -fx-font-family: app-font-family;
 }
 
 .warning{

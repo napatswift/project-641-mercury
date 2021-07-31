@@ -3,7 +3,7 @@ package ku.cs.models;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class User {
+public class User implements Comparable<User>{
     public enum Role {ADMIN, USER}
     public Role role;
     private String username;
@@ -14,6 +14,14 @@ public class User {
     private int loginAttempt;
     private boolean hasStore;
     private Store store;
+
+    @Override
+    public int compareTo(User other) {
+        if (other.getUsername().equals(this.getUsername())) {
+            return 0;
+        }
+        return 1;
+    }
 
     public User(String username, String name){
         this.username = username;
@@ -26,6 +34,18 @@ public class User {
     public User(String username, String name, String password){
         this(username, name);
         this.setPassword(password);
+    }
+
+    public User(Role role, String username, String password, String name, String picturePath, boolean isBanned, int loginAttempt, boolean hasStore, Store store) {
+        this.role = role;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.picturePath = picturePath;
+        this.isBanned = isBanned;
+        this.loginAttempt = loginAttempt;
+        this.hasStore = hasStore;
+        this.store = store;
     }
 
     //getter
@@ -72,11 +92,20 @@ public class User {
     }
 
     public boolean setPassword(String password) {
-
         Pattern passwordPattern = Pattern.compile("^[A-Za-z0-9@$!%*#?&:+~{}<>_-]{6,25}$");
         Matcher matcher = passwordPattern.matcher(password);
         if (matcher.find()){
             this.password = password;
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    public static boolean isPassword(String password){
+        Pattern passwordPattern = Pattern.compile("^[A-Za-z0-9@$!%*#?&:+~{}<>_-]{6,25}$");
+        Matcher matcher = passwordPattern.matcher(password);
+        if (matcher.find()){
             return true;
         } else{
             return false;
