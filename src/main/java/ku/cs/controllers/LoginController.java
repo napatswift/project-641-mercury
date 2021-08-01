@@ -41,6 +41,15 @@ public class LoginController {
         this.accounts = accounts;
     }
 
+    public void removeErrorStyleClass(KeyEvent event){
+        TextField textField = (TextField) event.getSource();
+        textField.getStyleClass().removeAll("error-text-field");
+    }
+
+    public void addErrorStyleClass(TextField textField){
+        textField.getStyleClass().add("error-text-field");
+    }
+
     public void handleLogin(ActionEvent event) throws IOException {
         if (accounts == null) {
             populateUsers();
@@ -51,6 +60,7 @@ public class LoginController {
         User currAcc = accounts.getUserAccount(username);
 
         if ( currAcc == null){
+            addErrorStyleClass(usernameTF);
             loginText.setText("Username not correct");
             return;
         }
@@ -59,13 +69,14 @@ public class LoginController {
 
         if (loginSuccess == 2){
             loginText.setText("Login success");
-            System.out.println(accounts.toCSV("data/users.csv"));
+            accounts.toCSV("data/users.csv");
         } else if (loginSuccess == 0) {
             loginText.setText("Account has been banned");
+            accounts.toCSV("data/users.csv");
         } else{
+            addErrorStyleClass(passwordTF);
             loginText.setText("Password not correct");
         }
-        System.out.println(accounts.toCSV("data/users.csv"));
     }
 
     private void populateUsers() throws IOException {
@@ -74,12 +85,7 @@ public class LoginController {
         String [] lines = CSVReader.getLines("data/users.csv");
 
         for(String line: lines){
-            System.out.println(line);
-        }
-
-        for(String line: lines){
             String [] entries = line.split(",");
-            System.out.println(line);
             User newUser = new User(entries[0], entries[1] , entries[2],
                     entries[3], entries[4], entries[5], entries[6], entries[7], entries[8], entries[9]);
 
@@ -104,7 +110,6 @@ public class LoginController {
         }
 
         signUpController.setAccounts(this.accounts);
-        System.out.println(accounts.toList());
         Stage stage = (Stage) signUpBtn.getScene().getWindow();
         stage.setScene(new Scene(root, 450, 650));
 

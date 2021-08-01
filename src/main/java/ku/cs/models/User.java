@@ -84,6 +84,26 @@ public class User implements Comparable<User>{
         }
     }
 
+    public static boolean isUsername(String username){
+        Pattern passwordPattern = Pattern.compile("^[A-Za-z0-9_]{3,}$");
+        Matcher matcher = passwordPattern.matcher(username);
+        if (matcher.find()){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    public static boolean isPassword(String password){
+        Pattern passwordPattern = Pattern.compile("^[A-Za-z0-9@$!%*#?&:+~{}<>_-]{6,25}$");
+        Matcher matcher = passwordPattern.matcher(password);
+        if (matcher.find()){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
     public Role getRole() {
         return role;
     }
@@ -106,22 +126,10 @@ public class User implements Comparable<User>{
     }
 
     public boolean setPassword(String password) {
-        Pattern passwordPattern = Pattern.compile("^[A-Za-z0-9@$!%*#?&:+~{}<>_-]{6,25}$");
-        Matcher matcher = passwordPattern.matcher(password);
-        if (matcher.find()){
+        if(isPassword(password)){
             this.password = password;
             return true;
-        } else{
-            return false;
-        }
-    }
-
-    public static boolean isPassword(String password){
-        Pattern passwordPattern = Pattern.compile("^[A-Za-z0-9@$!%*#?&:+~{}<>_-]{6,25}$");
-        Matcher matcher = passwordPattern.matcher(password);
-        if (matcher.find()){
-            return true;
-        } else{
+        }else{
             return false;
         }
     }

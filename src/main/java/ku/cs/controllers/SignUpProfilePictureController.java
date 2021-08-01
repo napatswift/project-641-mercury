@@ -55,17 +55,17 @@ public class SignUpProfilePictureController {
     }
 
     public void handleConfirmBtn(ActionEvent event) throws IOException{
-
-        try {
-            Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING );
-            currUser.setPicturePath(target.getFileName().toString());
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (file != null) {
+            try {
+                Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
+                currUser.setPicturePath(target.getFileName().toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         if (accounts.addAccount(currUser)){
-            System.out.println(accounts.toCSV("data/users.csv"));
-            System.out.println(accounts.toList());
+            accounts.toCSV("data/users.csv");
             Button confirmBtn = (Button) event.getSource();
 
             FXMLLoader loader = new FXMLLoader(App.class.getResource("login.fxml"));
@@ -87,14 +87,11 @@ public class SignUpProfilePictureController {
 
     public void handleSelectProfilePicture(ActionEvent event) throws FileNotFoundException {
 
-
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images PNG JPG", "*.png", "*.jpg", "*.jpeg"));
 
         file = chooser.showOpenDialog(selectProfilePictureBtn.getScene().getWindow());
-
-        System.out.println(file.getPath());
 
         if (file != null){
             File destDir = new File("images");
@@ -119,7 +116,7 @@ public class SignUpProfilePictureController {
         Button backBtn = (Button) event.getSource();
         Stage stage = (Stage) backBtn.getScene().getWindow();
 
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(prevView));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(getPrevView()));
         stage.setScene(new Scene(loader.load(), 450, 650));
 
         stage.show();

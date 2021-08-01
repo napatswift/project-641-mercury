@@ -32,6 +32,11 @@ public class SignUpController {
     @FXML
     private Text nameAssistiveText, usernameAssistiveText, passwordAssistiveText, confirmPasswordAssistiveText;
 
+    public void addErrorStyleClass(TextField textField){
+        textField.getStyleClass().removeAll("outline-text-field");
+        textField.getStyleClass().add("error-outline-text-field");
+    }
+
     public void handleBack(ActionEvent event) throws IOException {
         Button backBtn = (Button) event.getSource();
         Stage stage = (Stage) backBtn.getScene().getWindow();
@@ -47,8 +52,14 @@ public class SignUpController {
     }
 
     public void handleFillName(KeyEvent event){
+
+        TextField textField = (TextField) event.getSource();
+        textField.getStyleClass().removeAll("error-outline-text-field");
+        textField.getStyleClass().add("outline-text-field");
+
         String name = nameTF.getText();
         if (name.equals("")){
+            addErrorStyleClass(nameTF);
             nameAssistiveText.setText("This must be filled");
         } else {
             this.name = name;
@@ -58,11 +69,13 @@ public class SignUpController {
 
     public void handleFillUsername(KeyEvent event){
         String username = usernameTF.getText();
-        if(username.length() < 4){
-            usernameAssistiveText.setText("");
-            return;
-        }
+
+        TextField textField = (TextField) event.getSource();
+        textField.getStyleClass().removeAll("error-outline-text-field");
+        textField.getStyleClass().add("outline-text-field");
+
         if (accounts.isExist(username)){
+            addErrorStyleClass(usernameTF);
             usernameAssistiveText.setText("username already existed");
         } else{
             usernameAssistiveText.setText("username is preserved for you!");
@@ -71,24 +84,35 @@ public class SignUpController {
     }
 
     public void handleFillPassword(KeyEvent event){
+
+        PasswordField passwordField = (PasswordField) event.getSource();
+        passwordField.getStyleClass().removeAll("error-outline-text-field");
+        passwordField.getStyleClass().add("outline-text-field");
+
         String password = passwordPF.getText();
 
         if (this.password != null){
             String confirmPassword = confirmPasswordPF.getText();
                 if (!confirmPassword.equals(password)){
-                    this.password = "";
+                    this.password = null;
+                    addErrorStyleClass(passwordPF);
+                    addErrorStyleClass(confirmPasswordPF);
                     confirmPasswordAssistiveText.setText("Password not match!");
                 } else{
                     this.password = password;
+                    confirmPasswordPF.getStyleClass().removeAll("error-outline-text-field");
+                    confirmPasswordPF.getStyleClass().add("outline-text-field");
                     confirmPasswordAssistiveText.setText("Password matched!");
                 }
         }
 
         if (this.username == null || this.name == null || this.username.equals("") || this.name.equals("")) {
             if (this.username == null || username.equals("")) {
+                addErrorStyleClass(usernameTF);
                 usernameAssistiveText.setText("this must be filled");
             }
             if (this.name == null || name.equals("")) {
+                addErrorStyleClass(nameTF);
                 nameAssistiveText.setText("this must be filled");
             }
             return;
@@ -103,14 +127,23 @@ public class SignUpController {
     }
 
     public void handleFillConfirmPassword(KeyEvent event) {
+
+        PasswordField passwordField = (PasswordField) event.getSource();
+        passwordField.getStyleClass().removeAll("error-outline-text-field");
+        passwordField.getStyleClass().add("outline-text-field");
+
         String password = passwordPF.getText();
         if(User.isPassword(password)){
             String confirmPassword = confirmPasswordPF.getText();
             if (confirmPassword.length() >= password.length()){
                 if (!confirmPassword.equals(password)){
+                    addErrorStyleClass(passwordPF);
+                    addErrorStyleClass(confirmPasswordPF);
                     confirmPasswordAssistiveText.setText("Password not match!");
                 } else{
                     this.password = password;
+                    passwordPF.getStyleClass().removeAll("error-outline-text-field");
+                    passwordPF.getStyleClass().add("outline-text-field");
                     confirmPasswordAssistiveText.setText("Password matched!");
                 }
             }
@@ -121,6 +154,16 @@ public class SignUpController {
 
     public void handleSubmit(ActionEvent event) throws IOException {
         if(this.password == null || this.username == null || this.name == null){
+            if (this.password == null){
+                addErrorStyleClass(passwordPF);
+                addErrorStyleClass(confirmPasswordPF);
+            }
+            if (this.username == null){
+                addErrorStyleClass(usernameTF);
+            }
+            if (this.name == null){
+                addErrorStyleClass(nameTF);
+            }
             return;
         }
 
@@ -128,6 +171,8 @@ public class SignUpController {
         String confirmPassword = confirmPasswordPF.getText();
 
         if(!password.equals(confirmPassword)){
+            addErrorStyleClass(passwordPF);
+            addErrorStyleClass(confirmPasswordPF);
             confirmPasswordAssistiveText.setText("Password not match!");
             return;
         }

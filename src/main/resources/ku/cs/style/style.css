@@ -50,15 +50,36 @@
     -fx-border-color: transparent;
 }
 
+.error-text-field{
+    -fx-background-color: surface-overlay;
+    -fx-text-fill: error-color;
+    -fx-border-color: error-color;
+}
+
+.error-text-field:hover, .error-text-field:focused{
+    -fx-border-color: error-color;
+}
+
 .text-field:hover, .text-field:focused{
     -fx-border-color: primary-color;
 }
 
-.outline-text-fiel{
+.outline-text-field{
     -fx-background-color: transparent;
     -fx-border-radius: 4px;
     -fx-border-color: rgba(0, 0, 0, 0.12);
  }
+
+ .error-outline-text-field{
+    -fx-background-color: surface-overlay;
+    -fx-border-radius: 4px;
+    -fx-text-fill: error-color;
+    -fx-border-color: error-color;
+}
+
+.error-outline-text-field:hover, .error-outline-text-field:focused{
+    -fx-border-color: error-color;
+}
 
  .assistive-text{
      -fx-fill: rgba(0, 0, 0, 0.6);

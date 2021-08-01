@@ -34,19 +34,25 @@
       </HBox>
       <VBox prefHeight="55.0" prefWidth="501.0" spacing="2.0">
          <children>
-            <TextField fx:id="nameTF" onKeyReleased="#handleFillName" prefHeight="36.0" promptText="Name" styleClass="outline-text-fiel" />
-            <Text fx:id="nameAssistiveText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="assistive-text" text=" " />
+            <TextField fx:id="nameTF" onKeyReleased="#handleFillName" prefHeight="36.0" promptText="Name" styleClass="outline-text-field" />
+            <Text fx:id="nameAssistiveText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="assistive-text" text=" ">
+               <VBox.margin>
+                  <Insets left="8.0" />
+               </VBox.margin></Text>
          </children>
       </VBox>
       <VBox prefHeight="55.0" prefWidth="501.0" spacing="2.0">
          <children>
-            <TextField fx:id="usernameTF" onKeyTyped="#handleFillUsername" prefHeight="36.0" promptText="Username" styleClass="outline-text-fiel" />
-            <Text fx:id="usernameAssistiveText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="assistive-text" text=" " />
+            <TextField fx:id="usernameTF" onKeyTyped="#handleFillUsername" prefHeight="36.0" promptText="Username" styleClass="outline-text-field" />
+            <Text fx:id="usernameAssistiveText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="assistive-text" text="more than 3 charecters (a-z A-Z 0-9 _)">
+               <VBox.margin>
+                  <Insets left="8.0" />
+               </VBox.margin></Text>
          </children>
       </VBox>
       <VBox prefHeight="55.0" spacing="2.0">
          <children>
-            <PasswordField fx:id="passwordPF" onKeyTyped="#handleFillPassword" prefHeight="36.0" promptText="Password" styleClass="outline-text-fiel" />
+            <PasswordField fx:id="passwordPF" onKeyTyped="#handleFillPassword" prefHeight="36.0" promptText="Password" styleClass="outline-text-field" />
             <Text fx:id="passwordAssistiveText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="assistive-text" text="6 - 20 charecters (a-z A-Z 0-9  @$!%*#?&amp;:+~{}&lt;&gt;_-)">
                <VBox.margin>
                   <Insets left="8.0" />
@@ -55,8 +61,11 @@
       </VBox>
       <VBox prefHeight="55.0" prefWidth="501.0" spacing="2.0">
          <children>
-            <PasswordField fx:id="confirmPasswordPF" onKeyReleased="#handleFillConfirmPassword" prefHeight="36.0" promptText="Confirm password" styleClass="outline-text-fiel" />
-            <Text fx:id="confirmPasswordAssistiveText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="assistive-text" text=" " />
+            <PasswordField fx:id="confirmPasswordPF" onKeyReleased="#handleFillConfirmPassword" prefHeight="36.0" promptText="Confirm password" styleClass="outline-text-field" />
+            <Text fx:id="confirmPasswordAssistiveText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="assistive-text" text=" ">
+               <VBox.margin>
+                  <Insets left="8.0" />
+               </VBox.margin></Text>
          </children>
       </VBox>
       <HBox alignment="TOP_RIGHT" prefWidth="500.0">
