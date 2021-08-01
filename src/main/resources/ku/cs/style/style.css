@@ -1,0 +1,106 @@
+@import "style-color.css";
+@import "Fonts.css";
+
+.button{
+    -fx-font-family: 'Roboto Medium';
+    -fx-font-weight: 500;
+     -fx-border-radius: 4px;
+}
+
+
+.text-btn{
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-text-fill: primary-color;
+}
+
+.contained-btn{
+    -fx-border-color: transparent;
+    -fx-background-color: primary-color;
+    -fx-text-fill: primary-text-color;
+}
+
+.outline-btn{
+     -fx-border-color: primary-color;
+     -fx-border-width: 1px;
+     -fx-background-color: transparent;
+     -fx-text-fill: primary-color;
+ }
+
+ .ouline-btn:hover{
+     -fx-background-color: rgba(187, 134, 252, 0.12);
+ }
+
+
+.icon-btn{
+    -fx-border: 0;
+    -fx-padding: 0;
+    -fx-text-fill: primary-color;
+    -fx-background-color: transparent;
+}
+
+.icon-primary-color{
+    -fx-fill: primary-color;
+}
+
+.text-field{
+    -fx-background-color: surface-overlay;
+    -fx-text-fill: on-surface-color;
+    -fx-border-radius: 4px 4px 0px 0px;
+    -fx-border-color: transparent;
+}
+
+.error-text-field{
+    -fx-background-color: surface-overlay;
+    -fx-text-fill: error-color;
+    -fx-border-color: error-color;
+}
+
+.error-text-field:hover, .error-text-field:focused{
+    -fx-border-color: error-color;
+}
+
+.text-field:hover, .text-field:focused{
+    -fx-border-color: primary-color;
+}
+
+.outline-text-field{
+    -fx-background-color: transparent;
+    -fx-border-radius: 4px;
+    -fx-border-color: rgba(0, 0, 0, 0.12);
+ }
+
+ .error-outline-text-field{
+    -fx-background-color: surface-overlay;
+    -fx-border-radius: 4px;
+    -fx-text-fill: error-color;
+    -fx-border-color: error-color;
+}
+
+.error-outline-text-field:hover, .error-outline-text-field:focused{
+    -fx-border-color: error-color;
+}
+
+ .assistive-text{
+     -fx-fill: rgba(0, 0, 0, 0.6);
+ }
+
+.h2{
+    -fx-font-family: 'Roboto Light';
+    -fx-font-size: 60px;
+}
+
+.h3{
+    -fx-font-family: 'Roboto Light';
+    -fx-font-size: 48px;
+}
+
+.root{
+    -fx-font-family: 'Roboto Light';
+    -fx-background-color: app-background-color;
+}
+
+.warning{
+    -fx-fill: error-color;
+}
+

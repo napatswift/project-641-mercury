@@ -1,0 +1,18 @@
+*{
+    primary-color : #6200ee;
+    primary-light-color : #e6ffff;
+    primary-dark-color : #3700b3;
+    secondary-color : #03dac6;
+    secondary-light-color : #f95688;
+    secondary-dark-color : #018786;
+    primary-text-color : #ffffff;
+    secondary-text-color : #ffffff;
+    error-color: #b00020;
+    app-background-color: #ffffff;
+    surface-color: #ffffff;
+    on-error: #ffffff;
+    on-surface-color: #000000;
+    surface-overlay: rgba(33, 33, 33, 0.08);
+    app-font-family: Roboto;
+}
+
