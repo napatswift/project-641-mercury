@@ -1,5 +1,6 @@
 package ku.cs.models;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
@@ -62,7 +63,7 @@ public class User implements Comparable<User>{
     }
 
     public int login(String password){
-        /***
+        /**
          * return value description
          *
          * 0 user is being banned
@@ -92,7 +93,11 @@ public class User implements Comparable<User>{
     }
 
     public String getPicturePath() {
-        return picturePath;
+        String picturePath = this.picturePath;
+        if (this.picturePath == null){
+            picturePath = "media-cup-holder.png";
+        }
+        return (new File(System.getProperty("user.dir") + File.separator + "/images" + File.separator + picturePath)).toURI().toString();
     }
 
     //setter
