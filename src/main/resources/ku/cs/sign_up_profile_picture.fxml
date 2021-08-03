@@ -6,9 +6,24 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <VBox prefHeight="527.0" prefWidth="601.0" spacing="10.0" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.SignUpProfilePictureController">
    <children>
+      <HBox prefHeight="16.0" prefWidth="255.0">
+         <children>
+            <Button fx:id="backToLoginBtn" mnemonicParsing="false" onAction="#handleBack" prefHeight="28.0" style="visibility: false;" styleClass="icon-btn" text="Login">
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="2.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="h2" text="Sign-up" />
+         </children>
+      </HBox>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
          <children>
             <ImageView fx:id="pictureViewIV" fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
@@ -19,13 +34,13 @@
             <Button fx:id="selectProfilePictureBtn" mnemonicParsing="false" onAction="#handleSelectProfilePicture" prefHeight="36.0" prefWidth="210.0" styleClass="outline-btn" text="SELECT PROFILE PICTURE" />
          </children>
          <VBox.margin>
-            <Insets top="30.0" />
+            <Insets />
          </VBox.margin>
       </VBox>
       <HBox alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="441.0" spacing="3.0">
          <children>
-            <Button fx:id="confirmBtn1" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#handleBack" prefHeight="31.0" prefWidth="70.0" styleClass="text-btn" text="CANCEL" />
-            <Button fx:id="confirmBtn" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#handleConfirmBtn" prefHeight="28.0" prefWidth="77.0" styleClass="contained-btn" text="CONFIRM" />
+            <Button fx:id="confirmBtn1" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#handleBack" styleClass="text-btn" text="CANCEL" />
+            <Button fx:id="confirmBtn" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#handleConfirmBtn" styleClass="contained-btn" text="CONFIRM" />
          </children>
          <VBox.margin>
             <Insets left="30.0" right="30.0" top="30.0" />

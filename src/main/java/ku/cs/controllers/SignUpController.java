@@ -95,6 +95,7 @@ public class SignUpController {
             String confirmPassword = confirmPasswordPF.getText();
                 if (!confirmPassword.equals(password)){
                     this.password = null;
+                    confirmPasswordPF.setText("");
                     addErrorStyleClass(passwordPF);
                     addErrorStyleClass(confirmPasswordPF);
                     confirmPasswordAssistiveText.setText("Password not match!");

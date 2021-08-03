@@ -5,23 +5,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ku.cs.test.TestUser;
+import ku.cs.test.TestProduct;
 
 import java.io.IOException;
 
 public class App extends Application {
-
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("login"), 450, 650);
+        scene = new Scene(loadFXML("login"), 450, 1024);
+        
         stage.setScene(scene);
         stage.show();
-    }
-
-    public static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
     }
 
     public static void setRoot(FXMLLoader loader) throws IOException{
@@ -34,7 +30,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        TestProduct.main();
         launch();
     }
-
 }

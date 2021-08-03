@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class CSVReader {
+public class CsvReader {
     public static String[] getLines(String filePath) throws IOException {
         String [] lines = new String[100];
         File file = new File(filePath);

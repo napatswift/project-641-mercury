@@ -65,7 +65,7 @@ public class SignUpProfilePictureController {
         }
 
         if (accounts.addAccount(currUser)){
-            accounts.toCSV("data/users.csv");
+            accounts.toCsv("data/users.csv");
             Button confirmBtn = (Button) event.getSource();
 
             FXMLLoader loader = new FXMLLoader(App.class.getResource("login.fxml"));

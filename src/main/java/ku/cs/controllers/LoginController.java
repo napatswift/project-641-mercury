@@ -13,7 +13,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ku.cs.App;
 import ku.cs.models.Accounts;
-import ku.cs.models.CSVReader;
+import ku.cs.models.CsvReader;
 import ku.cs.models.User;
 
 import java.io.IOException;
@@ -69,10 +69,10 @@ public class LoginController {
 
         if (loginSuccess == 2){
             loginText.setText("Login success");
-            accounts.toCSV("data/users.csv");
+            accounts.toCsv("data/users.csv");
         } else if (loginSuccess == 0) {
             loginText.setText("Account has been banned");
-            accounts.toCSV("data/users.csv");
+            accounts.toCsv("data/users.csv");
         } else{
             addErrorStyleClass(passwordTF);
             loginText.setText("Password not correct");
@@ -82,7 +82,7 @@ public class LoginController {
     private void populateUsers() throws IOException {
         this.accounts = new Accounts();
         // username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
-        String [] lines = CSVReader.getLines("data/users.csv");
+        String [] lines = CsvReader.getLines("data/users.csv");
 
         for(String line: lines){
             String [] entries = line.split(",");

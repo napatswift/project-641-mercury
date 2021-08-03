@@ -1,6 +1,8 @@
 package ku.cs.models;
 
 import java.util.Collection;
+import java.util.StringJoiner;
+import java.util.TreeSet;
 
 public class Product {
     private String name;
@@ -16,10 +18,10 @@ public class Product {
         this.details = details;
         setPrice(price);
         setStock(stock);
+        this.subCategories = new TreeSet<>();
     }
 
-    public Product(String name, String picturePath, String details, double price, int stock, SubCategory[] subCategories){
-        this(name, picturePath, details, price, stock);
+    public void addSubCategories(SubCategory[] subCategories){
         for(SubCategory subCat: subCategories){
             this.subCategories.add(subCat);
         }
@@ -84,5 +86,30 @@ public class Product {
         }else{
             return false;
         }
+    }
+
+    public String toCsv(){
+        /*
+         * "name,picture_path_1,details,price,stock,sub_category1," +
+         * "sub_category2,sub_category3,sub_category4,sub_category5,sub_category6,store"
+         */
+
+        return name + ","
+                + picturePath + ","
+                + price + ","
+                + stock;
+
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Product.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("picturePath='" + picturePath + "'")
+                .add("details='" + details + "'")
+                .add("price=" + price)
+                .add("stock=" + stock)
+                .add("subCategories=" + subCategories)
+                .toString();
     }
 }

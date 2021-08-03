@@ -44,16 +44,16 @@
       <VBox prefHeight="55.0" prefWidth="501.0" spacing="2.0">
          <children>
             <TextField fx:id="usernameTF" onKeyTyped="#handleFillUsername" prefHeight="36.0" promptText="Username" styleClass="outline-text-field" />
-            <Text fx:id="usernameAssistiveText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="assistive-text" text="more than 3 charecters (a-z A-Z 0-9 _)">
+            <Text fx:id="usernameAssistiveText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="assistive-text" text="more than 3 characters (a-z A-Z 0-9 _)">
                <VBox.margin>
                   <Insets left="8.0" />
                </VBox.margin></Text>
          </children>
       </VBox>
-      <VBox prefHeight="55.0" spacing="2.0">
+      <VBox prefHeight="55.0" prefWidth="501.0" spacing="2.0">
          <children>
             <PasswordField fx:id="passwordPF" onKeyTyped="#handleFillPassword" prefHeight="36.0" promptText="Password" styleClass="outline-text-field" />
-            <Text fx:id="passwordAssistiveText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="assistive-text" text="6 - 20 charecters (a-z A-Z 0-9  @$!%*#?&amp;:+~{}&lt;&gt;_-)">
+            <Text fx:id="passwordAssistiveText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="assistive-text" text="6 - 20 characters (a-z A-Z 0-9  @$!%*#?&amp;:+~{}&lt;&gt;_-)">
                <VBox.margin>
                   <Insets left="8.0" />
                </VBox.margin></Text>

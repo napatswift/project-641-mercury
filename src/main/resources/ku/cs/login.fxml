@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.PasswordField?>
 <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="5.0" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.LoginController">
    <VBox alignment="TOP_CENTER" prefHeight="118.0" prefWidth="500.0">
       <children>
@@ -30,7 +31,7 @@
          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="password" />
       </children>
    </HBox>
-    <TextField fx:id="passwordTF" onKeyPressed="#removeErrorStyleClass" prefHeight="36.0" prefWidth="500.0" styleClass="shadow-02-dp" />
+    <PasswordField fx:id="passwordTF" onKeyPressed="#removeErrorStyleClass" prefHeight="36.0" prefWidth="500.0" styleClass="shadow-02-dp" />
    <HBox alignment="BOTTOM_LEFT" prefHeight="15.0" styleClass="warning">
       <children>
          <Text fx:id="loginText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="warning" text="   " />
