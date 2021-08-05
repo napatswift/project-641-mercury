@@ -88,6 +88,7 @@ public class User implements Comparable<User>{
         } else{
             if (password.equals(this.password)){
                 this.loginDateTime = LocalDateTime.now();
+                this.loginAttempt++;
                 return 2;
             } else{
                 return 1;
