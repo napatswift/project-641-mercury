@@ -11,10 +11,13 @@ import java.io.IOException;
 
 public class App extends Application {
     private static Scene scene;
+    private String appName = "App Name";
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("login"), 450, 1024);
+        scene = new Scene(loadFXML("login"), 450, 700);
+        scene.getStylesheets().add(getClass().getResource("/ku/cs/style/style.css").toExternalForm());
+        stage.setTitle(appName);
         
         stage.setScene(scene);
         stage.show();
@@ -30,7 +33,6 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        TestProduct.main();
         launch();
     }
 }

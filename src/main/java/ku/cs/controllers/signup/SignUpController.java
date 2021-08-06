@@ -1,4 +1,4 @@
-package ku.cs.controllers;
+package ku.cs.controllers.signup;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ku.cs.App;
+import ku.cs.controllers.signup.SignUpProfilePictureController;
 import ku.cs.models.Accounts;
 import ku.cs.models.User;
 
@@ -42,7 +43,7 @@ public class SignUpController {
         Stage stage = (Stage) backBtn.getScene().getWindow();
 
         FXMLLoader loader = new FXMLLoader(App.class.getResource("login.fxml"));
-        stage.setScene(new Scene(loader.load(), 450, 650));
+        stage.setScene(new Scene(loader.load(), 450, 700));
 
         stage.show();
     }
@@ -74,12 +75,23 @@ public class SignUpController {
         textField.getStyleClass().removeAll("error-outline-text-field");
         textField.getStyleClass().add("outline-text-field");
 
+        if (User.isPassword(passwordPF.getText())){
+            passwordAssistiveText.setStyle("-fx-fill: rgba(0, 0, 0, 0.6);");
+        } else{
+            passwordAssistiveText.setStyle("-fx-fill: error-color;");
+        }
+
         if (accounts.isExist(username)){
             addErrorStyleClass(usernameTF);
             usernameAssistiveText.setText("username already existed");
+        } else if (!User.isUsername(username)){
+            this.username = null;
+            usernameAssistiveText.setStyle("-fx-fill: error-color;");
+            usernameAssistiveText.setText("more than 3 characters (a-z A-Z 0-9 _)");
         } else{
-            usernameAssistiveText.setText("username is preserved for you!");
+            usernameAssistiveText.setStyle("-fx-fill: rgba(0, 0, 0, 0.6);");
             this.username = username;
+            usernameAssistiveText.setText("more than 3 characters (a-z A-Z 0-9 _)");
         }
     }
 
@@ -97,7 +109,6 @@ public class SignUpController {
                     this.password = null;
                     confirmPasswordPF.setText("");
                     addErrorStyleClass(passwordPF);
-                    addErrorStyleClass(confirmPasswordPF);
                     confirmPasswordAssistiveText.setText("Password not match!");
                 } else{
                     this.password = password;
@@ -195,7 +206,7 @@ public class SignUpController {
             signUpProfilePictureController.setCurrUser(newUser);
 
             Stage stage = (Stage) signUpBtn.getScene().getWindow();
-            stage.setScene(new Scene(root, 450, 650));
+            stage.setScene(new Scene(root, 450, 700));
 
             stage.show();
 

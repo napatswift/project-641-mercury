@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ku.cs.App;
+import ku.cs.controllers.signup.SignUpController;
 import ku.cs.models.Accounts;
 import ku.cs.models.CsvReader;
 import ku.cs.models.User;
@@ -60,8 +61,9 @@ public class LoginController {
         User currAcc = accounts.getUserAccount(username);
 
         if ( currAcc == null){
+            addErrorStyleClass(passwordTF);
             addErrorStyleClass(usernameTF);
-            loginText.setText("Username not correct");
+            loginText.setText("Username or password not correct");
             return;
         }
 
@@ -75,6 +77,7 @@ public class LoginController {
             accounts.toCsv("data/users.csv");
         } else{
             addErrorStyleClass(passwordTF);
+            addErrorStyleClass(usernameTF);
             loginText.setText("Password not correct");
         }
     }
@@ -111,7 +114,7 @@ public class LoginController {
 
         signUpController.setAccounts(this.accounts);
         Stage stage = (Stage) signUpBtn.getScene().getWindow();
-        stage.setScene(new Scene(root, 450, 650));
+        stage.setScene(new Scene(root, 450, 700));
 
         stage.show();
     }

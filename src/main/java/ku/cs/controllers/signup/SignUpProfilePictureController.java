@@ -1,4 +1,4 @@
-package ku.cs.controllers;
+package ku.cs.controllers.signup;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ku.cs.App;
+import ku.cs.controllers.LoginController;
 import ku.cs.models.Accounts;
 import ku.cs.models.User;
 
@@ -80,7 +81,7 @@ public class SignUpProfilePictureController {
             loginController.setAccounts(this.accounts);
 
             Stage stage = (Stage) confirmBtn.getScene().getWindow();
-            stage.setScene(new Scene(root, 450, 650));
+            stage.setScene(new Scene(root, 450, 700));
             stage.show();
         }
     }
@@ -89,7 +90,7 @@ public class SignUpProfilePictureController {
 
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images PNG JPG", "*.png", "*.jpg", "*.jpeg"));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
 
         file = chooser.showOpenDialog(selectProfilePictureBtn.getScene().getWindow());
 
@@ -117,7 +118,7 @@ public class SignUpProfilePictureController {
         Stage stage = (Stage) backBtn.getScene().getWindow();
 
         FXMLLoader loader = new FXMLLoader(App.class.getResource(getPrevView()));
-        stage.setScene(new Scene(loader.load(), 450, 650));
+        stage.setScene(new Scene(loader.load(), 450, 700));
 
         stage.show();
     }

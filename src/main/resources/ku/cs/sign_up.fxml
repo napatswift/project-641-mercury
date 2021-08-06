@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="527.0" prefWidth="601.0" spacing="10.0" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.SignUpController">
+<VBox prefHeight="527.0" prefWidth="601.0" spacing="10.0" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.signup.SignUpController">
    <children>
       <HBox prefHeight="16.0" prefWidth="255.0">
          <children>
@@ -70,7 +70,7 @@
       </VBox>
       <HBox alignment="TOP_RIGHT" prefWidth="500.0">
          <children>
-            <Button fx:id="confirmBtn" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#handleSubmit" styleClass="contained-btn" text="CONFIRM" />
+            <Button fx:id="confirmBtn" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#handleSubmit" styleClass="contained-btn" text="NEXT" />
          </children>
       </HBox>
    </children>
