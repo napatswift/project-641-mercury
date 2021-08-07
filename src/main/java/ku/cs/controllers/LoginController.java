@@ -16,6 +16,7 @@ import ku.cs.controllers.signup.SignUpController;
 import ku.cs.models.Accounts;
 import ku.cs.models.CsvReader;
 import ku.cs.models.User;
+import com.github.saacsos.FXRouter;
 
 import java.io.IOException;
 
@@ -117,5 +118,14 @@ public class LoginController {
         stage.setScene(new Scene(root, 450, 700));
 
         stage.show();
+    }
+
+    public void handleHowTo(ActionEvent event){
+        try {
+            FXRouter.goTo("how_to_register");
+        } catch (IOException e) {
+            System.err.println("ไปที่หน้า How To ไม่ได้");
+            System.err.println("ให้ตรวจสอบการกำหนด route");
+        }
     }
 }

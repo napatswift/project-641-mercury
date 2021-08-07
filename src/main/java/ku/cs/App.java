@@ -31,7 +31,11 @@ public class App extends Application {
         String packageStr = "ku/cs/";
         FXRouter.when("login", packageStr+"login.fxml");
         FXRouter.when("sign_up", packageStr+"sign_up.fxml");
-        FXRouter.when("sign_up_profile_picture", packageStr+"sign_up_profile_picture");
+        FXRouter.when("login", packageStr+"login.fxml");
+        FXRouter.when("how_to_register", packageStr+"how_to_register.fxml");
+        FXRouter.when("how_to_use", packageStr+"how_to_use.fxml");
+        FXRouter.when("how_to_market", packageStr+"how_to_market.fxml");
+        FXRouter.when("how_to_seller", packageStr+"how_to_seller.fxml");
     }
 
     public static void setRoot(FXMLLoader loader) throws IOException{
