@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #a1a1a1;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="imageIV" fitHeight="79.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <VBox alignment="CENTER_LEFT" prefHeight="21.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="procuctL" styleClass="h6" text="Label">
+                     <font>
+                        <Font size="6.0" />
+                     </font></Label>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER_RIGHT" prefHeight="66.0" prefWidth="70.0">
+               <children>
+                  <Label fx:id="priceL" styleClass="h6" text="Label">
+                     <font>
+                        <Font size="8.0" />
+                     </font></Label>
+               </children>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets left="3.0" right="3.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>

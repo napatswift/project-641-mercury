@@ -6,8 +6,16 @@
     -fx-font-family: 'Roboto Medium';
     -fx-font-weight: 500;
     -fx-border-radius: 4px;
+    -fx-background-color: transparent;
 }
 
+.tool-bar{
+    -fx-background-color: secondary-color;
+}
+
+.active-btn{
+    -fx-text-fill: rgba(0, 0, 0, 0.6);
+}
 
 .text-btn{
     -fx-border-color: transparent;
@@ -97,6 +105,28 @@
     -fx-font-size: 48px;
 }
 
+.h6{
+    -fx-font-family: 'Roboto Medium';
+    -fx-font-size: 20px;
+}
+
+.subtitle1{
+    -fx-font-family: 'Roboto Regular';
+    -fx-font-size: 16px;
+    -fx-text-fill: rgba(0, 0, 0, 0.87);
+}
+
+.subtitle2{
+    -fx-font-family: 'Roboto Medium';
+    -fx-font-size: 14px;
+    -fx-text-fill: rgba(0, 0, 0, 0.87);
+}
+
+.secondary-text{
+    -fx-font-size: 14px;
+    -fx-text-fill: #00000099;
+}
+
 .root{
     -fx-font-family: 'Roboto Light';
     -fx-background-color: app-background-color;
@@ -106,3 +136,30 @@
     -fx-fill: error-color;
 }
 
+.split-pane:horizontal > .split-pane-divider {
+    -fx-padding: 1;
+    -fx-background-color: surface-overlay;
+}
+
+.list-item-btn{
+    -fx-background-radius: 6px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #000000de;
+}
+
+.list-item-btn:hover{
+    -fx-background-color: surface-overlay;
+    -fx-text-fill: #000000;
+    -fx-fill: #000000;
+}
+
+.list-item-active-btn{
+    -fx-background-color: primary-overlay;
+    -fx-text-fill: primary-color;
+    -fx-fill: primary-color;
+}
+.list-item-active-btn:hover{
+    -fx-background-color: primary-overlay;
+    -fx-text-fill: primary-dark-color;
+    -fx-fill: primary-dark-color;
+}

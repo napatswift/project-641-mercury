@@ -53,12 +53,8 @@
          <Insets bottom="10.0" />
       </VBox.margin>
       <children>
-         <Button accessibleRole="BUTTON" onAction="#handleAboutUs" styleClass="text-btn" text="About Us" underline="true" >
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor>
-         </Button>
-         <Button fx:id="howtoBtn" mnemonicParsing="false" onAction="#handleHowTo" text="How-To" />
+         <Button accessibleRole="BUTTON" onAction="#handleAboutUs" styleClass="text-btn" text="About Us" underline="true" />
+         <Button fx:id="howtoBtn" mnemonicParsing="false" styleClass="text-btn" onAction="#handleHowTo" text="How-To" underline="true" />
       </children>
    </VBox>
    <padding>

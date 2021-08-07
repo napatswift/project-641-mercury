@@ -18,19 +18,13 @@ public class App extends Application {
         FXRouter.bind(this, stage, appName, 1024, 768);
         configRoute();
         FXRouter.goTo("login");
-//        scene = new Scene(loadFXML("login"), 450, 700);
-//        scene.getStylesheets().add(getClass().getResource("/ku/cs/style/style.css").toExternalForm());
-//        stage.setTitle(appName);
-
-//        stage.setScene(scene);
-//        stage.show();
     }
 
     private static void configRoute(){
         String packageStr = "ku/cs/";
         FXRouter.when("login", packageStr+"login.fxml", 450, 768);
         FXRouter.when("sign_up", packageStr+"sign_up.fxml", 450, 768);
-        FXRouter.when("sign_up_profile_picture", packageStr+"sign_up_profile_picture.fxml");
+        FXRouter.when("sign_up_profile_picture", packageStr+"sign_up_profile_picture.fxml", 450, 768);
         FXRouter.when("how_to_register", packageStr+"how_to_register.fxml");
         FXRouter.when("how_to_use", packageStr+"how_to_use.fxml");
         FXRouter.when("how_to_market", packageStr+"how_to_market.fxml");
@@ -39,16 +33,7 @@ public class App extends Application {
         FXRouter.when("admin_page_user", packageStr+"admin_page_user.fxml");
         FXRouter.when("admin_page_report", packageStr+"admin_page_report.fxml");
         FXRouter.when("admin_page_category", packageStr+"admin_page_category.fxml");
-        FXRouter.when("about_us", packageStr+"about_us.fxml");
-    }
-
-    public static void setRoot(FXMLLoader loader) throws IOException{
-        scene.setRoot(loader.load());
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+        FXRouter.when("about_us", packageStr+"about_us.fxml", 450, 768);
     }
 
     public static void main(String[] args) {

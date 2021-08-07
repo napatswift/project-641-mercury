@@ -97,13 +97,6 @@ public class LoginController {
     }
 
     public void handleSignUp(ActionEvent event) throws IOException {
-        Button signUpBtn = (Button) event.getSource();
-
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("sign_up.fxml"));
-        Parent root = loader.load();
-
-        SignUpController signUpController = loader.getController();
-
         if(this.accounts == null) {
             populateUsers();
             if (this.accounts == null) {
@@ -112,11 +105,7 @@ public class LoginController {
             }
         }
 
-        signUpController.setAccounts(this.accounts);
-        Stage stage = (Stage) signUpBtn.getScene().getWindow();
-        stage.setScene(new Scene(root, 450, 700));
-
-        stage.show();
+        FXRouter.goTo("sign_up", this.accounts);
     }
 
     public void handleAdmin(ActionEvent event){
