@@ -113,13 +113,12 @@ public class SignUpProfilePictureController {
         }
     }
 
-    public void handleBack(ActionEvent event) throws IOException {
-        Button backBtn = (Button) event.getSource();
-        Stage stage = (Stage) backBtn.getScene().getWindow();
-
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(getPrevView()));
-        stage.setScene(new Scene(loader.load(), 450, 700));
-
-        stage.show();
+    public void handleBack(ActionEvent event) {
+        try {
+            com.github.saacsos.FXRouter.goTo("login");
+        } catch (IOException e) {
+            System.err.println("ไปที่หน้า login ไม่ได้");
+            System.err.println("ให้ตรวจสอบการกำหนด route");
+        }
     }
 }
