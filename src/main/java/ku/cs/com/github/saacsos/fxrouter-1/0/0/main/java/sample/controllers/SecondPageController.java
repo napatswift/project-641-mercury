@@ -1,6 +1,3 @@
-package sample.controllers;
-
-import com.github.saacsos.FXRouter;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 

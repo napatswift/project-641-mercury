@@ -27,7 +27,7 @@ A simple JavaFX router to switch between application scenes
 Add FXRouter as project dependency and import it from its package:
 
 ```java
-import com.github.saacsos.FXRouter;
+
 ```
 
 Connect FXRouter to your application stage: call bind() from your main class start() method (if you use IntelliJ IDEA) or similar:
@@ -127,13 +127,13 @@ public class Main extends Application {
 ```java
 package sample;
 
-import com.github.saacsos.FXRouter;
+import FXRouter;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Main extends Application {
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         FXRouter.bind(this, primaryStage, "Hello World");
         configRoute();
         FXRouter.goTo("first");

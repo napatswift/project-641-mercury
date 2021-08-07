@@ -1,5 +1,3 @@
-package com.github.saacsos;
-
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
