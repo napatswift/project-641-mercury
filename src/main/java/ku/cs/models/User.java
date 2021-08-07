@@ -18,6 +18,7 @@ public class User implements Comparable<User>{
     private boolean isBanned;
     private int loginAttempt;
     private boolean hasStore;
+    private Store store;
 
     @Override
     public int compareTo(User other) {
@@ -64,6 +65,7 @@ public class User implements Comparable<User>{
         this.isBanned = isBanned.toLowerCase(Locale.ROOT).equals("true");
         this.loginAttempt = Integer.parseInt(loginAttempt);
         this.hasStore = hasStore.toLowerCase(Locale.ROOT).equals("true");
+        this.store = new Store(store);
     }
 
     //getter
@@ -172,6 +174,7 @@ public class User implements Comparable<User>{
                 + (loginDateTime == null ? null : loginDateTime.format(formatter)) + ","
                 + isBanned + ","
                 + loginAttempt + ","
-                + hasStore;
+                + hasStore + ","
+                + (store == null ? null : store.getName());
     }
 }
