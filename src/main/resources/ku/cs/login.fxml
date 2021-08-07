@@ -18,11 +18,6 @@
                <Insets bottom="10.0" />
             </VBox.margin>
          </Text>
-           <Button fx:id="handleAdmin" onAction="#handleAdmin" styleClass="contained-btn" text="GoToAdminPage">
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor>
-         </Button>
       </children>
    </VBox>
    <HBox alignment="BOTTOM_LEFT" prefHeight="15.0">
