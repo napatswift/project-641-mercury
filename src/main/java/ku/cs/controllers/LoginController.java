@@ -119,8 +119,13 @@ public class LoginController {
         stage.show();
     }
 
-    public void handleAdmin(ActionEvent actionEvent) throws IOException {
-        FXRouter.goTo("admin_page_my_account");
+    public void handleAdmin(ActionEvent event){
+        try {
+            FXRouter.goTo("admin_page_my_account");
+        } catch (IOException e) {
+            System.err.println("ไปที่หน้า Admin Page ไม่ได้");
+            System.err.println("ให้ตรวจสอบการกำหนด route");
+        }
     }
 
     public void handleHowTo(ActionEvent event){
@@ -128,6 +133,15 @@ public class LoginController {
             FXRouter.goTo("how_to_register");
         } catch (IOException e) {
             System.err.println("ไปที่หน้า How To ไม่ได้");
+            System.err.println("ให้ตรวจสอบการกำหนด route");
+        }
+    }
+
+    public void handleAboutUs(ActionEvent event){
+        try {
+        FXRouter.goTo("about_us");
+        } catch (IOException e) {
+            System.err.println("ไปที่หน้า About Us ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
     }

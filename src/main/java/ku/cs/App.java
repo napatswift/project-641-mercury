@@ -28,8 +28,8 @@ public class App extends Application {
 
     private static void configRoute(){
         String packageStr = "ku/cs/";
-        FXRouter.when("login", packageStr+"login.fxml");
-        FXRouter.when("sign_up", packageStr+"sign_up.fxml");
+        FXRouter.when("login", packageStr+"login.fxml", 450, 768);
+        FXRouter.when("sign_up", packageStr+"sign_up.fxml", 450, 768);
         FXRouter.when("sign_up_profile_picture", packageStr+"sign_up_profile_picture.fxml");
         FXRouter.when("how_to_register", packageStr+"how_to_register.fxml");
         FXRouter.when("how_to_use", packageStr+"how_to_use.fxml");
@@ -39,6 +39,7 @@ public class App extends Application {
         FXRouter.when("admin_page_user", packageStr+"admin_page_user.fxml");
         FXRouter.when("admin_page_report", packageStr+"admin_page_report.fxml");
         FXRouter.when("admin_page_category", packageStr+"admin_page_category.fxml");
+        FXRouter.when("about_us", packageStr+"about_us.fxml");
     }
 
     public static void setRoot(FXMLLoader loader) throws IOException{
