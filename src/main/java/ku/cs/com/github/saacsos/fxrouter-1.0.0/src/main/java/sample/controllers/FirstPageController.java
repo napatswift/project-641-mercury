@@ -1,3 +1,6 @@
+package sample.controllers;
+
+import com.github.saacsos.FXRouter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;

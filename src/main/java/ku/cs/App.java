@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import com.github.saacsos.FXRouter;
 
-
 import java.io.IOException;
 
 public class App extends Application {
@@ -31,7 +30,16 @@ public class App extends Application {
         String packageStr = "ku/cs/";
         FXRouter.when("login", packageStr+"login.fxml");
         FXRouter.when("sign_up", packageStr+"sign_up.fxml");
-        FXRouter.when("sign_up_profile_picture", packageStr+"sign_up_profile_picture");
+        FXRouter.when("sign_up_profile_picture", packageStr+"sign_up_profile_picture.fxml");
+        FXRouter.when("how_to_register", packageStr+"how_to_register.fxml");
+        FXRouter.when("how_to_use", packageStr+"how_to_use.fxml");
+        FXRouter.when("how_to_market", packageStr+"how_to_market.fxml");
+        FXRouter.when("how_to_seller", packageStr+"how_to_seller.fxml");
+        FXRouter.when("admin_page_my_account", packageStr+"admin_page_my_account.fxml");
+        FXRouter.when("admin_page_user", packageStr+"admin_page_user.fxml");
+        FXRouter.when("admin_page_report", packageStr+"admin_page_report.fxml");
+        FXRouter.when("admin_page_category", packageStr+"admin_page_category.fxml");
+
     }
 
     public static void setRoot(FXMLLoader loader) throws IOException{

@@ -16,6 +16,7 @@ import ku.cs.controllers.signup.SignUpController;
 import ku.cs.models.Accounts;
 import ku.cs.models.CsvReader;
 import ku.cs.models.User;
+import com.github.saacsos.FXRouter;
 
 import java.io.IOException;
 
@@ -117,5 +118,9 @@ public class LoginController {
         stage.setScene(new Scene(root, 450, 700));
 
         stage.show();
+    }
+
+    public void handleAdmin(ActionEvent actionEvent) throws IOException {
+        FXRouter.goTo("admin_page_my_account");
     }
 }

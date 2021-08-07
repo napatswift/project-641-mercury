@@ -1,6 +1,2 @@
 username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
-napat_s1,USER,Napat,napat_123,media-cup-holder.png,2019-08-02 21:17:14,false,0,false,null
-napatSwift,USER,napatswift,napat_123,media-cup-holder.png,2021-08-05 13:42:19,false,1,false,null
-NapatS,USER,Napat,napat_123,2021-08-01_1627820958314.jpeg,2021-02-10 11:00:03,true,13,false,null
-changAtKu,ADMIN,chang,123123,media-cup-holder.png,2021-08-02 21:19:10,false,0,false,null
-napatS,ADMIN,napat,napat_123,media-cup-holder.png,2021-08-03 21:17:13,false,0,false,null
+Naisato,USER,Naisato,123456,null,2021-08-07 14:16:35,false,9,false

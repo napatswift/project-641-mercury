@@ -1,3 +1,6 @@
+package sample;
+
+import com.github.saacsos.FXRouter;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

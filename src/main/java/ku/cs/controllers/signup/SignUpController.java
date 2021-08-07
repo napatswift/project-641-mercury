@@ -12,9 +12,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ku.cs.App;
-import ku.cs.controllers.signup.SignUpProfilePictureController;
 import ku.cs.models.Accounts;
 import ku.cs.models.User;
+import com.github.saacsos.FXRouter;
 
 import java.io.IOException;
 
@@ -47,7 +47,7 @@ public class SignUpController {
 //
 //        stage.show();
         try {
-            com.github.saacsos.FXRouter.goTo("login");
+            FXRouter.goTo("login");
         } catch (IOException e) {
             System.err.println("ไปที่หน้า login ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");

@@ -14,6 +14,7 @@ import ku.cs.App;
 import ku.cs.controllers.LoginController;
 import ku.cs.models.Accounts;
 import ku.cs.models.User;
+import com.github.saacsos.FXRouter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -115,7 +116,7 @@ public class SignUpProfilePictureController {
 
     public void handleBack(ActionEvent event) {
         try {
-            com.github.saacsos.FXRouter.goTo("login");
+            FXRouter.goTo("login");
         } catch (IOException e) {
             System.err.println("ไปที่หน้า login ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
