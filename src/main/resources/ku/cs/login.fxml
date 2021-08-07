@@ -63,11 +63,7 @@
                <Cursor fx:constant="HAND" />
             </cursor>
          </Label>
-         <Label accessibleRole="BUTTON" layoutX="235.0" layoutY="128.0" styleClass="text-btn" text="How-To" underline="true">
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor>
-         </Label>
+         <Button fx:id="howtoBtn" mnemonicParsing="false" onAction="#handleHowTo" text="How-To" />
       </children>
    </VBox>
    <padding>

@@ -123,4 +123,13 @@ public class LoginController {
     public void handleAdmin(ActionEvent actionEvent) throws IOException {
         FXRouter.goTo("admin_page_my_account");
     }
+
+    public void handleHowTo(ActionEvent event){
+        try {
+            FXRouter.goTo("how_to_register");
+        } catch (IOException e) {
+            System.err.println("ไปที่หน้า How To ไม่ได้");
+            System.err.println("ให้ตรวจสอบการกำหนด route");
+        }
+    }
 }

@@ -39,7 +39,6 @@ public class App extends Application {
         FXRouter.when("admin_page_user", packageStr+"admin_page_user.fxml");
         FXRouter.when("admin_page_report", packageStr+"admin_page_report.fxml");
         FXRouter.when("admin_page_category", packageStr+"admin_page_category.fxml");
-
     }
 
     public static void setRoot(FXMLLoader loader) throws IOException{
