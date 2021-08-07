@@ -52,7 +52,7 @@ public class HowToController {
         try {
             com.github.saacsos.FXRouter.goTo("how_to_register");
         } catch (IOException e) {
-            System.err.println("ไปที่หน้า HowToSeller ไม่ได้");
+            System.err.println("ไปที่หน้า HowToRegister ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
     }
