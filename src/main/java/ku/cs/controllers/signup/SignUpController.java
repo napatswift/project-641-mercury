@@ -33,16 +33,19 @@ public class SignUpController {
     @FXML
     private Text nameAssistiveText, usernameAssistiveText, passwordAssistiveText, confirmPasswordAssistiveText;
 
-    public void initialize() throws IOException{
-        this.accounts = (Accounts) FXRouter.getData();
-    }
-
     public void addErrorStyleClass(TextField textField){
         textField.getStyleClass().removeAll("outline-text-field");
         textField.getStyleClass().add("error-outline-text-field");
     }
 
     public void handleBack(ActionEvent event){
+//        Button backBtn = (Button) event.getSource();
+//        Stage stage = (Stage) backBtn.getScene().getWindow();
+//
+//        FXMLLoader loader = new FXMLLoader(App.class.getResource("login.fxml"));
+//        stage.setScene(new Scene(loader.load(), 450, 700));
+//
+//        stage.show();
         try {
             FXRouter.goTo("login");
         } catch (IOException e) {
