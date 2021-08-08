@@ -2,17 +2,11 @@ package ku.cs.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import ku.cs.App;
-import ku.cs.controllers.signup.SignUpController;
 import ku.cs.models.Accounts;
 import ku.cs.models.CsvReader;
 import ku.cs.models.User;
@@ -39,8 +33,7 @@ public class LoginController {
         }
     }
 
-    public void setAccounts(Accounts accounts){
-        this.accounts = accounts;
+    public void initialize(){
     }
 
     public void removeErrorStyleClass(KeyEvent event){
@@ -97,13 +90,6 @@ public class LoginController {
     }
 
     public void handleSignUp(ActionEvent event) throws IOException {
-        Button signUpBtn = (Button) event.getSource();
-
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("sign_up.fxml"));
-        Parent root = loader.load();
-
-        SignUpController signUpController = loader.getController();
-
         if(this.accounts == null) {
             populateUsers();
             if (this.accounts == null) {
@@ -111,12 +97,7 @@ public class LoginController {
                 return;
             }
         }
-
-        signUpController.setAccounts(this.accounts);
-        Stage stage = (Stage) signUpBtn.getScene().getWindow();
-        stage.setScene(new Scene(root, 450, 700));
-
-        stage.show();
+        FXRouter.goTo("sign_up", this.accounts);
     }
 
     public void handleAdmin(ActionEvent event){

@@ -12,25 +12,22 @@ import java.io.IOException;
 public class App extends Application {
     private static Scene scene;
     private String appName = "App Name";
+    private static int S_WIDTH = 450;
+    private static int L_WIDTH = 1024;
+    private static int HEIGHT = 768;
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXRouter.bind(this, stage, appName, 1024, 768);
+        FXRouter.bind(this, stage, appName, L_WIDTH, HEIGHT);
         configRoute();
         FXRouter.goTo("login");
-//        scene = new Scene(loadFXML("login"), 450, 700);
-//        scene.getStylesheets().add(getClass().getResource("/ku/cs/style/style.css").toExternalForm());
-//        stage.setTitle(appName);
-
-//        stage.setScene(scene);
-//        stage.show();
     }
 
     private static void configRoute(){
         String packageStr = "ku/cs/";
-        FXRouter.when("login", packageStr+"login.fxml", 450, 768);
-        FXRouter.when("sign_up", packageStr+"sign_up.fxml", 450, 768);
-        FXRouter.when("sign_up_profile_picture", packageStr+"sign_up_profile_picture.fxml");
+        FXRouter.when("login", packageStr+"login.fxml", S_WIDTH, HEIGHT);
+        FXRouter.when("sign_up", packageStr+"sign_up.fxml", S_WIDTH, HEIGHT);
+        FXRouter.when("sign_up_profile_picture", packageStr+"sign_up_profile_picture.fxml",S_WIDTH, HEIGHT);
         FXRouter.when("how_to_register", packageStr+"how_to_register.fxml");
         FXRouter.when("how_to_use", packageStr+"how_to_use.fxml");
         FXRouter.when("how_to_market", packageStr+"how_to_market.fxml");
