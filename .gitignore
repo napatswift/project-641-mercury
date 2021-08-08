@@ -135,4 +135,9 @@ buildNumber.properties
 .flattened-pom.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,macos,maven
-*.svg
+
+**/svg
+.classpath
+.project
+**/.settings
+*.swp
