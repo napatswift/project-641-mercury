@@ -66,6 +66,15 @@ public class LoginController {
         if (loginSuccess == 2){
             loginText.setText("Login success");
             accounts.toCsv("data/users.csv");
+            if(currAcc.getRole() == User.Role.ADMIN)
+            {
+                try {
+                    FXRouter.goTo("admin_page_my_account");
+                } catch (IOException e) {
+                    System.err.println("ไปที่หน้า Admin Page ไม่ได้");
+                    System.err.println("ให้ตรวจสอบการกำหนด route");
+                }
+            }
         } else if (loginSuccess == 0) {
             loginText.setText("Account has been banned");
             accounts.toCsv("data/users.csv");
@@ -98,15 +107,6 @@ public class LoginController {
             }
         }
         FXRouter.goTo("sign_up", this.accounts);
-    }
-
-    public void handleAdmin(ActionEvent event){
-        try {
-            FXRouter.goTo("admin_page_my_account");
-        } catch (IOException e) {
-            System.err.println("ไปที่หน้า Admin Page ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
-        }
     }
 
     public void handleHowTo(ActionEvent event){
