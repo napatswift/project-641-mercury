@@ -1,4 +1,5 @@
 username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
 aaa,USER,chang,123456,null,2021-08-07 18:22:17,false,2,false,null
 abc,USER,abc,123456,null,2021-08-08 11:39:56,false,2,false,null
-admin,ADMIN,abc,admin,null,2021-08-08 11:41:30,false,4,false,null
+admin,ADMIN,abc,admin,null,2021-08-08 12:23:32,false,20,false,null
+Naisato,ADMIN,Murasaki,123456,2021-08-08_1628399328656.jpg,2021-08-08 12:23:24,false,7,false,null
