@@ -2,17 +2,11 @@ package ku.cs.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import ku.cs.App;
-import ku.cs.controllers.signup.SignUpController;
 import ku.cs.models.Accounts;
 import ku.cs.models.CsvReader;
 import ku.cs.models.User;
@@ -39,8 +33,7 @@ public class LoginController {
         }
     }
 
-    public void setAccounts(Accounts accounts){
-        this.accounts = accounts;
+    public void initialize(){
     }
 
     public void removeErrorStyleClass(KeyEvent event){
@@ -73,6 +66,15 @@ public class LoginController {
         if (loginSuccess == 2){
             loginText.setText("Login success");
             accounts.toCsv("data/users.csv");
+            if(currAcc.getRole() == User.Role.ADMIN)
+            {
+                try {
+                    FXRouter.goTo("admin_page_my_account",currAcc);
+                } catch (IOException e) {
+                    System.err.println("ไปที่หน้า Admin Page ไม่ได้");
+                    System.err.println("ให้ตรวจสอบการกำหนด route");
+                }
+            }
         } else if (loginSuccess == 0) {
             loginText.setText("Account has been banned");
             accounts.toCsv("data/users.csv");
@@ -97,13 +99,6 @@ public class LoginController {
     }
 
     public void handleSignUp(ActionEvent event) throws IOException {
-        Button signUpBtn = (Button) event.getSource();
-
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("sign_up.fxml"));
-        Parent root = loader.load();
-
-        SignUpController signUpController = loader.getController();
-
         if(this.accounts == null) {
             populateUsers();
             if (this.accounts == null) {
@@ -111,21 +106,7 @@ public class LoginController {
                 return;
             }
         }
-
-        signUpController.setAccounts(this.accounts);
-        Stage stage = (Stage) signUpBtn.getScene().getWindow();
-        stage.setScene(new Scene(root, 450, 700));
-
-        stage.show();
-    }
-
-    public void handleAdmin(ActionEvent event){
-        try {
-            FXRouter.goTo("admin_page_my_account");
-        } catch (IOException e) {
-            System.err.println("ไปที่หน้า Admin Page ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
-        }
+        FXRouter.goTo("sign_up", this.accounts);
     }
 
     public void handleHowTo(ActionEvent event){

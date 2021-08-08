@@ -18,7 +18,7 @@
 ## การวางโครงสร้างไฟล์
 
 ## ตัวอย่างข้อมูลผู้ใช้ระบบ
-* (Role) (username) (password)
+* (Admin) (admin) (admin)
 * (Role) (username) (password)
 * (Role) (username) (password)
 * (Role) (username) (password)

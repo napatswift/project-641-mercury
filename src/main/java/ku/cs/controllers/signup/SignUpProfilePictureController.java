@@ -2,16 +2,10 @@ package ku.cs.controllers.signup;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import ku.cs.App;
-import ku.cs.controllers.LoginController;
 import ku.cs.models.Accounts;
 import ku.cs.models.User;
 import com.github.saacsos.FXRouter;
@@ -40,20 +34,10 @@ public class SignUpProfilePictureController {
     @FXML
     ImageView pictureViewIV;
 
-    public void setCurrUser(User currUser) {
-        this.currUser = currUser;
-    }
-
-    public void setAccounts(Accounts accounts) {
-        this.accounts = accounts;
-    }
-
-    public void setPrevView(String prevView) {
-        this.prevView = prevView;
-    }
-
-    public String getPrevView() {
-        return (prevView == null ? "login.fxml" : prevView);
+    public void initialize() {
+        Object [] data = (Object[]) FXRouter.getData();
+        this.currUser = (User) data[0];
+        this.accounts = (Accounts) data[1];
     }
 
     public void handleConfirmBtn(ActionEvent event) throws IOException{
@@ -68,22 +52,10 @@ public class SignUpProfilePictureController {
 
         if (accounts.addAccount(currUser)){
             accounts.toCsv("data/users.csv");
-            Button confirmBtn = (Button) event.getSource();
-
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("login.fxml"));
-            Parent root = loader.load();
-
             if (this.accounts == null) {
                 return;
             }
-
-            LoginController loginController = loader.getController();
-
-            loginController.setAccounts(this.accounts);
-
-            Stage stage = (Stage) confirmBtn.getScene().getWindow();
-            stage.setScene(new Scene(root, 450, 700));
-            stage.show();
+            FXRouter.goTo("login");
         }
     }
 

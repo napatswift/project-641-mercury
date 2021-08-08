@@ -2,16 +2,10 @@ package ku.cs.controllers.signup;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import ku.cs.App;
 import ku.cs.models.Accounts;
 import ku.cs.models.User;
 import com.github.saacsos.FXRouter;
@@ -33,19 +27,17 @@ public class SignUpController {
     @FXML
     private Text nameAssistiveText, usernameAssistiveText, passwordAssistiveText, confirmPasswordAssistiveText;
 
+    public void initialize() {
+        this.accounts = (Accounts) FXRouter.getData();
+    }
+
+
     public void addErrorStyleClass(TextField textField){
         textField.getStyleClass().removeAll("outline-text-field");
         textField.getStyleClass().add("error-outline-text-field");
     }
 
     public void handleBack(ActionEvent event){
-//        Button backBtn = (Button) event.getSource();
-//        Stage stage = (Stage) backBtn.getScene().getWindow();
-//
-//        FXMLLoader loader = new FXMLLoader(App.class.getResource("login.fxml"));
-//        stage.setScene(new Scene(loader.load(), 450, 700));
-//
-//        stage.show();
         try {
             FXRouter.goTo("login");
         } catch (IOException e) {
@@ -53,10 +45,6 @@ public class SignUpController {
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
 
-    }
-
-    public void setAccounts(Accounts accounts) {
-        this.accounts = accounts;
     }
 
     public void handleFillName(KeyEvent event){
@@ -198,25 +186,11 @@ public class SignUpController {
 
         User newUser = new User(this.username, this.name);
         if (newUser.setPassword(this.password)){
-            Button signUpBtn = (Button) event.getSource();
-
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("sign_up_profile_picture.fxml"));
-            Parent root = loader.load();
-
-            SignUpProfilePictureController signUpProfilePictureController = loader.getController();
-
             if(this.accounts == null) {
                 return;
             }
-
-            signUpProfilePictureController.setAccounts(this.accounts);
-            signUpProfilePictureController.setCurrUser(newUser);
-
-            Stage stage = (Stage) signUpBtn.getScene().getWindow();
-            stage.setScene(new Scene(root, 450, 700));
-
-            stage.show();
-
+            Object [] data = {newUser, this.accounts};
+            FXRouter.goTo("sign_up_profile_picture", data);
         } else{
             passwordAssistiveText.setStyle("-fx-fill: error-color;");
         }

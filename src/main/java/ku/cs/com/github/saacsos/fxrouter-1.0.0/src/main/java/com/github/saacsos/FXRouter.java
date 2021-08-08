@@ -106,6 +106,7 @@ public final class FXRouter {
         window.setTitle(route.windowTitle);
         window.setScene(new Scene(resource, route.sceneWidth, route.sceneHeight));
         window.show();
+        window.centerOnScreen();
         routeAnimation(resource);
     }
 
