@@ -81,7 +81,7 @@ public class LoginController {
         } else{
             addErrorStyleClass(passwordTF);
             addErrorStyleClass(usernameTF);
-            loginText.setText("Password not correct");
+            loginText.setText("Username or password not correct");
         }
     }
 
