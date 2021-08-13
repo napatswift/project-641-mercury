@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 public class CsvReader {
     public static String[] getLines(String filePath) throws IOException {
-        String [] lines = new String[100];
+        String [] lines = new String[1000];
         File file = new File(filePath);
         FileReader fileReader = new FileReader(file);
         BufferedReader reader = new BufferedReader(fileReader);

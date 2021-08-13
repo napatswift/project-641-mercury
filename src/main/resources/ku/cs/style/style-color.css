@@ -13,6 +13,7 @@
     on-error: #ffffff;
     on-surface-color: #000000;
     surface-overlay: rgba(33, 33, 33, 0.08);
+    primary-overlay : rgba(98, 0, 238, 0.08);
     app-font-family: Roboto;
 }
 
