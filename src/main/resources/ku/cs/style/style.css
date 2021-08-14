@@ -154,7 +154,7 @@
 
 .product-card:hover{
     -fx-background-color: primary-overlay;
-    -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0), 0, 0, 0, 0);
+    -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0), 2, 0.5, 0, 1);
 }
 
 .product-card:pressed{
@@ -227,4 +227,23 @@
 }
 .scroll-pane > .corner {
     -fx-background-color: transparent;
+}
+
+.menu-button{
+    -fx-background-color: app-background-color;
+    -fx-cursor: hand;
+    -fx-padding: 0px;
+}
+
+.menu-button > .label{
+    -fx-font-family: "Roboto Medium";
+    -fx-text-fill: primary-color;
+}
+
+.menu-button > .arrow-button {
+    -fx-padding: 0;
+}
+
+.menu-button > .arrow-button > .arrow {
+    -fx-padding: 0;
 }

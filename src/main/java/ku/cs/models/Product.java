@@ -1,21 +1,30 @@
 package ku.cs.models;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.StringJoiner;
 import java.util.TreeSet;
 
-public class Product {
+public class Product implements Comparable<Product>{
     private String name;
     private String picturePath;
     private String details;
     private double price;
     private int stock;
-    private String id;
+    private final String id;
+
     private double rating;
     private int review;
+    private final LocalDateTime rolloutDate;
 
-    public Product(String name, String picturePath, String details, double price, int stock, String id, double rating, int review) {
+    @Override
+    public int compareTo(Product other) {
+        return this.id.compareTo(other.id);
+    }
+
+    public Product(String name, String picturePath, String details, double price, int stock, String id, double rating, int review, String rolloutDate) {
         this.name = name;
         this.picturePath = picturePath;
         this.details = details;
@@ -24,6 +33,8 @@ public class Product {
         this.id = id;
         this.rating = rating;
         this.review = review;
+
+        this.rolloutDate = rolloutDate.equals("null") ? null : LocalDateTime.parse(rolloutDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
     public String getName() {
@@ -36,6 +47,11 @@ public class Product {
                 + "/images/product_images"
                 + File.separator
                 + picturePath).toURI().toString();
+    }
+
+
+    public LocalDateTime getRolloutDate() {
+        return rolloutDate;
     }
 
     public String getDetails() {
@@ -72,6 +88,18 @@ public class Product {
         if(stock >= 0){
             this.stock = stock;
         }
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public void setReview(int review) {
+        this.review = review;
     }
 
     public void setPicturePath(String picturePath) {
