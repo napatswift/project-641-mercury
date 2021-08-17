@@ -16,7 +16,6 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefWidth="500.0" style="-fx-background-color: secondary-color;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.MarketPlaceController">
@@ -86,13 +85,10 @@
                                                          </VBox.margin>
                                                          <children>
                                                             <Label styleClass="body1" text="price" />
-                                                            <TextField prefWidth="50.0" styleClass="outline-text-field" />
+                                                            <TextField fx:id="lowerBoundTF" onKeyPressed="#handleFilter" prefWidth="50.0" styleClass="outline-text-field" />
                                                             <Label styleClass="body1" text="to" />
-                                                            <TextField layoutX="328.0" layoutY="10.0" prefWidth="50.0" styleClass="outline-text-field" />
+                                                            <TextField fx:id="upperBoundTF" layoutX="328.0" layoutY="10.0" onKeyPressed="#handleFilter" prefWidth="50.0" styleClass="outline-text-field" />
                                                          </children>
-                                                         <padding>
-                                                            <Insets right="10.0" />
-                                                         </padding>
                                                       </HBox>
                                                       <HBox alignment="TOP_RIGHT" prefHeight="17.0">
                                                          <children>
@@ -101,9 +97,9 @@
                                                                 <MenuItem fx:id="lowestPrice" mnemonicParsing="false" onAction="#sortProductBy" text="lowest price" />
                                                                 <MenuItem fx:id="highestPrice" mnemonicParsing="false" onAction="#sortProductBy" text="highest price" />
                                                               </items>
-                                                               <graphic>
-                                                                  <SVGPath content="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z" style="-fx-fill: primary-color;" />
-                                                               </graphic>
+                                                               <padding>
+                                                                  <Insets bottom="2.0" left="3.0" right="3.0" top="2.0" />
+                                                               </padding>
                                                             </MenuButton>
                                                          </children>
                                                       </HBox>

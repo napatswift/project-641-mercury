@@ -230,9 +230,9 @@
 }
 
 .menu-button{
-    -fx-background-color: app-background-color;
+    -fx-background-color: transparent;
     -fx-cursor: hand;
-    -fx-padding: 0px;
+    -fx-background-radius: 5px;
 }
 
 .menu-button > .label{
@@ -240,10 +240,11 @@
     -fx-text-fill: primary-color;
 }
 
-.menu-button > .arrow-button {
-    -fx-padding: 0;
+.menu-button:hover{
+    -fx-background-color: primary-overlay;
 }
 
 .menu-button > .arrow-button > .arrow {
-    -fx-padding: 0;
+    -fx-background-color: primary-color;
+    -fx-shape: "M7 10l5 5 5-5z";
 }

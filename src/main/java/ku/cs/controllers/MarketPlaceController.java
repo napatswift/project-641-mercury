@@ -12,6 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -41,12 +43,14 @@ public class MarketPlaceController {
     Button seeMoreBtn;
     @FXML
     MenuButton sortingMB;
+    @FXML
+    TextField upperBoundTF, lowerBoundTF;
 
     private boolean bodyToggle = false;
     private Product selectedProduct;
     private int productIndex = -1;
+    private double upperBoundParsed = Double.MAX_VALUE, lowerBoundParsed = 0;
 
-    private ArrayList<Product> allProducts;
     private ArrayList<Product> selectedProducts;
 
     private VBox buildCard(String name, double price, String imagePath, String id){
@@ -118,7 +122,7 @@ public class MarketPlaceController {
     }
 
     @FXML
-    private void handleCategoryBtn(ActionEvent event){
+    private void handleCategoryBtn(ActionEvent e){
         TranslateTransition translateTransition = new TranslateTransition();
         translateTransition.setDuration(Duration.millis(200));
         translateTransition.setNode(bodyAP);
@@ -157,7 +161,9 @@ public class MarketPlaceController {
     private void populateProduct(int amount){
         int i = 0;
         for(Product product: selectedProducts){
-            if(i > productIndex && i <= productIndex + amount) {
+            if (product.getPrice() > upperBoundParsed || product.getPrice() < lowerBoundParsed)
+                continue;
+            if (i > productIndex && i <= productIndex + amount) {
                 VBox card = buildCard(product.getName(), product.getPrice(),
                         product.getPicturePath(), product.getId());
                 productFlowPane.getChildren().add(card);
@@ -170,7 +176,6 @@ public class MarketPlaceController {
     @FXML
     private void sortProductBy(ActionEvent e) {
         MenuItem menuItem = (MenuItem) e.getSource();
-        selectedProducts = allProducts;
         if (menuItem.getId().equals("lowestPrice")){
             sortingMB.setText("SORT BY : LOWEST PRICE");
             selectedProducts.sort(Comparator.comparingDouble(Product::getPrice));
@@ -188,12 +193,45 @@ public class MarketPlaceController {
         populateProduct(temp);
     }
 
+    private void filterProduct(){
+        if (lowerBoundTF.getText().equals("")) {
+            System.out.println(1);
+            lowerBoundParsed = 0;
+        } else{
+            try {
+                lowerBoundParsed = Double.parseDouble(lowerBoundTF.getText());
+            } catch (NumberFormatException e) {
+                System.err.println(e);
+            }
+        }
+        if (upperBoundTF.getText().equals("")) {
+            System.out.println(2);
+            upperBoundParsed = Double.MAX_VALUE;
+        } else{
+            try {
+                upperBoundParsed = Double.parseDouble(upperBoundTF.getText());
+            } catch (NumberFormatException e){
+                System.err.println(e);
+            }
+        }
+    }
+
+    @FXML
+    private void handleFilter(KeyEvent ke){
+        if( ke.getCode() == KeyCode.ENTER){
+            filterProduct();
+        }
+        productFlowPane.getChildren().clear();
+        int temp = productIndex;
+        productIndex = 0;
+        populateProduct(temp);
+    }
+
     @FXML
     public void initialize() throws IOException {
         selectedProducts = new ArrayList<>();
         parseProducts();
         selectedProducts.sort(Comparator.comparing(Product::getRolloutDate));
-        allProducts = selectedProducts;
         populateProduct(15);
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
     }
