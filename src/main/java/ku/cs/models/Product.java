@@ -3,9 +3,7 @@ package ku.cs.models;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.StringJoiner;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Product implements Comparable<Product>{
     private String name;
@@ -18,13 +16,16 @@ public class Product implements Comparable<Product>{
     private double rating;
     private int review;
     private final LocalDateTime rolloutDate;
+    private ArrayList<Category> categories;
 
     @Override
     public int compareTo(Product other) {
         return this.id.compareTo(other.id);
     }
 
-    public Product(String name, String picturePath, String details, double price, int stock, String id, double rating, int review, String rolloutDate) {
+    public Product(String name, String picturePath, String details,
+                   double price, int stock, String id, double rating,
+                   int review, String rolloutDate) {
         this.name = name;
         this.picturePath = picturePath;
         this.details = details;
@@ -33,8 +34,9 @@ public class Product implements Comparable<Product>{
         this.id = id;
         this.rating = rating;
         this.review = review;
-
-        this.rolloutDate = rolloutDate.equals("null") ? null : LocalDateTime.parse(rolloutDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        categories = new ArrayList<>();
+        this.rolloutDate = rolloutDate.equals("null") ?
+                null : LocalDateTime.parse(rolloutDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
     public String getName() {
@@ -49,6 +51,13 @@ public class Product implements Comparable<Product>{
                 + picturePath).toURI().toString();
     }
 
+    public Category getCategory(int index) {
+        return categories.get(index);
+    }
+
+    public Category getCategory() {
+        return getCategory(0);
+    }
 
     public LocalDateTime getRolloutDate() {
         return rolloutDate;
@@ -138,6 +147,18 @@ public class Product implements Comparable<Product>{
                 + price + ","
                 + stock;
 
+    }
+
+    public void addSubCategory(String categoryName, String subCategoryName, String value){
+        for(Category category: categories){
+            if (category.getName().equals(categoryName)){
+                category.addSubCategory(new SubCategory(subCategoryName, value));
+                return;
+            }
+        }
+        Category newCategory = new Category(categoryName);
+        newCategory.addSubCategory(new SubCategory(subCategoryName, value));
+        categories.add(newCategory);
     }
 
     @Override

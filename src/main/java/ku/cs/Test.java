@@ -18,7 +18,7 @@ public class Test extends Application {
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/market_place.fxml"));
         scene = new Scene(loader.load(), 1000, 750);
-        scene.getStylesheets().add(getClass().getResource("/ku/cs/style/style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/ku/cs/style/light.css").toExternalForm());
 
         primaryStage.setTitle("Test");
         primaryStage.setScene(scene);

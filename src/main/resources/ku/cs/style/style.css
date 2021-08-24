@@ -1,6 +1,3 @@
-@import "style-color.css";
-@import "Fonts.css";
-
 .button{
     -fx-cursor: hand;
     -fx-font-family: 'Roboto Medium';
@@ -248,3 +245,19 @@
     -fx-background-color: primary-color;
     -fx-shape: "M7 10l5 5 5-5z";
 }
+
+.buy-button {
+    -fx-background-color: primary-color;
+    -fx-background-radius: 0;
+    -fx-text-fill: primary-text-color;
+}
+.buy-text-field{
+    -fx-text-fill: primary-color;
+    -fx-font-family: 'Roboto Medium';
+    -fx-background-color: transparent;
+    -fx-border-radius: 0;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+}
+
+.buy-text-field:hover{}
