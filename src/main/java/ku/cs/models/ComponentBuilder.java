@@ -12,6 +12,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.SVGPath;
 
 public class ComponentBuilder {
     public VBox productCard(String name, double price, String imagePath, String id){
@@ -67,5 +68,42 @@ public class ComponentBuilder {
         hBox.prefWidth(Region.USE_COMPUTED_SIZE);
         hBox.setAlignment(Pos.CENTER);
         return hBox;
+    }
+
+
+    public VBox reviewCard(Review review){
+
+        HBox starsHBox = new HBox();
+        starsRating(starsHBox, review.getRating());
+        Label ratingLabel = new Label(review.getRating() + "/5");
+        ratingLabel.setPadding(new Insets(0, 0, 0, 10));
+        starsHBox.getChildren().add(ratingLabel);
+        starsHBox.setAlignment(Pos.CENTER_LEFT);
+        Label titleLabel = new Label(review.getTitle());
+        titleLabel.getStyleClass().add("h6");
+        Label detailLabel = new Label(review.getDetail());
+        detailLabel.getStyleClass().add("body1");
+        detailLabel.setWrapText(true);
+        Label usernameLabel = new Label(review.getReviewerUsername());
+        usernameLabel.getStyleClass().add("subtitle2");
+        VBox card = new VBox(starsHBox, titleLabel, detailLabel, usernameLabel);
+        card.setSpacing(5);
+        card.setPadding(new Insets(26, 33, 26, 33));
+        card.getStyleClass().add("review-card");
+        return card;
+    }
+
+    public static void starsRating(HBox starsHBox, double rating) {
+        for(int i = 0; i < 5; i++){
+            SVGPath star = new SVGPath();
+            star.setContent("M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z");
+            if ( i+1 <= rating){
+                star.setStyle("-fx-fill: primary-color");
+            } else{
+                star.setStyle("-fx-fill: primary-overlay");
+            }
+            star.setScaleX(.7); star.setScaleY(.7);
+            starsHBox.getChildren().add(star);
+        }
     }
 }

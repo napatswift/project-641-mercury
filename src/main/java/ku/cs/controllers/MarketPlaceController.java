@@ -3,15 +3,9 @@ package ku.cs.controllers;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.AccessibleRole;
-import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -35,21 +29,26 @@ public class MarketPlaceController {
             productDetailLabel,
             categoryBreadcrumbsLabel, productNameBreadcrumbsLabel,
             amountInStockLabel,
-            storeNameLabel;
+            storeNameLabel,
+            ratingSubmissionLabel;
     @FXML
-    SVGPath inStockStatusSvg;
+    SVGPath inStockStatusSvg,
+            star1, star2, star3, star4, star5;
     @FXML
     ImageView selectedProductIV;
     @FXML
     FlowPane productFlowPane;
     @FXML
-    Button seeMoreBtn;
+    Button seeMoreBtn,
+            starBtn1, starBtn2, starBtn3, starBtn4, starBtn5;
     @FXML
     MenuButton sortingMB;
     @FXML
     TextField upperBoundTF, lowerBoundTF, amountTF;
     @FXML
     HBox starsHBox, shipHBox;
+    @FXML
+    VBox reviewVBox;
 
     private boolean bodyToggle = false;
     private Product selectedProduct;
@@ -58,8 +57,10 @@ public class MarketPlaceController {
     private double upperBoundParsed = Double.MAX_VALUE, lowerBoundParsed = 0;
 
     private ArrayList<Product> products;
+    private ArrayList<Review> reviews;
 
     private void buildProductPage(){
+        resetStar();
         // reset amount to 1
         amountTF.setText("1");
         // clear boxes
@@ -73,8 +74,7 @@ public class MarketPlaceController {
         selectedProductIV.setImage(new Image(selectedProduct.getPicturePath()));
 
         // set store name;
-        // TODO add Store to product
-        storeNameLabel.setText("Store Name".toUpperCase(Locale.ROOT));
+        storeNameLabel.setText(selectedProduct.getStore().getName().toUpperCase(Locale.ROOT));
 
         // set bread crumbs info
         categoryBreadcrumbsLabel.setText(selectedProduct.getCategory().getName());
@@ -98,17 +98,7 @@ public class MarketPlaceController {
         }
 
         // handling rating
-        for (int i = 0; i < 5; i++){
-            SVGPath star = new SVGPath();
-            star.setContent("M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z");
-            if ( i+1 <= selectedProduct.getRating()){
-                star.setStyle("-fx-fill: primary-color");
-            } else{
-                star.setStyle("-fx-fill: primary-overlay");
-            }
-            star.setScaleX(.7); star.setScaleY(.7);
-            starsHBox.getChildren().add(star);
-        }
+        ComponentBuilder.starsRating(starsHBox, selectedProduct.getRating());
         starsHBox.getChildren().add(new Label(selectedProduct.getRating()+"/5 (" + selectedProduct.getReview() + ")"));
 
         // handling category
@@ -120,6 +110,47 @@ public class MarketPlaceController {
             shipHBox.getChildren().add(componentBuilder.ship(subCategory.getName(), subCategory.getValue()));
         }
 
+        populateReview();
+    }
+
+    private void resetStar(){
+        star1.setStyle("-fx-fill: primary-overlay");
+        star2.setStyle("-fx-fill: primary-overlay");
+        star3.setStyle("-fx-fill: primary-overlay");
+        star4.setStyle("-fx-fill: primary-overlay");
+        star5.setStyle("-fx-fill: primary-overlay");
+    }
+
+    @FXML
+    private void selectRatingStar(ActionEvent e){
+        Button star = (Button) e.getSource();
+        resetStar();
+        int rating = Integer.parseInt(star.getId().toCharArray()[7] + "");
+        switch (rating){
+            case (5):
+                star5.setStyle("-fx-fill: primary-color");
+            case (4):
+                star4.setStyle("-fx-fill: primary-color");
+            case (3):
+                star3.setStyle("-fx-fill: primary-color");
+            case (2):
+                star2.setStyle("-fx-fill: primary-color");
+            case (1):
+                star1.setStyle("-fx-fill: primary-color");
+        }
+        ratingSubmissionLabel.setText(rating + "/5");
+
+    }
+
+    private void populateReview(){
+        reviewVBox.getChildren().clear();
+        for(Review review: reviews){
+            if(review.getProductId().equals(selectedProduct.getId())) {
+                reviewVBox
+                        .getChildren()
+                        .add(componentBuilder.reviewCard(review));
+            }
+        }
     }
 
     @FXML
@@ -196,20 +227,40 @@ public class MarketPlaceController {
             String [] entry = line.split("\t");
             int entry_len = entry.length;
             //name,picturePath,details,price,stock,id,rating,review,rolloutDate
-            Product newProduct = new Product(entry[0],
-                            entry[8],
-                            entry[5],
-                            Double.parseDouble(entry[2]) / 100, Integer.parseInt(entry[4]),
-                            entry[1],
-                            Double.parseDouble(entry[6]),
-                            Integer.parseInt(entry[7]),
-                            entry[9]);
+            String name = entry[0];
+            String id = entry[1];
+            double price = Double.parseDouble(entry[2]) / 100;
+            Store store = new Store(entry[3]);
+            int stock = Integer.parseInt(entry[4]);
+            String details = entry[5];
+            double rating = Double.parseDouble(entry[6]);
+            int review = Integer.parseInt(entry[7]);
+            String picturePath = entry[8];
+            String rolloutDate = entry[9];
+            Product newProduct =
+                    new Product(name, picturePath, details,
+                                price, stock, id, rating, review, rolloutDate, store);
             for(int idx = 10; idx < entry_len; idx++){
                 String [] col = header[idx].split("-");
                 newProduct.addSubCategory(col[0], col[1], entry[idx]);
             }
             products.add(newProduct);
 
+        }
+    }
+
+    private void parseReview() throws IOException{
+        String [] lines = CsvReader.getLines("data/reviews.csv");
+        for(String line: lines){
+            // productId,title,detail,rating,reviewerUsername
+            String [] entry = line.split(",");
+            String productId = entry[0];
+            String title = entry[1];
+            String detail = entry[2];
+            int rating = Integer.parseInt(entry[3]);
+            String reviewerUsername = entry[4];
+            Product product = getProductById(productId);
+            reviews.add(new Review(title, detail, rating, reviewerUsername, product));
         }
     }
 
@@ -284,7 +335,9 @@ public class MarketPlaceController {
     @FXML
     public void initialize() throws IOException {
         products = new ArrayList<>();
+        reviews = new ArrayList<>();
         parseProducts();
+        parseReview();
         products.sort(Comparator.comparing(Product::getRolloutDate));
         populateProduct(15);
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
