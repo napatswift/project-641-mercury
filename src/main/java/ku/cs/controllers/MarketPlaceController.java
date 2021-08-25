@@ -319,7 +319,7 @@ public class MarketPlaceController {
 
     @FXML
     private void handleSubmitReviewBtn(ActionEvent e){
-        // TODO clear dummy username
+        // TODO remove dummy username
         String title = reviewTitleTF.getText().trim();
         String detail = detailReviewTA.getText().trim();
         if (title.equals("") || detail.equals("") || newReviewRating == -1){
