@@ -1,13 +1,21 @@
-@import "style-color.css";
 @import "Fonts.css";
+@import "style-color.css";
 
 .button{
     -fx-cursor: hand;
     -fx-font-family: 'Roboto Medium';
     -fx-font-weight: 500;
     -fx-border-radius: 4px;
+    -fx-background-color: transparent;
 }
 
+.tool-bar{
+    -fx-background-color: secondary-color;
+}
+
+.active-btn{
+    -fx-text-fill: rgba(0, 0, 0, 0.6);
+}
 
 .text-btn{
     -fx-border-color: transparent;
@@ -29,7 +37,7 @@
      -fx-text-fill: primary-color;
  }
 
- .outline-btn:hover{
+.outline-btn:hover{
      -fx-background-color: rgba(187, 134, 252, 0.12);
  }
 
@@ -48,8 +56,34 @@
 .text-field{
     -fx-background-color: surface-overlay;
     -fx-text-fill: on-surface-color;
-    -fx-border-radius: 4px 4px 0px 0px;
+    -fx-border-radius: 4px;
     -fx-border-color: transparent;
+}
+
+.text-field:hover, .text-field:focused{
+    -fx-border-color: primary-color;
+}
+
+.review-text-field{
+    -fx-border-radius: 0px;
+    -fx-background-color: surface-overlay;
+    -fx-background-radius: 0;
+}
+
+.text-area{
+    -fx-background-color: surface-overlay;
+    -fx-border-radius: 0px;
+    -fx-border-color: transparent;
+    -fx-highlight-text-fill: transparent;
+}
+
+.text-area:hover, .text-area:focused{
+    -fx-border-color: primary-color;
+}
+
+.text-area .content{
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
 }
 
 .error-text-field{
@@ -62,17 +96,13 @@
     -fx-border-color: error-color;
 }
 
-.text-field:hover, .text-field:focused{
-    -fx-border-color: primary-color;
-}
-
 .outline-text-field{
     -fx-background-color: transparent;
     -fx-border-radius: 4px;
     -fx-border-color: rgba(0, 0, 0, 0.12);
  }
 
- .error-outline-text-field{
+.error-outline-text-field{
     -fx-background-color: surface-overlay;
     -fx-border-radius: 4px;
     -fx-text-fill: error-color;
@@ -93,8 +123,41 @@
 }
 
 .h3{
-    -fx-font-family: 'Roboto Light';
+    -fx-font-family: 'Roboto Regular';
     -fx-font-size: 48px;
+}
+
+.h4{
+    -fx-font-family: 'Roboto Regular';
+    -fx-font-size: 32px;
+}
+
+.h6{
+    -fx-font-family: 'Roboto Medium';
+    -fx-font-size: 20px;
+}
+
+.subtitle1{
+    -fx-font-family: 'Roboto Regular';
+    -fx-font-size: 16px;
+    -fx-text-fill: rgba(0, 0, 0, 0.87);
+}
+
+.subtitle2{
+    -fx-font-family: 'Roboto Medium';
+    -fx-font-size: 14px;
+    -fx-text-fill: rgba(0, 0, 0, 0.87);
+}
+
+.body1{
+    -fx-font-family: 'Roboto';
+    -fx-font-size: 16px;
+    -fx-text-fill: rgba(0, 0, 0, 0.87);
+}
+
+.secondary-text{
+    -fx-font-size: 14px;
+    -fx-text-fill: #00000099;
 }
 
 .root{
@@ -102,7 +165,135 @@
     -fx-background-color: app-background-color;
 }
 
+.product-card{
+    -fx-background-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-border-color: transparent;
+    -fx-background-color: app-background-color;
+    -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.14), 2, 0.5, 0, 1);
+}
+
+.product-card:hover{
+    -fx-background-color: primary-overlay;
+    -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0), 2, 0.5, 0, 1);
+}
+
+.product-card:pressed{
+    -fx-border-color: primary-color;
+}
+
 .warning{
     -fx-fill: error-color;
 }
 
+.split-pane > .split-pane-divider {
+    -fx-padding: 1;
+    -fx-background-color: surface-overlay;
+
+}
+
+.split-pane .scroll-pane{
+    -fx-background-color: app-background-color;
+}
+
+.list-item-btn{
+    -fx-background-radius: 6px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #000000de;
+}
+
+.list-item-btn:hover{
+    -fx-background-color: surface-overlay;
+    -fx-text-fill: #000000;
+    -fx-fill: #000000;
+}
+
+.list-item-active-btn{
+    -fx-background-color: primary-overlay;
+    -fx-text-fill: primary-color;
+    -fx-fill: primary-color;
+}
+.list-item-active-btn:hover{
+    -fx-background-color: primary-overlay;
+    -fx-text-fill: primary-dark-color;
+    -fx-fill: primary-dark-color;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color: transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:horizontal .track, .scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: surface-overlay;
+    -fx-background-radius: 5em;
+}
+.scroll-pane > .corner {
+    -fx-background-color: transparent;
+}
+
+.menu-button{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-background-radius: 5px;
+}
+
+.menu-button > .label{
+    -fx-font-family: "Roboto Medium";
+    -fx-text-fill: primary-color;
+}
+
+.menu-button:hover{
+    -fx-background-color: primary-overlay;
+}
+
+.menu-button > .arrow-button > .arrow {
+    -fx-background-color: primary-color;
+    -fx-shape: "M7 10l5 5 5-5z";
+}
+
+.buy-button {
+    -fx-background-color: primary-color;
+    -fx-background-radius: 0;
+    -fx-text-fill: primary-text-color;
+}
+.buy-text-field{
+    -fx-text-fill: primary-color;
+    -fx-font-family: 'Roboto Medium';
+    -fx-background-color: transparent;
+    -fx-border-radius: 0;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+}
+
+.buy-text-field:hover{}
+
+.review-card{
+    -fx-border-width: 1px;
+    -fx-border-color: transparent;
+    -fx-background-color: app-background-color;
+    -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.14), 2, 0.5, 0, 1);
+}
+
+.star-btn{
+    -fx-padding: 0;
+}
