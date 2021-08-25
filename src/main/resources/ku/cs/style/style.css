@@ -1,3 +1,6 @@
+@import "Fonts.css";
+@import "style-color.css";
+
 .button{
     -fx-cursor: hand;
     -fx-font-family: 'Roboto Medium';
@@ -34,7 +37,7 @@
      -fx-text-fill: primary-color;
  }
 
- .outline-btn:hover{
+.outline-btn:hover{
      -fx-background-color: rgba(187, 134, 252, 0.12);
  }
 
@@ -53,8 +56,34 @@
 .text-field{
     -fx-background-color: surface-overlay;
     -fx-text-fill: on-surface-color;
-    -fx-border-radius: 4px 4px 0px 0px;
+    -fx-border-radius: 4px;
     -fx-border-color: transparent;
+}
+
+.text-field:hover, .text-field:focused{
+    -fx-border-color: primary-color;
+}
+
+.review-text-field{
+    -fx-border-radius: 0px;
+    -fx-background-color: surface-overlay;
+    -fx-background-radius: 0;
+}
+
+.text-area{
+    -fx-background-color: surface-overlay;
+    -fx-border-radius: 0px;
+    -fx-border-color: transparent;
+    -fx-highlight-text-fill: transparent;
+}
+
+.text-area:hover, .text-area:focused{
+    -fx-border-color: primary-color;
+}
+
+.text-area .content{
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
 }
 
 .error-text-field{
@@ -67,17 +96,13 @@
     -fx-border-color: error-color;
 }
 
-.text-field:hover, .text-field:focused{
-    -fx-border-color: primary-color;
-}
-
 .outline-text-field{
     -fx-background-color: transparent;
     -fx-border-radius: 4px;
     -fx-border-color: rgba(0, 0, 0, 0.12);
  }
 
- .error-outline-text-field{
+.error-outline-text-field{
     -fx-background-color: surface-overlay;
     -fx-border-radius: 4px;
     -fx-text-fill: error-color;
@@ -267,13 +292,6 @@
     -fx-border-color: transparent;
     -fx-background-color: app-background-color;
     -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.14), 2, 0.5, 0, 1);
-}
-
-.review-text-field{
-    -fx-background-color: surface-overlay;
-    -fx-background-radius: 0;
-    -fx-border-radius: 0;
-    -fx-border-width: 0;
 }
 
 .star-btn{

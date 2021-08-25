@@ -42,22 +42,18 @@
                      </children>
                   </VBox>
                   <VBox layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="3.0">
-                     <children>
                         <Label text="Home" />
                         <Label layoutX="10.0" layoutY="10.0" text="Kitchen" />
                         <Label layoutX="10.0" layoutY="27.0" text="Car" />
                         <Label layoutX="10.0" layoutY="44.0" text="Men" />
                         <Label layoutX="10.0" layoutY="61.0" text="Women" />
-                     </children>
                   </VBox>
                   <VBox layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="3.0">
-                     <children>
                         <Label text="Home" />
                         <Label layoutX="10.0" layoutY="10.0" text="Kitchen" />
                         <Label layoutX="10.0" layoutY="27.0" text="Car" />
                         <Label layoutX="10.0" layoutY="44.0" text="Men" />
                         <Label layoutX="10.0" layoutY="61.0" text="Women" />
-                     </children>
                   </VBox>
                </children>
             </HBox>
@@ -158,7 +154,7 @@
                                        <children>
                                           <HBox prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
                                              <children>
-                                                <Label accessibleRole="BUTTON" onMousePressed="#handleMargetPlaceBtn" text="Market place">
+                                                <Label accessibleRole="BUTTON" onMousePressed="#handleMargetPlaceBtn" text="Marketplace">
                                                    <cursor>
                                                       <Cursor fx:constant="HAND" />
                                                    </cursor>
@@ -180,13 +176,13 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </HBox>
-                                          <GridPane alignment="TOP_CENTER" hgap="5.0" maxWidth="900.0" prefHeight="685.0" prefWidth="718.0" VBox.vgrow="NEVER">
+                                          <GridPane alignment="TOP_CENTER" hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="900.0" prefWidth="718.0" VBox.vgrow="NEVER">
                                             <columnConstraints>
                                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="200.0" percentWidth="50.0" prefWidth="400.0" />
                                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="200.0" percentWidth="50.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
                                                 <ImageView fx:id="selectedProductIV" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
@@ -194,7 +190,7 @@
                                                       <Rectangle2D />
                                                    </viewport>
                                                 </ImageView>
-                                                <VBox prefWidth="900.0" spacing="5.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.rowSpan="2147483647" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+                                                <VBox prefWidth="900.0" spacing="5.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                                                    <children>
                                                       <HBox alignment="CENTER_LEFT" spacing="5.0">
                                                          <children>
@@ -260,41 +256,51 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </GridPane>
-                                          <VBox fx:id="reviewVBox" alignment="TOP_CENTER" spacing="5.0">
+                                          <VBox alignment="TOP_CENTER" layoutX="110.0" layoutY="851.0" maxWidth="800.0" spacing="5.0">
+                                             <children>
+                                                <Label styleClass="h6" text="Reviews" />
+                                                <HBox alignment="TOP_CENTER">
+                                                   <children>
+                                                      <HBox fx:id="reviewRatingPanelStarHBox" alignment="CENTER" prefHeight="21.0" prefWidth="300.0" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" top="50.0" />
+                                             </VBox.margin>
+                                          </VBox>
+                                          <VBox fx:id="reviewVBox" alignment="TOP_CENTER" maxWidth="800.0" spacing="5.0">
                                              <VBox.margin>
                                                 <Insets left="50.0" right="50.0" />
                                              </VBox.margin>
                                           </VBox>
-                                          <VBox fx:id="reviewVBox1" layoutX="90.0" layoutY="736.0" prefHeight="380.0" prefWidth="718.0" spacing="10.0" styleClass="review-card">
+                                          <VBox layoutX="90.0" layoutY="736.0" maxWidth="800.0" prefHeight="350.0" spacing="10.0" styleClass="review-card">
                                              <children>
                                                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                                                    <children>
                                                       <Button fx:id="starBtn1" mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
                                                          <graphic>
-                                                            <SVGPath fx:id="star1" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" scaleX="0.7" scaleY="0.7" />
+                                                            <SVGPath fx:id="star1" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                                          </graphic>
-                                                         <HBox.margin>
-                                                            <Insets />
-                                                         </HBox.margin>
                                                       </Button>
                                                       <Button fx:id="starBtn2" mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
                                                          <graphic>
-                                                            <SVGPath fx:id="star2" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" scaleX="0.7" scaleY="0.7" />
+                                                            <SVGPath fx:id="star2" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                                          </graphic>
                                                       </Button>
                                                       <Button fx:id="starBtn3" mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
                                                          <graphic>
-                                                            <SVGPath fx:id="star3" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" scaleX="0.7" scaleY="0.7" />
+                                                            <SVGPath fx:id="star3" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                                          </graphic>
                                                       </Button>
                                                       <Button fx:id="starBtn4" mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
                                                          <graphic>
-                                                            <SVGPath fx:id="star4" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" scaleX="0.7" scaleY="0.7" />
+                                                            <SVGPath fx:id="star4" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                                          </graphic>
                                                       </Button>
                                                       <Button fx:id="starBtn5" mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
                                                          <graphic>
-                                                            <SVGPath fx:id="star5" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" scaleX="0.7" scaleY="0.7" />
+                                                            <SVGPath fx:id="star5" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                                          </graphic>
                                                       </Button>
                                                       <Label fx:id="ratingSubmissionLabel" text="0/5">
@@ -305,12 +311,12 @@
                                                    </children>
                                                 </HBox>
                                                 <Label layoutX="10.0" layoutY="10.0" styleClass="subtitle1" text="Title" />
-                                                <TextField styleClass="review-text-field" />
+                                                <TextField fx:id="reviewTitleTF" styleClass="review-text-field" />
                                                 <Label layoutX="10.0" layoutY="25.0" styleClass="subtitle1" text="Detail" />
-                                                <TextArea prefHeight="300.0" prefWidth="200.0" styleClass="review-text-field" />
+                                                <TextArea fx:id="detailReviewTA" prefHeight="300.0" prefWidth="200.0" styleClass="review-text-field" wrapText="true" />
                                                 <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                                                    <children>
-                                                      <Button mnemonicParsing="false" styleClass="contained-btn" text="SUBMIT" />
+                                                      <Button mnemonicParsing="false" onAction="#handleSubmitReviewBtn" styleClass="contained-btn" text="SUBMIT" />
                                                    </children>
                                                 </HBox>
                                              </children>
@@ -380,7 +386,7 @@
       </AnchorPane>
       <ToolBar prefHeight="50.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <Button mnemonicParsing="false" onMouseReleased="#handleMargetPlaceBtn" styleClass="active-btn" text="Market place" />
+          <Button mnemonicParsing="false" onMouseReleased="#handleMargetPlaceBtn" styleClass="active-btn" text="Marketplace" />
             <Button mnemonicParsing="false" onAction="#handleCategoryBtn" text="Category" />
             <Button layoutX="103.0" layoutY="11.0" mnemonicParsing="false" text="My account" />
             <Button layoutX="176.0" layoutY="11.0" mnemonicParsing="false" text="My store" />
