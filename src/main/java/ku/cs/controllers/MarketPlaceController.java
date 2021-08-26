@@ -148,24 +148,6 @@ public class MarketPlaceController {
         }
     }
 
-    private void productToCsv(String filePath){
-        File file = new File(filePath);
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(file);
-            BufferedWriter writer = new BufferedWriter(fileWriter);
-            writer.append("name\tproduct_id\tprice\tstore\tstock\tdescription\trating\treviews\timage_0\trollout_date\tshoes-size\tshoes-color");
-            writer.newLine();
-            for(Product product: products){
-                writer.append(product.toCsv());
-                writer.newLine();
-            }
-            writer.close();
-        } catch (IOException e) {
-            System.err.println("Cannot write " + filePath);
-        }
-    }
-
     // product page builder
     private void buildProductPage(){
         resetStar();
@@ -252,6 +234,7 @@ public class MarketPlaceController {
     }
 
     private void populateReview(){
+        //TODO: move to model
         reviewRatingPanelStarHBox.getChildren().clear();
 
         reviewVBox.getChildren().clear();
@@ -320,6 +303,7 @@ public class MarketPlaceController {
     @FXML
     private void handleSubmitReviewBtn(ActionEvent e){
         // TODO remove dummy username
+        // TODO: move to model
         String title = reviewTitleTF.getText().trim();
         String detail = detailReviewTA.getText().trim();
         if (title.equals("") || detail.equals("") || newReviewRating == -1){
@@ -366,6 +350,7 @@ public class MarketPlaceController {
 
     // parsing function
     private void parseProducts() throws IOException{
+        // TODO: move to data source
         String [] lines = CsvReader.getLinesWithHeader("data/products.tsv");
         String [] header = lines[0].split("\t");
         lines = Arrays.copyOfRange(lines, 1, lines.length);
@@ -398,6 +383,7 @@ public class MarketPlaceController {
     }
 
     private void parseReview() throws IOException{
+        // TODO: move to data source
         String [] lines = CsvReader.getLines("data/reviews.csv");
         for(String line: lines){
             // productId,title,detail,rating,reviewerUsername
@@ -416,6 +402,7 @@ public class MarketPlaceController {
     private void populateProduct(int amount){
         int i = 0;
         for(Product product: products){
+            // TODO: move to models
             if (product.getPrice() > upperBoundParsed || product.getPrice() < lowerBoundParsed)
                 continue;
             if (i > productIndex && i <= productIndex + amount) {
