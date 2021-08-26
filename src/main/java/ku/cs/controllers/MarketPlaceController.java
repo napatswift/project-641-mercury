@@ -14,6 +14,7 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import ku.cs.models.*;
+import ku.cs.service.ProductDataSource;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -66,7 +67,7 @@ public class MarketPlaceController {
     private double upperBoundParsed = Double.MAX_VALUE, lowerBoundParsed = 0;
     private int newReviewRating = -1;
 
-    private ArrayList<Product> products;
+    private ProductList productList;
     private ArrayList<Review> reviews;
 
     // Utility
@@ -349,38 +350,6 @@ public class MarketPlaceController {
     }
 
     // parsing function
-    private void parseProducts() throws IOException{
-        // TODO: move to data source
-        String [] lines = CsvReader.getLinesWithHeader("data/products.tsv");
-        String [] header = lines[0].split("\t");
-        lines = Arrays.copyOfRange(lines, 1, lines.length);
-        for(String line: lines){
-            String [] entry = line.split("\t");
-            int entry_len = entry.length;
-
-            //name,picturePath,details,price,stock,id,rating,review,rolloutDate
-            String name = entry[0];
-            String id = entry[1];
-            double price = Double.parseDouble(entry[2]) / 100;
-            Store store = new Store(entry[3]);
-            int stock = Integer.parseInt(entry[4]);
-            String details = entry[5];
-            double rating = Double.parseDouble(entry[6]);
-            int review = Integer.parseInt(entry[7]);
-            String picturePath = entry[8];
-            String rolloutDate = entry[9];
-
-            Product newProduct =
-                    new Product(name, picturePath, details,
-                                price, stock, id, rating, review, rolloutDate, store);
-            for(int idx = 10; idx < entry_len; idx++){
-                String [] col = header[idx].split("-");
-                newProduct.addSubCategory(col[0], col[1], entry[idx]);
-            }
-            products.add(newProduct);
-
-        }
-    }
 
     private void parseReview() throws IOException{
         // TODO: move to data source
@@ -401,7 +370,7 @@ public class MarketPlaceController {
     // marketplace page
     private void populateProduct(int amount){
         int i = 0;
-        for(Product product: products){
+        for(Product product: productList){
             // TODO: move to models
             if (product.getPrice() > upperBoundParsed || product.getPrice() < lowerBoundParsed)
                 continue;
@@ -418,11 +387,13 @@ public class MarketPlaceController {
 
     @FXML
     public void initialize() throws IOException {
-        products = new ArrayList<>();
-        reviews = new ArrayList<>();
-        parseProducts();
         parseReview();
-        products.sort(Comparator.comparing(Product::getRolloutDate));
+        ProductDataSource productDataSource = new ProductDataSource("data/product.tsv");
+        productList = productDataSource.parseProductList("\t");
+
+        // TODO move to model
+        // productList.sort(Comparator.comparing(Product::getRolloutDate));
+
         populateProduct(15);
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
     }

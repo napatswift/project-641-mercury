@@ -5,11 +5,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-public class ProductList {
+public class ProductList{
     private List<Product> products;
     private Product selectedProduct;
+    public enum SortType {BY_ROLLOUT_DAT, BY_LOWEST, BY_HIGHEST}
+    public SortType sortType;
 
     public ProductList(){
         products = new ArrayList<>();
@@ -53,6 +56,14 @@ public class ProductList {
         this.selectedProduct = getProduct(id);
     }
 
+    public void sort(SortType sortType){
+        if (sortType.equals(SortType.BY_ROLLOUT_DAT))
+            products.sort(Comparator.comparing(Product::getRolloutDate));
+        else if (sortType.equals(SortType.BY_LOWEST))
+            products.sort(Comparator.comparingDouble(Product::getPrice));
+        else if (sortType.equals(SortType))
+    }
+
     public void toTsv(String filePath){
         File file = new File(filePath);
         FileWriter fileWriter = null;
@@ -70,5 +81,4 @@ public class ProductList {
             System.err.println("Cannot write " + filePath);
         }
     }
-
 }
