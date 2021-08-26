@@ -30,6 +30,10 @@ public class AdminControllerMyAccount {
     @FXML
     public void initialize() throws FileNotFoundException {
         user = (User) FXRouter.getData();
+        showAdmin(user);
+    }
+
+    public void showAdmin(User user){
         nameAdmin.setText(user.getName());
         role.setText(""+ user.getRole());
         imageView.setImage(new Image(user.getPicturePath()));
