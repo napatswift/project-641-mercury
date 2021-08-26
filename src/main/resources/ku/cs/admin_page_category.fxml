@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane accessibleRole="IMAGE_VIEW" prefHeight="768" prefWidth="1024" styleClass="h" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.admin.AdminControllerMyAccount">
+<AnchorPane accessibleRole="IMAGE_VIEW" prefHeight="768" prefWidth="1024" styleClass="h" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.admin.AdminControllerCategory">
    <children>
       <VBox layoutX="42.0" layoutY="49.0" prefHeight="94.0" prefWidth="119.0">
          <children>
