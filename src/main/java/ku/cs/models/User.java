@@ -124,6 +124,8 @@ public class User implements Comparable<User>{
         return username;
     }
 
+    public String getStoreName() {return this.store.getName();}
+
     public String getPicturePath() {
         String picturePath = this.picturePath;
         if (this.picturePath == null){
@@ -177,4 +179,12 @@ public class User implements Comparable<User>{
                 + hasStore + ","
                 + (store == null ? null : store.getName());
     }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return "" + loginDateTime.format(formatter)
+                + "\n" + username;
+    }
 }
+

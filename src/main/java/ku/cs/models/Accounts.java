@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeSet;
 
@@ -64,7 +65,6 @@ public class Accounts {
     public Collection<User> toList() {
         return accounts;
     }
-
 
     public boolean toCsv(String filePath){
         File file = new File(filePath);
