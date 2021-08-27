@@ -70,17 +70,18 @@ public class LoginController {
         if (loginSuccess == 2){
             loginText.setText("Login success");
             accountList.toCsv("data/users.csv");
+            Object[] data = {currAcc,this.accountList};
             if(currAcc.getRole() == User.Role.ADMIN)
             {
                 try {
-                    FXRouter.goTo("admin_page_my_account",currAcc);
+                    FXRouter.goTo("admin_page_user", data);
                 } catch (IOException e) {
                     System.err.println("ไปที่หน้า Admin Page ไม่ได้");
                     System.err.println("ให้ตรวจสอบการกำหนด route");
                 }
             } else if (currAcc.getRole() == User.Role.USER){
                 try {
-                    FXRouter.goTo("marketplace", currAcc);
+                    FXRouter.goTo("marketplace", data);
                 } catch (IOException e) {
                     System.err.println("ไปที่หน้า marketplace ไม่ได้");
                     System.err.println("ให้ตรวจสอบการกำหนด route");

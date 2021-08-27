@@ -19,9 +19,8 @@ import java.time.format.DateTimeFormatter;
 
 public class AdminControllerUser {
 
-    private User user;
     private AccountList accountList;
-    private UserDataSource userDataSource;
+    private Object[] data;
 
     @FXML private Label nameAdmin
             ,role
@@ -35,11 +34,11 @@ public class AdminControllerUser {
 
     @FXML
     public void initialize() throws IOException {
-        user = (User) FXRouter.getData();
+        data = (Object[]) FXRouter.getData();
+        User user = (User) data[0];
+        accountList = (AccountList) data[1];
+
         showAdmin(user);
-        userDataSource = new UserDataSource("data/users.csv");
-        userDataSource.parse();
-        accountList = userDataSource.getAccounts();
         showListView();
         clearSelectedMemberCard();
         handleSelectedListView();
@@ -106,7 +105,7 @@ public class AdminControllerUser {
     @FXML
     public void handleCategoryButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_category", user);
+            FXRouter.goTo("admin_page_category", data);
         } catch (IOException e) {
             System.err.println("ไปที่หน้า admin_page_category ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
@@ -116,7 +115,7 @@ public class AdminControllerUser {
     @FXML
     public void handleUserButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_user", user);
+            FXRouter.goTo("admin_page_user", data);
         } catch (IOException e) {
             System.err.println("ไปที่หน้า admin_page_user ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
@@ -124,21 +123,20 @@ public class AdminControllerUser {
     }
 
     @FXML
-    public void handleMyAccountButton(ActionEvent actionEvent) {
+    public void handleReportButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_my_account", user);
+            FXRouter.goTo("admin_page_report", data);
         } catch (IOException e) {
-            System.err.println("ไปที่หน้า admin_page_my_account ไม่ได้");
+            System.err.println("ไปที่หน้า admin_page_report ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
     }
 
-    @FXML
-    public void handleReportButton(ActionEvent actionEvent) {
+    public void handleResetPasswordButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_report", user);
+            FXRouter.goTo("reset_password", data);
         } catch (IOException e) {
-            System.err.println("ไปที่หน้า admin_page_report ไม่ได้");
+            System.err.println("ไปที่หน้า reset_password ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
     }
