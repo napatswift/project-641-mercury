@@ -1,27 +1,26 @@
-package ku.cs.controllers.admin;
+package ku.cs.controllers;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import ku.cs.models.AccountList;
 import com.github.saacsos.FXRouter;
+import ku.cs.models.AccountList;
 import ku.cs.models.User;
-import ku.cs.service.UserDataSource;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 
-public class AdminControllerUser {
+public class AdminPageController {
 
-    private AccountList accountList;
     private Object[] data;
+    private AccountList accountList;
 
     @FXML private Label nameAdmin
             ,role
@@ -31,8 +30,8 @@ public class AdminControllerUser {
             ,storeName;
     @FXML private ImageView imageView
             ,userImage;
-    @FXML private ListView<User> userListView;
-
+    @FXML private ListView<User> userListView;;
+    @FXML private TabPane adminTP;
     @FXML
     public void initialize() throws IOException {
         data = (Object[]) FXRouter.getData();
@@ -41,7 +40,7 @@ public class AdminControllerUser {
 
         showAdmin(user);
         showListView();
-        clearSelectedMemberCard();
+        clearSelectedUser();
         handleSelectedListView();
     }
 
@@ -86,7 +85,7 @@ public class AdminControllerUser {
             storeName.setText("This User Don't Have Store");
     }
 
-    private void clearSelectedMemberCard() {
+    private void clearSelectedUser() {
         userName.setText("");
         realNameUser.setText("");
         lastLogin.setText("");
@@ -105,32 +104,17 @@ public class AdminControllerUser {
 
     @FXML
     public void handleCategoryButton(ActionEvent actionEvent) {
-        try {
-            FXRouter.goTo("admin_page_category", data);
-        } catch (IOException e) {
-            System.err.println("ไปที่หน้า admin_page_category ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
-        }
+        adminTP.getSelectionModel().select(1);
     }
 
     @FXML
     public void handleUserButton(ActionEvent actionEvent) {
-        try {
-            FXRouter.goTo("admin_page_user", data);
-        } catch (IOException e) {
-            System.err.println("ไปที่หน้า admin_page_user ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
-        }
+        adminTP.getSelectionModel().select(0);
     }
 
     @FXML
     public void handleReportButton(ActionEvent actionEvent) {
-        try {
-            FXRouter.goTo("admin_page_report", data);
-        } catch (IOException e) {
-            System.err.println("ไปที่หน้า admin_page_report ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
-        }
+        adminTP.getSelectionModel().select(2);
     }
 
     public void handleResetPasswordButton(ActionEvent actionEvent) {
@@ -140,5 +124,11 @@ public class AdminControllerUser {
             System.err.println("ไปที่หน้า reset_password ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
+    }
+
+    public void handleAddCategoryButton(ActionEvent actionEvent) {
+    }
+
+    public void handleAddSubCategoryButton(ActionEvent actionEvent) {
     }
 }

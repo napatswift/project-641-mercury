@@ -71,9 +71,9 @@ public class ResetPasswordController {
     public void holdBackButton(ActionEvent actionEvent) {
         if(user.getRole() == User.Role.ADMIN) {
             try {
-                com.github.saacsos.FXRouter.goTo("admin_page_user", data);
+                com.github.saacsos.FXRouter.goTo("admin_page", data);
             } catch (IOException e) {
-                System.err.println("ไปที่หน้า admin_page_user ไม่ได้");
+                System.err.println("ไปที่หน้า admin_page ไม่ได้");
                 System.err.println("ให้ตรวจสอบการกำหนด route");
             }
         }
