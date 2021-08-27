@@ -37,14 +37,18 @@ public class ResetPasswordController {
     }
 
     public int resetPassword(){
-        String oldpassword = oldPasswordTextField.getText();
-        String newpassword = newPasswordTextField.getText();
-        String confirmnewpassword = confirmNewPasswordTextField.getText();
-        if(user.login(oldpassword) == 2){
-            if(newpassword.equals(confirmnewpassword)){
-                user.setPassword(newpassword);
+        String oldPassword = oldPasswordTextField.getText();
+        String newPassword = newPasswordTextField.getText();
+        String confirmNewPassword = confirmNewPasswordTextField.getText();
+        if(user.login(oldPassword) == 2){
+            if(newPassword.equals(confirmNewPassword) && User.isPassword(newPassword)){
+                user.setPassword(newPassword);
                 accountList.toCsv("data/users.csv");
                 return 1;
+            }
+            else if(!User.isPassword(newPassword)){
+                description.setText("Your new password invalid password format");
+                return 0;
             }
             else {
                 description.setText("Your new password not match.");
