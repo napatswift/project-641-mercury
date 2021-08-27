@@ -5,20 +5,25 @@ public class Review {
     private String id;
     private String detail;
     private int rating;
-    private String reviewerUsername;
+    private User author;
     private String productId;
 
-    public Review(String title, String detail, int rating, String reviewerUsername, Product product) {
+    public Review(String title, String detail, int rating, User user, Product product) {
         this.title = title;
         this.detail = detail;
-        this.rating = rating;
-        this.reviewerUsername = reviewerUsername;
+        setRating(rating);
+        this.author = user;
         this.productId = product.getId();
         this.id = productId + product.getReview();
     }
 
     public String getId() {
         return id;
+    }
+
+    public void setRating(int rating){
+        if (rating >= 0 && rating <= 5)
+            this.rating = rating;
     }
 
     public String getTitle() {
@@ -34,7 +39,11 @@ public class Review {
     }
 
     public String getReviewerUsername() {
-        return reviewerUsername;
+        return author.getUsername();
+    }
+    
+    public User getAuthor(){
+        return author;
     }
 
     public String getProductId() {
@@ -47,6 +56,6 @@ public class Review {
                 + title + ","
                 + detail + ","
                 + rating + ","
-                + reviewerUsername;
+                + author.getUsername();
     }
 }

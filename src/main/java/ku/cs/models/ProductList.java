@@ -4,14 +4,19 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
-public class ProductList{
-    private List<Product> products;
+public class ProductList implements Iterable<Product>{
+    private final List<Product> products;
     private Product selectedProduct;
-    public enum SortType {BY_ROLLOUT_DAT, BY_LOWEST, BY_HIGHEST}
+
+    @Override
+    public Iterator<Product> iterator() {
+        // TODO implement iterator by condition if any
+        return products.iterator();
+    }
+
+    public enum SortType {BY_ROLLOUT_DATE, BY_LOWEST, BY_HIGHEST}
     public SortType sortType;
 
     public ProductList(){
@@ -27,20 +32,16 @@ public class ProductList{
     }
 
     public boolean contains(String id){
-        for(Product product: products){
-            if(product.getId().equals(id)){
+        for(Product product: products)
+            if(product.getId().equals(id))
                 return true;
-            }
-        }
         return false;
     }
 
     public Product getProduct(String id){
-        for(Product product: products){
-            if(product.getId().equals(id)){
+        for(Product product: products)
+            if(product.getId().equals(id))
                 return product;
-            }
-        }
         return null;
     }
 
@@ -57,11 +58,18 @@ public class ProductList{
     }
 
     public void sort(SortType sortType){
-        if (sortType.equals(SortType.BY_ROLLOUT_DAT))
+        if (sortType.equals(SortType.BY_ROLLOUT_DATE))
             products.sort(Comparator.comparing(Product::getRolloutDate));
         else if (sortType.equals(SortType.BY_LOWEST))
             products.sort(Comparator.comparingDouble(Product::getPrice));
-        else if (sortType.equals(SortType))
+        else if (sortType.equals(SortType.BY_HIGHEST)){
+            products.sort(Comparator.comparingDouble(Product::getPrice));
+            Collections.reverse(products);
+        }
+    }
+
+    public void addFilter(double lowerBound, double upperBound){
+        // TODO implement filtering
     }
 
     public void toTsv(String filePath){

@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import com.github.saacsos.FXRouter;
-import ku.cs.models.Accounts;
+import ku.cs.models.AccountList;
 import ku.cs.models.User;
 
 import java.io.FileNotFoundException;
@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class AdminControllerCategory{
 
-    private Accounts accounts;
+    private AccountList accountList;
     private User user;
 
     @FXML private Label nameAdmin

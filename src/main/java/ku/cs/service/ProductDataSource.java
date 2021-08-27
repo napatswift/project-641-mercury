@@ -11,18 +11,19 @@ import java.util.Arrays;
 public class ProductDataSource {
     private String filePath;
     private String header;
+    private ProductList productList;
 
     public ProductDataSource(String filePath){
         this.filePath = filePath;
     }
 
-    public ProductList parseProductList(String sep) throws IOException {
+    public void parse(String sep) throws IOException {
         ProductList productList = new ProductList();
         String[] lines = CsvReader.getLinesWithHeader(filePath);
-        String[] header = lines[0].split("\t");
+        String[] header = lines[0].split(sep);
         lines = Arrays.copyOfRange(lines, 1, lines.length);
         for (String line : lines) {
-            String[] entry = line.split("\t");
+            String[] entry = line.split(sep);
             int entry_len = entry.length;
 
             //name,picturePath,details,price,stock,id,rating,review,rolloutDate
@@ -46,6 +47,10 @@ public class ProductDataSource {
             }
             productList.addProduct(newProduct);
         }
+        this.productList = productList;
+    }
+
+    public ProductList getProductList() {
         return productList;
     }
 }

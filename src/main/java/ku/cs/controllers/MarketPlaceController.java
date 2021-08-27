@@ -10,17 +10,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import ku.cs.models.*;
 import ku.cs.service.ProductDataSource;
+import ku.cs.service.ReviewDataSource;
+import ku.cs.service.UserDataSource;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Locale;
 
 public class MarketPlaceController {
     @FXML
@@ -61,38 +64,27 @@ public class MarketPlaceController {
     VBox reviewVBox;
 
     private boolean bodyToggle = false;
-    private Product selectedProduct;
     private int productIndex = -1;
     private ComponentBuilder componentBuilder = new ComponentBuilder();
     private double upperBoundParsed = Double.MAX_VALUE, lowerBoundParsed = 0;
     private int newReviewRating = -1;
+    private final User currUser = new User("napat", "some");
 
     private ProductList productList;
-    private ArrayList<Review> reviews;
-
-    // Utility
-    private Product getProductById(String id){
-        for(Product product: products){
-            if(product.getId().equals(id))
-                return product;
-        }
-        return null;
-    }
+    private ReviewList reviewList;
 
     @FXML
     private void sortProductBy(ActionEvent e) {
         MenuItem menuItem = (MenuItem) e.getSource();
         if (menuItem.getId().equals("lowestPrice")){
             sortingMB.setText("SORT BY : LOWEST PRICE");
-            products.sort(Comparator.comparingDouble(Product::getPrice));
+            productList.sort(ProductList.SortType.BY_LOWEST);
         } else if (menuItem.getId().equals("highestPrice")){
-            products.sort(Comparator.comparingDouble(Product::getPrice));
             sortingMB.setText("SORT BY : HIGHEST PRICE");
-            Collections.reverse(products);
+            productList.sort(ProductList.SortType.BY_HIGHEST);
         } else{
-            products.sort(Comparator.comparing(Product::getRolloutDate));
+            productList.sort(ProductList.SortType.BY_ROLLOUT_DATE);
         }
-
         productFlowPane.getChildren().clear();
         int temp = productIndex;
         productIndex = 0;
@@ -131,24 +123,6 @@ public class MarketPlaceController {
         populateProduct(temp);
     }
 
-    private void reviewToCsv(String filePath){
-        File file = new File(filePath);
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(file);
-            BufferedWriter writer = new BufferedWriter(fileWriter);
-            writer.append("productId,title,detail,rating,reviewerUsername");
-            writer.newLine();
-            for(Review review: reviews){
-                writer.append(review.toCsv());
-                writer.newLine();
-            }
-            writer.close();
-        } catch (IOException e) {
-            System.err.println("Cannot write " + filePath);
-        }
-    }
-
     // product page builder
     private void buildProductPage(){
         resetStar();
@@ -160,21 +134,21 @@ public class MarketPlaceController {
         populateReview();
 
         // set product information
-        productNameLabel.setText(selectedProduct.getName());
-        productPriceLabel.setText("$"+selectedProduct.getPrice());
-        productDetailLabel.setText(selectedProduct.getDetails());
-        selectedProductIV.setImage(new Image(selectedProduct.getPicturePath()));
+        productNameLabel.setText(productList.getSelectedProduct().getName());
+        productPriceLabel.setText("$"+productList.getSelectedProduct().getPrice());
+        productDetailLabel.setText(productList.getSelectedProduct().getDetails());
+        selectedProductIV.setImage(new Image(productList.getSelectedProduct().getPicturePath()));
 
         // set store name;
-        storeNameLabel.setText(selectedProduct.getStore().getName().toUpperCase(Locale.ROOT));
+        storeNameLabel.setText(productList.getSelectedProduct().getStore().getName().toUpperCase(Locale.ROOT));
 
         // set bread crumbs info
-        categoryBreadcrumbsLabel.setText(selectedProduct.getCategory().getName());
-        productNameBreadcrumbsLabel.setText(selectedProduct.getName());
+        categoryBreadcrumbsLabel.setText(productList.getSelectedProduct().getCategory().getName());
+        productNameBreadcrumbsLabel.setText(productList.getSelectedProduct().getName());
 
         // handling in stock label and icon
-        amountInStockLabel.setText("" + selectedProduct.getStock() + " in stock");
-        if (selectedProduct.getStock() < 5){
+        amountInStockLabel.setText("" + productList.getSelectedProduct().getStock() + " in stock");
+        if (productList.getSelectedProduct().getStock() < 5){
             inStockStatusSvg.setContent(
                     "M12,4.6L15,9h-2.6l8.6,8.6l2-7.3l0-0.3c0-0.5-0.5-1-1-1h-4.8l-4.4-6.6C12.6," +
                             "2.2,12.3,2,12,2s-0.6,0.1-0.8,0.4L9,5.6L10.4,7L12,4.6z M9.9,9L9.9," +
@@ -190,7 +164,7 @@ public class MarketPlaceController {
         }
 
         // handling category
-        Category category = selectedProduct.getCategory();
+        Category category = productList.getSelectedProduct().getCategory();
         Label categoryLabel = new Label(category.getName());
         categoryLabel.getStyleClass().add("subtitle1");
         shipHBox.getChildren().add(categoryLabel);
@@ -235,40 +209,34 @@ public class MarketPlaceController {
     }
 
     private void populateReview(){
-        //TODO: move to model
         reviewRatingPanelStarHBox.getChildren().clear();
 
         reviewVBox.getChildren().clear();
         int sumOfRating = 0;
-        int n = 0;
-        for(Review review: reviews){
-            if(review.getProductId().equals(selectedProduct.getId())) {
-                reviewVBox
-                        .getChildren()
-                        .add(componentBuilder.reviewCard(review));
-                sumOfRating += review.getRating();
-                n++;
-            }
+        String id = productList.getSelectedProduct().getId();
+        ArrayList<Review> selectedProductReview = reviewList.getReview(id);
+        for(Review review: selectedProductReview){
+            reviewVBox.getChildren().add(componentBuilder.reviewCard(review));
+            sumOfRating += review.getRating();
         }
 
-        if (n == 0){
+        if (selectedProductReview.size() == 0){
             Label noReviewLabel = new Label("No review yet! You'll first!");
             noReviewLabel.setPadding(new Insets(10));
             reviewVBox.getChildren().add(noReviewLabel);
         }
 
-        double rating = n == 0 ? 0 : (double) sumOfRating / n;
+        double rating = selectedProductReview.size() == 0 ? 0 : (double) sumOfRating / selectedProductReview.size();
 
         ComponentBuilder.starsRating(reviewRatingPanelStarHBox, rating);
-        reviewRatingPanelStarHBox.getChildren().add(new Label(rating + "/5 (" + n + ")"));
-        selectedProduct.setReview(n);
-        selectedProduct.setRating(rating);
+        reviewRatingPanelStarHBox.getChildren().add(new Label(rating + "/5 (" + selectedProductReview.size() + ")"));
+        productList.getSelectedProduct().setReview(selectedProductReview.size());
+        productList.getSelectedProduct().setRating(rating);
 
         // handling product rating
         starsHBox.getChildren().clear();
-        ComponentBuilder.starsRating(starsHBox, selectedProduct.getRating());
-        starsHBox.getChildren().add(new Label(selectedProduct.getRating()+"/5 (" + selectedProduct.getReview() + ")"));
-
+        ComponentBuilder.starsRating(starsHBox, productList.getSelectedProduct().getRating());
+        starsHBox.getChildren().add(new Label(productList.getSelectedProduct().getRating()+"/5 (" + productList.getSelectedProduct().getReview() + ")"));
     }
 
     // handler
@@ -283,14 +251,14 @@ public class MarketPlaceController {
             amount = 1;
         }
         if (button.getId().equals("increase")){
-            if(selectedProduct.getStock() > amount)
+            if(productList.getSelectedProduct().getStock() > amount)
                 amount++;
         } else if (button.getId().equals("decrease")){
             if(amount > 1)
                 amount--;
         }
-        if (amount > selectedProduct.getStock()) {
-            amount = selectedProduct.getStock();
+        if (amount > productList.getSelectedProduct().getStock()) {
+            amount = productList.getSelectedProduct().getStock();
         }
         amount = Math.max(amount, 1);
         amountTF.setText(amount + "");
@@ -303,27 +271,22 @@ public class MarketPlaceController {
 
     @FXML
     private void handleSubmitReviewBtn(ActionEvent e){
-        // TODO remove dummy username
-        // TODO: move to model
-        String title = reviewTitleTF.getText().trim();
-        String detail = detailReviewTA.getText().trim();
-        if (title.equals("") || detail.equals("") || newReviewRating == -1){
-            return;
-        }
-        Review newReview = new Review(title, detail, newReviewRating, "napat123", selectedProduct);
-        reviews.add(newReview);
+        String title = reviewTitleTF.getText();
+        String detail = detailReviewTA.getText();
+        reviewList.addReview(title, detail, newReviewRating,
+                currUser, productList.getSelectedProduct());
         populateReview();
         resetReviewForm();
-        reviewToCsv("data/dev/review.csv");
-        productToCsv("data/dev/products.tsv");
+        reviewList.toCsv("data/dev/review.csv");
+        productList.toTsv("data/dev/products.tsv");
         newReviewRating = -1;
     }
 
     @FXML
     private void handleProductCard(MouseEvent event) {
         VBox vBox = (VBox) event.getSource();
-        selectedProduct = getProductById(vBox.getId());
-        if(selectedProduct == null)
+        productList.setSelectedProduct(vBox.getId());
+        if(productList.getSelectedProduct() == null)
             return;
         buildProductPage();
         productTP.getSelectionModel().select(1);
@@ -349,24 +312,6 @@ public class MarketPlaceController {
         populateProduct(10);
     }
 
-    // parsing function
-
-    private void parseReview() throws IOException{
-        // TODO: move to data source
-        String [] lines = CsvReader.getLines("data/reviews.csv");
-        for(String line: lines){
-            // productId,title,detail,rating,reviewerUsername
-            String [] entry = line.split(",");
-            String productId = entry[0];
-            String title = entry[1];
-            String detail = entry[2];
-            int rating = Integer.parseInt(entry[3]);
-            String reviewerUsername = entry[4];
-            Product product = getProductById(productId);
-            reviews.add(new Review(title, detail, rating, reviewerUsername, product));
-        }
-    }
-
     // marketplace page
     private void populateProduct(int amount){
         int i = 0;
@@ -387,13 +332,22 @@ public class MarketPlaceController {
 
     @FXML
     public void initialize() throws IOException {
-        parseReview();
-        ProductDataSource productDataSource = new ProductDataSource("data/product.tsv");
-        productList = productDataSource.parseProductList("\t");
+        ProductDataSource productDataSource = new ProductDataSource("data/products.tsv");
+        ReviewDataSource reviewDataSource = new ReviewDataSource("data/reviews.csv");
+        UserDataSource userDataSource = new UserDataSource("data/users.csv");
+        userDataSource.parse();
+        productDataSource.parse("\t");
+        productList = productDataSource.getProductList();
+        // TODO throw exception
+        if (productList == null)
+            return;
+        reviewDataSource.parse(productList, userDataSource.getAccounts());
+        reviewList = reviewDataSource.getReviewList();
+        // TODO throw exception
+        if (reviewList == null)
+            return;
 
-        // TODO move to model
-        // productList.sort(Comparator.comparing(Product::getRolloutDate));
-
+        productList.sort(ProductList.SortType.BY_ROLLOUT_DATE);
         populateProduct(15);
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
     }

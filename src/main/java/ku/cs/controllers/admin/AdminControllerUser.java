@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import ku.cs.models.Accounts;
+import ku.cs.models.AccountList;
 import com.github.saacsos.FXRouter;
 import ku.cs.models.CsvReader;
 import ku.cs.models.User;
@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 public class AdminControllerUser {
 
     private User user;
-    private Accounts accounts;
+    private AccountList accountList;
 
     @FXML private Label nameAdmin
             ,role
@@ -55,9 +55,9 @@ public class AdminControllerUser {
 
 
     private void showListView() throws IOException {
-        if(accounts == null)
+        if(accountList == null)
             populateUsers();
-        for(User user : accounts.toList()) {
+        for(User user : accountList.toList()) {
             if(user.getRole() == User.Role.USER){
                 userListView.getItems().add(user);
             }
@@ -98,7 +98,7 @@ public class AdminControllerUser {
     }
 
     private void populateUsers() throws IOException {
-        this.accounts = new Accounts();
+        this.accountList = new AccountList();
         // username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
         String [] lines = CsvReader.getLines("data/users.csv");
 
@@ -106,7 +106,7 @@ public class AdminControllerUser {
             String [] entries = line.split(",");
             User newUser = new User(entries[0], entries[1] , entries[2],
                     entries[3], entries[4], entries[5], entries[6], entries[7], entries[8], entries[9]);
-            accounts.addAccount(newUser);
+            accountList.addAccount(newUser);
         }
     }
 
