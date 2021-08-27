@@ -23,7 +23,6 @@ public class ReviewList implements Iterable<Review> {
                           int rating, User user, Product product){
         title = title.trim();
         detail = detail.trim();
-        System.out.println(title + detail + rating + user.getUsername() + product.getId());
         if (title.equals("") || detail.equals("") ||
                 rating < 0 || rating > 5 ||
                 user == null || product == null){

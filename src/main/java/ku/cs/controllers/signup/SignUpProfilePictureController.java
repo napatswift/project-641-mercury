@@ -51,7 +51,7 @@ public class SignUpProfilePictureController {
         }
 
         if (accountList.addAccount(currUser)){
-            accountList.toCsv("data/users.csv");
+            accountList.toCsv("data/accounts.csv");
             if (this.accountList == null) {
                 return;
             }

@@ -1,18 +1,17 @@
 package ku.cs.controllers.admin;
 
+import com.github.saacsos.FXRouter;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import ku.cs.models.AccountList;
-import com.github.saacsos.FXRouter;
 import ku.cs.models.User;
-import ku.cs.service.UserDataSource;
+import ku.cs.service.DataSource;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -20,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 public class AdminControllerUser {
 
     private AccountList accountList;
-    private Object[] data;
+    private DataSource data;
 
     @FXML private Label nameAdmin
             ,role
@@ -34,9 +33,9 @@ public class AdminControllerUser {
 
     @FXML
     public void initialize() throws IOException {
-        data = (Object[]) FXRouter.getData();
-        User user = (User) data[0];
-        accountList = (AccountList) data[1];
+        data = (DataSource) FXRouter.getData();
+        User user = data.getAccounts().getCurrAccount();
+        accountList = data.getAccounts();
 
         showAdmin(user);
         showListView();

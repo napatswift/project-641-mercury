@@ -1,29 +1,28 @@
 package ku.cs.controllers.admin;
 
+import com.github.saacsos.FXRouter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import com.github.saacsos.FXRouter;
-import ku.cs.models.AccountList;
 import ku.cs.models.User;
+import ku.cs.service.DataSource;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class AdminControllerCategory{
 
-    private Object[] data;
+    private DataSource data;
 
-    @FXML private Label nameAdmin
-            ,role;
+    @FXML private Label nameAdmin,
+            role;
     @FXML private ImageView imageView;
     @FXML
     public void initialize() throws FileNotFoundException {
-        data = (Object[]) FXRouter.getData();
-        User user = (User) data[0];
+        data = (DataSource) FXRouter.getData();
+        User user = data.getAccounts().getCurrAccount();
         showAdmin(user);
     }
 

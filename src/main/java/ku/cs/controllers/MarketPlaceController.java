@@ -1,5 +1,6 @@
 package ku.cs.controllers;
 
+import com.github.saacsos.FXRouter;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,9 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import ku.cs.models.*;
-import ku.cs.service.ProductDataSource;
-import ku.cs.service.ReviewDataSource;
-import ku.cs.service.UserDataSource;
+import ku.cs.service.DataSource;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,6 +71,7 @@ public class MarketPlaceController {
 
     private ProductList productList;
     private ReviewList reviewList;
+    DataSource dataSource;
 
     @FXML
     private void sortProductBy(ActionEvent e) {
@@ -83,6 +83,7 @@ public class MarketPlaceController {
             sortingMB.setText("SORT BY : HIGHEST PRICE");
             productList.sort(ProductList.SortType.BY_HIGHEST);
         } else{
+            sortingMB.setText("SORT BY : MOST RECENT");
             productList.sort(ProductList.SortType.BY_ROLLOUT_DATE);
         }
         productFlowPane.getChildren().clear();
@@ -271,6 +272,8 @@ public class MarketPlaceController {
 
     @FXML
     private void handleSubmitReviewBtn(ActionEvent e){
+        //TODO user can only review one on a product
+
         String title = reviewTitleTF.getText();
         String detail = detailReviewTA.getText();
         reviewList.addReview(title, detail, newReviewRating,
@@ -332,20 +335,11 @@ public class MarketPlaceController {
 
     @FXML
     public void initialize() throws IOException {
-        ProductDataSource productDataSource = new ProductDataSource("data/products.tsv");
-        ReviewDataSource reviewDataSource = new ReviewDataSource("data/reviews.csv");
-        UserDataSource userDataSource = new UserDataSource("data/users.csv");
-        userDataSource.parse();
-        productDataSource.parse("\t");
-        productList = productDataSource.getProductList();
-        // TODO throw exception
-        if (productList == null)
-            return;
-        reviewDataSource.parse(productList, userDataSource.getAccounts());
-        reviewList = reviewDataSource.getReviewList();
-        // TODO throw exception
-        if (reviewList == null)
-            return;
+        dataSource = (DataSource) FXRouter.getData();
+        dataSource.parseProduct("\t");
+        dataSource.parseReview(",");
+        productList = dataSource.getProducts();
+        reviewList = dataSource.getReviews();
 
         productList.sort(ProductList.SortType.BY_ROLLOUT_DATE);
         populateProduct(15);

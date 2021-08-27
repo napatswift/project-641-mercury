@@ -100,6 +100,7 @@
                                                               <items>
                                                                 <MenuItem fx:id="lowestPrice" mnemonicParsing="false" onAction="#sortProductBy" text="lowest price" />
                                                                 <MenuItem fx:id="highestPrice" mnemonicParsing="false" onAction="#sortProductBy" text="highest price" />
+                                                                  <MenuItem fx:id="highestPrice1" mnemonicParsing="false" onAction="#sortProductBy" text="most recent" />
                                                               </items>
                                                                <padding>
                                                                   <Insets bottom="2.0" left="3.0" right="3.0" top="2.0" />
