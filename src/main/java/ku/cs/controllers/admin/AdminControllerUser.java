@@ -11,16 +11,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import ku.cs.models.AccountList;
 import com.github.saacsos.FXRouter;
-import ku.cs.models.CsvReader;
 import ku.cs.models.User;
+import ku.cs.service.UserDataSource;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 public class AdminControllerUser {
 
-    private User user;
     private AccountList accountList;
+    private Object[] data;
 
     @FXML private Label nameAdmin
             ,role
@@ -30,17 +30,14 @@ public class AdminControllerUser {
             ,storeName;
     @FXML private ImageView imageView
             ,userImage;
-    @FXML private Button handleLogOutButton
-            ,handleCategoryButton
-            ,handleUserButton
-            ,handleReportButton
-            ,handleMyAccountButton;
-
     @FXML private ListView<User> userListView;
 
     @FXML
     public void initialize() throws IOException {
-        user = (User) FXRouter.getData();
+        data = (Object[]) FXRouter.getData();
+        User user = (User) data[0];
+        accountList = (AccountList) data[1];
+
         showAdmin(user);
         showListView();
         clearSelectedMemberCard();
@@ -55,8 +52,6 @@ public class AdminControllerUser {
 
 
     private void showListView() throws IOException {
-        if(accountList == null)
-            populateUsers();
         for(User user : accountList.toList()) {
             if(user.getRole() == User.Role.USER){
                 userListView.getItems().add(user);
@@ -97,19 +92,6 @@ public class AdminControllerUser {
         storeName.setText("");
     }
 
-    private void populateUsers() throws IOException {
-        this.accountList = new AccountList();
-        // username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
-        String [] lines = CsvReader.getLines("data/users.csv");
-
-        for(String line: lines){
-            String [] entries = line.split(",");
-            User newUser = new User(entries[0], entries[1] , entries[2],
-                    entries[3], entries[4], entries[5], entries[6], entries[7], entries[8], entries[9]);
-            accountList.addAccount(newUser);
-        }
-    }
-
     @FXML
     private void handleLogOutButton(ActionEvent actionEvent){
         try {
@@ -123,7 +105,7 @@ public class AdminControllerUser {
     @FXML
     public void handleCategoryButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_category", user);
+            FXRouter.goTo("admin_page_category", data);
         } catch (IOException e) {
             System.err.println("ไปที่หน้า admin_page_category ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
@@ -133,7 +115,7 @@ public class AdminControllerUser {
     @FXML
     public void handleUserButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_user", user);
+            FXRouter.goTo("admin_page_user", data);
         } catch (IOException e) {
             System.err.println("ไปที่หน้า admin_page_user ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
@@ -141,21 +123,20 @@ public class AdminControllerUser {
     }
 
     @FXML
-    public void handleMyAccountButton(ActionEvent actionEvent) {
+    public void handleReportButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_my_account", user);
+            FXRouter.goTo("admin_page_report", data);
         } catch (IOException e) {
-            System.err.println("ไปที่หน้า admin_page_my_account ไม่ได้");
+            System.err.println("ไปที่หน้า admin_page_report ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
     }
 
-    @FXML
-    public void handleReportButton(ActionEvent actionEvent) {
+    public void handleResetPasswordButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_report", user);
+            FXRouter.goTo("reset_password", data);
         } catch (IOException e) {
-            System.err.println("ไปที่หน้า admin_page_report ไม่ได้");
+            System.err.println("ไปที่หน้า reset_password ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
     }

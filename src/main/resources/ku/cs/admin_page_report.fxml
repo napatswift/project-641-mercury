@@ -25,10 +25,10 @@
       <Line endX="-100.00001525878906" endY="767.0" layoutX="356.0" layoutY="1.0" startX="-100.0" />
       <VBox layoutX="26.0" layoutY="415.0" prefHeight="174.0" prefWidth="200.0">
          <children>
-            <Button fx:id="handleMyAccountButton" mnemonicParsing="false" onAction="#handleMyAccountButton" prefHeight="34.0" prefWidth="198.0" text="My Account" />
-            <Button fx:id="handleReportButton" mnemonicParsing="false" onAction="#handleReportButton" prefHeight="34.0" prefWidth="198.0" text="Report" />
             <Button fx:id="handleUserButton" mnemonicParsing="false" onAction="#handleUserButton" prefHeight="34.0" prefWidth="198.0" text="User" />
             <Button fx:id="handleCategoryButton" mnemonicParsing="false" onAction="#handleCategoryButton" prefHeight="34.0" prefWidth="198.0" text="Category" />
+            <Button fx:id="handleReportButton" mnemonicParsing="false" onAction="#handleReportButton" prefHeight="34.0" prefWidth="198.0" text="Report" />
+            <Button fx:id="handleResetPasswordButton" mnemonicParsing="false" onAction="#handleResetPasswordButton" prefHeight="34.0" prefWidth="198.0" text="Reset Password" />
             <Button fx:id="handleLogOutButton" mnemonicParsing="false" onAction="#handleLogOutButton" prefHeight="34.0" prefWidth="198.0" text="Log-Out" />
          </children>
       </VBox>
