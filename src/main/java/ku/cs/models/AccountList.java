@@ -4,7 +4,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.TreeSet;
 
 public class AccountList {
@@ -64,6 +66,12 @@ public class AccountList {
 
     public Collection<User> toList() {
         return accounts;
+    }
+
+    public Collection<User> toListReverse() {
+        ArrayList<User> newList = new ArrayList<>(accounts);
+        Collections.sort(newList , Collections.reverseOrder());
+        return newList;
     }
 
     public boolean toCsv(String filePath){

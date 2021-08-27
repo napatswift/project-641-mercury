@@ -16,6 +16,7 @@ import ku.cs.service.UserDataSource;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 
 public class AdminControllerUser {
 
@@ -52,7 +53,7 @@ public class AdminControllerUser {
 
 
     private void showListView() throws IOException {
-        for(User user : accountList.toList()) {
+        for(User user : accountList.toListReverse()) {
             if(user.getRole() == User.Role.USER){
                 userListView.getItems().add(user);
             }
