@@ -142,17 +142,21 @@ public class Product implements Comparable<Product>{
         }
     }
 
-    public String toCsv(){
+    public String toTsv(){
         /*
          * "name,picture_path_1,details,price,stock,sub_category1," +
          * "sub_category2,sub_category3,sub_category4,sub_category5,sub_category6,store"
          */
 
-        return name + ","
-                + picturePath + ","
-                + price + ","
-                + stock;
-
+        return name + "\t"
+                + id + "\t"
+                + store.getName() + "\t" // TODO: add id to store
+                + stock + "\t"
+                + details + "\t"
+                + rating + "\t"
+                + review + "\t"
+                + picturePath + "\t";
+                // TODO add category
     }
 
     public void addSubCategory(String categoryName, String subCategoryName, String value){

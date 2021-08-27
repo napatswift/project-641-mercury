@@ -4,16 +4,15 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeSet;
 
-public class Accounts {
+public class AccountList {
     private Collection<User> accounts;
 
     private User currAccount;
 
-    public Accounts() {
+    public AccountList() {
         accounts = new TreeSet<>();
     }
 
@@ -55,6 +54,7 @@ public class Accounts {
     }
 
     public boolean checkAccount(String username, String password){
+        //TODO: implement this method or delete it
         return true;
     }
 

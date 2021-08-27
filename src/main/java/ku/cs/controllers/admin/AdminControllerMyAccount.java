@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import ku.cs.models.Accounts;
+import ku.cs.models.AccountList;
 import com.github.saacsos.FXRouter;
 import ku.cs.models.User;
 
@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class AdminControllerMyAccount {
 
-    private Accounts accounts;
+    private AccountList accountList;
     private User user;
 
     @FXML private Label nameAdmin
