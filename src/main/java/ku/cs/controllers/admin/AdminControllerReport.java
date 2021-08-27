@@ -15,17 +15,11 @@ import java.io.IOException;
 
 public class AdminControllerReport {
 
-    private AccountList accountList;
     private User user;
 
     @FXML private Label nameAdmin
             ,role;
     @FXML private ImageView imageView;
-    @FXML private Button handleLogOutButton
-            ,handleCategoryButton
-            ,handleUserButton
-            ,handleReportButton
-            ,handleMyAccountButton;
 
     @FXML
     public void initialize() throws FileNotFoundException {

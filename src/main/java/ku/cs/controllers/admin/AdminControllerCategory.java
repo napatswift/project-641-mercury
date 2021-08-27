@@ -15,18 +15,11 @@ import java.io.IOException;
 
 public class AdminControllerCategory{
 
-    private AccountList accountList;
     private User user;
 
     @FXML private Label nameAdmin
             ,role;
     @FXML private ImageView imageView;
-    @FXML private Button handleLogOutButton
-            ,handleCategoryButton
-            ,handleUserButton
-            ,handleReportButton
-            ,handleMyAccountButton;
-
     @FXML
     public void initialize() throws FileNotFoundException {
         user = (User) FXRouter.getData();
@@ -87,5 +80,11 @@ public class AdminControllerCategory{
             System.err.println("ไปที่หน้า admin_page_report ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
+    }
+
+    public void handleAddCategoryButton(ActionEvent actionEvent) {
+    }
+
+    public void handleAddSubCategoryButton(ActionEvent actionEvent) {
     }
 }

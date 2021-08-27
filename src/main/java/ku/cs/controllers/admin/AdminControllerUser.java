@@ -11,8 +11,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import ku.cs.models.AccountList;
 import com.github.saacsos.FXRouter;
-import ku.cs.models.CsvReader;
 import ku.cs.models.User;
+import ku.cs.service.UserDataSource;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -21,6 +21,7 @@ public class AdminControllerUser {
 
     private User user;
     private AccountList accountList;
+    private UserDataSource userDataSource;
 
     @FXML private Label nameAdmin
             ,role
@@ -30,18 +31,15 @@ public class AdminControllerUser {
             ,storeName;
     @FXML private ImageView imageView
             ,userImage;
-    @FXML private Button handleLogOutButton
-            ,handleCategoryButton
-            ,handleUserButton
-            ,handleReportButton
-            ,handleMyAccountButton;
-
     @FXML private ListView<User> userListView;
 
     @FXML
     public void initialize() throws IOException {
         user = (User) FXRouter.getData();
         showAdmin(user);
+        userDataSource = new UserDataSource("data/users.csv");
+        userDataSource.parse();
+        accountList = userDataSource.getAccounts();
         showListView();
         clearSelectedMemberCard();
         handleSelectedListView();
@@ -55,8 +53,6 @@ public class AdminControllerUser {
 
 
     private void showListView() throws IOException {
-        if(accountList == null)
-            populateUsers();
         for(User user : accountList.toList()) {
             if(user.getRole() == User.Role.USER){
                 userListView.getItems().add(user);
@@ -95,19 +91,6 @@ public class AdminControllerUser {
         realNameUser.setText("");
         lastLogin.setText("");
         storeName.setText("");
-    }
-
-    private void populateUsers() throws IOException {
-        this.accountList = new AccountList();
-        // username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
-        String [] lines = CsvReader.getLines("data/users.csv");
-
-        for(String line: lines){
-            String [] entries = line.split(",");
-            User newUser = new User(entries[0], entries[1] , entries[2],
-                    entries[3], entries[4], entries[5], entries[6], entries[7], entries[8], entries[9]);
-            accountList.addAccount(newUser);
-        }
     }
 
     @FXML
