@@ -69,7 +69,7 @@ public class LoginController {
 
         if (loginSuccess == 2){
             loginText.setText("Login success");
-            accountList.toCsv("data/users.csv");
+            dataSource.saveAccount();
             accountList.login(username, password);
             if(currAcc.getRole() == User.Role.ADMIN)
             {
@@ -91,7 +91,7 @@ public class LoginController {
             }
         } else if (loginSuccess == 0) {
             loginText.setText("Account has been banned");
-            accountList.toCsv("data/users.csv");
+            dataSource.saveAccount();
         } else{
             addErrorStyleClass(passwordTF);
             addErrorStyleClass(usernameTF);
@@ -105,7 +105,7 @@ public class LoginController {
             return;
         }
 
-        FXRouter.goTo("sign_up", this.accountList);
+        FXRouter.goTo("sign_up", dataSource);
     }
 
     public void handleHowTo(ActionEvent event){

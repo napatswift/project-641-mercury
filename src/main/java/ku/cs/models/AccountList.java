@@ -1,9 +1,5 @@
 package ku.cs.models;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.TreeSet;
 
@@ -66,27 +62,16 @@ public class AccountList {
         return accounts;
     }
 
-    public boolean toCsv(String filePath){
-        File file = new File(filePath);
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(file);
-            BufferedWriter writer = new BufferedWriter(fileWriter);
-
-            writer.append("username,role,name,password,picturePath," +
-                          "last_login,isBanned,loginAttempt,hasStore,store");
-            writer.newLine();
-
-            for(User acc: accounts){
-                writer.append(acc.toCsv());
-                writer.newLine();
-            }
-            writer.close();
-            return true;
-        } catch (IOException e) {
-            System.err.println("Cannot write " + filePath);
-            return false;
+    public String toCsv(){
+        StringBuilder stringBuilder = new
+                StringBuilder("username,role,name,password,picturePath," +
+                "last_login,isBanned,loginAttempt,hasStore,store");
+        stringBuilder.append("\n");
+        for(User acc: accounts){
+            stringBuilder.append(acc.toCsv());
+            stringBuilder.append("\n");
         }
+        return stringBuilder.toString();
     }
 
 }

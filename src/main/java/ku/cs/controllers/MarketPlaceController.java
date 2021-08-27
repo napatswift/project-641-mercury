@@ -272,15 +272,14 @@ public class MarketPlaceController {
 
     @FXML
     private void handleSubmitReviewBtn(ActionEvent e){
-        //TODO user can only review one on a product
-
+        //TODO user can only review one time on a product
         String title = reviewTitleTF.getText();
         String detail = detailReviewTA.getText();
         reviewList.addReview(title, detail, newReviewRating,
                 currUser, productList.getSelectedProduct());
         populateReview();
         resetReviewForm();
-        reviewList.toCsv("data/dev/review.csv");
+        dataSource.saveReview();
         productList.toTsv("data/dev/products.tsv");
         newReviewRating = -1;
     }

@@ -2,10 +2,7 @@ package ku.cs.service;
 
 import ku.cs.models.*;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 
 public class DataSource {
@@ -150,5 +147,27 @@ public class DataSource {
 
     public String getDirectoryPath() {
         return directoryPath;
+    }
+
+    public void saveReview(){
+        save(reviews.toCsv());
+    }
+
+    public void saveAccount(){
+        save(accounts.toCsv());
+    }
+
+    public void save(String string){
+        File file = new File(
+                directoryPath + File.separator + "dev" + File.separator + "reviews.csv");
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(file);
+            BufferedWriter writer = new BufferedWriter(fileWriter);
+            writer.append(string);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
