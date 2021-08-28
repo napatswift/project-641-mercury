@@ -85,7 +85,7 @@ public class DataSource {
             String name = entry[0];
             String id = entry[1];
             double price = Double.parseDouble(entry[2]);
-            Store store = new Store(entry[3]);
+//            Store store = new Store(entry[3], );
             int stock = Integer.parseInt(entry[4]);
             String details = entry[5];
             double rating = Double.parseDouble(entry[6]);
@@ -95,7 +95,7 @@ public class DataSource {
 
             Product newProduct =
                     new Product(name, picturePath, details,
-                            price, stock, id, rating, review, rolloutDate, store);
+                            price, stock, id, rating, review, rolloutDate/*, store*/);
             for (int idx = 10; idx < entry_len; idx++) {
                 String[] col = entry[idx].split(":");
                 newProduct.addSubCategory(col[0], col[1], col[2]);
@@ -142,7 +142,7 @@ public class DataSource {
             boolean isBanned = entries[6].toLowerCase(Locale.ROOT).equals("true");
             int loginAttempt = Integer.parseInt(entries[7]);
             boolean hasStore = entries[8].toLowerCase(Locale.ROOT).equals("true");
-            Store store = entries[9].equals("null") ? null : new Store(entries[9]);
+            Store store = entries[9].equals("null") ? null : new Store(entries[9], username);
 
             User newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
             accounts.addAccount(newUser);

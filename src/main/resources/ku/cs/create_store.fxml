@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.StoreController">
+   <children>
+      <Button layoutX="189.0" layoutY="58.0" mnemonicParsing="false" onAction="#handleBackToMarket" prefHeight="38.0" prefWidth="79.0" styleClass="text-btn" text="&lt;-- back" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font size="13.0" />
+         </font></Button>
+      <Label layoutX="317.0" layoutY="209.0" styleClass="h4" text="Please Enter Your Name Store" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="240.0">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <TextField alignment="CENTER" layoutX="438.0" layoutY="302.0" prefHeight="50.0" prefWidth="418.0" promptText="Enter Name Store" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="300.0" />
+      <Button layoutX="665.0" layoutY="389.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="119.0" text="Submit" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="360.0">
+         <styleClass>
+            <String fx:value="button" />
+            <String fx:value="text-btn" />
+         </styleClass>
+      </Button>
+   </children>
+</AnchorPane>

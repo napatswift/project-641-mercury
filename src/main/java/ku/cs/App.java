@@ -39,6 +39,7 @@ public class App extends Application {
         FXRouter.when("about_us", packageStr+"about_us.fxml");
         FXRouter.when("marketplace", packageStr + "marketplace.fxml");
         FXRouter.when("reset_password", packageStr + "reset_password.fxml",S_WIDTH, 600);
+        FXRouter.when("create_store", packageStr + "create_store.fxml");
     }
 
     public static void setRoot(FXMLLoader loader) throws IOException{
