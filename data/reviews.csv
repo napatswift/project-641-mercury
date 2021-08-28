@@ -1,2 +1,3 @@
-productId,title,detail,rating,author
+productId,title,detail,rating,reviewerUsername
 AH2430,Good stuff,best thing ever!,4,abc
+AH2430,abre,abren aner,5,napat
