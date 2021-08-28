@@ -9,6 +9,7 @@ import java.util.*;
 public class ProductList implements Iterable<Product>{
     private final List<Product> products;
     private Product selectedProduct;
+    private Collection<String> categories = new TreeSet<>();
 
     @Override
     public Iterator<Product> iterator() {
@@ -68,6 +69,18 @@ public class ProductList implements Iterable<Product>{
         }
     }
 
+    public void addCategory(String category){
+        categories.add(category);
+    }
+
+    public Collection<String> getCategories() {
+        return categories;
+    }
+
+    public void sort(){
+        sort(SortType.BY_ROLLOUT_DATE);
+    }
+
     public void addFilter(double lowerBound, double upperBound){
         // TODO implement filtering
     }
@@ -78,7 +91,13 @@ public class ProductList implements Iterable<Product>{
         try {
             fileWriter = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(fileWriter);
-            writer.append("name\tproduct_id\tprice\tstore\tstock\tdescription\trating\treviews\timage");
+            writer.append("name\tproduct_id\tprice\tstore\tstock\tdescription\trating\treviews\timage\trollout_date");
+            StringJoiner stringJoiner = new StringJoiner("\t");
+
+            for (int i = 0; i < categories.size(); i++) {
+                stringJoiner.add("category_" + i);
+            }
+            writer.append(stringJoiner.toString());
             writer.newLine();
             for(Product product: products){
                 writer.append(product.toTsv());

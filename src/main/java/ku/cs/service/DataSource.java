@@ -3,13 +3,16 @@ package ku.cs.service;
 import ku.cs.models.*;
 
 import java.io.*;
-import java.util.Arrays;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class DataSource {
     private AccountList accounts;
     private ProductList products;
     private ReviewList reviews;
     private String directoryPath;
+    private Collection<String> categories = new TreeSet<>();
 
     public DataSource(String directoryPath){
         this.directoryPath = directoryPath;
@@ -96,6 +99,7 @@ public class DataSource {
             for (int idx = 10; idx < entry_len; idx++) {
                 String[] col = header[idx].split("-");
                 newProduct.addSubCategory(col[0], col[1], entry[idx]);
+                products.addCategory(col[0]+":"+col[1]);
             }
             products.addProduct(newProduct);
         }
@@ -123,8 +127,25 @@ public class DataSource {
         String [] lines = getLines(directoryPath + File.separator + "accounts.csv");
         for(String line: lines){
             String [] entries = line.split(sep);
-            User newUser = new User(entries[0], entries[1] , entries[2],
-                    entries[3], entries[4], entries[5], entries[6], entries[7], entries[8], entries[9]);
+            //String username, String role, String name, String password, String picturePath, String
+            // loginDateTime, String isBanned, String loginAttempt, String hasStore, String store
+
+            String username = entries[0];
+            User.Role role = entries[1].equals("USER") ? User.Role.USER : User.Role.ADMIN;
+            String name = entries[2];
+            String password = entries[3];
+            String pictureName = entries[4];
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime localDateTime =
+                    entries[5].equals("null") ? null : LocalDateTime.parse(entries[5], formatter);
+
+            boolean isBanned = entries[6].toLowerCase(Locale.ROOT).equals("true");
+            int loginAttempt = Integer.parseInt(entries[7]);
+            boolean hasStore = entries[8].toLowerCase(Locale.ROOT).equals("true");
+            Store store = entries[9].equals("null") ? null : new Store(entries[9]);
+
+            User newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
             accounts.addAccount(newUser);
         }
     }
@@ -150,16 +171,16 @@ public class DataSource {
     }
 
     public void saveReview(){
-        save(reviews.toCsv());
+        save(reviews.toCsv(), "reviews.csv");
     }
 
     public void saveAccount(){
-        save(accounts.toCsv());
+        save(accounts.toCsv(), "accounts.csv");
     }
 
-    public void save(String string){
+    public void save(String string, String fileName){
         File file = new File(
-                directoryPath + File.separator + "dev" + File.separator + "reviews.csv");
+                directoryPath + File.separator + "dev" + File.separator + fileName);
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(file);
