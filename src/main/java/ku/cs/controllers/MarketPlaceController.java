@@ -215,7 +215,7 @@ public class MarketPlaceController {
         reviewVBox.getChildren().clear();
         int sumOfRating = 0;
         String id = productList.getSelectedProduct().getId();
-        ArrayList<Review> selectedProductReview = reviewList.getReview(id);
+        ArrayList<Review> selectedProductReview = reviewList.getProductReviewList(id);
         for(Review review: selectedProductReview){
             reviewVBox.getChildren().add(componentBuilder.reviewCard(review));
             sumOfRating += review.getRating();

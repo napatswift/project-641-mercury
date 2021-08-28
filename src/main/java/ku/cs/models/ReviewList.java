@@ -27,14 +27,24 @@ public class ReviewList implements Iterable<Review> {
         addReview(new Review(title, detail, rating, user, product));
     }
 
-    public ArrayList<Review> getReview(String id) {
+    public ArrayList<Review> getProductReviewList(String idProduct) {
         ArrayList<Review> gettingReviews = new ArrayList<>();
         for (Review review: reviews){
-            if(review.getProductId().equals(id))
+            if(review.getProductId().equals(idProduct))
                 gettingReviews.add(review);
         }
         return gettingReviews;
     }
+
+    public Review getReviewByID(String id){
+        for (Review review: reviews){
+            if(review.getId().equals(id)){
+                return review;
+            }
+        }
+        return null;
+    }
+
 
     public void setReportingReview(Review reportingReview) {
         if (reportingReview != null)

@@ -4,47 +4,62 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import com.github.saacsos.FXRouter;
+import javafx.scene.text.Text;
 import ku.cs.models.AccountList;
+import ku.cs.models.Report;
+import ku.cs.models.ReportList;
 import ku.cs.models.User;
 import ku.cs.service.DataSource;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class AdminPageController {
 
     private DataSource dataSource;
     private AccountList accountList;
+    private ReportList reportList;
 
     @FXML private Label nameAdmin
             ,role
             ,userName
             ,realNameUser
             ,lastLogin
-            ,storeName;
+            ,storeName
+            ,suspectedPersonUserName
+            ,reportTime
+            ,suspectedPersonRealName
+            ,suspectedPersonStoreName;
     @FXML private ImageView imageView
-            ,userImage;
+            ,userImage
+            ,suspectedPersonImage;
     @FXML private ListView<User> userListView;;
+    @FXML private ListView<Report> reportListView;
     @FXML private TabPane adminTP;
+    @FXML private Text detailText;
+
     @FXML
     public void initialize() throws IOException {
         dataSource = (DataSource) FXRouter.getData();
         accountList = dataSource.getAccounts();
         User user = dataSource.getAccounts().getCurrAccount();
+        dataSource.parseReport(",");
+        reportList = dataSource.getReports();
         showAdmin(user);
-        showListView();
+
+
+
+        showUserListView();
         clearSelectedUser();
-        handleSelectedListView();
+        handleSelectedUserListView();
+
+        showReportListView();
+        clearSelectedReport();
+        handleSelectedReportListView();
     }
 
     public void showAdmin(User user){
@@ -54,7 +69,7 @@ public class AdminPageController {
     }
 
 
-    private void showListView() throws IOException {
+    private void showUserListView() throws IOException {
         for(User user : accountList.toListReverse()) {
             if(user.getRole() == User.Role.USER){
                 userListView.getItems().add(user);
@@ -63,7 +78,7 @@ public class AdminPageController {
         userListView.refresh();
     }
 
-    private void handleSelectedListView() {
+    private void handleSelectedUserListView() {
         userListView.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener<User>() {
                     @Override
@@ -93,6 +108,45 @@ public class AdminPageController {
         realNameUser.setText("");
         lastLogin.setText("");
         storeName.setText("");
+    }
+
+    private void showReportListView() throws IOException {
+        reportListView.getItems().addAll(reportList.toList());
+        reportListView.refresh();
+    }
+
+    private void handleSelectedReportListView() {
+        reportListView.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener<Report>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Report> observable,
+                                        Report oldValue, Report newValue) {
+                        System.out.println(newValue + " is selected");
+                        showSelectedReport(newValue);
+                    }
+                });
+    }
+
+    private void showSelectedReport(Report report) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        suspectedPersonImage.setImage(new Image(report.getSuspectedPerson().getPicturePath()));
+        suspectedPersonRealName.setText(report.getSuspectedPerson().getUsername());
+        suspectedPersonUserName.setText(report.getSuspectedPerson().getName());
+        reportTime.setText("report time "+report.getReportDateTime().format(formatter));
+        detailText.setText(report.getDetail());
+        if(report.getSuspectedPerson().getHasStore()){
+            suspectedPersonStoreName.setText(report.getSuspectedPerson().getStoreName());
+        }
+        else
+            suspectedPersonStoreName.setText("This User Don't Have Store");
+    }
+
+    private void clearSelectedReport() {
+        suspectedPersonUserName.setText("");
+        suspectedPersonRealName.setText("");
+        reportTime.setText("");
+        suspectedPersonStoreName.setText("");
+        detailText.setText("");
     }
 
     @FXML
@@ -133,5 +187,11 @@ public class AdminPageController {
     }
 
     public void handleAddSubCategoryButton(ActionEvent actionEvent) {
+    }
+
+    public void handleDismissBtn(ActionEvent actionEvent) {
+    }
+
+    public void handleBanBtn(ActionEvent actionEvent) {
     }
 }

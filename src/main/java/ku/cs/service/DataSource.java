@@ -11,6 +11,7 @@ public class DataSource {
     private AccountList accounts;
     private ProductList products;
     private ReviewList reviews;
+    private ReportList reports;
     private String directoryPath;
     private Collection<String> categories = new TreeSet<>();
 
@@ -149,6 +150,32 @@ public class DataSource {
         }
     }
 
+    public void parseReport(String sep) throws IOException{
+        if(accounts.toList() == null)
+        {
+            parseAccount(sep);
+        }
+        reports = new ReportList();
+        String [] lines = getLines(directoryPath + File.separator + "reports.csv");
+        for(String line: lines){
+            String[] entries = line.split(sep);
+            // String reportType,User suspectedPerson,User reporter,LocalDateTime reportDateTime,Review review,Product product,String detail
+
+            Report.ReportType reportType = Report.ReportType.HARASSMENT;
+            User suspectedPerson = accounts.getUserAccount(entries[1]);
+            User reporter = accounts.getUserAccount(entries[2]);
+
+            LocalDateTime localDateTime =
+                    entries[3].equals("null") ? null : LocalDateTime.parse(entries[3], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+            Review review = entries[4].equals("null") ? null : reviews.getReviewByID(entries[4]);
+            Product product = entries[5].equals("null") ? null : products.getProduct(entries[5]);
+            String detail = entries[6];
+            Report newReport = new Report(reportType,suspectedPerson,reporter,localDateTime,review,product,detail);
+            reports.addReport(newReport);
+        }
+    }
+
     public void setDirectoryPath(String directoryPath) {
         this.directoryPath = directoryPath;
     }
@@ -163,6 +190,10 @@ public class DataSource {
 
     public ReviewList getReviews() {
         return reviews;
+    }
+
+    public ReportList getReports() {
+        return reports;
     }
 
     public String getDirectoryPath() {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -11,6 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.AdminPageController">
    <children>
@@ -119,7 +121,57 @@
                   </Tab>
                 <Tab text="Report">
                      <content>
-                    <AnchorPane />
+                    <AnchorPane>
+                           <children>
+                              <AnchorPane layoutX="7.0" layoutY="13.0">
+                                 <children>
+                                    <Label layoutX="14.0" layoutY="27.0" text="Report">
+                                       <font>
+                                          <Font size="51.0" />
+                                       </font>
+                                    </Label>
+                                    <ListView fx:id="reportListView" layoutX="30.0" layoutY="145.0" prefHeight="556.0" prefWidth="389.0" />
+                                 </children>
+                              </AnchorPane>
+                              <Line endX="-100.0" endY="768.0" layoutX="579.0" startX="-100.0" />
+                              <VBox layoutX="498.0" layoutY="200.0" prefHeight="374.0" prefWidth="244.0">
+                                 <children>
+                                    <ImageView fx:id="suspectedPersonImage" fitHeight="80.0" fitWidth="84.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
+                                    <Label fx:id="suspectedPersonUserName" text="suspectedPersonUserName">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="reportTime" text="reportTime" />
+                                    <Line endX="159.49998474121094" startX="-100.0" />
+                                    <Label fx:id="suspectedPersonRealName" text="suspectedPersonRealName">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Line endX="159.49998474121094" startX="-100.0" />
+                                    <Label fx:id="suspectedPersonStoreName" text="suspectedPersonStoreName">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Text fx:id="detailText" strokeType="OUTSIDE" strokeWidth="0.0">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <ToolBar prefHeight="65.0" prefWidth="261.0" style="-fx-background-color: #FFFFFF;">
+                                      <items>
+                                        <Button mnemonicParsing="false" onAction="#handleDismissBtn" text="DISMISS" />
+                                          <Button mnemonicParsing="false" onAction="#handleBanBtn" text="BAN" />
+                                      </items>
+                                    </ToolBar>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </VBox>
+                           </children></AnchorPane>
                      </content>
                 </Tab>
               </tabs>
