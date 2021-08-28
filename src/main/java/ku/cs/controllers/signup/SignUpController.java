@@ -9,11 +9,13 @@ import javafx.scene.text.Text;
 import ku.cs.models.AccountList;
 import ku.cs.models.User;
 import com.github.saacsos.FXRouter;
+import ku.cs.service.DataSource;
 
 import java.io.IOException;
 
 public class SignUpController {
     private AccountList accountList;
+    private DataSource dataSource;
     private String username;
     private String name;
     private String password;
@@ -28,7 +30,8 @@ public class SignUpController {
     private Text nameAssistiveText, usernameAssistiveText, passwordAssistiveText, confirmPasswordAssistiveText;
 
     public void initialize() {
-        this.accountList = (AccountList) FXRouter.getData();
+        dataSource = (DataSource) FXRouter.getData();
+        this.accountList = dataSource.getAccounts();
     }
 
 

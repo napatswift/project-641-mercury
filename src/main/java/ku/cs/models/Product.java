@@ -147,16 +147,22 @@ public class Product implements Comparable<Product>{
          * "name,picture_path_1,details,price,stock,sub_category1," +
          * "sub_category2,sub_category3,sub_category4,sub_category5,sub_category6,store"
          */
+        StringBuilder stringBuilder = new StringBuilder();
+        for(Category cat: categories){
+            stringBuilder.append(cat.toTsv());
+        }
 
         return name + "\t"
                 + id + "\t"
+                + price + "\t"
                 + store.getName() + "\t" // TODO: add id to store
                 + stock + "\t"
                 + details + "\t"
                 + rating + "\t"
                 + review + "\t"
-                + picturePath + "\t";
-                // TODO add category
+                + picturePath + "\t"
+                + rolloutDate.toString() + "\t"
+                + stringBuilder;
     }
 
     public void addSubCategory(String categoryName, String subCategoryName, String value){
@@ -169,16 +175,5 @@ public class Product implements Comparable<Product>{
         Category newCategory = new Category(categoryName);
         newCategory.addSubCategory(new SubCategory(subCategoryName, value));
         categories.add(newCategory);
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", Product.class.getSimpleName() + "[", "]")
-                .add("name='" + name + "'")
-                .add("picturePath='" + picturePath + "'")
-                .add("details='" + details + "'")
-                .add("price=" + price)
-                .add("stock=" + stock)
-                .toString();
     }
 }

@@ -7,13 +7,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import com.github.saacsos.FXRouter;
 import ku.cs.models.User;
+import ku.cs.service.DataSource;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class AdminControllerReport {
 
-    private Object[] data;
+    private DataSource dataSource;
 
     @FXML private Label nameAdmin
             ,role;
@@ -21,8 +22,8 @@ public class AdminControllerReport {
 
     @FXML
     public void initialize() throws FileNotFoundException {
-        data = (Object[]) FXRouter.getData();
-        User user = (User) data[0];
+        dataSource = (DataSource) FXRouter.getData();
+        User user = dataSource.getAccounts().getCurrAccount();
         showAdmin(user);
     }
 
@@ -45,7 +46,7 @@ public class AdminControllerReport {
     @FXML
     public void handleCategoryButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_category", data);
+            FXRouter.goTo("admin_page_category", dataSource);
         } catch (IOException e) {
             System.err.println("ไปที่หน้า admin_page_category ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
@@ -55,7 +56,7 @@ public class AdminControllerReport {
     @FXML
     public void handleUserButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_user", data);
+            FXRouter.goTo("admin_page_user", dataSource);
         } catch (IOException e) {
             System.err.println("ไปที่หน้า admin_page_user ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
@@ -65,7 +66,7 @@ public class AdminControllerReport {
     @FXML
     public void handleReportButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_report", data);
+            FXRouter.goTo("admin_page_report", dataSource);
         } catch (IOException e) {
             System.err.println("ไปที่หน้า admin_page_report ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
@@ -74,7 +75,7 @@ public class AdminControllerReport {
 
     public void handleResetPasswordButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("reset_password", data);
+            FXRouter.goTo("reset_password", dataSource);
         } catch (IOException e) {
             System.err.println("ไปที่หน้า reset_password ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");

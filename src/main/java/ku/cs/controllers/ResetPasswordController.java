@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import ku.cs.models.AccountList;
 import ku.cs.models.User;
 import com.github.saacsos.FXRouter;
+import ku.cs.service.DataSource;
 
 import java.io.IOException;
 
@@ -16,7 +17,7 @@ public class ResetPasswordController {
 
     private User user;
     private AccountList accountList;
-    private Object[] data;
+    DataSource dataSource;
 
     @FXML private TextField oldPasswordTextField
             ,newPasswordTextField
@@ -30,9 +31,9 @@ public class ResetPasswordController {
 
     @FXML
     public void initialize() throws IOException {
-        data = (Object[]) FXRouter.getData();
-        user = (User) data[0];
-        accountList = (AccountList) data[1];
+        dataSource = (DataSource) FXRouter.getData();
+        user = dataSource.getAccounts().getCurrAccount();
+        accountList = dataSource.getAccounts();
         showUser(user);
     }
 
@@ -43,7 +44,7 @@ public class ResetPasswordController {
         if(user.login(oldPassword) == 2){
             if(newPassword.equals(confirmNewPassword) && User.isPassword(newPassword)){
                 user.setPassword(newPassword);
-                accountList.toCsv("data/users.csv");
+                dataSource.saveAccount();
                 return 1;
             }
             else if(!User.isPassword(newPassword)){
@@ -71,7 +72,7 @@ public class ResetPasswordController {
     public void holdBackButton(ActionEvent actionEvent) {
         if(user.getRole() == User.Role.ADMIN) {
             try {
-                com.github.saacsos.FXRouter.goTo("admin_page_user", data);
+                com.github.saacsos.FXRouter.goTo("admin_page_user", dataSource);
             } catch (IOException e) {
                 System.err.println("ไปที่หน้า admin_page_user ไม่ได้");
                 System.err.println("ให้ตรวจสอบการกำหนด route");
@@ -79,7 +80,7 @@ public class ResetPasswordController {
         }
         else{
             try {
-                com.github.saacsos.FXRouter.goTo("marketplace", data);
+                com.github.saacsos.FXRouter.goTo("marketplace", dataSource);
             } catch (IOException e) {
                 System.err.println("ไปที่หน้า marketplace ไม่ได้");
                 System.err.println("ให้ตรวจสอบการกำหนด route");

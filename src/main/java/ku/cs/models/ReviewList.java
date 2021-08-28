@@ -1,9 +1,5 @@
 package ku.cs.models;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -23,7 +19,6 @@ public class ReviewList implements Iterable<Review> {
                           int rating, User user, Product product){
         title = title.trim();
         detail = detail.trim();
-        System.out.println(title + detail + rating + user.getUsername() + product.getId());
         if (title.equals("") || detail.equals("") ||
                 rating < 0 || rating > 5 ||
                 user == null || product == null){
@@ -50,22 +45,14 @@ public class ReviewList implements Iterable<Review> {
         this.reportingReview = null;
     }
 
-    public void toCsv(String filePath){
-        File file = new File(filePath);
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(file);
-            BufferedWriter writer = new BufferedWriter(fileWriter);
-            writer.append("productId,title,detail,rating,reviewerUsername");
-            writer.newLine();
-            for(Review review: reviews){
-                writer.append(review.toCsv());
-                writer.newLine();
-            }
-            writer.close();
-        } catch (IOException e) {
-            System.err.println("Cannot write " + filePath);
+    public String toCsv(){
+        StringBuilder stringBuilder = new StringBuilder("productId,title,detail,rating,reviewerUsername");
+        stringBuilder.append("\n");
+        for(Review review: reviews){
+            stringBuilder.append(review.toCsv());
+            stringBuilder.append("\n");
         }
+        return stringBuilder.toString();
     }
 
     public int size(){

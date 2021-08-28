@@ -10,12 +10,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import ku.cs.models.AccountList;
 import ku.cs.models.User;
-import ku.cs.service.UserDataSource;
+import ku.cs.service.DataSource;
 
 import java.io.IOException;
 
 public class LoginController {
-    public AccountList accountList;
+    private AccountList accountList;
+    private DataSource dataSource;
 
     @FXML
     private TextField usernameTF, passwordTF;
@@ -34,14 +35,13 @@ public class LoginController {
     }
 
     public void initialize(){
-        UserDataSource userDataSource = new UserDataSource("data/users.csv");
+        dataSource = new DataSource("data");
         try {
-            userDataSource.parse();
+            dataSource.parseAccount(",");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        accountList = userDataSource.getAccounts();
+        accountList = dataSource.getAccounts();
     }
 
     public void removeErrorStyleClass(KeyEvent event){
@@ -69,27 +69,29 @@ public class LoginController {
 
         if (loginSuccess == 2){
             loginText.setText("Login success");
-            accountList.toCsv("data/users.csv");
-            Object[] data = {currAcc,this.accountList};
+            dataSource.saveAccount();
+            accountList.login(username, password);
             if(currAcc.getRole() == User.Role.ADMIN)
             {
                 try {
-                    FXRouter.goTo("admin_page_user", data);
+                    FXRouter.goTo("admin_page_user", dataSource);
                 } catch (IOException e) {
+                    e.printStackTrace();
                     System.err.println("ไปที่หน้า Admin Page ไม่ได้");
                     System.err.println("ให้ตรวจสอบการกำหนด route");
                 }
             } else if (currAcc.getRole() == User.Role.USER){
                 try {
-                    FXRouter.goTo("marketplace", data);
+                    FXRouter.goTo("marketplace", dataSource);
                 } catch (IOException e) {
+                    e.printStackTrace();
                     System.err.println("ไปที่หน้า marketplace ไม่ได้");
                     System.err.println("ให้ตรวจสอบการกำหนด route");
                 }
             }
         } else if (loginSuccess == 0) {
             loginText.setText("Account has been banned");
-            accountList.toCsv("data/users.csv");
+            dataSource.saveAccount();
         } else{
             addErrorStyleClass(passwordTF);
             addErrorStyleClass(usernameTF);
@@ -103,7 +105,7 @@ public class LoginController {
             return;
         }
 
-        FXRouter.goTo("sign_up", this.accountList);
+        FXRouter.goTo("sign_up", dataSource);
     }
 
     public void handleHowTo(ActionEvent event){
