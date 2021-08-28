@@ -1,5 +1,6 @@
 package ku.cs.controllers;
 
+import com.github.saacsos.FXRouter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -7,15 +8,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import ku.cs.models.Accounts;
-import ku.cs.models.CsvReader;
+import ku.cs.models.AccountList;
 import ku.cs.models.User;
-import com.github.saacsos.FXRouter;
+import ku.cs.service.DataSource;
 
 import java.io.IOException;
 
 public class LoginController {
-    public Accounts accounts;
+    private AccountList accountList;
+    private DataSource dataSource;
 
     @FXML
     private TextField usernameTF, passwordTF;
@@ -34,6 +35,13 @@ public class LoginController {
     }
 
     public void initialize(){
+        dataSource = new DataSource("data");
+        try {
+            dataSource.parseAccount(",");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        accountList = dataSource.getAccounts();
     }
 
     public void removeErrorStyleClass(KeyEvent event){
@@ -45,14 +53,10 @@ public class LoginController {
         textField.getStyleClass().add("error-text-field");
     }
 
-    public void handleLogin(ActionEvent event) throws IOException {
-        if (accounts == null) {
-            populateUsers();
-        }
-
+    public void handleLogin(ActionEvent event){
         String username = usernameTF.getText();
         String password = passwordTF.getText();
-        User currAcc = accounts.getUserAccount(username);
+        User currAcc = accountList.getUserAccount(username);
 
         if ( currAcc == null){
             addErrorStyleClass(passwordTF);
@@ -65,19 +69,29 @@ public class LoginController {
 
         if (loginSuccess == 2){
             loginText.setText("Login success");
-            accounts.toCsv("data/users.csv");
+            dataSource.saveAccount();
+            accountList.login(username, password);
             if(currAcc.getRole() == User.Role.ADMIN)
             {
                 try {
-                    FXRouter.goTo("admin_page_my_account",currAcc);
+                    FXRouter.goTo("admin_page_user", dataSource);
                 } catch (IOException e) {
+                    e.printStackTrace();
                     System.err.println("ไปที่หน้า Admin Page ไม่ได้");
+                    System.err.println("ให้ตรวจสอบการกำหนด route");
+                }
+            } else if (currAcc.getRole() == User.Role.USER){
+                try {
+                    FXRouter.goTo("marketplace", dataSource);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.err.println("ไปที่หน้า marketplace ไม่ได้");
                     System.err.println("ให้ตรวจสอบการกำหนด route");
                 }
             }
         } else if (loginSuccess == 0) {
             loginText.setText("Account has been banned");
-            accounts.toCsv("data/users.csv");
+            dataSource.saveAccount();
         } else{
             addErrorStyleClass(passwordTF);
             addErrorStyleClass(usernameTF);
@@ -85,28 +99,13 @@ public class LoginController {
         }
     }
 
-    private void populateUsers() throws IOException {
-        this.accounts = new Accounts();
-        // username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
-        String [] lines = CsvReader.getLines("data/users.csv");
-
-        for(String line: lines){
-            String [] entries = line.split(",");
-            User newUser = new User(entries[0], entries[1] , entries[2],
-                    entries[3], entries[4], entries[5], entries[6], entries[7], entries[8], entries[9]);
-            accounts.addAccount(newUser);
-        }
-    }
-
     public void handleSignUp(ActionEvent event) throws IOException {
-        if(this.accounts == null) {
-            populateUsers();
-            if (this.accounts == null) {
-                signUpBtn.setText("CANNOT SIGN-UP");
-                return;
-            }
+        if(this.accountList == null) {
+            signUpBtn.setText("CANNOT SIGN-UP");
+            return;
         }
-        FXRouter.goTo("sign_up", this.accounts);
+
+        FXRouter.goTo("sign_up", dataSource);
     }
 
     public void handleHowTo(ActionEvent event){

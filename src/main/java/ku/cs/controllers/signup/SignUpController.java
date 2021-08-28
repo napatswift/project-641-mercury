@@ -6,14 +6,16 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import ku.cs.models.Accounts;
+import ku.cs.models.AccountList;
 import ku.cs.models.User;
 import com.github.saacsos.FXRouter;
+import ku.cs.service.DataSource;
 
 import java.io.IOException;
 
 public class SignUpController {
-    private Accounts accounts;
+    private AccountList accountList;
+    private DataSource dataSource;
     private String username;
     private String name;
     private String password;
@@ -28,7 +30,8 @@ public class SignUpController {
     private Text nameAssistiveText, usernameAssistiveText, passwordAssistiveText, confirmPasswordAssistiveText;
 
     public void initialize() {
-        this.accounts = (Accounts) FXRouter.getData();
+        dataSource = (DataSource) FXRouter.getData();
+        this.accountList = dataSource.getAccounts();
     }
 
 
@@ -76,7 +79,7 @@ public class SignUpController {
             passwordAssistiveText.setStyle("-fx-fill: error-color;");
         }
 
-        if (accounts.isExist(username)){
+        if (accountList.isExist(username)){
             addErrorStyleClass(usernameTF);
             usernameAssistiveText.setText("username already existed");
         } else if (!User.isUsername(username)){
@@ -186,10 +189,10 @@ public class SignUpController {
 
         User newUser = new User(this.username, this.name);
         if (newUser.setPassword(this.password)){
-            if(this.accounts == null) {
+            if(this.accountList == null) {
                 return;
             }
-            Object [] data = {newUser, this.accounts};
+            Object [] data = {newUser, this.accountList};
             FXRouter.goTo("sign_up_profile_picture", data);
         } else{
             passwordAssistiveText.setStyle("-fx-fill: error-color;");

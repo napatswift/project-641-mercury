@@ -2,39 +2,35 @@ package ku.cs.controllers.admin;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import ku.cs.models.Accounts;
-import ku.cs.App;
 import com.github.saacsos.FXRouter;
 import ku.cs.models.User;
+import ku.cs.service.DataSource;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class AdminControllerMyAccount {
 
-    private User accounts;
+    private DataSource dataSource;
 
     @FXML private Label nameAdmin
             ,role;
     @FXML private ImageView imageView;
-    @FXML private Button handleLogOutButton
-            ,handleCategoryButton
-            ,handleUserButton
-            ,handleReportButton
-            ,handleMyAccountButton;
 
     @FXML
     public void initialize() throws FileNotFoundException {
-        accounts = (User) FXRouter.getData();
-        nameAdmin.setText(accounts.getName());
-        role.setText(""+accounts.getRole());
-        imageView.setImage(new Image(accounts.getPicturePath()));
+        dataSource = (DataSource) FXRouter.getData();
+        User user = dataSource.getAccounts().getCurrAccount();
+        showAdmin(user);
+    }
+
+    public void showAdmin(User user){
+        nameAdmin.setText(user.getName());
+        role.setText(""+ user.getRole());
+        imageView.setImage(new Image(user.getPicturePath()));
     }
 
     @FXML
@@ -50,7 +46,7 @@ public class AdminControllerMyAccount {
     @FXML
     public void handleCategoryButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_category",accounts);
+            FXRouter.goTo("admin_page_category", dataSource);
         } catch (IOException e) {
             System.err.println("ไปที่หน้า admin_page_category ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
@@ -60,7 +56,7 @@ public class AdminControllerMyAccount {
     @FXML
     public void handleUserButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_user",accounts);
+            FXRouter.goTo("reset_password", dataSource);
         } catch (IOException e) {
             System.err.println("ไปที่หน้า admin_page_user ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
@@ -70,7 +66,7 @@ public class AdminControllerMyAccount {
     @FXML
     public void handleMyAccountButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_my_account",accounts);
+            FXRouter.goTo("admin_page_my_account", dataSource);
         } catch (IOException e) {
             System.err.println("ไปที่หน้า admin_page_my_account ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
@@ -80,7 +76,7 @@ public class AdminControllerMyAccount {
     @FXML
     public void handleReportButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("admin_page_report",accounts);
+            FXRouter.goTo("admin_page_report", dataSource);
         } catch (IOException e) {
             System.err.println("ไปที่หน้า admin_page_report ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");

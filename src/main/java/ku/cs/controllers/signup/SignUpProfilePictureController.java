@@ -6,9 +6,10 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import ku.cs.models.Accounts;
+import ku.cs.models.AccountList;
 import ku.cs.models.User;
 import com.github.saacsos.FXRouter;
+import ku.cs.service.DataSource;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,9 +22,9 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 
 public class SignUpProfilePictureController {
-
+    private DataSource dataSource;
     private User currUser;
-    private Accounts accounts;
+    private AccountList accountList;
     private File file;
     private Path target;
     private String prevView;
@@ -35,9 +36,7 @@ public class SignUpProfilePictureController {
     ImageView pictureViewIV;
 
     public void initialize() {
-        Object [] data = (Object[]) FXRouter.getData();
-        this.currUser = (User) data[0];
-        this.accounts = (Accounts) data[1];
+        dataSource = (DataSource) FXRouter.getData();
     }
 
     public void handleConfirmBtn(ActionEvent event) throws IOException{
@@ -50,9 +49,9 @@ public class SignUpProfilePictureController {
             }
         }
 
-        if (accounts.addAccount(currUser)){
-            accounts.toCsv("data/users.csv");
-            if (this.accounts == null) {
+        if (accountList.addAccount(currUser)){
+            dataSource.saveAccount();
+            if (this.accountList == null) {
                 return;
             }
             FXRouter.goTo("login");
