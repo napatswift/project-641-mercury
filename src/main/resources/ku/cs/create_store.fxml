@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="768.0" prefWidth="1024.0" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.StoreController">
    <children>
-      <Button layoutX="189.0" layoutY="58.0" mnemonicParsing="false" onAction="#handleBackToMarket" prefHeight="38.0" prefWidth="79.0" styleClass="text-btn" text="&lt;-- back" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Button layoutX="189.0" layoutY="58.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="38.0" prefWidth="79.0" styleClass="text-btn" text="&lt;-- back" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font size="13.0" />
          </font></Button>

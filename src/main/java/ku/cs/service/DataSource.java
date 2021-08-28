@@ -165,9 +165,6 @@ public class DataSource {
         return reviews;
     }
 
-    public String getDirectoryPath() {
-        return directoryPath;
-    }
 
     public void saveReview(){
         save(reviews.toCsv(), "reviews.csv");
@@ -180,6 +177,7 @@ public class DataSource {
     public void saveProduct(){
         save(products.toTsv(), "products.tsv");
     }
+
 
     public void save(String string, String fileName){
         File file = new File(

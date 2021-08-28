@@ -3,6 +3,7 @@ package ku.cs.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import com.github.saacsos.FXRouter;
+import ku.cs.models.Store;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ public class StoreController {
     private DataSource dataSource;
 
     @FXML
-    public void handleBackToMarket(ActionEvent event) {
+    public void handleBack(ActionEvent event) {
         try {
             FXRouter.goTo("marketplace");
         } catch (IOException e) {
@@ -19,5 +20,7 @@ public class StoreController {
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
     }
+
+
 
 }
