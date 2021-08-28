@@ -3,7 +3,6 @@ package ku.cs.models;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,25 +46,17 @@ public class User implements Comparable<User>{
         this.setPassword(password);
     }
 
-    public User(String username, String role, String name, String password, String picturePath, String loginDateTime, String isBanned, String loginAttempt, String hasStore, String store) {
-        /*
-         * username,role,name,password,picturePath,
-         * last_login,isBanned,loginAttempt,hasStore,store
-         */
-
-        this.role = role.equals("USER") ? Role.USER : Role.ADMIN;
+    public User( String username, Role role, String name, String password, String picturePath, LocalDateTime loginDateTime, boolean isBanned, int loginAttempt, boolean hasStore, Store store) {
+        this.role = role;
         this.username = username;
         this.password = password;
         this.name = name;
-        this.picturePath = picturePath.equals("null") ? null : picturePath;
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        this.loginDateTime = loginDateTime.equals("null") ? null : LocalDateTime.parse(loginDateTime, formatter);
-
-        this.isBanned = isBanned.toLowerCase(Locale.ROOT).equals("true");
-        this.loginAttempt = Integer.parseInt(loginAttempt);
-        this.hasStore = hasStore.toLowerCase(Locale.ROOT).equals("true");
-        this.store = new Store(store);
+        this.picturePath = picturePath;
+        this.loginDateTime = loginDateTime;
+        this.isBanned = isBanned;
+        this.loginAttempt = loginAttempt;
+        this.hasStore = hasStore;
+        this.store = store;
     }
 
     //getter
@@ -88,7 +79,8 @@ public class User implements Comparable<User>{
         } else{
             if (password.equals(this.password)){
                 this.loginDateTime = LocalDateTime.now();
-                this.loginAttempt++;
+                if (this.loginAttempt > 0)
+                    this.loginAttempt = 0;
                 return 2;
             } else{
                 return 1;
@@ -173,7 +165,7 @@ public class User implements Comparable<User>{
                 + name + ","
                 + password + ","
                 + picturePath + ","
-                + (loginDateTime == null ? null : loginDateTime.format(formatter)) + ","
+                + (loginDateTime == null ? null : loginDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)) + ","
                 + isBanned + ","
                 + loginAttempt + ","
                 + hasStore + ","
