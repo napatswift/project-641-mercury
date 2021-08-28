@@ -65,7 +65,7 @@ public class User implements Comparable<User>{
         this.isBanned = isBanned.toLowerCase(Locale.ROOT).equals("true");
         this.loginAttempt = Integer.parseInt(loginAttempt);
         this.hasStore = hasStore.toLowerCase(Locale.ROOT).equals("true");
-        this.store = new Store(store);
+        this.store = new Store(username, store);
     }
 
     //getter
@@ -175,6 +175,6 @@ public class User implements Comparable<User>{
                 + isBanned + ","
                 + loginAttempt + ","
                 + hasStore + ","
-                + (store == null ? null : store.getName());
+                + (store == null ? null : store.getNameStore());
     }
 }

@@ -1,13 +1,15 @@
 package ku.cs.models;
 
 public class Store {
-    private String name;
+    private String user;
+    private String nameStore;
 
-    public Store(String name){
-        this.name = name;
+    public Store(String user, String nameStore) {
+        this.user = user;
+        this.nameStore = nameStore;
     }
 
-    public String getName(){
-        return name;
+    public String getNameStore() {
+        return nameStore;
     }
 }
