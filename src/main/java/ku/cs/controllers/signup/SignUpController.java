@@ -192,7 +192,7 @@ public class SignUpController {
             if(this.accountList == null) {
                 return;
             }
-            Object [] data = {newUser, this.accountList};
+            Object[] data = {newUser, dataSource};
             FXRouter.goTo("sign_up_profile_picture", data);
         } else{
             passwordAssistiveText.setStyle("-fx-fill: error-color;");

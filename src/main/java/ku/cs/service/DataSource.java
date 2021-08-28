@@ -11,6 +11,7 @@ public class DataSource {
     private AccountList accounts;
     private ProductList products;
     private ReviewList reviews;
+    private ReportList reports;
     private String directoryPath;
     private Collection<String> categories = new TreeSet<>();
 
@@ -85,7 +86,7 @@ public class DataSource {
             String name = entry[0];
             String id = entry[1];
             double price = Double.parseDouble(entry[2]);
-//            Store store = new Store(entry[3], );
+            Store store = new Store(entry[3]);
             int stock = Integer.parseInt(entry[4]);
             String details = entry[5];
             double rating = Double.parseDouble(entry[6]);
@@ -95,7 +96,7 @@ public class DataSource {
 
             Product newProduct =
                     new Product(name, picturePath, details,
-                            price, stock, id, rating, review, rolloutDate/*, store*/);
+                            price, stock, id, rating, review, rolloutDate, store);
             for (int idx = 10; idx < entry_len; idx++) {
                 String[] col = entry[idx].split(":");
                 newProduct.addSubCategory(col[0], col[1], col[2]);
@@ -142,10 +143,36 @@ public class DataSource {
             boolean isBanned = entries[6].toLowerCase(Locale.ROOT).equals("true");
             int loginAttempt = Integer.parseInt(entries[7]);
             boolean hasStore = entries[8].toLowerCase(Locale.ROOT).equals("true");
-            Store store = entries[9].equals("null") ? null : new Store(entries[9], username);
+            Store store = entries[9].equals("null") ? null : new Store(entries[9]);
 
             User newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
             accounts.addAccount(newUser);
+        }
+    }
+
+    public void parseReport(String sep) throws IOException{
+        if(accounts.toList() == null)
+        {
+            parseAccount(sep);
+        }
+        reports = new ReportList();
+        String [] lines = getLines(directoryPath + File.separator + "reports.csv");
+        for(String line: lines){
+            String[] entries = line.split(sep);
+            // String reportType,User suspectedPerson,User reporter,LocalDateTime reportDateTime,Review review,Product product,String detail
+
+            Report.ReportType reportType = Report.ReportType.HARASSMENT;
+            User suspectedPerson = accounts.getUserAccount(entries[1]);
+            User reporter = accounts.getUserAccount(entries[2]);
+
+            LocalDateTime localDateTime =
+                    entries[3].equals("null") ? null : LocalDateTime.parse(entries[3], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+            Review review = entries[4].equals("null") ? null : reviews.getReviewByID(entries[4]);
+            Product product = entries[5].equals("null") ? null : products.getProduct(entries[5]);
+            String detail = entries[6];
+            Report newReport = new Report(reportType,suspectedPerson,reporter,localDateTime,review,product,detail);
+            reports.addReport(newReport);
         }
     }
 
@@ -165,6 +192,13 @@ public class DataSource {
         return reviews;
     }
 
+    public ReportList getReports() {
+        return reports;
+    }
+
+    public String getDirectoryPath() {
+        return directoryPath;
+    }
 
     public void saveReview(){
         save(reviews.toCsv(), "reviews.csv");
@@ -177,7 +211,6 @@ public class DataSource {
     public void saveProduct(){
         save(products.toTsv(), "products.tsv");
     }
-
 
     public void save(String string, String fileName){
         File file = new File(

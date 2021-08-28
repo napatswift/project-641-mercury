@@ -120,7 +120,7 @@ public class User implements Comparable<User>{
 
     public String getPicturePath() {
         String picturePath = this.picturePath;
-        if (this.picturePath == null){
+        if (this.picturePath.equals("null")){
             picturePath = "media-cup-holder.png";
         }
         return (new File(System.getProperty("user.dir") + File.separator + "/images" + File.separator + picturePath)).toURI().toString();
@@ -129,6 +129,8 @@ public class User implements Comparable<User>{
     public LocalDateTime getLoginDateTime(){
         return loginDateTime;
     }
+
+    public Boolean getHasStore() {return hasStore;}
 
     //setter
     public void setPicturePath(String picturePath) {

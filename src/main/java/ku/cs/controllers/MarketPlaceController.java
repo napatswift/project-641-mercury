@@ -215,7 +215,7 @@ public class MarketPlaceController {
         reviewVBox.getChildren().clear();
         int sumOfRating = 0;
         String id = productList.getSelectedProduct().getId();
-        ArrayList<Review> selectedProductReview = reviewList.getReview(id);
+        ArrayList<Review> selectedProductReview = reviewList.getProductReviewList(id);
         for(Review review: selectedProductReview){
             reviewVBox.getChildren().add(componentBuilder.reviewCard(review));
             sumOfRating += review.getRating();
@@ -357,4 +357,12 @@ public class MarketPlaceController {
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
     }
 
+    public void handleLogOutBtn(ActionEvent actionEvent) {
+        try {
+            com.github.saacsos.FXRouter.goTo("login");
+        } catch (IOException e) {
+            System.err.println("ไปที่หน้า login ไม่ได้");
+            System.err.println("ให้ตรวจสอบการกำหนด route");
+        }
+    }
 }

@@ -1,6 +1,8 @@
 package ku.cs.models;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.TreeSet;
 
 public class AccountList {
@@ -60,6 +62,12 @@ public class AccountList {
 
     public Collection<User> toList() {
         return accounts;
+    }
+
+    public Collection<User> toListReverse() {
+        ArrayList<User> newList = new ArrayList<>(accounts);
+        Collections.reverse(newList);
+        return newList;
     }
 
     public String toCsv(){
