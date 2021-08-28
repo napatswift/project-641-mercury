@@ -316,14 +316,21 @@ public class MarketPlaceController {
 
     @FXML
     public void handleMyStore(ActionEvent event){
-//        if(){
+        if(!dataSource.getAccounts().getCurrAccount().getHasStore()){
             try {
                 FXRouter.goTo("create_store", dataSource);
             }catch (IOException e){
                 System.err.println("ไปที่หน้า create_store ไม่ได้");
                 System.err.println("ตรวจสอบ Route");
             }
-//        }
+        }else{
+            try {
+                FXRouter.goTo("my_store", dataSource);
+            }catch (IOException e){
+                System.err.println("ไปที่หน้า my_store ไม่ได้");
+                System.err.println("ตรวจสอบ Route");
+            }
+        }
     }
 
     // marketplace page

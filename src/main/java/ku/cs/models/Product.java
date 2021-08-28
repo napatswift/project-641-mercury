@@ -26,7 +26,7 @@ public class Product implements Comparable<Product>{
 
     public Product(String name, String picturePath, String details,
                    double price, int stock, String id, double rating,
-                   int review, String rolloutDate/*, Store store*/) {
+                   int review, String rolloutDate, Store store) {
         this.name = name;
         this.picturePath = picturePath;
         this.details = details;
@@ -35,7 +35,7 @@ public class Product implements Comparable<Product>{
         this.id = id;
         this.rating = rating;
         this.review = review;
-//        this.store = store;
+        this.store = store;
         categories = new ArrayList<>();
         this.rolloutDate = rolloutDate.equals("null") ?
                 null : LocalDateTime.parse(rolloutDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);

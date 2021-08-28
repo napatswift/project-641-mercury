@@ -12,6 +12,10 @@ public class Store {
     private String nameStore;
     private ArrayList<Product> products;
 
+    public Store(String nameStore) {
+        this.nameStore = nameStore;
+    }
+
     public Store(String nameStore, String username) {
         this.username = username;
         this.nameStore = nameStore;

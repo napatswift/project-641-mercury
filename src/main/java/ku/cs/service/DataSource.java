@@ -143,7 +143,7 @@ public class DataSource {
             boolean isBanned = entries[6].toLowerCase(Locale.ROOT).equals("true");
             int loginAttempt = Integer.parseInt(entries[7]);
             boolean hasStore = entries[8].toLowerCase(Locale.ROOT).equals("true");
-            Store store = entries[9].equals("null") ? null : new Store(entries[9]);
+            Store store = entries[9].equals("null") ? null : new Store(entries[9],username);
 
             User newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
             accounts.addAccount(newUser);
