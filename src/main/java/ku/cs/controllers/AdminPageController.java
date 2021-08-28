@@ -12,14 +12,18 @@ import javafx.scene.image.ImageView;
 import com.github.saacsos.FXRouter;
 import ku.cs.models.AccountList;
 import ku.cs.models.User;
+import ku.cs.service.DataSource;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class AdminPageController {
 
-    private Object[] data;
+    private DataSource dataSource;
     private AccountList accountList;
 
     @FXML private Label nameAdmin
@@ -34,10 +38,9 @@ public class AdminPageController {
     @FXML private TabPane adminTP;
     @FXML
     public void initialize() throws IOException {
-        data = (Object[]) FXRouter.getData();
-        User user = (User) data[0];
-        accountList = (AccountList) data[1];
-
+        dataSource = (DataSource) FXRouter.getData();
+        accountList = dataSource.getAccounts();
+        User user = dataSource.getAccounts().getCurrAccount();
         showAdmin(user);
         showListView();
         clearSelectedUser();
@@ -78,7 +81,7 @@ public class AdminPageController {
         userName.setText(user.getUsername());
         realNameUser.setText(user.getName());
         lastLogin.setText("last login "+user.getLoginDateTime().format(formatter));
-        if(!user.getStoreName().equals("null")){
+        if(user.getHasStore()){
             storeName.setText(user.getStoreName());
         }
         else
@@ -119,7 +122,7 @@ public class AdminPageController {
 
     public void handleResetPasswordButton(ActionEvent actionEvent) {
         try {
-            FXRouter.goTo("reset_password", data);
+            FXRouter.goTo("reset_password", dataSource);
         } catch (IOException e) {
             System.err.println("ไปที่หน้า reset_password ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
