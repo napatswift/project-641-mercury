@@ -280,7 +280,7 @@ public class MarketPlaceController {
         populateReview();
         resetReviewForm();
         dataSource.saveReview();
-        productList.toTsv("data/dev/products.tsv");
+        dataSource.saveProduct();
         newReviewRating = -1;
     }
 

@@ -84,7 +84,7 @@ public class DataSource {
             //name,picturePath,details,price,stock,id,rating,review,rolloutDate
             String name = entry[0];
             String id = entry[1];
-            double price = Double.parseDouble(entry[2]) / 100;
+            double price = Double.parseDouble(entry[2]);
             Store store = new Store(entry[3]);
             int stock = Integer.parseInt(entry[4]);
             String details = entry[5];
@@ -97,8 +97,8 @@ public class DataSource {
                     new Product(name, picturePath, details,
                             price, stock, id, rating, review, rolloutDate, store);
             for (int idx = 10; idx < entry_len; idx++) {
-                String[] col = header[idx].split("-");
-                newProduct.addSubCategory(col[0], col[1], entry[idx]);
+                String[] col = entry[idx].split(":");
+                newProduct.addSubCategory(col[0], col[1], col[2]);
                 products.addCategory(col[0]+":"+col[1]);
             }
             products.addProduct(newProduct);
@@ -136,9 +136,8 @@ public class DataSource {
             String password = entries[3];
             String pictureName = entries[4];
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime localDateTime =
-                    entries[5].equals("null") ? null : LocalDateTime.parse(entries[5], formatter);
+                    entries[5].equals("null") ? null : LocalDateTime.parse(entries[5], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
             boolean isBanned = entries[6].toLowerCase(Locale.ROOT).equals("true");
             int loginAttempt = Integer.parseInt(entries[7]);
@@ -178,9 +177,13 @@ public class DataSource {
         save(accounts.toCsv(), "accounts.csv");
     }
 
+    public void saveProduct(){
+        save(products.toTsv(), "products.tsv");
+    }
+
     public void save(String string, String fileName){
         File file = new File(
-                directoryPath + File.separator + "dev" + File.separator + fileName);
+                directoryPath + File.separator + fileName);
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(file);

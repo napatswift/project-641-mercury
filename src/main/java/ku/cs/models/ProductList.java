@@ -1,9 +1,5 @@
 package ku.cs.models;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 public class ProductList implements Iterable<Product>{
@@ -59,6 +55,7 @@ public class ProductList implements Iterable<Product>{
     }
 
     public void sort(SortType sortType){
+        // TODO fix bug
         if (sortType.equals(SortType.BY_ROLLOUT_DATE))
             products.sort(Comparator.comparing(Product::getRolloutDate));
         else if (sortType.equals(SortType.BY_LOWEST))
@@ -85,27 +82,19 @@ public class ProductList implements Iterable<Product>{
         // TODO implement filtering
     }
 
-    public void toTsv(String filePath){
-        File file = new File(filePath);
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(file);
-            BufferedWriter writer = new BufferedWriter(fileWriter);
-            writer.append("name\tproduct_id\tprice\tstore\tstock\tdescription\trating\treviews\timage\trollout_date");
+    public String toTsv(){
+            StringBuilder stringBuilder = new StringBuilder("name\tproduct_id\tprice\tstore\tstock\tdescription\trating\treviews\timage\trollout_date");
             StringJoiner stringJoiner = new StringJoiner("\t");
 
             for (int i = 0; i < categories.size(); i++) {
                 stringJoiner.add("category_" + i);
             }
-            writer.append(stringJoiner.toString());
-            writer.newLine();
-            for(Product product: products){
-                writer.append(product.toTsv());
-                writer.newLine();
+            stringBuilder.append(stringJoiner.toString());
+            stringBuilder.append("\n");
+            for(Product product: products) {
+                stringBuilder.append(product.toTsv());
+                stringBuilder.append("\n");
             }
-            writer.close();
-        } catch (IOException e) {
-            System.err.println("Cannot write " + filePath);
-        }
+            return stringBuilder.toString();
     }
 }
