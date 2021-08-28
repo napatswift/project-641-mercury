@@ -24,4 +24,5 @@ public class SubCategory {
         this.name = name;
         this.value = value;
     }
+
 }

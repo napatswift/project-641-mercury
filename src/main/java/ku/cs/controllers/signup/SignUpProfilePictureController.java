@@ -36,7 +36,10 @@ public class SignUpProfilePictureController {
     ImageView pictureViewIV;
 
     public void initialize() {
-        dataSource = (DataSource) FXRouter.getData();
+        Object[] data = (Object[]) FXRouter.getData();
+        dataSource = (DataSource) data[1];
+        accountList = dataSource.getAccounts();
+        currUser = (User) data[0];
     }
 
     public void handleConfirmBtn(ActionEvent event) throws IOException{

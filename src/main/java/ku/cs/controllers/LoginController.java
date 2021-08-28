@@ -74,7 +74,7 @@ public class LoginController {
             if(currAcc.getRole() == User.Role.ADMIN)
             {
                 try {
-                    FXRouter.goTo("admin_page_user", dataSource);
+                    FXRouter.goTo("admin_page", dataSource);
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.err.println("ไปที่หน้า Admin Page ไม่ได้");

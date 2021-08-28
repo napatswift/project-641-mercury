@@ -32,10 +32,7 @@ public class App extends Application {
         FXRouter.when("how_to_use", packageStr+"how_to_use.fxml");
         FXRouter.when("how_to_market", packageStr+"how_to_market.fxml");
         FXRouter.when("how_to_seller", packageStr+"how_to_seller.fxml");
-        FXRouter.when("admin_page_my_account", packageStr+"admin_page_my_account.fxml");
-        FXRouter.when("admin_page_user", packageStr+"admin_page_user.fxml");
-        FXRouter.when("admin_page_report", packageStr+"admin_page_report.fxml");
-        FXRouter.when("admin_page_category", packageStr+"admin_page_category.fxml");
+        FXRouter.when("admin_page", packageStr+"admin_page.fxml");
         FXRouter.when("about_us", packageStr+"about_us.fxml");
         FXRouter.when("marketplace", packageStr + "marketplace.fxml");
         FXRouter.when("reset_password", packageStr + "reset_password.fxml",S_WIDTH, 600);

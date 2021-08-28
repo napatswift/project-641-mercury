@@ -26,7 +26,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="586.0" prefWidth="900.0" style="-fx-background-color: secondary-color;" stylesheets="@style/light.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.MarketPlaceController">
+<AnchorPane prefHeight="586.0" prefWidth="900.0" style="-fx-background-color: secondary-color;" stylesheets="@style/light.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.MarketPlaceController">
    <children>
       <AnchorPane prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="49.0">
          <children>
@@ -391,6 +391,7 @@
             <Button mnemonicParsing="false" onAction="#handleCategoryBtn" text="Category" />
             <Button layoutX="103.0" layoutY="11.0" mnemonicParsing="false" text="My account" />
             <Button layoutX="176.0" layoutY="11.0" mnemonicParsing="false" text="My store" />
+            <Button mnemonicParsing="false" onAction="#handleLogOutBtn" text="Log-out" />
         </items>
       </ToolBar>
    </children>
