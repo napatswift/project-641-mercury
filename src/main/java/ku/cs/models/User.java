@@ -214,6 +214,7 @@ public class User implements Comparable<User>{
                 topLabel.setText(getTimeString(item.getLoginDateTime()));
                 label.setText(item.getUsername());
                 setGraphic(content);
+                setStyle("-fx-border-width: 0 0 2 0; -fx-border-color: surface-overlay");
             } else {
                 setGraphic(null);
             }

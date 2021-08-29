@@ -109,6 +109,7 @@ public class Report {
             if (item != null && !empty) {
                 topLabel.setText(getTimeString(item.getReportDateTime()));
                 label.setText("Report - #ID Report Type");
+                setStyle("-fx-border-width: 0 0 2 0; -fx-border-color: surface-overlay");
                 setGraphic(content);
             } else {
                 setGraphic(null);
