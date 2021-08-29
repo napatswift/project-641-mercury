@@ -83,7 +83,7 @@ public class ProductList implements Iterable<Product>{
     }
 
     public String toTsv(){
-            StringBuilder stringBuilder = new StringBuilder("name\tproduct_id\tprice\tstore\tstock\tdescription\trating\treviews\timage\trollout_date");
+            StringBuilder stringBuilder = new StringBuilder("name\tproduct_id\tprice\tstore\tstock\tdescription\trating\treviews\timage\trollout_date\t");
             StringJoiner stringJoiner = new StringJoiner("\t");
 
             for (int i = 0; i < categories.size(); i++) {
