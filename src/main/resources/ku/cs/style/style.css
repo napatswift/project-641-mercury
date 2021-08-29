@@ -1,7 +1,7 @@
 @import "Fonts.css";
 @import "style-color.css";
 
-.button{
+.button, .toggle-button{
     -fx-cursor: hand;
     -fx-font-family: 'Roboto Medium';
     -fx-font-weight: 500;
@@ -29,6 +29,7 @@
     -fx-background-color: primary-color;
     -fx-text-fill: primary-text-color;
 }
+
 
 .outline-btn{
      -fx-border-color: rgba(0, 0, 0, 0.12);
@@ -296,4 +297,49 @@
 
 .star-btn{
     -fx-padding: 0;
+}
+
+.list-view{
+    -fx-background-insets: 0;
+    -fx-padding: 1;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: primary-overlay;
+}
+
+.list-cell:even, .list-cell:odd {
+    -fx-background-color: transparent;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: surface-overlay;
+    -fx-fill: on-surface-color;
+}
+
+.list-cell:selected {
+    -fx-text-fill: on-surface-color;
+}
+
+.list-item-btn{
+    -fx-background-radius: 6px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #000000de;
+}
+
+.list-item-btn:hover{
+    -fx-background-color: surface-overlay;
+    -fx-text-fill: #000000;
+    -fx-fill: #000000;
+}
+
+.list-item-active-btn{
+    -fx-background-color: primary-overlay;
+    -fx-text-fill: primary-color;
+    -fx-fill: primary-color;
+}
+.list-item-active-btn:hover{
+    -fx-background-color: primary-overlay;
+    -fx-text-fill: primary-dark-color;
+    -fx-fill: primary-dark-color;
 }

@@ -67,7 +67,7 @@ public class MarketPlaceController {
     private ComponentBuilder componentBuilder = new ComponentBuilder();
     private double upperBoundParsed = Double.MAX_VALUE, lowerBoundParsed = 0;
     private int newReviewRating = -1;
-    private final User currUser = new User("napat", "some");
+    private User currUser = new User("napat", "some");
 
     private ProductList productList;
     private ReviewList reviewList;
@@ -339,7 +339,7 @@ public class MarketPlaceController {
         dataSource.parseReview(",");
         productList = dataSource.getProducts();
         reviewList = dataSource.getReviews();
-
+        currUser = dataSource.getAccounts().getCurrAccount();
         productList.sort(ProductList.SortType.BY_ROLLOUT_DATE);
         populateProduct(15);
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);

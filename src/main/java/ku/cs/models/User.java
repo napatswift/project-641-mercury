@@ -181,8 +181,8 @@ public class User implements Comparable<User>{
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return "" + loginDateTime.format(formatter)
-                + "\n" + username;
+        return  loginDateTime.format(formatter) + "\n"
+                + username;
     }
 
     public static class UserListCell extends ListCell<User> {
@@ -193,14 +193,12 @@ public class User implements Comparable<User>{
         public UserListCell() {
             topLabel = new Label();
             label = new Label();
-            topLabel.setStyle(
-                            "-fx-font-size: 16;" +
-                            "-fx-text-fill: rgba(0, 0, 0, 0.6);" +
-                            "-fx-font-family: 'Roboto Normal'");
-            label.setStyle(
-                    "-fx-font-size: 24;" +
-                    "-fx-font-family: 'Roboto Normal'");
+            topLabel.getStyleClass().add("body2");
+            topLabel.setStyle("-fx-text-fill: on-surface-med-color;");
+            label.getStyleClass().add("body1");
+            label.setStyle("-fx-text-fill: on-surface-color");
             content = new VBox(topLabel, label);
+            content.setSpacing(3);
         }
 
         private String getTimeString(LocalDateTime time){
@@ -212,7 +210,7 @@ public class User implements Comparable<User>{
         @Override
         protected void updateItem(User item, boolean empty) {
             super.updateItem(item, empty);
-            if (item != null && !empty) { // <== test for null item and empty parameter
+            if (item != null && !empty) {
                 topLabel.setText(getTimeString(item.getLoginDateTime()));
                 label.setText(item.getUsername());
                 setGraphic(content);
