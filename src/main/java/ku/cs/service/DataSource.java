@@ -1,11 +1,16 @@
 package ku.cs.service;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import ku.cs.models.*;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Locale;
+import java.util.TreeSet;
 
 public class DataSource {
     private AccountList accounts;
@@ -17,6 +22,21 @@ public class DataSource {
 
     public DataSource(String directoryPath){
         this.directoryPath = directoryPath;
+
+        CSVReader reader = null;
+        try {
+            reader = new CSVReader(new FileReader(directoryPath + "/products.csv"));
+            String [] nextLine;
+            while ((nextLine = reader.readNext()) != null) {
+                System.out.println(nextLine[5] + " etc...");
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (CsvValidationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static String[] getLines(String filePath) throws IOException {
