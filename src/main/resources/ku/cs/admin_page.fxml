@@ -21,7 +21,10 @@
          <children>
             <VBox prefHeight="94.0" prefWidth="119.0">
                <children>
-                  <ImageView fx:id="imageView" fitHeight="75.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="imageView" fitHeight="75.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin></ImageView>
                   <Label fx:id="nameAdmin" text="nameAdmin">
                      <font>
                         <Font size="18.0" />
@@ -30,7 +33,7 @@
                   <Label fx:id="role" text="role" textFill="#5b6161" />
                </children>
                <VBox.margin>
-                  <Insets bottom="25.0" />
+                  <Insets bottom="25.0" left="10.0" />
                </VBox.margin>
             </VBox>
             <Button fx:id="userButton" mnemonicParsing="false" onAction="#handleUserButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-active-btn" text="User" />
@@ -55,7 +58,7 @@
                                  <children>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <Label text="User">
+                                          <Label styleClass="h3" text="User">
                                              <font>
                                                 <Font size="54.0" />
                                              </font>
@@ -127,32 +130,68 @@
                   </Tab>
                   <Tab text="Category">
                      <content>
-                        <AnchorPane>
-                           <children>
-                              <AnchorPane layoutX="490.0" layoutY="13.0">
+                        <SplitPane dividerPositions="0.5" style="-fx-background-color: surface-color;">
+                           <items>
+                              <AnchorPane>
                                  <children>
-                                    <Label fx:id="category" layoutX="14.0" layoutY="46.0" text="Label">
-                                       <font>
-                                          <Font size="30.0" />
-                                       </font>
-                                    </Label>
-                                    <ListView fx:id="listSubCategory" layoutX="30.0" layoutY="145.0" prefHeight="556.0" prefWidth="222.0" />
+                                    <VBox prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <Label styleClass="h3" text="Category">
+                                             <font>
+                                                <Font size="51.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="15.0" />
+                                             </padding>
+                                          </Label>
+                                          <ListView fx:id="listCategory" prefHeight="900.0" prefWidth="389.0">
+                                             <VBox.margin>
+                                                <Insets top="30.0" />
+                                             </VBox.margin>
+                                          </ListView>
+                                       </children>
+                                       <padding>
+                                          <Insets top="50.0" />
+                                       </padding>
+                                    </VBox>
+                                    <HBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Button fx:id="handleAddCategoryButton" mnemonicParsing="false" onAction="#handleAddCategoryButton" prefHeight="34.0" prefWidth="72.0" styleClass="outline-btn" text="ADD" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane layoutX="7.0" layoutY="13.0">
+                              <AnchorPane>
                                  <children>
-                                    <Label layoutX="14.0" layoutY="27.0" text="Category">
-                                       <font>
-                                          <Font size="51.0" />
-                                       </font>
-                                    </Label>
-                                    <ListView fx:id="listCategory" layoutX="30.0" layoutY="145.0" prefHeight="556.0" prefWidth="389.0" />
+                                    <VBox layoutX="14.0" layoutY="46.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <Label fx:id="category" styleClass="h3" text="Subcategory">
+                                             <font>
+                                                <Font size="30.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="15.0" />
+                                             </padding>
+                                          </Label>
+                                          <ListView fx:id="listSubCategory" prefHeight="900.0" prefWidth="222.0">
+                                             <VBox.margin>
+                                                <Insets top="30.0" />
+                                             </VBox.margin>
+                                          </ListView>
+                                       </children>
+                                       <padding>
+                                          <Insets top="50.0" />
+                                       </padding>
+                                    </VBox>
+                                    <HBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Button fx:id="handleAddSubCategoryButton" mnemonicParsing="false" onAction="#handleAddSubCategoryButton" prefHeight="34.0" prefWidth="72.0" styleClass="outline-btn" text="ADD" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </AnchorPane>
-                              <Button fx:id="handleAddCategoryButton" layoutX="181.0" layoutY="725.0" mnemonicParsing="false" onAction="#handleAddCategoryButton" prefHeight="34.0" prefWidth="72.0" text="ADD" />
-                              <Button fx:id="handleAddSubCategoryButton" layoutX="580.0" layoutY="725.0" mnemonicParsing="false" onAction="#handleAddSubCategoryButton" prefHeight="34.0" prefWidth="72.0" text="ADD" />
-                           </children>
-                        </AnchorPane>
+                           </items>
+                        </SplitPane>
                      </content>
                   </Tab>
                 <Tab text="Report">
@@ -163,7 +202,7 @@
                                  <children>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <Label text="Report">
+                                          <Label styleClass="h3" text="Report">
                                              <font>
                                                 <Font size="51.0" />
                                              </font>
@@ -179,11 +218,14 @@
                                     <Insets top="50.0" />
                                  </padding>
                               </VBox>
-                              <VBox prefHeight="374.0" prefWidth="244.0">
+                              <VBox fx:id="reportLeftVBox" prefHeight="374.0" prefWidth="244.0">
                                  <children>
                                     <VBox>
                                        <children>
-                                          <ImageView fx:id="suspectedPersonImage" fitHeight="80.0" fitWidth="84.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="suspectedPersonImage" fitHeight="75.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                             <VBox.margin>
+                                                <Insets bottom="20.0" />
+                                             </VBox.margin></ImageView>
                                           <Label fx:id="suspectedPersonUserName" text="suspectedPersonUserName">
                                              <font>
                                                 <Font size="16.0" />
@@ -192,7 +234,7 @@
                                           <Label fx:id="reportTime" text="reportTime" />
                                        </children>
                                        <padding>
-                                          <Insets left="15.0" right="15.0" />
+                                          <Insets left="15.0" right="10.0" />
                                        </padding>
                                     </VBox>
                                     <VBox prefWidth="100.0" spacing="5.0">
@@ -210,10 +252,23 @@
                                                 <Insets bottom="10.0" left="10.0" top="10.0" />
                                              </padding>
                                           </HBox>
+                                          <HBox layoutX="10.0" layoutY="56.0" prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
+                                             <children>
+                                                <SVGPath content="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z" />
+                                                <Label fx:id="suspectedPersonStoreName" text="suspectedPersonStoreName">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" top="10.0" />
+                                             </padding>
+                                          </HBox>
                                           <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
                                              <children>
                                                 <SVGPath content="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
-                                                <Label fx:id="suspectedPersonStoreName" text="suspectedPersonStoreName">
+                                                <Label text="ReportType">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
@@ -225,7 +280,7 @@
                                           </HBox>
                                           <Label fx:id="detailText" lineSpacing="1.0" wrapText="true">
                                              <VBox.margin>
-                                                <Insets bottom="15.0" top="15.0" />
+                                                <Insets bottom="15.0" right="5.0" top="15.0" />
                                              </VBox.margin></Label>
                                        </children>
                                        <VBox.margin>
@@ -243,7 +298,7 @@
                                     <Insets />
                                  </opaqueInsets>
                                  <padding>
-                                    <Insets left="10.0" right="10.0" top="70.0" />
+                                    <Insets right="15.0" top="70.0" />
                                  </padding>
                               </VBox>
                            </items>

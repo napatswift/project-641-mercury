@@ -14,6 +14,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import ku.cs.models.AccountList;
 import ku.cs.models.Report;
 import ku.cs.models.ReportList;
@@ -46,12 +47,13 @@ public class AdminPageController {
     @FXML private ListView<User> userListView;
     @FXML private ListView<Report> reportListView;
     @FXML private TabPane adminTP;
-    @FXML private VBox userLeftVBox;
+    @FXML private VBox userLeftVBox, reportLeftVBox;
     @FXML private Button userButton, categoryButton, reportButton, resetPasswordButton, logOutButton;
 
     @FXML
     public void initialize() throws IOException {
         userLeftVBox.setVisible(false);
+        reportLeftVBox.setVisible(false);
 
         dataSource = (DataSource) FXRouter.getData();
         accountList = dataSource.getAccounts();
@@ -73,6 +75,7 @@ public class AdminPageController {
         nameAdmin.setText(user.getName());
         role.setText(""+ user.getRole());
         imageView.setImage(new Image(user.getPicturePath()));
+        imageView.setClip(new Circle(37, 37, 37));
     }
 
     private void resetBtn(Button btn){
@@ -84,7 +87,6 @@ public class AdminPageController {
 
     private void showUserListView() throws IOException {
         ObservableList<User> data = FXCollections.observableArrayList();
-
         for(User user : accountList.toListReverse()) {
             if(user.getRole() == User.Role.USER){
                 data.add(user);
@@ -110,6 +112,7 @@ public class AdminPageController {
         userLeftVBox.setVisible(true);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         userImage.setImage(new Image(user.getPicturePath()));
+        userImage.setClip(new Circle(37, 37, 37));
         userName.setText(user.getUsername());
         realNameUser.setText(user.getName());
         lastLogin.setText("last login "+user.getLoginDateTime().format(formatter));
@@ -129,6 +132,7 @@ public class AdminPageController {
 
     private void showReportListView() throws IOException {
         reportListView.getItems().addAll(reportList.toList());
+        reportListView.setCellFactory(reportListView -> new Report.ReportListCell());
         reportListView.refresh();
     }
 
@@ -138,12 +142,15 @@ public class AdminPageController {
     }
 
     private void showSelectedReport(Report report) {
+        reportLeftVBox.setVisible(true);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         suspectedPersonImage.setImage(new Image(report.getSuspectedPerson().getPicturePath()));
+        suspectedPersonImage.setClip(new Circle(37, 37, 37));
         suspectedPersonRealName.setText(report.getSuspectedPerson().getUsername());
         suspectedPersonUserName.setText(report.getSuspectedPerson().getName());
         reportTime.setText("report time "+report.getReportDateTime().format(formatter));
         detailText.setText(report.getDetail());
+
         if(report.getSuspectedPerson().getHasStore()){
             suspectedPersonStoreName.setText(report.getSuspectedPerson().getStoreName());
         }
