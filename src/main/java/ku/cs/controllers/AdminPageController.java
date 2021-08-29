@@ -1,13 +1,17 @@
 package ku.cs.controllers;
 
+import com.github.saacsos.FXRouter;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import com.github.saacsos.FXRouter;
 import javafx.scene.text.Text;
 import ku.cs.models.AccountList;
 import ku.cs.models.Report;
@@ -51,8 +55,6 @@ public class AdminPageController {
         reportList = dataSource.getReports();
         showAdmin(user);
 
-
-
         showUserListView();
         clearSelectedUser();
         handleSelectedUserListView();
@@ -70,11 +72,15 @@ public class AdminPageController {
 
 
     private void showUserListView() throws IOException {
+        ObservableList<User> data = FXCollections.observableArrayList();
+
         for(User user : accountList.toListReverse()) {
             if(user.getRole() == User.Role.USER){
-                userListView.getItems().add(user);
+                data.add(user);
             }
         }
+        userListView.getItems().addAll(data);
+        userListView.setCellFactory(userListView -> new User.UserListCell());
         userListView.refresh();
     }
 

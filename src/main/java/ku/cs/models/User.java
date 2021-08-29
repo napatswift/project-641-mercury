@@ -1,5 +1,9 @@
 package ku.cs.models;
 
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.layout.VBox;
+
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -179,6 +183,43 @@ public class User implements Comparable<User>{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return "" + loginDateTime.format(formatter)
                 + "\n" + username;
+    }
+
+    public static class UserListCell extends ListCell<User> {
+        private final VBox content;
+        private final Label topLabel;
+        private final Label label;
+
+        public UserListCell() {
+            topLabel = new Label();
+            label = new Label();
+            topLabel.setStyle(
+                            "-fx-font-size: 16;" +
+                            "-fx-text-fill: rgba(0, 0, 0, 0.6);" +
+                            "-fx-font-family: 'Roboto Normal'");
+            label.setStyle(
+                    "-fx-font-size: 24;" +
+                    "-fx-font-family: 'Roboto Normal'");
+            content = new VBox(topLabel, label);
+        }
+
+        private String getTimeString(LocalDateTime time){
+            String pattern = "HH:mm - d MMM";
+            DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern(pattern);
+            return simpleDateFormat.format(time);
+        }
+
+        @Override
+        protected void updateItem(User item, boolean empty) {
+            super.updateItem(item, empty);
+            if (item != null && !empty) { // <== test for null item and empty parameter
+                topLabel.setText(getTimeString(item.getLoginDateTime()));
+                label.setText(item.getUsername());
+                setGraphic(content);
+            } else {
+                setGraphic(null);
+            }
+        }
     }
 }
 
