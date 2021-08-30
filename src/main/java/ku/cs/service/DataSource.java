@@ -55,8 +55,10 @@ public class DataSource {
                                 price, stock, id, rating, review, rolloutDate, store);
                 for (int idx = 10; idx < entry_len; idx++) {
                     String[] col = nextLine[idx].split(":");
-                    newProduct.addSubCategory(col[0], col[1], col[2]);
-                    products.addCategory(col[0] + ":" + col[1]);
+                    if (col.length == 3) {
+                        newProduct.addSubCategory(col[0], col[1], col[2]);
+                        products.addCategory(col[0] + ":" + col[1]);
+                    }
                 }
                 products.addProduct(newProduct);
             }
@@ -192,7 +194,7 @@ public class DataSource {
     }
 
     public void saveProduct(){
-        save(products.toTsv(), "products.tsv");
+        save(products.toCsv(), "products.csv");
     }
 
 }

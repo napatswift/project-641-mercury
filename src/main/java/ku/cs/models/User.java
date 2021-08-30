@@ -168,7 +168,7 @@ public class User implements Comparable<User>{
         //username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
         return username + ","
                 + role + ","
-                + name + ","
+                + "\"" + name + "\"" + ","
                 + password + ","
                 + picturePath + ","
                 + (loginDateTime == null ? null : loginDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)) + ","

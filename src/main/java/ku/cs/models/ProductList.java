@@ -82,19 +82,22 @@ public class ProductList implements Iterable<Product>{
         // TODO implement filtering
     }
 
-    public String toTsv(){
-            StringBuilder stringBuilder = new StringBuilder("name\tproduct_id\tprice\tstore\tstock\tdescription\trating\treviews\timage\trollout_date\t");
-            StringJoiner stringJoiner = new StringJoiner("\t");
 
-            for (int i = 0; i < categories.size(); i++) {
-                stringJoiner.add("category_" + i);
-            }
-            stringBuilder.append(stringJoiner.toString());
+    public String toCsv(){
+        StringBuilder stringBuilder = new StringBuilder("name,product_id,price,store,stock,description,rating,reviews,image,rollout_date,");
+        StringJoiner stringJoiner = new StringJoiner(",");
+
+        for (int i = 0; i < categories.size(); i++) {
+            stringJoiner.add("category_" + i);
+        }
+
+        stringBuilder.append(stringJoiner);
+        stringBuilder.append("\n");
+        for(Product product: products) {
+            stringBuilder.append(product.toCsv(categories.size()));
+            System.out.println(product.toCsv(categories.size()));
             stringBuilder.append("\n");
-            for(Product product: products) {
-                stringBuilder.append(product.toTsv());
-                stringBuilder.append("\n");
-            }
-            return stringBuilder.toString();
+        }
+        return stringBuilder.toString();
     }
 }
