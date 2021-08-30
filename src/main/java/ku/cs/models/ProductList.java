@@ -95,7 +95,6 @@ public class ProductList implements Iterable<Product>{
         stringBuilder.append("\n");
         for(Product product: products) {
             stringBuilder.append(product.toCsv(categories.size()));
-            System.out.println(product.toCsv(categories.size()));
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();
