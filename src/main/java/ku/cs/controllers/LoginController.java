@@ -36,11 +36,7 @@ public class LoginController {
 
     public void initialize(){
         dataSource = new DataSource("data");
-        try {
-            dataSource.parseAccount(",");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        dataSource.parseAccount();
         accountList = dataSource.getAccounts();
     }
 

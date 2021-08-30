@@ -335,8 +335,8 @@ public class MarketPlaceController {
     @FXML
     public void initialize() throws IOException {
         dataSource = (DataSource) FXRouter.getData();
-        dataSource.parseProduct("\t");
-        dataSource.parseReview(",");
+        dataSource.parseProduct();
+        dataSource.parseReview();
         productList = dataSource.getProducts();
         reviewList = dataSource.getReviews();
         currUser = dataSource.getAccounts().getCurrAccount();
