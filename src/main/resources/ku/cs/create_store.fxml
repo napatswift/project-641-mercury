@@ -18,8 +18,8 @@
             <Font size="25.0" />
          </font>
       </Label>
-      <TextField alignment="CENTER" layoutX="438.0" layoutY="302.0" prefHeight="50.0" prefWidth="418.0" promptText="Enter Name Store" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="300.0" />
-      <Button layoutX="665.0" layoutY="389.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="119.0" text="Submit" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="360.0">
+      <TextField fx:id="nameStoreTF" alignment="CENTER" layoutX="438.0" layoutY="302.0" prefHeight="50.0" prefWidth="418.0" promptText="Enter Name Store" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="300.0" />
+      <Button layoutX="604.0" layoutY="384.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="119.0" text="Submit" AnchorPane.rightAnchor="300.79999999999995" AnchorPane.topAnchor="384.0">
          <styleClass>
             <String fx:value="button" />
             <String fx:value="text-btn" />

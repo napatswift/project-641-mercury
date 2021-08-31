@@ -17,6 +17,7 @@ public class DataSource {
     private ReviewList reviews;
     private ReportList reports;
     private String directoryPath;
+    private StoreList stores;
     private final Collection<String> categories = new TreeSet<>();
 
     public DataSource(String directoryPath){
@@ -147,6 +148,23 @@ public class DataSource {
         }
     }
 
+    public void parseStore(){
+        stores = new StoreList();
+        try{
+            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "store.csv"));
+            reader.readNext();
+            String [] entry;
+            while ((entry = reader.readNext()) != null){
+                String username = entry[0];
+                String nameStore = entry[1];
+                Store store = new Store(username, nameStore);
+                stores.addStore(store);
+            }
+        }catch (IOException | CsvValidationException e){
+            e.printStackTrace();
+        }
+    }
+
     public void setDirectoryPath(String directoryPath) {
         this.directoryPath = directoryPath;
     }
@@ -165,6 +183,10 @@ public class DataSource {
 
     public ReportList getReports() {
         return reports;
+    }
+
+    public StoreList getStores() {
+        return stores;
     }
 
     public String getDirectoryPath() {

@@ -20,7 +20,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         FXRouter.bind(this, stage, appName, L_WIDTH, HEIGHT);
         configRoute();
-        FXRouter.goTo("my_store");
+        FXRouter.goTo("login");
     }
 
     private static void configRoute(){

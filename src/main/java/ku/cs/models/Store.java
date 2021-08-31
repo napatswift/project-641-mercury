@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Store {
-//    private String ID;
     private String username;
     private String nameStore;
     private ArrayList<Product> products;
@@ -20,7 +19,6 @@ public class Store {
         this.username = username;
         this.nameStore = nameStore;
         products = new ArrayList<>();
-        //setId();
     }
 
     public String getName() {
