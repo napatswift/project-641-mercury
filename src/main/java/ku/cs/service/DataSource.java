@@ -1,11 +1,15 @@
 package ku.cs.service;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import ku.cs.models.*;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Collection;
+import java.util.Locale;
+import java.util.TreeSet;
 
 public class DataSource {
     private AccountList accounts;
@@ -13,166 +17,133 @@ public class DataSource {
     private ReviewList reviews;
     private ReportList reports;
     private String directoryPath;
-    private Collection<String> categories = new TreeSet<>();
+    private final Collection<String> categories = new TreeSet<>();
 
     public DataSource(String directoryPath){
         this.directoryPath = directoryPath;
     }
 
-    public static String[] getLines(String filePath) throws IOException {
-        String [] lines = new String[1000];
-        File file = new File(filePath);
-        FileReader fileReader = new FileReader(file);
-        BufferedReader reader = new BufferedReader(fileReader);
-        String line;
-        int i = 0;
-        reader.readLine();
-        while ((line = reader.readLine()) != null) {
-            lines[i++] = line;
-        }
-        reader.close();
-        return Arrays.copyOf(lines, i);
-    }
-
-    public static String[] getLinesWithHeader(String filePath) throws IOException {
-        String [] lines = new String[1000];
-        File file = new File(filePath);
-        FileReader fileReader = new FileReader(file);
-        BufferedReader reader = new BufferedReader(fileReader);
-        String line;
-        int i = 0;
-        while ((line = reader.readLine()) != null) {
-            lines[i++] = line;
-        }
-        reader.close();
-        return Arrays.copyOf(lines, i);
-    }
-
     public void parseAll() {
-        parseAll(",", ",", ",");
+        parseProduct();
+        parseAccount();
+        parseReview();
     }
 
-    public void parseAll(String sep1, String sep2, String sep3) {
-        try {
-            parseProduct(sep1);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Cannot parse product");
-        }
-        try {
-            parseAccount(sep2);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Cannot parse account");
-        }
-        try {
-            parseReview(sep3);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Cannot parse review");
-        }
-    }
-
-    public void parseProduct(String sep) throws IOException {
+    public void parseProduct() {
         products = new ProductList();
-        String[] lines = getLinesWithHeader(directoryPath + File.separator + "products.tsv");
-        String[] header = lines[0].split(sep);
-        lines = Arrays.copyOfRange(lines, 1, lines.length);
-        for (String line : lines) {
-            String[] entry = line.split(sep);
-            int entry_len = entry.length;
+        CSVReader reader;
+        try {
+            reader = new CSVReader(new FileReader(directoryPath + File.separator + "products.csv"));
+            reader.readNext();
+            String [] nextLine;
+            while ((nextLine = reader.readNext()) != null) {
+                int entry_len = nextLine.length;
 
-            //name,picturePath,details,price,stock,id,rating,review,rolloutDate
-            String name = entry[0];
-            String id = entry[1];
-            double price = Double.parseDouble(entry[2]);
-            Store store = new Store(entry[3]);
-            int stock = Integer.parseInt(entry[4]);
-            String details = entry[5];
-            double rating = Double.parseDouble(entry[6]);
-            int review = Integer.parseInt(entry[7]);
-            String picturePath = entry[8];
-            String rolloutDate = entry[9];
+                String name = nextLine[0];
+                String id = nextLine[1];
+                double price = Double.parseDouble(nextLine[2]);
+                Store store = new Store(nextLine[3]);
+                int stock = Integer.parseInt(nextLine[4]);
+                String details = nextLine[5];
+                double rating = Double.parseDouble(nextLine[6]);
+                int review = Integer.parseInt(nextLine[7]);
+                String picturePath = nextLine[8];
+                String rolloutDate = nextLine[9];
 
-            Product newProduct =
-                    new Product(name, picturePath, details,
-                            price, stock, id, rating, review, rolloutDate, store);
-            for (int idx = 10; idx < entry_len; idx++) {
-                String[] col = entry[idx].split(":");
-                newProduct.addSubCategory(col[0], col[1], col[2]);
-                products.addCategory(col[0]+":"+col[1]);
+                Product newProduct =
+                        new Product(name, picturePath, details,
+                                price, stock, id, rating, review, rolloutDate, store);
+                for (int idx = 10; idx < entry_len; idx++) {
+                    String[] col = nextLine[idx].split(":");
+                    if (col.length == 3) {
+                        newProduct.addSubCategory(col[0], col[1], col[2]);
+                        products.addCategory(col[0] + ":" + col[1]);
+                    }
+                }
+                products.addProduct(newProduct);
             }
-            products.addProduct(newProduct);
+        } catch (CsvValidationException | IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void parseReview(String sep) throws IOException {
+    public void parseReview() {
         reviews = new ReviewList();
-        String [] lines = getLines(directoryPath + File.separator + "reviews.csv");
-        for(String line: lines){
-            // productId,title,detail,rating,reviewerUsername
-            String [] entry = line.split(sep);
-            String productId = entry[0];
-            String title = entry[1];
-            String detail = entry[2];
-            int rating = Integer.parseInt(entry[3]);
-            String reviewerUsername = entry[4];
-            Product product = products.getProduct(productId);
-            User reviewerUser = accounts.getUserAccount(reviewerUsername);
-            reviews.addReview(new Review(title, detail, rating, reviewerUser, product));
+        try {
+            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "reviews.csv"));
+            reader.readNext();
+            String [] entry;
+            while ((entry = reader.readNext()) != null) {
+                String productId = entry[0];
+                String title = entry[1];
+                String detail = entry[2];
+                int rating = Integer.parseInt(entry[3]);
+                String reviewerUsername = entry[4];
+                Product product = products.getProduct(productId);
+                User reviewerUser = accounts.getUserAccount(reviewerUsername);
+                reviews.addReview(new Review(title, detail, rating, reviewerUser, product));
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
         }
     }
 
-    public void parseAccount(String sep) throws IOException{
+    public void parseAccount() {
         accounts = new AccountList();
-        String [] lines = getLines(directoryPath + File.separator + "accounts.csv");
-        for(String line: lines){
-            String [] entries = line.split(sep);
-            //String username, String role, String name, String password, String picturePath, String
-            // loginDateTime, String isBanned, String loginAttempt, String hasStore, String store
+        try {
+            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "accounts.csv"));
+            reader.readNext();
+            String [] entry;
+            while ((entry = reader.readNext()) != null) {
+                String username = entry[0];
+                User.Role role = entry[1].toUpperCase(Locale.ROOT).equals("USER") ? User.Role.USER : User.Role.ADMIN;
+                String name = entry[2];
+                String password = entry[3];
+                String pictureName = entry[4];
 
-            String username = entries[0];
-            User.Role role = entries[1].equals("USER") ? User.Role.USER : User.Role.ADMIN;
-            String name = entries[2];
-            String password = entries[3];
-            String pictureName = entries[4];
+                LocalDateTime localDateTime =
+                        entry[5].equals("null") ? null : LocalDateTime.parse(entry[5], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-            LocalDateTime localDateTime =
-                    entries[5].equals("null") ? null : LocalDateTime.parse(entries[5], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                boolean isBanned = entry[6].toLowerCase(Locale.ROOT).equals("true");
+                int loginAttempt = Integer.parseInt(entry[7]);
+                boolean hasStore = entry[8].toLowerCase(Locale.ROOT).equals("true");
+                Store store = entry[9].equals("null") ? null : new Store(entry[9]);
 
-            boolean isBanned = entries[6].toLowerCase(Locale.ROOT).equals("true");
-            int loginAttempt = Integer.parseInt(entries[7]);
-            boolean hasStore = entries[8].toLowerCase(Locale.ROOT).equals("true");
-            Store store = entries[9].equals("null") ? null : new Store(entries[9],username);
-
-            User newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
-            accounts.addAccount(newUser);
+                User newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
+                accounts.addAccount(newUser);
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
         }
     }
 
-    public void parseReport(String sep) throws IOException{
-        if(accounts.toList() == null)
-        {
-            parseAccount(sep);
+    public void parseReport() {
+        if(accounts.toList() == null) {
+            parseAccount();
         }
         reports = new ReportList();
-        String [] lines = getLines(directoryPath + File.separator + "reports.csv");
-        for(String line: lines){
-            String[] entries = line.split(sep);
-            // String reportType,User suspectedPerson,User reporter,LocalDateTime reportDateTime,Review review,Product product,String detail
+        try {
+            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "reports.csv"));
+            reader.readNext();
+            String [] entry;
+            while ((entry = reader.readNext()) != null) {
+                // String reportType,User suspectedPerson,User reporter,LocalDateTime reportDateTime,Review review,Product product,String detail
 
-            Report.ReportType reportType = Report.ReportType.HARASSMENT;
-            User suspectedPerson = accounts.getUserAccount(entries[1]);
-            User reporter = accounts.getUserAccount(entries[2]);
+                Report.ReportType reportType = Report.ReportType.HARASSMENT;
+                User suspectedPerson = accounts.getUserAccount(entry[1]);
+                User reporter = accounts.getUserAccount(entry[2]);
 
-            LocalDateTime localDateTime =
-                    entries[3].equals("null") ? null : LocalDateTime.parse(entries[3], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                LocalDateTime localDateTime =
+                        entry[3].equals("null") ? null : LocalDateTime.parse(entry[3], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-            Review review = entries[4].equals("null") ? null : reviews.getReviewByID(entries[4]);
-            Product product = entries[5].equals("null") ? null : products.getProduct(entries[5]);
-            String detail = entries[6];
-            Report newReport = new Report(reportType,suspectedPerson,reporter,localDateTime,review,product,detail);
-            reports.addReport(newReport);
+                Review review = entry[4].equals("null") ? null : reviews.getReviewByID(entry[4]);
+                Product product = entry[5].equals("null") ? null : products.getProduct(entry[5]);
+                String detail = entry[6];
+                Report newReport = new Report(reportType,suspectedPerson,reporter,localDateTime,review,product,detail);
+                reports.addReport(newReport);
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
         }
     }
 
@@ -200,22 +171,10 @@ public class DataSource {
         return directoryPath;
     }
 
-    public void saveReview(){
-        save(reviews.toCsv(), "reviews.csv");
-    }
-
-    public void saveAccount(){
-        save(accounts.toCsv(), "accounts.csv");
-    }
-
-    public void saveProduct(){
-        save(products.toTsv(), "products.tsv");
-    }
-
     public void save(String string, String fileName){
         File file = new File(
                 directoryPath + File.separator + fileName);
-        FileWriter fileWriter = null;
+        FileWriter fileWriter;
         try {
             fileWriter = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(fileWriter);
@@ -225,4 +184,17 @@ public class DataSource {
             e.printStackTrace();
         }
     }
+
+    public void saveReview(){
+        save(reviews.toCsv(), "reviews.csv");
+    }
+
+    public void saveAccount(){
+        save(accounts.toCsv(), "accounts.csv");
+    }
+
+    public void saveProduct(){
+        save(products.toCsv(), "products.csv");
+    }
+
 }

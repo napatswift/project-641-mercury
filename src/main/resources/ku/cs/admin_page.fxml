@@ -4,32 +4,27 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.AdminPageController">
-   <children>
-      <AnchorPane layoutX="6.0" layoutY="13.0">
+<SplitPane dividerPositions="0.25" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.AdminPageController">
+   <items>
+      <VBox prefHeight="814.0" prefWidth="475.0" spacing="5.0">
          <children>
-            <ToolBar layoutX="12.0" layoutY="399.0" orientation="VERTICAL" prefHeight="207.0" prefWidth="190.0" style="-fx-background-color: #FFFFFF;">
-               <items>
-                  <Button fx:id="handleUserButton" mnemonicParsing="false" onAction="#handleUserButton" prefHeight="34.0" prefWidth="198.0" text="User" />
-                  <Button fx:id="handleCategoryButton" layoutY="100.0" mnemonicParsing="false" onAction="#handleCategoryButton" prefHeight="34.0" prefWidth="198.0" text="Category" />
-                  <Button fx:id="handleReportButton" mnemonicParsing="false" onAction="#handleReportButton" prefHeight="34.0" prefWidth="198.0" text="Report" />
-                  <Button mnemonicParsing="false" onAction="#handleResetPasswordButton" prefHeight="34.0" prefWidth="198.0" text="Reset Password" />
-                  <Button fx:id="handleLogOutButton" mnemonicParsing="false" onAction="#handleLogOutButton" prefHeight="34.0" prefWidth="198.0" text="Log-Out" />
-               </items>
-            </ToolBar>
-            <VBox layoutX="24.0" layoutY="14.0" prefHeight="94.0" prefWidth="119.0">
+            <VBox prefHeight="94.0" prefWidth="119.0">
                <children>
-                  <ImageView fx:id="imageView" fitHeight="162.0" fitWidth="168.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="imageView" fitHeight="75.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin></ImageView>
                   <Label fx:id="nameAdmin" text="nameAdmin">
                      <font>
                         <Font size="18.0" />
@@ -37,146 +32,282 @@
                   </Label>
                   <Label fx:id="role" text="role" textFill="#5b6161" />
                </children>
+               <VBox.margin>
+                  <Insets bottom="25.0" left="10.0" />
+               </VBox.margin>
             </VBox>
-            <Line endX="131.89999389648438" layoutX="108.0" layoutY="324.0" startX="-131.59999084472656" />
+            <Button fx:id="userButton" mnemonicParsing="false" onAction="#handleUserButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-active-btn" text="User" />
+            <Button fx:id="categoryButton" mnemonicParsing="false" onAction="#handleCategoryButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Category" />
+            <Button fx:id="reportButton" mnemonicParsing="false" onAction="#handleReportButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Report" />
+            <Button fx:id="resetPasswordButton" mnemonicParsing="false" onAction="#handleResetPasswordButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Reset Password" />
+            <Button fx:id="logOutButton" mnemonicParsing="false" onAction="#handleLogOutButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Log-Out" />
          </children>
-      </AnchorPane>
-      <Line endX="-131.60000610351562" endY="768.0" layoutX="377.0" startX="-131.60000610351562" startY="-1000.0" />
-      <AnchorPane layoutX="247.0" prefHeight="776.0" prefWidth="778.0">
+         <padding>
+            <Insets left="5.0" right="5.0" top="70.0" />
+         </padding>
+      </VBox>
+      <AnchorPane>
          <children>
-            <TabPane fx:id="adminTP" prefHeight="814.0" prefWidth="778.0" side="BOTTOM" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="adminTP" prefHeight="814.0" side="BOTTOM" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="-35.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <tabs>
                   <Tab text="User">
                      <content>
-                        <AnchorPane>
-                           <children>
-                              <AnchorPane layoutX="7.0" layoutY="13.0">
+                        <SplitPane dividerPositions="0.6" style="-fx-background-color: surface-color;">
+                           <items>
+                              <VBox nodeOrientation="LEFT_TO_RIGHT" spacing="15.0" style="-fx-background-color: surface-color;">
                                  <children>
-                                    <Label layoutX="14.0" layoutY="27.0" text="User">
-                                       <font>
-                                          <Font size="54.0" />
-                                       </font>
-                                    </Label>
-                                    <ListView fx:id="userListView" layoutX="30.0" layoutY="145.0" prefHeight="556.0" prefWidth="389.0" />
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label styleClass="h3" text="User">
+                                             <font>
+                                                <Font size="54.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets left="15.0" right="15.0" />
+                                       </padding>
+                                    </HBox>
+                                    <ListView fx:id="userListView" prefHeight="900.0" />
                                  </children>
-                              </AnchorPane>
-                              <VBox layoutX="498.0" layoutY="200.0" prefHeight="374.0" prefWidth="244.0">
-                                 <children>
-                                    <ImageView fx:id="userImage" fitHeight="74.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true" />
-                                    <Label fx:id="userName" text="userName">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="lastLogin" text="lastLogin" />
-                                    <Line endX="159.49998474121094" startX="-100.0" />
-                                    <Label fx:id="realNameUser" text="realNameUser">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Line endX="159.49998474121094" startX="-100.0" />
-                                    <Label fx:id="storeName" text="storeName">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
+                                 <padding>
+                                    <Insets top="50.0" />
+                                 </padding>
                               </VBox>
-                              <Line endX="-100.0" endY="778.19287109375" layoutX="579.0" layoutY="9.0" startX="-100.0" startY="-13.100004196166992" />
-                           </children>
-                        </AnchorPane>
+                              <VBox fx:id="userLeftVBox" spacing="5.0" style="-fx-background-color: surface-color;">
+                                 <children>
+                                    <ImageView fx:id="userImage" fitHeight="75.0" pickOnBounds="true" preserveRatio="true" />
+                                    <Label fx:id="userName" styleClass="h6" text="userName">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lastLogin" styleClass="subtitle1" text="lastLogin" />
+                                    <VBox prefWidth="100.0">
+                                       <children>
+                                          <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
+                                             <children>
+                                                <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                                <Label fx:id="realNameUser" styleClass="subtitle2" text="realNameUser">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" top="10.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
+                                             <children>
+                                                <SVGPath content="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z" />
+                                                <Label fx:id="storeName" styleClass="subtitle2" text="storeName">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" top="10.0" />
+                                             </padding>
+                                          </HBox>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="15.0" />
+                                       </VBox.margin>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets left="5.0" top="70.0" />
+                                 </padding>
+                              </VBox>
+                           </items>
+                        </SplitPane>
                      </content>
                   </Tab>
                   <Tab text="Category">
                      <content>
-                        <AnchorPane>
-                           <children>
-                              <AnchorPane layoutX="490.0" layoutY="13.0">
+                        <SplitPane dividerPositions="0.5" style="-fx-background-color: surface-color;">
+                           <items>
+                              <AnchorPane>
                                  <children>
-                                    <Label fx:id="category" layoutX="14.0" layoutY="46.0" text="Label">
-                                       <font>
-                                          <Font size="30.0" />
-                                       </font>
-                                    </Label>
-                                    <ListView fx:id="listSubCategory" layoutX="30.0" layoutY="145.0" prefHeight="556.0" prefWidth="222.0" />
+                                    <VBox prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <Label styleClass="h3" text="Category">
+                                             <font>
+                                                <Font size="51.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="15.0" />
+                                             </padding>
+                                          </Label>
+                                          <ListView fx:id="listCategory" prefHeight="900.0" prefWidth="389.0">
+                                             <VBox.margin>
+                                                <Insets top="30.0" />
+                                             </VBox.margin>
+                                          </ListView>
+                                       </children>
+                                       <padding>
+                                          <Insets top="50.0" />
+                                       </padding>
+                                    </VBox>
+                                    <HBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Button fx:id="handleAddCategoryButton" mnemonicParsing="false" onAction="#handleAddCategoryButton" prefHeight="34.0" prefWidth="72.0" styleClass="outline-btn" text="ADD" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane layoutX="7.0" layoutY="13.0">
+                              <AnchorPane>
                                  <children>
-                                    <Label layoutX="14.0" layoutY="27.0" text="Category">
-                                       <font>
-                                          <Font size="51.0" />
-                                       </font>
-                                    </Label>
-                                    <ListView fx:id="listCategory" layoutX="30.0" layoutY="145.0" prefHeight="556.0" prefWidth="389.0" />
+                                    <VBox layoutX="14.0" layoutY="46.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <Label fx:id="category" styleClass="h3" text="Subcategory">
+                                             <font>
+                                                <Font size="30.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="15.0" />
+                                             </padding>
+                                          </Label>
+                                          <ListView fx:id="listSubCategory" prefHeight="900.0" prefWidth="222.0">
+                                             <VBox.margin>
+                                                <Insets top="30.0" />
+                                             </VBox.margin>
+                                          </ListView>
+                                       </children>
+                                       <padding>
+                                          <Insets top="50.0" />
+                                       </padding>
+                                    </VBox>
+                                    <HBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Button fx:id="handleAddSubCategoryButton" mnemonicParsing="false" onAction="#handleAddSubCategoryButton" prefHeight="34.0" prefWidth="72.0" styleClass="outline-btn" text="ADD" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </AnchorPane>
-                              <Line endX="-100.0" endY="768.0" layoutX="579.0" startX="-100.0" />
-                              <Button fx:id="handleAddCategoryButton" layoutX="181.0" layoutY="725.0" mnemonicParsing="false" onAction="#handleAddCategoryButton" prefHeight="34.0" prefWidth="72.0" text="ADD" />
-                              <Button fx:id="handleAddSubCategoryButton" layoutX="580.0" layoutY="725.0" mnemonicParsing="false" onAction="#handleAddSubCategoryButton" prefHeight="34.0" prefWidth="72.0" text="ADD" />
-                           </children>
-                        </AnchorPane>
+                           </items>
+                        </SplitPane>
                      </content>
                   </Tab>
                 <Tab text="Report">
                      <content>
-                    <AnchorPane>
-                           <children>
-                              <AnchorPane layoutX="7.0" layoutY="13.0">
+                        <SplitPane dividerPositions="0.6" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: surface-color;">
+                           <items>
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="15.0">
                                  <children>
-                                    <Label layoutX="14.0" layoutY="27.0" text="Report">
-                                       <font>
-                                          <Font size="51.0" />
-                                       </font>
-                                    </Label>
-                                    <ListView fx:id="reportListView" layoutX="30.0" layoutY="145.0" prefHeight="556.0" prefWidth="389.0" />
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label styleClass="h3" text="Report">
+                                             <font>
+                                                <Font size="51.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets left="15.0" right="15.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <ListView fx:id="reportListView" prefHeight="900.0" prefWidth="389.0" />
                                  </children>
-                              </AnchorPane>
-                              <Line endX="-100.0" endY="768.0" layoutX="579.0" startX="-100.0" />
-                              <VBox layoutX="498.0" layoutY="200.0" prefHeight="374.0" prefWidth="244.0">
+                                 <padding>
+                                    <Insets top="50.0" />
+                                 </padding>
+                              </VBox>
+                              <VBox fx:id="reportLeftVBox" prefHeight="374.0" prefWidth="244.0">
                                  <children>
-                                    <ImageView fx:id="suspectedPersonImage" fitHeight="80.0" fitWidth="84.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
-                                    <Label fx:id="suspectedPersonUserName" text="suspectedPersonUserName">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="reportTime" text="reportTime" />
-                                    <Line endX="159.49998474121094" startX="-100.0" />
-                                    <Label fx:id="suspectedPersonRealName" text="suspectedPersonRealName">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Line endX="159.49998474121094" startX="-100.0" />
-                                    <Label fx:id="suspectedPersonStoreName" text="suspectedPersonStoreName">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Text fx:id="detailText" strokeType="OUTSIDE" strokeWidth="0.0">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <ToolBar prefHeight="65.0" prefWidth="261.0" style="-fx-background-color: #FFFFFF;">
+                                    <VBox>
+                                       <children>
+                                          <ImageView fx:id="suspectedPersonImage" fitHeight="75.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                             <VBox.margin>
+                                                <Insets bottom="20.0" />
+                                             </VBox.margin></ImageView>
+                                          <Label fx:id="suspectedPersonUserName" text="suspectedPersonUserName">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="reportTime" text="reportTime" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="15.0" right="10.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox prefWidth="100.0" spacing="5.0">
+                                       <children>
+                                          <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
+                                             <children>
+                                                <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                                <Label fx:id="suspectedPersonRealName" text="suspectedPersonRealName">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" top="10.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox layoutX="10.0" layoutY="56.0" prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
+                                             <children>
+                                                <SVGPath content="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z" />
+                                                <Label fx:id="suspectedPersonStoreName" text="suspectedPersonStoreName">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" top="10.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
+                                             <children>
+                                                <SVGPath content="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+                                                <Label text="ReportType">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" top="10.0" />
+                                             </padding>
+                                          </HBox>
+                                          <Label fx:id="detailText" lineSpacing="1.0" wrapText="true">
+                                             <VBox.margin>
+                                                <Insets bottom="15.0" right="5.0" top="15.0" />
+                                             </VBox.margin></Label>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" left="15.0" top="20.0" />
+                                       </VBox.margin>
+                                    </VBox>
+                                    <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="65.0" prefWidth="261.0" style="-fx-background-color: #FFFFFF;">
                                       <items>
-                                        <Button mnemonicParsing="false" onAction="#handleDismissBtn" text="DISMISS" />
-                                          <Button mnemonicParsing="false" onAction="#handleBanBtn" text="BAN" />
+                                          <Button mnemonicParsing="false" onAction="#handleBanBtn" style="-fx-background-color: error-color;" styleClass="contained-btn" text="BAN" />
+                                        <Button mnemonicParsing="false" onAction="#handleDismissBtn" style="-fx-text-fill: primary-color;" text="DISMISS" />
                                       </items>
                                     </ToolBar>
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
+                                 <padding>
+                                    <Insets right="15.0" top="70.0" />
+                                 </padding>
                               </VBox>
-                           </children></AnchorPane>
+                           </items>
+                        </SplitPane>
                      </content>
                 </Tab>
               </tabs>
             </TabPane>
          </children>
       </AnchorPane>
-   </children>
-</AnchorPane>
+   </items>
+</SplitPane>

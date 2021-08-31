@@ -144,27 +144,34 @@ public class Product implements Comparable<Product>{
         }
     }
 
-    public String toTsv(){
+    public String toCsv(int numCat){
         /*
          * "name,picture_path_1,details,price,stock,sub_category1," +
          * "sub_category2,sub_category3,sub_category4,sub_category5,sub_category6,store"
          */
-        StringBuilder stringBuilder = new StringBuilder();
+        StringJoiner stringJoiner = new StringJoiner(",");
+        int len = 0;
         for(Category cat: categories){
-            stringBuilder.append(cat.toTsv());
+            for(String str: cat.toCsv()) {
+                stringJoiner.add(str);
+                len++;
+            }
+        }
+        for (int i = len; i < numCat; i++) {
+            stringJoiner.add("");
         }
 
-        return name + "\t"
-                + id + "\t"
-                + price + "\t"
-                + store.getName() + "\t" // TODO: add id to store
-                + stock + "\t"
-                + details + "\t"
-                + rating + "\t"
-                + review + "\t"
-                + picturePath + "\t"
-                + rolloutDate.toString() + "\t"
-                + stringBuilder;
+        return "\"" + name.replace("\"", "\"\"") + "\"" + ","
+                + id + ","
+                + price + ","
+                + "\"" + store.getName() + "\"" + "," // TODO: add id to store
+                + stock + ","
+                + "\"" + details.replace("\"", "\"\"") + "\"" + ","
+                + rating + ","
+                + review + ","
+                + picturePath + ","
+                + rolloutDate.toString() + ","
+                + stringJoiner;
     }
 
     public void addSubCategory(String categoryName, String subCategoryName, String value){

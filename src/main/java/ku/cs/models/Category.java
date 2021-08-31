@@ -37,13 +37,15 @@ public class Category implements Comparable<Category>{
                 .toString();
     }
 
-    public String toTsv(){
-        StringJoiner stringJoiner = new StringJoiner("\t");
+    public List<String> toCsv(){
+        List<String> list = new ArrayList<>();
+
         for (SubCategory subCat: subCategories){
             String sc = name + ":" + subCat.getName() + ":" + subCat.getValue();
-            stringJoiner.add(sc);
+            list.add(sc);
         }
-        return stringJoiner.toString();
+
+        return list;
     }
 
     @Override

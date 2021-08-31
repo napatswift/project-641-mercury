@@ -1,14 +1,20 @@
 package ku.cs.controllers;
 
+import com.github.saacsos.FXRouter;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import com.github.saacsos.FXRouter;
-import javafx.scene.text.Text;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import ku.cs.models.AccountList;
 import ku.cs.models.Report;
 import ku.cs.models.ReportList;
@@ -33,26 +39,29 @@ public class AdminPageController {
             ,suspectedPersonUserName
             ,reportTime
             ,suspectedPersonRealName
-            ,suspectedPersonStoreName;
+            ,suspectedPersonStoreName
+            ,detailText;
     @FXML private ImageView imageView
             ,userImage
             ,suspectedPersonImage;
-    @FXML private ListView<User> userListView;;
+    @FXML private ListView<User> userListView;
     @FXML private ListView<Report> reportListView;
     @FXML private TabPane adminTP;
-    @FXML private Text detailText;
+    @FXML private VBox userLeftVBox, reportLeftVBox;
+    @FXML private Button userButton, categoryButton, reportButton, resetPasswordButton, logOutButton;
 
     @FXML
     public void initialize() throws IOException {
+        userLeftVBox.setVisible(false);
+        reportLeftVBox.setVisible(false);
+
         dataSource = (DataSource) FXRouter.getData();
         accountList = dataSource.getAccounts();
         User user = dataSource.getAccounts().getCurrAccount();
-        dataSource.parseReport(",");
+        dataSource.parseReport();
         reportList = dataSource.getReports();
+
         showAdmin(user);
-
-
-
         showUserListView();
         clearSelectedUser();
         handleSelectedUserListView();
@@ -66,15 +75,25 @@ public class AdminPageController {
         nameAdmin.setText(user.getName());
         role.setText(""+ user.getRole());
         imageView.setImage(new Image(user.getPicturePath()));
+        imageView.setClip(new Circle(37, 37, 37));
     }
 
+    private void resetBtn(Button btn){
+        Button [] buttons = {userButton, categoryButton, reportButton};
+        int idx = adminTP.getSelectionModel().getSelectedIndex();
+        buttons[idx].getStyleClass().removeAll("list-item-active-btn");
+        btn.getStyleClass().add("list-item-active-btn");
+    }
 
     private void showUserListView() throws IOException {
+        ObservableList<User> data = FXCollections.observableArrayList();
         for(User user : accountList.toListReverse()) {
             if(user.getRole() == User.Role.USER){
-                userListView.getItems().add(user);
+                data.add(user);
             }
         }
+        userListView.getItems().addAll(data);
+        userListView.setCellFactory(userListView -> new User.UserListCell());
         userListView.refresh();
     }
 
@@ -84,15 +103,16 @@ public class AdminPageController {
                     @Override
                     public void changed(ObservableValue<? extends User> observable,
                                         User oldValue, User newValue) {
-                        System.out.println(newValue + " is selected");
                         showSelectedUser(newValue);
                     }
                 });
     }
 
     private void showSelectedUser(User user) {
+        userLeftVBox.setVisible(true);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         userImage.setImage(new Image(user.getPicturePath()));
+        userImage.setClip(new Circle(37, 37, 37));
         userName.setText(user.getUsername());
         realNameUser.setText(user.getName());
         lastLogin.setText("last login "+user.getLoginDateTime().format(formatter));
@@ -112,28 +132,25 @@ public class AdminPageController {
 
     private void showReportListView() throws IOException {
         reportListView.getItems().addAll(reportList.toList());
+        reportListView.setCellFactory(reportListView -> new Report.ReportListCell());
         reportListView.refresh();
     }
 
     private void handleSelectedReportListView() {
         reportListView.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener<Report>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Report> observable,
-                                        Report oldValue, Report newValue) {
-                        System.out.println(newValue + " is selected");
-                        showSelectedReport(newValue);
-                    }
-                });
+                (observable, oldValue, newValue) -> showSelectedReport(newValue));
     }
 
     private void showSelectedReport(Report report) {
+        reportLeftVBox.setVisible(true);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         suspectedPersonImage.setImage(new Image(report.getSuspectedPerson().getPicturePath()));
+        suspectedPersonImage.setClip(new Circle(37, 37, 37));
         suspectedPersonRealName.setText(report.getSuspectedPerson().getUsername());
         suspectedPersonUserName.setText(report.getSuspectedPerson().getName());
         reportTime.setText("report time "+report.getReportDateTime().format(formatter));
         detailText.setText(report.getDetail());
+
         if(report.getSuspectedPerson().getHasStore()){
             suspectedPersonStoreName.setText(report.getSuspectedPerson().getStoreName());
         }
@@ -161,19 +178,23 @@ public class AdminPageController {
 
     @FXML
     public void handleCategoryButton(ActionEvent actionEvent) {
+        resetBtn((Button) actionEvent.getSource());
         adminTP.getSelectionModel().select(1);
     }
 
     @FXML
     public void handleUserButton(ActionEvent actionEvent) {
+        resetBtn((Button) actionEvent.getSource());
         adminTP.getSelectionModel().select(0);
     }
 
     @FXML
     public void handleReportButton(ActionEvent actionEvent) {
+        resetBtn((Button) actionEvent.getSource());
         adminTP.getSelectionModel().select(2);
     }
 
+    @FXML
     public void handleResetPasswordButton(ActionEvent actionEvent) {
         try {
             FXRouter.goTo("reset_password", dataSource);
