@@ -53,8 +53,8 @@ public class Review {
     // productId,title,detail,rating,reviewerUsername
     public String toCsv(){
         return productId + ","
-                + title + ","
-                + detail + ","
+                + "\"" + title.replace("\"", "\"\"") + "\"" + ","
+                + "\"" + detail.replace("\"", "\"\"") + "\"" + ","
                 + rating + ","
                 + author.getUsername();
     }

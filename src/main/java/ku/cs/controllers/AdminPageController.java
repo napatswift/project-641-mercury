@@ -58,7 +58,7 @@ public class AdminPageController {
         dataSource = (DataSource) FXRouter.getData();
         accountList = dataSource.getAccounts();
         User user = dataSource.getAccounts().getCurrAccount();
-        dataSource.parseReport(",");
+        dataSource.parseReport();
         reportList = dataSource.getReports();
 
         showAdmin(user);

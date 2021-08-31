@@ -164,11 +164,10 @@ public class User implements Comparable<User>{
     }
 
     public String toCsv(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         //username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
         return username + ","
                 + role + ","
-                + name + ","
+                + "\"" + name + "\"" + ","
                 + password + ","
                 + picturePath + ","
                 + (loginDateTime == null ? null : loginDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)) + ","
