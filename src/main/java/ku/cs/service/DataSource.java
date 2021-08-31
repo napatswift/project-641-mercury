@@ -185,9 +185,7 @@ public class DataSource {
         return reports;
     }
 
-    public StoreList getStores() {
-        return stores;
-    }
+    public StoreList getStores() { return stores; }
 
     public String getDirectoryPath() {
         return directoryPath;

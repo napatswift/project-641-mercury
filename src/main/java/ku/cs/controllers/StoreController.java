@@ -17,6 +17,12 @@ public class StoreController {
     TextField nameStoreTF;
     private DataSource dataSource;
 
+    public void initialize() {
+        dataSource = (DataSource) FXRouter.getData();
+        dataSource.parseStore();
+        this.stores = dataSource.getStores();
+    }
+
     @FXML
     public void handleBack(ActionEvent event) {
         try {
