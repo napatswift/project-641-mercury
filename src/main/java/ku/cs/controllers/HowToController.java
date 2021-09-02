@@ -42,45 +42,6 @@ public class HowToController {
         }
     }
 
-    @FXML
-    public void handleHowToUse(ActionEvent event){
-        try {
-            FXRouter.goTo("how_to_use");
-        } catch (IOException e) {
-            System.err.println("ไปที่หน้า HowToUse ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
-        }
-    }
-
-    @FXML
-    public void handleMarket(ActionEvent event){
-        try {
-            FXRouter.goTo("how_to_market");
-        } catch (IOException e) {
-            System.err.println("ไปที่หน้า HowToMarket ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
-        }
-    }
-
-    @FXML
-    public void handleSeller(ActionEvent event){
-        try {
-            FXRouter.goTo("how_to_seller");
-        } catch (IOException e) {
-            System.err.println("ไปที่หน้า HowToSeller ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
-        }
-    }
-
-    @FXML
-    public void handleRegister(ActionEvent event){
-        try {
-            FXRouter.goTo("how_to_register");
-        } catch (IOException e) {
-            System.err.println("ไปที่หน้า HowToSeller ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
-        }
-    }
 
     @FXML
     private ImageView image_home_page,image_sign_up_page,image_sign_up_page_2;
