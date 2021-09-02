@@ -147,7 +147,7 @@ public class DataSource {
             e.printStackTrace();
         }
     }
-
+              
     public void parseStore(){
         stores = new StoreList();
         try{
