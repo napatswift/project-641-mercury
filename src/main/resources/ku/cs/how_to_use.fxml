@@ -17,9 +17,6 @@
                <children>
                   <Button fx:id="backBtn" layoutX="23.0" layoutY="18.0" mnemonicParsing="false" onAction="#handleBack" text="back" />
                   <Label layoutX="54.0" layoutY="57.0" text="How-To">
-                     <font>
-                        <Font size="60.0" />
-                     </font>
                   </Label>
                   <Button layoutX="4.0" layoutY="265.0" mnemonicParsing="false" onAction="#handleRegister" prefHeight="48.0" prefWidth="296.0" text="Register">
                      <font>
