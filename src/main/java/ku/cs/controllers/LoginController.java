@@ -106,7 +106,7 @@ public class LoginController {
 
     public void handleHowTo(ActionEvent event){
         try {
-            FXRouter.goTo("how_to_use");
+            FXRouter.goTo("how_to");
         } catch (IOException e) {
             System.err.println("ไปที่หน้า How To ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
