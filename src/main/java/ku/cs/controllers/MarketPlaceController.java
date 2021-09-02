@@ -314,6 +314,25 @@ public class MarketPlaceController {
         populateProduct(10);
     }
 
+    @FXML
+    public void handleMyStore(ActionEvent event){
+        if(!dataSource.getAccounts().getCurrAccount().getHasStore()){
+            try {
+                FXRouter.goTo("create_store", dataSource);
+            }catch (IOException e){
+                System.err.println("ไปที่หน้า create_store ไม่ได้");
+                System.err.println("ตรวจสอบ Route");
+            }
+        }else{
+            try {
+                FXRouter.goTo("my_store", dataSource);
+            }catch (IOException e){
+                System.err.println("ไปที่หน้า my_store ไม่ได้");
+                System.err.println("ตรวจสอบ Route");
+            }
+        }
+    }
+
     // marketplace page
     private void populateProduct(int amount){
         int i = 0;

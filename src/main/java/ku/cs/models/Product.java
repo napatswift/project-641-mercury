@@ -125,6 +125,8 @@ public class Product implements Comparable<Product>{
         this.name = name;
     }
 
+    public void setStore(Store store) { this.store = store; }
+
     public boolean isInStock(){
         if (this.stock > 0){
             return true;

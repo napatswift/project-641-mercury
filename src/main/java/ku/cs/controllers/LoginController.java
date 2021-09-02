@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class LoginController {
     private AccountList accountList;
-    private DataSource dataSource;
+    DataSource dataSource;
 
     @FXML
     private TextField usernameTF, passwordTF;
