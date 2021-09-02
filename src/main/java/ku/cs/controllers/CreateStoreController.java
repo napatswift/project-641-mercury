@@ -10,7 +10,7 @@ import ku.cs.service.DataSource;
 
 import java.io.IOException;
 
-public class StoreController {
+public class CreateStoreController {
     private StoreList stores;
 
     @FXML
@@ -48,8 +48,22 @@ public class StoreController {
     }
 
     @FXML
-    public void handleSubmit(ActionEvent event){
+    public void handleSubmit(ActionEvent event) throws IOException {
+        String nameStore = nameStoreTF.getText();
+        Store newStore = new Store(nameStore, dataSource.getAccounts().getCurrAccount().getUsername());
+        newStore.toCsv();
+        dataSource.getAccounts().getCurrAccount().createStore(nameStore);
+        dataSource.saveAccount();
+
+        try {
+            FXRouter.goTo("my_store",dataSource);
+        } catch (IOException e) {
+            System.err.println("ไปที่หน้า my_store ไม่ได้");
+            System.err.println("ให้ตรวจสอบการกำหนด route");
+        }
     }
+
+
 
 
 

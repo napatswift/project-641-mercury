@@ -162,6 +162,7 @@ public class User implements Comparable<User>{
     public void createStore(String storeName){
         if(this.store == null){
             this.store = new Store(storeName, username);
+            hasStore = true;
         }
     }
     public void openStore(String name){
