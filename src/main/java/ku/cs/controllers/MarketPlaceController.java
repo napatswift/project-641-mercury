@@ -23,6 +23,7 @@ import ku.cs.service.DataSource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Set;
 
 public class MarketPlaceController {
     @FXML
@@ -58,7 +59,7 @@ public class MarketPlaceController {
     TextArea detailReviewTA;
     @FXML
     HBox starsHBox,
-        reviewRatingPanelStarHBox;
+        reviewRatingPanelStarHBox, categoriesMenuHBox;
     @FXML
     VBox reviewVBox, categoriesVBox;
 
@@ -67,7 +68,7 @@ public class MarketPlaceController {
     private ComponentBuilder componentBuilder = new ComponentBuilder();
     private double upperBoundParsed = Double.MAX_VALUE, lowerBoundParsed = 0;
     private int newReviewRating = -1;
-    private User currUser = new User("napat", "some");
+    private User currUser;
 
     private ProductList productList;
     private ReviewList reviewList;
@@ -310,22 +311,26 @@ public class MarketPlaceController {
     }
 
     @FXML
-    public void handleMyStore(ActionEvent event){
-        if(!dataSource.getAccounts().getCurrAccount().getHasStore()){
+    public void handleMyStore(ActionEvent event) {
+        if (!dataSource.getAccounts().getCurrAccount().getHasStore()) {
             try {
                 FXRouter.goTo("create_store", dataSource);
-            }catch (IOException e){
+            } catch (IOException e) {
                 System.err.println("ไปที่หน้า create_store ไม่ได้");
                 System.err.println("ตรวจสอบ Route");
             }
-        }else{
+        } else {
             try {
                 FXRouter.goTo("my_store", dataSource);
-            }catch (IOException e){
+            } catch (IOException e) {
                 System.err.println("ไปที่หน้า my_store ไม่ได้");
                 System.err.println("ตรวจสอบ Route");
             }
         }
+    }
+
+    private void handleFilterByCategory(MouseEvent e){
+        System.out.println("clicked");
     }
 
     // marketplace page
@@ -346,18 +351,23 @@ public class MarketPlaceController {
         productIndex += amount;
     }
 
-    @FXML
-    public void initialize() throws IOException {
-        dataSource = (DataSource) FXRouter.getData();
-        dataSource.parseProduct();
-        dataSource.parseReview();
-        dataSource.saveCategory();
-        productList = dataSource.getProducts();
-        reviewList = dataSource.getReviews();
-        currUser = dataSource.getAccounts().getCurrAccount();
-        productList.sort();
-        populateProduct(15);
-        seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
+    private void populateCategory(Set<String> categories){
+        int i = 0;
+        VBox box = new VBox();
+        box.setSpacing(3);
+        for(String category: categories){
+            if (i != 0 && ++i % 5 == 0){
+                categoriesMenuHBox.getChildren().add(box);
+                box = new VBox();
+                box.setSpacing(3);
+            }
+            Button categoryBtn = new Button(category);
+            categoryBtn.setStyle("-fx-text-fill: secondary-text-color");
+            categoryBtn.setId(category);
+            categoryBtn.setOnMouseReleased(this::handleFilterByCategory);
+            box.getChildren().add(categoryBtn);
+        }
+        categoriesMenuHBox.getChildren().add(box);
     }
 
     public void handleLogOutBtn(ActionEvent actionEvent) {
@@ -367,5 +377,25 @@ public class MarketPlaceController {
             System.err.println("ไปที่หน้า login ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
+    }
+
+    @FXML
+    public void initialize() throws IOException {
+        //dataSource = (DataSource) FXRouter.getData();
+        //Dev
+        dataSource = new DataSource("data");
+        dataSource.parseAll();
+        dataSource.getAccounts().login("nptswt", "napat123");
+
+        populateCategory(dataSource.getCategories());
+        dataSource.parseProduct();
+        dataSource.parseReview();
+        dataSource.saveCategory();
+        productList = dataSource.getProducts();
+        reviewList = dataSource.getReviews();
+        currUser = dataSource.getAccounts().getCurrAccount();
+        productList.sort();
+        populateProduct(15);
+        seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
     }
 }

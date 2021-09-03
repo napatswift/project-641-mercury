@@ -210,6 +210,10 @@ public class DataSource {
         return reviews;
     }
 
+    public Set<String> getCategories() {
+        return categories.keySet();
+    }
+
     public ReportList getReports() {
         return reports;
     }
