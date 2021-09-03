@@ -1,6 +1,7 @@
 module ku.cs {
     requires javafx.controls;
     requires javafx.fxml;
+    requires org.junit.jupiter.api;
     requires com.opencsv;
 
     opens ku.cs to javafx.fxml;
