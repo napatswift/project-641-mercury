@@ -1,6 +1,10 @@
 category,subcategory
+shirt,size
 pants,size
 pants,color
+car,seats
+car,wheels
+car,color
 jackets,color
 jackets,size
 jackets,sex

@@ -296,10 +296,10 @@ public class MarketPlaceController {
         translateTransition.setDuration(Duration.millis(200));
         translateTransition.setNode(bodyAP);
         if (!bodyToggle) {
-            translateTransition.setByY(100);
+            translateTransition.setByY(120);
             bodyToggle = true;
         } else{
-            translateTransition.setByY(-100);
+            translateTransition.setByY(-120);
             bodyToggle = false;
         }
         translateTransition.play();
@@ -356,7 +356,7 @@ public class MarketPlaceController {
         VBox box = new VBox();
         box.setSpacing(3);
         for(String category: categories){
-            if (i != 0 && ++i % 5 == 0){
+            if (i != 0 && i % 4 == 0){
                 categoriesMenuHBox.getChildren().add(box);
                 box = new VBox();
                 box.setSpacing(3);
@@ -366,6 +366,7 @@ public class MarketPlaceController {
             categoryBtn.setId(category);
             categoryBtn.setOnMouseReleased(this::handleFilterByCategory);
             box.getChildren().add(categoryBtn);
+            i++;
         }
         categoriesMenuHBox.getChildren().add(box);
     }
