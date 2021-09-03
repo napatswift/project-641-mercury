@@ -57,10 +57,10 @@ public class MarketPlaceController {
     @FXML
     TextArea detailReviewTA;
     @FXML
-    HBox starsHBox, shipHBox,
+    HBox starsHBox,
         reviewRatingPanelStarHBox;
     @FXML
-    VBox reviewVBox;
+    VBox reviewVBox, categoriesVBox;
 
     private boolean bodyToggle = false;
     private int productIndex = -1;
@@ -130,7 +130,7 @@ public class MarketPlaceController {
         // reset amount to 1
         amountTF.setText("1");
         // clear boxes
-        shipHBox.getChildren().clear();
+        categoriesVBox.getChildren().clear();
 
         populateReview();
 
@@ -165,13 +165,8 @@ public class MarketPlaceController {
         }
 
         // handling category
-        Category category = productList.getSelectedProduct().getCategory();
-        Label categoryLabel = new Label(category.getName());
-        categoryLabel.getStyleClass().add("subtitle1");
-        shipHBox.getChildren().add(categoryLabel);
-        for (SubCategory subCategory: category.getSubCategories()){
-            shipHBox.getChildren().add(componentBuilder.ship(subCategory.getName(), subCategory.getValue()));
-        }
+        for(Category category: productList.getSelectedProduct().getCategories())
+            categoriesVBox.getChildren().add(componentBuilder.categoryPane(category));
     }
 
     private void resetStar(){
@@ -337,10 +332,11 @@ public class MarketPlaceController {
         dataSource = (DataSource) FXRouter.getData();
         dataSource.parseProduct();
         dataSource.parseReview();
+        dataSource.saveCategory();
         productList = dataSource.getProducts();
         reviewList = dataSource.getReviews();
         currUser = dataSource.getAccounts().getCurrAccount();
-        productList.sort(ProductList.SortType.BY_ROLLOUT_DATE);
+        productList.sort();
         populateProduct(15);
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
     }

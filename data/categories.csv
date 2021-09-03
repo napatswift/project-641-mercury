@@ -1,4 +1,11 @@
 category,subcategory
+pants,size
+pants,color
+jackets,color
+jackets,size
+jackets,sex
 shoes,size
 shoes,color
 shoes,sex
+shoes,sport
+fashion,sex

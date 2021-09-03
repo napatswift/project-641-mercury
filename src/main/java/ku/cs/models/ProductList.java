@@ -5,7 +5,6 @@ import java.util.*;
 public class ProductList implements Iterable<Product>{
     private final List<Product> products;
     private Product selectedProduct;
-    private Collection<String> categories = new TreeSet<>();
 
     @Override
     public Iterator<Product> iterator() {
@@ -54,24 +53,16 @@ public class ProductList implements Iterable<Product>{
         this.selectedProduct = getProduct(id);
     }
 
-    public void sort(SortType sortType){
-        // TODO fix bug
-        if (sortType.equals(SortType.BY_ROLLOUT_DATE))
+    public void sort(SortType sortType) {
+        if (sortType.equals(SortType.BY_ROLLOUT_DATE)) {
+            products.sort(Comparator.comparing(Product::getId));
             products.sort(Comparator.comparing(Product::getRolloutDate));
-        else if (sortType.equals(SortType.BY_LOWEST))
+        } else if (sortType.equals(SortType.BY_LOWEST)){
             products.sort(Comparator.comparingDouble(Product::getPrice));
-        else if (sortType.equals(SortType.BY_HIGHEST)){
+        } else if (sortType.equals(SortType.BY_HIGHEST)){
             products.sort(Comparator.comparingDouble(Product::getPrice));
             Collections.reverse(products);
         }
-    }
-
-    public void addCategory(String category){
-        categories.add(category);
-    }
-
-    public Collection<String> getCategories() {
-        return categories;
     }
 
     public void sort(){
@@ -83,18 +74,19 @@ public class ProductList implements Iterable<Product>{
     }
 
 
-    public String toCsv(){
-        StringBuilder stringBuilder = new StringBuilder("name,product_id,price,store,stock,description,rating,reviews,image,rollout_date,");
+    public String toCsv(int numCategory){
+        StringBuilder stringBuilder =
+                new StringBuilder("name,product_id,price,store,stock,description,rating,reviews,image,rollout_date,");
         StringJoiner stringJoiner = new StringJoiner(",");
 
-        for (int i = 0; i < categories.size(); i++) {
+        for (int i = 0; i < numCategory; i++) {
             stringJoiner.add("category_" + i);
         }
 
         stringBuilder.append(stringJoiner);
         stringBuilder.append("\n");
         for(Product product: products) {
-            stringBuilder.append(product.toCsv(categories.size()));
+            stringBuilder.append(product.toCsv(numCategory));
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();

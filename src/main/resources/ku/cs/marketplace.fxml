@@ -26,7 +26,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="586.0" prefWidth="900.0" style="-fx-background-color: secondary-color;" stylesheets="@style/light.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.MarketPlaceController">
+<AnchorPane prefHeight="586.0" prefWidth="900.0" style="-fx-background-color: secondary-color;" stylesheets="@style/light.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.MarketPlaceController">
    <children>
       <AnchorPane prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="49.0">
          <children>
@@ -227,14 +227,11 @@
                                                             <Label fx:id="amountInStockLabel" styleClass="body1" text="Label" />
                                                          </children>
                                                       </HBox>
-                                                      <ScrollPane fitToHeight="true" hbarPolicy="NEVER" prefHeight="24.0" prefWidth="356.0" vbarPolicy="NEVER">
-                                                         <content>
-                                                            <HBox fx:id="shipHBox" alignment="CENTER_LEFT" spacing="5.0" />
-                                                         </content>
+                                                      <VBox fx:id="categoriesVBox" spacing="5.0">
                                                          <VBox.margin>
-                                                            <Insets bottom="10.0" top="10.0" />
+                                                            <Insets bottom="3.0" top="15.0" />
                                                          </VBox.margin>
-                                                      </ScrollPane>
+                                                      </VBox>
                                                       <HBox alignment="CENTER_LEFT" maxHeight="20.0" prefHeight="0.0" prefWidth="377.0" style="-fx-border-color: primary-color;">
                                                          <children>
                                                             <Button fx:id="decrease" mnemonicParsing="false" onAction="#handleAmountBtn" text="-" />

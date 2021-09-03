@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.AccessibleRole;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -68,6 +69,23 @@ public class ComponentBuilder {
         hBox.prefWidth(Region.USE_COMPUTED_SIZE);
         hBox.setAlignment(Pos.CENTER);
         return hBox;
+    }
+
+    public ScrollPane categoryPane(Category category){
+        HBox shipHBox = new HBox();
+        shipHBox.setSpacing(5);
+        shipHBox.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        shipHBox.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        ScrollPane scrollPane = new ScrollPane(shipHBox);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        Label categoryLabel = new Label(category.getName());
+        categoryLabel.getStyleClass().add("subtitle1");
+        shipHBox.getChildren().add(categoryLabel);
+        for (SubCategory subCategory: category.getSubCategories()){
+            shipHBox.getChildren().add(ship(subCategory.getName(), subCategory.getValue()));
+        }
+        return scrollPane;
     }
 
 
