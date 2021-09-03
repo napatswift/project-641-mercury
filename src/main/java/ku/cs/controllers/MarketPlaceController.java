@@ -5,16 +5,15 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import ku.cs.models.*;
@@ -58,7 +57,7 @@ public class MarketPlaceController {
     @FXML
     TextArea detailReviewTA;
     @FXML
-    HBox starsHBox,
+    HBox starsHBox, filerHBox,
         reviewRatingPanelStarHBox, categoriesMenuHBox;
     @FXML
     VBox reviewVBox, categoriesVBox;
@@ -69,6 +68,7 @@ public class MarketPlaceController {
     private double upperBoundParsed = Double.MAX_VALUE, lowerBoundParsed = 0;
     private int newReviewRating = -1;
     private User currUser;
+    private String filterCategory;
 
     private ProductList productList;
     private ReviewList reviewList;
@@ -330,7 +330,40 @@ public class MarketPlaceController {
     }
 
     private void handleFilterByCategory(MouseEvent e){
-        System.out.println("clicked");
+        filerHBox.getChildren().clear();
+        Button button = (Button) e.getSource();
+        Label filterLabel = new Label("Filter");
+        filterLabel.getStyleClass().add("subtitle1");
+        filerHBox.getChildren().add(filterLabel);
+
+        Label headerLabel = new Label(button.getId());
+        SVGPath closeSVG = new SVGPath();
+        closeSVG.setContent("M14.59 8L12 10.59 9.41 8 8 9.41 10.59 12 8 14.59 9.41 16 12 13.41 14.59" +
+                " 16 16 14.59 13.41 12 16 9.41 14.59 8zM12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47" +
+                " 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z");
+        closeSVG.setStyle("-fx-fill: primary-med-overlay");
+        HBox close = new HBox(closeSVG);
+        close.setOnMouseReleased(this::unselectFilter);
+        close.setCursor(Cursor.HAND);
+
+        HBox hBox = new HBox(headerLabel, close);
+        hBox.setSpacing(15);
+        hBox.setStyle("" +
+                "-fx-background-radius: 40;" +
+                "-fx-background-color: primary-overlay;" +
+                "-fx-border-color: primary-med-overlay;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-radius: 40");
+        hBox.setPadding(new Insets(5, 5, 5, 10));
+        hBox.prefWidth(Region.USE_COMPUTED_SIZE);
+        hBox.setAlignment(Pos.CENTER);
+        filerHBox.getChildren().add(hBox);
+        filterCategory = button.getId();
+    }
+
+    private void unselectFilter(MouseEvent e){
+        filterCategory = null;
+        filerHBox.getChildren().clear();
     }
 
     // marketplace page
@@ -338,8 +371,18 @@ public class MarketPlaceController {
         int i = 0;
         for(Product product: productList){
             // TODO: move to models
-            if (product.getPrice() > upperBoundParsed || product.getPrice() < lowerBoundParsed)
+            if (product.getPrice() > upperBoundParsed
+                    || product.getPrice() < lowerBoundParsed)
                 continue;
+            if (filterCategory != null) {
+                boolean isFound = false;
+                for (Category category : product.getCategories()) {
+                    if (category.getName().equals(filterCategory))
+                        isFound = true;
+                }
+                if (!isFound)
+                    continue;
+            }
             if (i > productIndex && i <= productIndex + amount) {
                 VBox card = componentBuilder.productCard(product.getName(), product.getPrice(),
                         product.getPicturePath(), product.getId());
