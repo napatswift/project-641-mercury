@@ -47,8 +47,7 @@ public class MarketPlaceController {
     FlowPane productFlowPane;
     @FXML
     Button seeMoreBtn,
-            starBtn1, starBtn2, starBtn3, starBtn4, starBtn5,
-            submitReviewBtn;
+            starBtn1, starBtn2, starBtn3, starBtn4, starBtn5;
     @FXML
     MenuButton sortingMB;
     @FXML
@@ -256,6 +255,18 @@ public class MarketPlaceController {
 
     // handler
     @FXML
+    private void handleReportProductBtn(MouseEvent event){
+        if (dataSource.getReports() == null)
+            dataSource.parseReport();
+        dataSource.getReports().setCurrReport(new Report(currUser, dataSource.getProducts().getSelectedProduct()));
+        try {
+            FXRouter.goTo("reporting", dataSource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void handleAmountBtn(ActionEvent event){
         setBodyToggle();
         Button button = (Button) event.getSource();
@@ -423,6 +434,7 @@ public class MarketPlaceController {
                 for (Category category : product.getCategories()) {
                     if (category.getName().equals(filterCategory)){
                         isFound = true;
+                        break;
                     }
                 }
                 if (!isFound)
@@ -470,7 +482,11 @@ public class MarketPlaceController {
 
     @FXML
     public void initialize() throws IOException {
-        dataSource = (DataSource) FXRouter.getData();
+        //dataSource = (DataSource) FXRouter.getData();
+        dataSource = new DataSource("data");
+        dataSource.parseAccount();
+        dataSource.getAccounts().login("nptswt", "napat123");
+
         dataSource.parseProduct();
         populateCategory(dataSource.getCategories());
         dataSource.parseReview();

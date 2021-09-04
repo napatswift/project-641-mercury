@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Report {
 
-    private final ReportType type;
+    private ReportType type;
     private User suspectedPerson;
     private final User reporter;
     private LocalDateTime reportDateTime;
@@ -28,9 +28,9 @@ public class Report {
         this.detail = detail;
     }
 
-    public Report(ReportType type, User reporter) {
-        this.type = type;
+    public Report(User reporter, Product product) {
         this.reporter = reporter;
+        this.product = product;
     }
 
     public boolean checkReport(Report report){
@@ -40,6 +40,10 @@ public class Report {
     }
 
     //setter
+    public void setType(ReportType type) {
+        this.type = type;
+    }
+
     public void setDetail(String detail) {
 
         if (detail.isBlank()){
