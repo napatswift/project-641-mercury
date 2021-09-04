@@ -65,7 +65,7 @@ public class ComponentBuilder {
                 "-fx-border-color: primary-dark-color;" +
                 "-fx-border-width: 1;" +
                 "-fx-border-radius: 40");
-        hBox.setPadding(new Insets(5, 15, 5, 15));
+        hBox.setPadding(new Insets(8, 15, 8, 15));
         hBox.prefWidth(Region.USE_COMPUTED_SIZE);
         hBox.setAlignment(Pos.CENTER);
         return hBox;
@@ -82,12 +82,12 @@ public class ComponentBuilder {
         Label categoryLabel = new Label(category.getName());
         categoryLabel.getStyleClass().add("subtitle1");
         shipHBox.getChildren().add(categoryLabel);
+        shipHBox.setAlignment(Pos.CENTER_LEFT);
         for (SubCategory subCategory: category.getSubCategories()){
             shipHBox.getChildren().add(ship(subCategory.getName(), subCategory.getValue()));
         }
         return scrollPane;
     }
-
 
     public VBox reviewCard(Review review){
 
