@@ -89,7 +89,7 @@ public class MarketPlaceController {
         }
         productFlowPane.getChildren().clear();
         int temp = productIndex;
-        productIndex = 0;
+        productIndex = -1;
         populateProduct(temp);
     }
 
@@ -121,7 +121,7 @@ public class MarketPlaceController {
         }
         productFlowPane.getChildren().clear();
         int temp = productIndex;
-        productIndex = 0;
+        productIndex = -1;
         populateProduct(temp);
     }
 
@@ -358,12 +358,23 @@ public class MarketPlaceController {
         hBox.prefWidth(Region.USE_COMPUTED_SIZE);
         hBox.setAlignment(Pos.CENTER);
         filerHBox.getChildren().add(hBox);
+
         filterCategory = button.getId();
+
+        productFlowPane.getChildren().clear();
+        int temp = productIndex;
+        productIndex = -1;
+        populateProduct(temp);
     }
 
     private void unselectFilter(MouseEvent e){
         filterCategory = null;
         filerHBox.getChildren().clear();
+
+        productFlowPane.getChildren().clear();
+        int temp = productIndex;
+        productIndex = -1;
+        populateProduct(temp);
     }
 
     // marketplace page
@@ -377,8 +388,9 @@ public class MarketPlaceController {
             if (filterCategory != null) {
                 boolean isFound = false;
                 for (Category category : product.getCategories()) {
-                    if (category.getName().equals(filterCategory))
+                    if (category.getName().equals(filterCategory)){
                         isFound = true;
+                    }
                 }
                 if (!isFound)
                     continue;
