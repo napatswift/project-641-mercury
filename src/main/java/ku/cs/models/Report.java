@@ -33,14 +33,13 @@ public class Report {
         this.reporter = reporter;
     }
 
-    public User getReporter() {
-        return reporter;
+    public boolean checkReport(Report report){
+        if(report == this)
+            return true;
+        return false;
     }
 
-    public ReportType getType() {
-        return type;
-    }
-
+    //setter
     public void setDetail(String detail) {
 
         if (detail.isBlank()){
@@ -61,6 +60,7 @@ public class Report {
         this.product = null;
     }
 
+    //getter
     public String getDetail() {
         return detail;
     }
@@ -79,6 +79,24 @@ public class Report {
 
     public Product getProduct() {
         return product;
+    }
+
+    public User getReporter() {
+        return reporter;
+    }
+
+    public ReportType getType() {
+        return type;
+    }
+
+    public String toCSV() {
+        return "" + type + ","
+                + suspectedPerson.getUsername() + ","
+                + reporter.getUsername() + ","
+                + (reportDateTime == null ? null : reportDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)) + ","
+                + null + "," //ยังไม่ทำ productID
+                + null + "," //ยังไม่ทำ reviewID
+                + "\"" + detail.replace("\"", "\"\"") + "\"";
     }
 
     public static class ReportListCell extends ListCell<Report> {

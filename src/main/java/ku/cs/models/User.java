@@ -36,6 +36,8 @@ public class User implements Comparable<User>{
         }
     }
 
+    public User(){}
+
     public User(String username, String name){
         this.username = username;
         this.name = name;

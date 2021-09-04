@@ -29,6 +29,7 @@ public class AdminPageController {
     private DataSource dataSource;
     private AccountList accountList;
     private ReportList reportList;
+    private Report selectReport;
 
     @FXML private Label nameAdmin
             ,role
@@ -136,31 +137,49 @@ public class AdminPageController {
         reportListView.refresh();
     }
 
+    private void removeReportFormReportListView(Report report) throws IOException {
+        if(selectReport != null) {
+            reportList.removeReport(report);
+            dataSource.saveReport();
+            dataSource.parseReport();
+            reportList = dataSource.getReports();
+            
+            reportListView.getItems().clear();
+            showReportListView();
+            clearSelectedReport();
+            handleSelectedReportListView();
+        }
+    }
+
     private void handleSelectedReportListView() {
         reportListView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showSelectedReport(newValue));
     }
 
     private void showSelectedReport(Report report) {
-        reportLeftVBox.setVisible(true);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        suspectedPersonImage.setImage(new Image(report.getSuspectedPerson().getPicturePath()));
-        suspectedPersonImage.setClip(new Circle(37, 37, 37));
-        suspectedPersonRealName.setText(report.getSuspectedPerson().getUsername());
-        suspectedPersonUserName.setText(report.getSuspectedPerson().getName());
-        reportTime.setText("report time "+report.getReportDateTime().format(formatter));
-        detailText.setText(report.getDetail());
 
-        if(report.getSuspectedPerson().getHasStore()){
-            suspectedPersonStoreName.setText(report.getSuspectedPerson().getStoreName());
+        reportLeftVBox.setVisible(true);
+        if(report != null) {
+            selectReport = report;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            suspectedPersonImage.setImage(new Image(report.getSuspectedPerson().getPicturePath()));
+            suspectedPersonImage.setClip(new Circle(37, 37, 37));
+            suspectedPersonRealName.setText(report.getSuspectedPerson().getUsername());
+            suspectedPersonUserName.setText(report.getSuspectedPerson().getName());
+            reportTime.setText("report time " + report.getReportDateTime().format(formatter));
+            detailText.setText(report.getDetail());
+
+            if (report.getSuspectedPerson().getHasStore()) {
+                suspectedPersonStoreName.setText(report.getSuspectedPerson().getStoreName());
+            } else
+                suspectedPersonStoreName.setText("This User Don't Have Store");
         }
-        else
-            suspectedPersonStoreName.setText("This User Don't Have Store");
     }
 
     private void clearSelectedReport() {
         suspectedPersonUserName.setText("");
         suspectedPersonRealName.setText("");
+        suspectedPersonImage.setImage(null);
         reportTime.setText("");
         suspectedPersonStoreName.setText("");
         detailText.setText("");
@@ -210,9 +229,14 @@ public class AdminPageController {
     public void handleAddSubCategoryButton(ActionEvent actionEvent) {
     }
 
-    public void handleDismissBtn(ActionEvent actionEvent) {
+    public void handleDismissBtn(ActionEvent actionEvent) throws IOException {
+        removeReportFormReportListView(selectReport);
     }
 
-    public void handleBanBtn(ActionEvent actionEvent) {
+    public void handleBanBtn(ActionEvent actionEvent) throws IOException {
+        if(selectReport != null && selectReport.getSuspectedPerson().setIsBannedBy(dataSource.getAccounts().getCurrAccount())) {
+            removeReportFormReportListView(selectReport);
+            dataSource.saveAccount();
+        }
     }
 }
