@@ -14,6 +14,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import ku.cs.models.AccountList;
 import ku.cs.models.Report;
@@ -30,6 +31,7 @@ public class AdminPageController {
     private AccountList accountList;
     private ReportList reportList;
     private Report selectReport;
+    private User selectUser,adminUser;
 
     @FXML private Label nameAdmin
             ,role
@@ -41,7 +43,8 @@ public class AdminPageController {
             ,reportTime
             ,suspectedPersonRealName
             ,suspectedPersonStoreName
-            ,detailText;
+            ,detailText
+            , statusUserBan;
     @FXML private ImageView imageView
             ,userImage
             ,suspectedPersonImage;
@@ -49,7 +52,7 @@ public class AdminPageController {
     @FXML private ListView<Report> reportListView;
     @FXML private TabPane adminTP;
     @FXML private VBox userLeftVBox, reportLeftVBox;
-    @FXML private Button userButton, categoryButton, reportButton, resetPasswordButton, logOutButton;
+    @FXML private Button userButton, categoryButton, reportButton, resetPasswordButton, logOutButton,banAndUnbanBtn;
 
     @FXML
     public void initialize() throws IOException {
@@ -58,11 +61,11 @@ public class AdminPageController {
 
         dataSource = (DataSource) FXRouter.getData();
         accountList = dataSource.getAccounts();
-        User user = dataSource.getAccounts().getCurrAccount();
+        adminUser = dataSource.getAccounts().getCurrAccount();
         dataSource.parseReport();
         reportList = dataSource.getReports();
 
-        showAdmin(user);
+        showAdmin(adminUser);
         showUserListView();
         clearSelectedUser();
         handleSelectedUserListView();
@@ -110,18 +113,32 @@ public class AdminPageController {
     }
 
     private void showSelectedUser(User user) {
-        userLeftVBox.setVisible(true);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        userImage.setImage(new Image(user.getPicturePath()));
-        userImage.setClip(new Circle(37, 37, 37));
-        userName.setText(user.getUsername());
-        realNameUser.setText(user.getName());
-        lastLogin.setText("last login "+user.getLoginDateTime().format(formatter));
-        if(user.getHasStore()){
-            storeName.setText(user.getStoreName());
+        if(user != null) {
+            selectUser = user;
+            userLeftVBox.setVisible(true);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            userImage.setImage(new Image(user.getPicturePath()));
+            userImage.setClip(new Circle(37, 37, 37));
+            userName.setText(user.getUsername());
+            realNameUser.setText(user.getName());
+            lastLogin.setText("last login " + user.getLoginDateTime().format(formatter));
+            if (user.getHasStore()) {
+                storeName.setText(user.getStoreName());
+            } else
+                storeName.setText("This User Don't Have Store");
+            if(!user.isBanned()){
+                banAndUnbanBtn.setText("Ban");
+                statusUserBan.setText("Not Banned");
+                statusUserBan.setTextFill(Color.BLUE);
+                banAndUnbanBtn.setTextFill(Color.RED);
+            }
+            else{
+                banAndUnbanBtn.setText("Unban");
+                statusUserBan.setText("Banned");
+                statusUserBan.setTextFill(Color.RED);
+                banAndUnbanBtn.setTextFill(Color.BLUE);
+            }
         }
-        else
-            storeName.setText("This User Don't Have Store");
     }
 
     private void clearSelectedUser() {
@@ -143,7 +160,7 @@ public class AdminPageController {
             dataSource.saveReport();
             dataSource.parseReport();
             reportList = dataSource.getReports();
-            
+
             reportListView.getItems().clear();
             showReportListView();
             clearSelectedReport();
@@ -234,9 +251,20 @@ public class AdminPageController {
     }
 
     public void handleBanBtn(ActionEvent actionEvent) throws IOException {
-        if(selectReport != null && selectReport.getSuspectedPerson().setIsBannedBy(dataSource.getAccounts().getCurrAccount())) {
+        if(selectReport != null && selectReport.getSuspectedPerson().setIsBannedBy(adminUser)) {
             removeReportFormReportListView(selectReport);
             dataSource.saveAccount();
         }
+    }
+
+    public void handleBanAndUnbanBtn(ActionEvent actionEvent) {
+        if(!selectUser.isBanned()){
+            selectUser.setIsBannedBy(adminUser);
+        }
+        else{
+            selectUser.setIsUnbannedBy(adminUser);
+        }
+        dataSource.saveAccount();
+        showSelectedUser(selectUser);
     }
 }

@@ -36,8 +36,6 @@ public class User implements Comparable<User>{
         }
     }
 
-    public User(){}
-
     public User(String username, String name){
         this.username = username;
         this.name = name;
@@ -138,6 +136,10 @@ public class User implements Comparable<User>{
 
     public Boolean getHasStore() {return hasStore;}
 
+    public boolean isBanned() {
+        return isBanned;
+    }
+
     //setter
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
@@ -155,6 +157,15 @@ public class User implements Comparable<User>{
     public boolean setIsBannedBy(User other){
         if (other.getRole() == Role.ADMIN & this.role == Role.USER){
             this.isBanned = true;
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    public boolean setIsUnbannedBy(User other){
+        if (other.getRole() == Role.ADMIN & this.role == Role.USER){
+            this.isBanned = false;
             return true;
         } else{
             return false;
