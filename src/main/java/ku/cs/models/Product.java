@@ -53,6 +53,10 @@ public class Product implements Comparable<Product>{
                 + picturePath).toURI().toString();
     }
 
+    public ArrayList<Category> getCategories() {
+        return categories;
+    }
+
     public Category getCategory(int index) {
         return categories.get(index);
     }

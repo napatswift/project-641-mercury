@@ -5,16 +5,15 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import ku.cs.models.*;
@@ -23,6 +22,7 @@ import ku.cs.service.DataSource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Set;
 
 public class MarketPlaceController {
     @FXML
@@ -57,17 +57,18 @@ public class MarketPlaceController {
     @FXML
     TextArea detailReviewTA;
     @FXML
-    HBox starsHBox, shipHBox,
-        reviewRatingPanelStarHBox;
+    HBox starsHBox, filerHBox,
+        reviewRatingPanelStarHBox, categoriesMenuHBox;
     @FXML
-    VBox reviewVBox;
+    VBox reviewVBox, categoriesVBox;
 
     private boolean bodyToggle = false;
     private int productIndex = -1;
-    private ComponentBuilder componentBuilder = new ComponentBuilder();
+    private final ComponentBuilder componentBuilder = new ComponentBuilder();
     private double upperBoundParsed = Double.MAX_VALUE, lowerBoundParsed = 0;
     private int newReviewRating = -1;
-    private User currUser = new User("napat", "some");
+    private User currUser;
+    private String filterCategory;
 
     private ProductList productList;
     private ReviewList reviewList;
@@ -88,8 +89,8 @@ public class MarketPlaceController {
         }
         productFlowPane.getChildren().clear();
         int temp = productIndex;
-        productIndex = 0;
-        populateProduct(temp);
+        productIndex = -1;
+        populateProduct(temp + 1);
     }
 
     private void filterProduct(){
@@ -113,6 +114,17 @@ public class MarketPlaceController {
         }
     }
 
+    private void setBodyToggle(){
+        if (!bodyToggle)
+            return;
+        TranslateTransition translateTransition = new TranslateTransition();
+        translateTransition.setDuration(Duration.millis(200));
+        translateTransition.setNode(bodyAP);
+        translateTransition.setByY(-120);
+        bodyToggle = false;
+        translateTransition.play();
+    }
+
     @FXML
     private void handleFilter(KeyEvent ke){
         if( ke.getCode() == KeyCode.ENTER){
@@ -120,8 +132,8 @@ public class MarketPlaceController {
         }
         productFlowPane.getChildren().clear();
         int temp = productIndex;
-        productIndex = 0;
-        populateProduct(temp);
+        productIndex = -1;
+        populateProduct(temp + 1);
     }
 
     // product page builder
@@ -130,7 +142,7 @@ public class MarketPlaceController {
         // reset amount to 1
         amountTF.setText("1");
         // clear boxes
-        shipHBox.getChildren().clear();
+        categoriesVBox.getChildren().clear();
 
         populateReview();
 
@@ -145,6 +157,7 @@ public class MarketPlaceController {
 
         // set bread crumbs info
         categoryBreadcrumbsLabel.setText(productList.getSelectedProduct().getCategory().getName());
+        categoryBreadcrumbsLabel.setOnMouseReleased(this::handleCategoryBreadcrumbsLabel);
         productNameBreadcrumbsLabel.setText(productList.getSelectedProduct().getName());
 
         // handling in stock label and icon
@@ -165,13 +178,13 @@ public class MarketPlaceController {
         }
 
         // handling category
-        Category category = productList.getSelectedProduct().getCategory();
-        Label categoryLabel = new Label(category.getName());
-        categoryLabel.getStyleClass().add("subtitle1");
-        shipHBox.getChildren().add(categoryLabel);
-        for (SubCategory subCategory: category.getSubCategories()){
-            shipHBox.getChildren().add(componentBuilder.ship(subCategory.getName(), subCategory.getValue()));
-        }
+        for(Category category: productList.getSelectedProduct().getCategories())
+            categoriesVBox.getChildren().add(componentBuilder.categoryPane(category));
+    }
+
+    private void handleCategoryBreadcrumbsLabel(MouseEvent event){
+        Label label = (Label) event.getSource();
+        setFilterCategory(label.getText());
     }
 
     private void resetStar(){
@@ -190,6 +203,7 @@ public class MarketPlaceController {
 
     @FXML
     private void selectRatingStar(ActionEvent e){
+        setBodyToggle();
         Button star = (Button) e.getSource();
         resetStar();
         int rating = Integer.parseInt(star.getId().toCharArray()[7] + "");
@@ -243,6 +257,7 @@ public class MarketPlaceController {
     // handler
     @FXML
     private void handleAmountBtn(ActionEvent event){
+        setBodyToggle();
         Button button = (Button) event.getSource();
         String amountStr = amountTF.getText();
         int amount;
@@ -267,11 +282,13 @@ public class MarketPlaceController {
 
     @FXML
     private void handleMargetPlaceBtn(MouseEvent e){
+        setBodyToggle();
         productTP.getSelectionModel().select(0);
     }
 
     @FXML
     private void handleSubmitReviewBtn(ActionEvent e){
+        setBodyToggle();
         //TODO user can only review one time on a product
         String title = reviewTitleTF.getText();
         String detail = detailReviewTA.getText();
@@ -286,6 +303,7 @@ public class MarketPlaceController {
 
     @FXML
     private void handleProductCard(MouseEvent event) {
+        setBodyToggle();
         VBox vBox = (VBox) event.getSource();
         productList.setSelectedProduct(vBox.getId());
         if(productList.getSelectedProduct() == null)
@@ -300,37 +318,96 @@ public class MarketPlaceController {
         translateTransition.setDuration(Duration.millis(200));
         translateTransition.setNode(bodyAP);
         if (!bodyToggle) {
-            translateTransition.setByY(100);
+            translateTransition.setByY(120);
             bodyToggle = true;
         } else{
-            translateTransition.setByY(-100);
+            translateTransition.setByY(-120);
             bodyToggle = false;
         }
         translateTransition.play();
+
     }
 
     @FXML
     public void handleSeeMoreBtn(ActionEvent e){
+        setBodyToggle();
         populateProduct(10);
     }
 
     @FXML
-    public void handleMyStore(ActionEvent event){
-        if(!dataSource.getAccounts().getCurrAccount().getHasStore()){
+    public void handleMyStore(ActionEvent event) {
+        setBodyToggle();
+        if (!dataSource.getAccounts().getCurrAccount().getHasStore()) {
             try {
                 FXRouter.goTo("create_store", dataSource);
-            }catch (IOException e){
+            } catch (IOException e) {
                 System.err.println("ไปที่หน้า create_store ไม่ได้");
                 System.err.println("ตรวจสอบ Route");
             }
-        }else{
+        } else {
             try {
                 FXRouter.goTo("my_store", dataSource);
-            }catch (IOException e){
+            } catch (IOException e) {
                 System.err.println("ไปที่หน้า my_store ไม่ได้");
                 System.err.println("ตรวจสอบ Route");
             }
         }
+    }
+
+    private void handleFilterByCategory(MouseEvent e){
+        setBodyToggle();
+        Button button = (Button) e.getSource();
+        setFilterCategory(button.getId());
+    }
+
+    private void setFilterCategory(String category){
+        productTP.getSelectionModel().select(0);
+        filerHBox.getChildren().clear();
+
+        Label filterLabel = new Label("Filter");
+        filterLabel.getStyleClass().add("subtitle1");
+        Label headerLabel = new Label(category);
+        filerHBox.getChildren().add(filterLabel);
+
+        SVGPath closeSVG = new SVGPath();
+        closeSVG.setContent("M14.59 8L12 10.59 9.41 8 8 9.41 10.59 12 8 14.59 9.41 16 12 13.41 14.59" +
+                " 16 16 14.59 13.41 12 16 9.41 14.59 8zM12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47" +
+                " 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z");
+        closeSVG.setStyle("-fx-fill: primary-med-overlay");
+        HBox close = new HBox(closeSVG);
+        close.setOnMouseReleased(this::unselectFilter);
+        close.setCursor(Cursor.HAND);
+
+        HBox hBox = new HBox(headerLabel, close);
+        hBox.setSpacing(15);
+        hBox.setStyle("" +
+                "-fx-background-radius: 40;" +
+                "-fx-background-color: primary-overlay;" +
+                "-fx-border-color: primary-med-overlay;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-radius: 40");
+        hBox.setPadding(new Insets(5, 5, 5, 10));
+        hBox.prefWidth(Region.USE_COMPUTED_SIZE);
+        hBox.setAlignment(Pos.CENTER);
+        filerHBox.getChildren().add(hBox);
+
+        filterCategory = category;
+
+        productFlowPane.getChildren().clear();
+        int temp = productIndex;
+        productIndex = -1;
+        populateProduct(temp + 1);
+    }
+
+    private void unselectFilter(MouseEvent e){
+        setBodyToggle();
+        filterCategory = null;
+        filerHBox.getChildren().clear();
+
+        productFlowPane.getChildren().clear();
+        int temp = productIndex;
+        productIndex = -1;
+        populateProduct(temp + 1);
     }
 
     // marketplace page
@@ -338,8 +415,19 @@ public class MarketPlaceController {
         int i = 0;
         for(Product product: productList){
             // TODO: move to models
-            if (product.getPrice() > upperBoundParsed || product.getPrice() < lowerBoundParsed)
+            if (product.getPrice() > upperBoundParsed
+                    || product.getPrice() < lowerBoundParsed)
                 continue;
+            if (filterCategory != null) {
+                boolean isFound = false;
+                for (Category category : product.getCategories()) {
+                    if (category.getName().equals(filterCategory)){
+                        isFound = true;
+                    }
+                }
+                if (!isFound)
+                    continue;
+            }
             if (i > productIndex && i <= productIndex + amount) {
                 VBox card = componentBuilder.productCard(product.getName(), product.getPrice(),
                         product.getPicturePath(), product.getId());
@@ -351,17 +439,24 @@ public class MarketPlaceController {
         productIndex += amount;
     }
 
-    @FXML
-    public void initialize() throws IOException {
-        dataSource = (DataSource) FXRouter.getData();
-        dataSource.parseProduct();
-        dataSource.parseReview();
-        productList = dataSource.getProducts();
-        reviewList = dataSource.getReviews();
-        currUser = dataSource.getAccounts().getCurrAccount();
-        productList.sort(ProductList.SortType.BY_ROLLOUT_DATE);
-        populateProduct(15);
-        seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
+    private void populateCategory(Set<String> categories){
+        int i = 0;
+        VBox box = new VBox();
+        box.setSpacing(3);
+        for(String category: categories){
+            if (i != 0 && i % 4 == 0){
+                categoriesMenuHBox.getChildren().add(box);
+                box = new VBox();
+                box.setSpacing(3);
+            }
+            Button categoryBtn = new Button(category);
+            categoryBtn.setStyle("-fx-text-fill: secondary-text-color");
+            categoryBtn.setId(category);
+            categoryBtn.setOnMouseReleased(this::handleFilterByCategory);
+            box.getChildren().add(categoryBtn);
+            i++;
+        }
+        categoriesMenuHBox.getChildren().add(box);
     }
 
     public void handleLogOutBtn(ActionEvent actionEvent) {
@@ -371,5 +466,20 @@ public class MarketPlaceController {
             System.err.println("ไปที่หน้า login ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
+    }
+
+    @FXML
+    public void initialize() throws IOException {
+        dataSource = (DataSource) FXRouter.getData();
+        dataSource.parseProduct();
+        populateCategory(dataSource.getCategories());
+        dataSource.parseReview();
+        dataSource.saveCategory();
+        productList = dataSource.getProducts();
+        reviewList = dataSource.getReviews();
+        currUser = dataSource.getAccounts().getCurrAccount();
+        productList.sort();
+        populateProduct(15);
+        seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
     }
 }

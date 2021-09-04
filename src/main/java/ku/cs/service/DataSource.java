@@ -7,9 +7,7 @@ import ku.cs.models.*;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.Locale;
-import java.util.TreeSet;
+import java.util.*;
 
 public class DataSource {
     private AccountList accounts;
@@ -17,8 +15,8 @@ public class DataSource {
     private ReviewList reviews;
     private ReportList reports;
     private String directoryPath;
+    private Map<String, ArrayList<String>> categories;
     private StoreList stores;
-    private final Collection<String> categories = new TreeSet<>();
 
     public DataSource(String directoryPath){
         this.directoryPath = directoryPath;
@@ -33,8 +31,11 @@ public class DataSource {
     public void parseProduct() {
         products = new ProductList();
         CSVReader reader;
+        if (categories == null)
+            parseCategory();
         try {
-            reader = new CSVReader(new FileReader(directoryPath + File.separator + "products.csv"));
+            reader = new CSVReader(
+                    new FileReader(directoryPath + File.separator + "products.csv"));
             reader.readNext();
             String [] nextLine;
             while ((nextLine = reader.readNext()) != null) {
@@ -58,13 +59,25 @@ public class DataSource {
                     String[] col = nextLine[idx].split(":");
                     if (col.length == 3) {
                         newProduct.addSubCategory(col[0], col[1], col[2]);
-                        products.addCategory(col[0] + ":" + col[1]);
+                        addCategory(col);
                     }
                 }
                 products.addProduct(newProduct);
             }
         } catch (CsvValidationException | IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void addCategory(String[] entry) {
+        if (categories.containsKey(entry[0])) {
+            ArrayList<String> list = categories.get(entry[0]);
+            if (!list.contains(entry[1]))
+                list.add(entry[1]);
+        } else{
+            ArrayList<String> list = new ArrayList<>();
+            list.add(entry[1]);
+            categories.put(entry[0], list);
         }
     }
 
@@ -124,23 +137,25 @@ public class DataSource {
         }
         reports = new ReportList();
         try {
-            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "reports.csv"));
+            CSVReader reader = new CSVReader(
+                    new FileReader(directoryPath + File.separator + "reports.csv"));
             reader.readNext();
             String [] entry;
             while ((entry = reader.readNext()) != null) {
-                // String reportType,User suspectedPerson,User reporter,LocalDateTime reportDateTime,Review review,Product product,String detail
 
                 Report.ReportType reportType = Report.ReportType.HARASSMENT;
                 User suspectedPerson = accounts.getUserAccount(entry[1]);
                 User reporter = accounts.getUserAccount(entry[2]);
 
                 LocalDateTime localDateTime =
-                        entry[3].equals("null") ? null : LocalDateTime.parse(entry[3], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                        entry[3].equals("null") ? null :
+                                LocalDateTime.parse(entry[3], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
                 Review review = entry[4].equals("null") ? null : reviews.getReviewByID(entry[4]);
                 Product product = entry[5].equals("null") ? null : products.getProduct(entry[5]);
                 String detail = entry[6];
-                Report newReport = new Report(reportType,suspectedPerson,reporter,localDateTime,review,product,detail);
+                Report newReport = new Report(reportType, suspectedPerson, reporter,
+                        localDateTime, review, product, detail);
                 reports.addReport(newReport);
             }
         } catch (IOException | CsvValidationException e) {
@@ -165,6 +180,20 @@ public class DataSource {
         }
     }
 
+    public void parseCategory() {
+        categories = new HashMap<>();
+        try {
+            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "categories.csv"));
+            reader.readNext();
+            String[] entry;
+            while ((entry = reader.readNext()) != null) {
+                addCategory(entry);
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setDirectoryPath(String directoryPath) {
         this.directoryPath = directoryPath;
     }
@@ -179,6 +208,10 @@ public class DataSource {
 
     public ReviewList getReviews() {
         return reviews;
+    }
+
+    public Set<String> getCategories() {
+        return categories.keySet();
     }
 
     public ReportList getReports() {
@@ -216,7 +249,19 @@ public class DataSource {
     }
 
     public void saveProduct(){
-        save(products.toCsv(), "products.csv");
+        int numCategory = 0;
+        for(String key: categories.keySet())
+            numCategory += categories.get(key).size();
+        save(products.toCsv(numCategory), "products.csv");
+    }
+
+    public void saveCategory(){
+        StringJoiner stringJoiner = new StringJoiner("\n");
+        stringJoiner.add("category,subcategory");
+        for(String key: categories.keySet())
+            for(String val: categories.get(key))
+                stringJoiner.add(key + "," + val);
+        save(stringJoiner.toString(), "categories.csv");
     }
 
 }
