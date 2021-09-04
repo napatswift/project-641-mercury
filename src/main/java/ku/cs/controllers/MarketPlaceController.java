@@ -90,7 +90,7 @@ public class MarketPlaceController {
         productFlowPane.getChildren().clear();
         int temp = productIndex;
         productIndex = -1;
-        populateProduct(temp);
+        populateProduct(temp + 1);
     }
 
     private void filterProduct(){
@@ -122,7 +122,7 @@ public class MarketPlaceController {
         productFlowPane.getChildren().clear();
         int temp = productIndex;
         productIndex = -1;
-        populateProduct(temp);
+        populateProduct(temp + 1);
     }
 
     // product page builder
@@ -364,7 +364,7 @@ public class MarketPlaceController {
         productFlowPane.getChildren().clear();
         int temp = productIndex;
         productIndex = -1;
-        populateProduct(temp);
+        populateProduct(temp + 1);
     }
 
     private void unselectFilter(MouseEvent e){
@@ -374,7 +374,7 @@ public class MarketPlaceController {
         productFlowPane.getChildren().clear();
         int temp = productIndex;
         productIndex = -1;
-        populateProduct(temp);
+        populateProduct(temp + 1);
     }
 
     // marketplace page
