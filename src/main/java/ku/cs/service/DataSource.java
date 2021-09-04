@@ -238,6 +238,8 @@ public class DataSource {
         }
     }
 
+    public void  saveReport(){ save(reports.toCsv(), "reports.csv");}
+
     public void saveReview(){
         save(reviews.toCsv(), "reviews.csv");
     }

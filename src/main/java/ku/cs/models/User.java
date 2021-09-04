@@ -136,6 +136,10 @@ public class User implements Comparable<User>{
 
     public Boolean getHasStore() {return hasStore;}
 
+    public boolean isBanned() {
+        return isBanned;
+    }
+
     //setter
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
@@ -159,15 +163,26 @@ public class User implements Comparable<User>{
         }
     }
 
+    public boolean setIsUnbannedBy(User other){
+        if (other.getRole() == Role.ADMIN & this.role == Role.USER){
+            this.isBanned = false;
+            return true;
+        } else{
+            return false;
+        }
+    }
+
     public void createStore(String storeName){
         if(this.store == null){
             this.store = new Store(storeName, username);
             hasStore = true;
         }
     }
+
     public void openStore(String name){
         this.hasStore = true;
     }
+
 
     public String toCsv(){
         //username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
