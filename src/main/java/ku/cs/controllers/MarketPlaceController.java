@@ -230,7 +230,7 @@ public class MarketPlaceController {
         String id = productList.getSelectedProduct().getId();
         ArrayList<Review> selectedProductReview = reviewList.getProductReviewList(id);
         for(Review review: selectedProductReview){
-            reviewVBox.getChildren().add(componentBuilder.reviewCard(review));
+            reviewVBox.getChildren().add(componentBuilder.reviewCard(review, this));
             sumOfRating += review.getRating();
         }
 
@@ -259,6 +259,24 @@ public class MarketPlaceController {
         if (dataSource.getReports() == null)
             dataSource.parseReport();
         dataSource.getReports().setCurrReport(new Report(currUser, dataSource.getProducts().getSelectedProduct()));
+        try {
+            FXRouter.goTo("reporting", dataSource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleReportReviewBtn(MouseEvent event){
+        if (dataSource.getReports() == null)
+            dataSource.parseReport();
+        HBox source = (HBox) event.getSource();
+        dataSource
+                .getReports()
+                .setCurrReport(
+                        new Report(currUser,
+                                dataSource
+                                        .getReviews()
+                                        .getReviewByID(source.getId())));
         try {
             FXRouter.goTo("reporting", dataSource);
         } catch (IOException e) {
@@ -479,6 +497,8 @@ public class MarketPlaceController {
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
     }
+
+
 
     @FXML
     public void initialize() throws IOException {

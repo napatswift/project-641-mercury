@@ -34,9 +34,9 @@
                   </HBox>
                   <VBox prefWidth="400.0" spacing="15.0">
                      <children>
-                        <HBox fx:id="reportPromptLabel">
+                        <HBox>
                            <children>
-                              <Label styleClass="h6" text="What's wrong with this product?" />
+                              <Label fx:id="reportPromptLabel" styleClass="h6" text="What's wrong with this product?" />
                            </children>
                         </HBox>
                         <VBox fx:id="radioBtnVBox" prefWidth="400.0" spacing="5.0" />

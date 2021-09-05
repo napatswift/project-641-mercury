@@ -3,6 +3,7 @@ package ku.cs.controllers;
 import com.github.saacsos.FXRouter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
@@ -21,7 +22,7 @@ public class ReportingViewController {
     private HBox reportItemHBox;
 
     @FXML
-    private HBox reportPromptLabel;
+    private Label reportPromptLabel;
 
     @FXML
     private VBox radioBtnVBox;
@@ -56,6 +57,11 @@ public class ReportingViewController {
         dataSource.getReports().addReport(report);
         dataSource.getReports().setCurrReport(null);
         dataSource.saveReport();
+        try {
+            FXRouter.goTo("marketplace", dataSource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void populateReportType(){
@@ -87,6 +93,8 @@ public class ReportingViewController {
     public void initialize() throws IOException {
       dataSource = (DataSource) FXRouter.getData();
       report = dataSource.getReports().getCurrReport();
+      if (report.getReview() != null)
+          reportPromptLabel.setText("What's wrong with this review?");
       populateReportType();
       buildCard();
     }

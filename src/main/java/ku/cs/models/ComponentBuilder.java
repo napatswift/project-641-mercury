@@ -10,10 +10,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
+import ku.cs.controllers.MarketPlaceController;
 
 public class ComponentBuilder {
     public VBox productCard(String name, double price, String imagePath, String id){
@@ -89,7 +92,14 @@ public class ComponentBuilder {
         return scrollPane;
     }
 
-    public VBox reviewCard(Review review){
+    public AnchorPane reviewCard(Review review, MarketPlaceController controller){
+        SVGPath reportFlag = new SVGPath();
+        reportFlag.setContent("M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z");
+        HBox reportFlagContainer = new HBox(reportFlag);
+        reportFlagContainer.setAlignment(Pos.CENTER_RIGHT);
+        reportFlagContainer.setId(review.getId());
+        reportFlagContainer.setOnMouseReleased(controller::handleReportReviewBtn);
+        reportFlagContainer.setCursor(Cursor.HAND);
 
         HBox starsHBox = new HBox();
         starsRating(starsHBox, review.getRating());
@@ -97,18 +107,35 @@ public class ComponentBuilder {
         ratingLabel.setPadding(new Insets(0, 0, 0, 10));
         starsHBox.getChildren().add(ratingLabel);
         starsHBox.setAlignment(Pos.CENTER_LEFT);
+
         Label titleLabel = new Label(review.getTitle());
         titleLabel.getStyleClass().add("h6");
         Label detailLabel = new Label(review.getDetail());
         detailLabel.getStyleClass().add("body1");
         detailLabel.setWrapText(true);
+
+        ImageView writerProfilePic = new ImageView(new Image(review.getAuthor().getPicturePath()));
+        writerProfilePic.setFitHeight(18);
+        writerProfilePic.setPreserveRatio(true);
+        writerProfilePic.setClip(new Circle(9, 9, 9));
         Label usernameLabel = new Label(review.getReviewerUsername());
         usernameLabel.getStyleClass().add("subtitle2");
-        VBox card = new VBox(starsHBox, titleLabel, detailLabel, usernameLabel);
-        card.setSpacing(5);
+        HBox userDetail = new HBox(writerProfilePic, usernameLabel);
+        userDetail.setSpacing(7);
+
+        VBox card = new VBox(starsHBox, titleLabel, detailLabel, userDetail);
+        card.setSpacing(10);
         card.setPadding(new Insets(26, 33, 26, 33));
         card.getStyleClass().add("review-card");
-        return card;
+
+        AnchorPane cardAnc = new AnchorPane(card, reportFlagContainer);
+
+        AnchorPane.setRightAnchor(card, 0.);
+        AnchorPane.setLeftAnchor(card, 0.);
+
+        AnchorPane.setTopAnchor(reportFlagContainer, 33.);
+        AnchorPane.setRightAnchor(reportFlagContainer, 26.);
+        return cardAnc;
     }
 
     public void starsRating(HBox starsHBox, double rating) {
@@ -139,7 +166,8 @@ public class ComponentBuilder {
        title.setWrapText(true);
        title.getStyleClass().add("h6");
 
-       Label detail = new Label(product.getDetails().substring(0, 100));
+       String detailString = product.getDetails().substring(0, 85).trim() + "...";
+       Label detail = new Label(detailString);
        detail.setWrapText(true);
        detail.getStyleClass().add("body1");
 
