@@ -1,24 +1,4 @@
-productId,title,detail,rating,reviewerUsername
-AH2430,"Good stuff","best thing ever!",4,abc
-AH2430,"abre","abren aner",5,nptswt
-AH2430,"goodd","aobaornbaw abr",5,nptswt
-AH2430,"good","aobe abr brb",3,nptswt
-AH2430,"laobre","abr ar bwr bte",5,nptswt
-AH2430,"abr","breber breb",5,nptswt
-G27341,"arbw berbnr, br4n","ntbn ,ner nqe",5,nptswt
-AH2430,"aonbre","eb",5,nptswt
-AH2430,"oabr, brw, bar","abrwbrw, abreb",5,nptswt
-AH2430,"H""ppy""aoonvro, abreb","abrebr enr",5,nptswt
-AH2430,"a""a""a""""","avrea aber, abr""""",5,nptswt
-EE4553,"a","aaa, avewber",5,nptswt
-EE4553,"abrebw","aer, ar",3,nptswt
-G27341,"agr","abre",2,nptswt
-CM0081,"egw","ber  erb e,a ane",5,nptswt
-CG4051,"oae","berbm ber, bareb",5,nptswt
-B44832,"avew","abr rbr",5,nptswt
-F35281,"good wow","i dont know what else to say",5,nptswt
-EG0000,"abr abre","sometingsss.... things...",5,nptswt
-EF9220,"abe","baer baer",4,nptswt
-EF9315,"ewbv","aber bre",4,nptswt
-EG0000,"ti tlee..","abr..",4,nptswt
-CK9741,"good shoesss","goodd",3,nptswt
+id,productId,title,detail,rating,reviewerUsername
+19b108b3-c5fa-463b-bee9-b708efcacafd,AH2430,"Good stuff","best thing ever!",4,abc
+90a7df20-6a7b-4e73-bb81-e24c27e7b584,AH2430,"eq","ee34",4,nptswt
+f2475f21-5832-4e84-a33c-690ac20ee887,B43601,"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci","Suspendisse vitae posuere leo, vel sollicitudin lorem. Praesent luctus ut mi in consectetur. Sed ac ante tortor. Aliquam libero enim, aliquet non molestie nec, ultrices id orci. Ut eget turpis varius, interdum enim vel, rhoncus ligula. Integer scelerisque est pretium, rhoncus quam eget, rutrum leo. Sed quis elit maximus, maximus mi vitae, sollicitudin ligula. Donec lobortis enim sed lectus pretium, sit amet molestie nulla laoreet. Aliquam eu est justo. Donec vehicula dignissim odio, et accumsan massa molestie eu.",4,nptswt

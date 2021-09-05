@@ -9,16 +9,23 @@ import java.time.format.DateTimeFormatter;
 
 public class Report {
 
-    private ReportType type;
+    private String type;
     private User suspectedPerson;
     private final User reporter;
     private LocalDateTime reportDateTime;
     private Review review;
     private Product product;
     private String detail;
-    public enum ReportType {HARASSMENT, ABUSE}
 
-    public Report(ReportType type, User suspectedPerson, User reporter, LocalDateTime reportDateTime, Review review, Product product, String detail) {
+    private String [] productReportType = {
+            "Copyright",
+            "Offensive or sexually explicit",
+            "Privacy concern",
+            "Legal issue",
+            "Others"
+    };
+
+    public Report(String type, User suspectedPerson, User reporter, LocalDateTime reportDateTime, Review review, Product product, String detail) {
         this.type = type;
         this.suspectedPerson = suspectedPerson;
         this.reporter = reporter;
@@ -33,6 +40,15 @@ public class Report {
         this.product = product;
     }
 
+    public Report(User reporter, Review review) {
+        this.reporter = reporter;
+        this.review = review;
+    }
+
+    public String[] getProductReportType() {
+        return productReportType;
+    }
+
     public boolean checkReport(Report report){
         if(report == this)
             return true;
@@ -40,7 +56,7 @@ public class Report {
     }
 
     //setter
-    public void setType(ReportType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -62,6 +78,10 @@ public class Report {
         this.suspectedPerson = review.getAuthor();
         this.review = review;
         this.product = null;
+    }
+
+    public void setReportDateTime(LocalDateTime reportDateTime) {
+        this.reportDateTime = reportDateTime;
     }
 
     //getter
@@ -89,17 +109,17 @@ public class Report {
         return reporter;
     }
 
-    public ReportType getType() {
+    public String getType() {
         return type;
     }
 
     public String toCSV() {
         return "" + type + ","
-                + suspectedPerson.getUsername() + ","
+                + (suspectedPerson == null ? null :suspectedPerson.getUsername()) + ","
                 + reporter.getUsername() + ","
                 + (reportDateTime == null ? null : reportDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)) + ","
-                + null + "," //ยังไม่ทำ productID
-                + null + "," //ยังไม่ทำ reviewID
+                + (review == null ? null : review.getId()) + "," //ยังไม่ทำ reviewID
+                + (product == null ? null : product.getId()) + "," //ยังไม่ทำ productID
                 + "\"" + detail.replace("\"", "\"\"") + "\"";
     }
 

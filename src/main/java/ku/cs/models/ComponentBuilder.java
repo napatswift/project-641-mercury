@@ -111,7 +111,7 @@ public class ComponentBuilder {
         return card;
     }
 
-    public static void starsRating(HBox starsHBox, double rating) {
+    public void starsRating(HBox starsHBox, double rating) {
         for(int i = 0; i < 5; i++){
             SVGPath star = new SVGPath();
             star.setContent("M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z");
@@ -124,4 +124,28 @@ public class ComponentBuilder {
             starsHBox.getChildren().add(star);
         }
     }
+
+    public HBox productCard(Product product){
+       HBox card = new HBox();
+       card.setPadding(new Insets(5));
+       card.setSpacing(5);
+
+       card.getStyleClass().add("review-card");
+       ImageView imageView = new ImageView(new Image(product.getPicturePath()));
+       imageView.setPreserveRatio(true);
+       imageView.setFitHeight(120);
+
+       Label title = new Label(product.getName());
+       title.setWrapText(true);
+       title.getStyleClass().add("h6");
+
+       Label detail = new Label(product.getDetails().substring(0, 100));
+       detail.setWrapText(true);
+       detail.getStyleClass().add("body1");
+
+       VBox info = new VBox(title, detail);
+       card.getChildren().addAll(imageView, info);
+       return card;
+    }
+
 }

@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
@@ -23,7 +24,7 @@
       </HBox>
       <HBox alignment="TOP_CENTER">
          <children>
-            <VBox prefHeight="527.0" prefWidth="400.0">
+            <VBox prefWidth="400.0">
                <children>
                   <Label styleClass="h2" text="Report" />
                   <HBox fx:id="reportItemHBox">
@@ -38,7 +39,8 @@
                               <Label styleClass="h6" text="What's wrong with this product?" />
                            </children>
                         </HBox>
-                        <VBox fx:id="radioBtnVBox" prefWidth="400.0" />
+                        <VBox fx:id="radioBtnVBox" prefWidth="400.0" spacing="5.0" />
+                        <TextArea fx:id="reportDetailsTA" prefHeight="200.0" promptText="Details" />
                         <HBox alignment="TOP_RIGHT" prefHeight="36.0" prefWidth="400.0">
                            <children>
                               <Button mnemonicParsing="false" onAction="#handleSubmitReportBtn" styleClass="contained-btn" text="REPORT" />
