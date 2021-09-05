@@ -156,7 +156,7 @@ public class Product implements Comparable<Product>{
         StringJoiner stringJoiner = new StringJoiner(",");
         int len = 0;
         for(Category cat: categories){
-            for(String str: cat.toCsv()) {
+            for(String str: cat.toCSV()) {
                 stringJoiner.add(str);
                 len++;
             }

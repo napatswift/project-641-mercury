@@ -5,6 +5,8 @@ pants,color
 car,seats
 car,wheels
 car,color
+cpu,intel
+cpu,amd
 jackets,color
 jackets,size
 jackets,sex
@@ -13,3 +15,6 @@ shoes,color
 shoes,sex
 shoes,sport
 fashion,sex
+ram,drr
+ram,bus
+ram,cl-time

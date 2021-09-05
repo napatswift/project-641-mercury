@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DataSource {
-    private AccountList accounts;
+    private UserList accounts;
     private ProductList products;
     private ReviewList reviews;
     private ReportList reports;
@@ -94,7 +94,7 @@ public class DataSource {
                 int rating = Integer.parseInt(entry[3]);
                 String reviewerUsername = entry[4];
                 Product product = products.getProduct(productId);
-                User reviewerUser = accounts.getUserAccount(reviewerUsername);
+                User reviewerUser = accounts.getUser(reviewerUsername);
                 reviews.addReview(new Review(title, detail, rating, reviewerUser, product));
             }
         } catch (IOException | CsvValidationException e) {
@@ -103,7 +103,7 @@ public class DataSource {
     }
 
     public void parseAccount() {
-        accounts = new AccountList();
+        accounts = new UserList();
         try {
             CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "accounts.csv"));
             reader.readNext();
@@ -124,7 +124,7 @@ public class DataSource {
                 Store store = entry[9].equals("null") ? null : new Store(entry[9]);
 
                 User newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
-                accounts.addAccount(newUser);
+                accounts.addUser(newUser);
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -144,8 +144,8 @@ public class DataSource {
             while ((entry = reader.readNext()) != null) {
 
                 Report.ReportType reportType = Report.ReportType.HARASSMENT;
-                User suspectedPerson = accounts.getUserAccount(entry[1]);
-                User reporter = accounts.getUserAccount(entry[2]);
+                User suspectedPerson = accounts.getUser(entry[1]);
+                User reporter = accounts.getUser(entry[2]);
 
                 LocalDateTime localDateTime =
                         entry[3].equals("null") ? null :
@@ -198,7 +198,7 @@ public class DataSource {
         this.directoryPath = directoryPath;
     }
 
-    public AccountList getAccounts() {
+    public UserList getAccounts() {
         return accounts;
     }
 
@@ -212,6 +212,10 @@ public class DataSource {
 
     public Set<String> getCategories() {
         return categories.keySet();
+    }
+
+    public Map<String, ArrayList<String>> getMapCategories(){
+        return categories;
     }
 
     public ReportList getReports() {

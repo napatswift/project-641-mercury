@@ -131,6 +131,7 @@ public class Report {
                 setGraphic(content);
             } else {
                 setGraphic(null);
+                setStyle(null);
             }
         }
     }
