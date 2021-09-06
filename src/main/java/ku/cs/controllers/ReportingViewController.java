@@ -70,7 +70,7 @@ public class ReportingViewController {
         if (report.getProduct() != null)
             reportTypes = report.getProductReportType();
         else
-            reportTypes = new String[]{};
+            reportTypes = report.getReviewReportType();
 
         for (String type: reportTypes){
             RadioButton newBtn = new RadioButton(type);
@@ -83,10 +83,11 @@ public class ReportingViewController {
 
     private void buildCard(){
         ComponentBuilder builder = new ComponentBuilder();
+        reportItemHBox.getStyleClass().add("review-card");
         if (report.getProduct() != null)
-            reportItemHBox.getChildren().add(builder.productCard(report.getProduct()));
+            reportItemHBox.getChildren().add(builder.smallProductCard(report.getProduct()));
         else
-            ;
+            reportItemHBox.getChildren().add(builder.smallReviewCard(report.getReview()));
     }
 
     @FXML

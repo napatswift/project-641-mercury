@@ -25,6 +25,15 @@ public class Report {
             "Others"
     };
 
+    private String [] reviewReportType = {
+            "Spam",
+            "Unuseful",
+            "Offensive or sexually explicit",
+            "Privacy concern",
+            "Legal issue",
+            "Others"
+    };
+
     public Report(String type, User suspectedPerson, User reporter, LocalDateTime reportDateTime, Review review, Product product, String detail) {
         this.type = type;
         this.suspectedPerson = suspectedPerson;
@@ -43,10 +52,6 @@ public class Report {
     public Report(User reporter, Review review) {
         this.reporter = reporter;
         this.review = review;
-    }
-
-    public String[] getProductReportType() {
-        return productReportType;
     }
 
     public boolean checkReport(Report report){
@@ -85,6 +90,14 @@ public class Report {
     }
 
     //getter
+    public String[] getProductReportType() {
+        return productReportType;
+    }
+
+    public String[] getReviewReportType() {
+        return reviewReportType;
+    }
+
     public String getDetail() {
         return detail;
     }
@@ -118,8 +131,8 @@ public class Report {
                 + (suspectedPerson == null ? null :suspectedPerson.getUsername()) + ","
                 + reporter.getUsername() + ","
                 + (reportDateTime == null ? null : reportDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)) + ","
-                + (review == null ? null : review.getId()) + "," //ยังไม่ทำ reviewID
-                + (product == null ? null : product.getId()) + "," //ยังไม่ทำ productID
+                + (review == null ? null : review.getId()) + ","
+                + (product == null ? null : product.getId()) + ","
                 + "\"" + detail.replace("\"", "\"\"") + "\"";
     }
 

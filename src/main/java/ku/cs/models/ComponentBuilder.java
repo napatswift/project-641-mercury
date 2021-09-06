@@ -114,13 +114,7 @@ public class ComponentBuilder {
         detailLabel.getStyleClass().add("body1");
         detailLabel.setWrapText(true);
 
-        ImageView writerProfilePic = new ImageView(new Image(review.getAuthor().getPicturePath()));
-        writerProfilePic.setFitHeight(18);
-        writerProfilePic.setPreserveRatio(true);
-        writerProfilePic.setClip(new Circle(9, 9, 9));
-        Label usernameLabel = new Label(review.getReviewerUsername());
-        usernameLabel.getStyleClass().add("subtitle2");
-        HBox userDetail = new HBox(writerProfilePic, usernameLabel);
+        HBox userDetail = userDetailHBox(review);
         userDetail.setSpacing(7);
 
         VBox card = new VBox(starsHBox, titleLabel, detailLabel, userDetail);
@@ -152,12 +146,11 @@ public class ComponentBuilder {
         }
     }
 
-    public HBox productCard(Product product){
+    public HBox smallProductCard(Product product){
        HBox card = new HBox();
        card.setPadding(new Insets(5));
        card.setSpacing(5);
 
-       card.getStyleClass().add("review-card");
        ImageView imageView = new ImageView(new Image(product.getPicturePath()));
        imageView.setPreserveRatio(true);
        imageView.setFitHeight(120);
@@ -176,4 +169,29 @@ public class ComponentBuilder {
        return card;
     }
 
+    public VBox smallReviewCard(Review review){
+        HBox userDetail = userDetailHBox(review);
+        Label title = new Label(review.getTitle());
+        Label detail = new Label(review.getDetail());
+        HBox titleContainer = new HBox(title);
+        detail.setWrapText(true);
+        title.getStyleClass().add("h6");
+        detail.getStyleClass().add("body1");
+        VBox card = new VBox(userDetail, titleContainer, detail);
+        card.setSpacing(5.);
+        card.setPadding(new Insets(16, 20, 16, 20));
+        return card;
+    }
+
+    private HBox userDetailHBox(Review review) {
+        ImageView writerProfilePic = new ImageView(new Image(review.getAuthor().getPicturePath()));
+        writerProfilePic.setFitHeight(18);
+        writerProfilePic.setPreserveRatio(true);
+        writerProfilePic.setClip(new Circle(9, 9, 9));
+        Label usernameLabel = new Label(review.getReviewerUsername());
+        usernameLabel.getStyleClass().add("subtitle2");
+        HBox userDetail = new HBox(writerProfilePic, usernameLabel);
+        userDetail.setSpacing(7.);
+        return userDetail;
+    }
 }

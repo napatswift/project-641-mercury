@@ -270,13 +270,9 @@ public class MarketPlaceController {
         if (dataSource.getReports() == null)
             dataSource.parseReport();
         HBox source = (HBox) event.getSource();
-        dataSource
-                .getReports()
-                .setCurrReport(
-                        new Report(currUser,
-                                dataSource
-                                        .getReviews()
-                                        .getReviewByID(source.getId())));
+        Review sourceReview =  dataSource.getReviews().getReviewByID(source.getId());
+        Report newReport = new Report(currUser, sourceReview);
+        dataSource.getReports().setCurrReport(newReport);
         try {
             FXRouter.goTo("reporting", dataSource);
         } catch (IOException e) {
