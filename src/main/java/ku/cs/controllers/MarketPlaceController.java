@@ -243,14 +243,14 @@ public class MarketPlaceController {
         double rating = selectedProductReview.size() == 0 ? 0 : (double) sumOfRating / selectedProductReview.size();
 
         componentBuilder.starsRating(reviewRatingPanelStarHBox, rating);
-        reviewRatingPanelStarHBox.getChildren().add(new Label(rating + "/5 (" + selectedProductReview.size() + ")"));
+        reviewRatingPanelStarHBox.getChildren().add(new Label(String.format("%.2f",rating) + "/5 (" + selectedProductReview.size() + ")"));
         productList.getSelectedProduct().setReview(selectedProductReview.size());
         productList.getSelectedProduct().setRating(rating);
 
         // handling product rating
         starsHBox.getChildren().clear();
         componentBuilder.starsRating(starsHBox, productList.getSelectedProduct().getRating());
-        starsHBox.getChildren().add(new Label(productList.getSelectedProduct().getRating()+"/5 (" + productList.getSelectedProduct().getReview() + ")"));
+        starsHBox.getChildren().add(new Label(String.format("%.2f",rating) + "/5 (" + productList.getSelectedProduct().getReview() + ")"));
     }
 
     // handler

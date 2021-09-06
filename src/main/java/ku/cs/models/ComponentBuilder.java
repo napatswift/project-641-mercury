@@ -1,5 +1,6 @@
 package ku.cs.models;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.AccessibleRole;
@@ -10,10 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import ku.cs.controllers.MarketPlaceController;
@@ -92,9 +90,12 @@ public class ComponentBuilder {
         return scrollPane;
     }
 
-    public AnchorPane reviewCard(Review review, MarketPlaceController controller){
+    public VBox reviewCard(Review review, MarketPlaceController controller){
         SVGPath reportFlag = new SVGPath();
         reportFlag.setContent("M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z");
+        reportFlag.setScaleY(.8);
+        reportFlag.setScaleX(.8);
+        reportFlag.setStyle("-fx-fill: error-color");
         HBox reportFlagContainer = new HBox(reportFlag);
         reportFlagContainer.setAlignment(Pos.CENTER_RIGHT);
         reportFlagContainer.setId(review.getId());
@@ -108,6 +109,20 @@ public class ComponentBuilder {
         starsHBox.getChildren().add(ratingLabel);
         starsHBox.setAlignment(Pos.CENTER_LEFT);
 
+        GridPane gridPane = new GridPane();
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(50);
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setPercentWidth(50);
+        gridPane.getColumnConstraints().addAll(col1, col2);
+
+        gridPane.add(starsHBox, 0, 0);
+        gridPane.add(reportFlagContainer, 1, 0);
+
+        GridPane.setHalignment(reportFlagContainer, HPos.RIGHT);
+
+        GridPane test = new GridPane();
+
         Label titleLabel = new Label(review.getTitle());
         titleLabel.getStyleClass().add("h6");
         Label detailLabel = new Label(review.getDetail());
@@ -117,19 +132,11 @@ public class ComponentBuilder {
         HBox userDetail = userDetailHBox(review);
         userDetail.setSpacing(7);
 
-        VBox card = new VBox(starsHBox, titleLabel, detailLabel, userDetail);
+        VBox card = new VBox(test, gridPane, titleLabel, detailLabel, userDetail);
         card.setSpacing(10);
         card.setPadding(new Insets(26, 33, 26, 33));
         card.getStyleClass().add("review-card");
-
-        AnchorPane cardAnc = new AnchorPane(card, reportFlagContainer);
-
-        AnchorPane.setRightAnchor(card, 0.);
-        AnchorPane.setLeftAnchor(card, 0.);
-
-        AnchorPane.setTopAnchor(reportFlagContainer, 33.);
-        AnchorPane.setRightAnchor(reportFlagContainer, 26.);
-        return cardAnc;
+        return card;
     }
 
     public void starsRating(HBox starsHBox, double rating) {

@@ -139,6 +139,8 @@ public class DataSource {
         if(products == null) {
             parseProduct();
         }
+        if(reviews == null)
+            parseReview();
         reports = new ReportList();
         try {
             CSVReader reader = new CSVReader(

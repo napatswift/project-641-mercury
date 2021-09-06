@@ -50,12 +50,14 @@ public class ReportingViewController {
     void handleSubmitReportBtn(ActionEvent event) {
         assistiveTextVBox.getChildren().clear();
         if (group.getSelectedToggle() == null || group.getSelectedToggle().getUserData() == null) {
-            assistiveTextVBox.getChildren().add(new Label("Please select what is wrong with this."));
+            assistiveTextVBox
+                    .getChildren().add(new Label("Please select what is wrong with this."));
             return;
         }
 
         if (reportDetailsTA.getText() == null || reportDetailsTA.getText().equals("")) {
-            assistiveTextVBox.getChildren().add(new Label("Please tell us more details about this report."));
+            assistiveTextVBox
+                    .getChildren().add(new Label("Please tell us more details about this report."));
             return;
         }
 
@@ -88,7 +90,8 @@ public class ReportingViewController {
             newBtn.setToggleGroup(group);
             radioBtnVBox.getChildren().add(newBtn);
         }
-        group.selectedToggleProperty().addListener((observableValue, toggle, t1) -> assistiveTextVBox.getChildren().clear());
+        group.selectedToggleProperty()
+                .addListener((observableValue, toggle, t1) -> assistiveTextVBox.getChildren().clear());
     }
 
     private void buildCard(){

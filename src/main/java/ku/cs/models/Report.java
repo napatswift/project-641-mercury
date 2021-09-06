@@ -46,12 +46,12 @@ public class Report {
 
     public Report(User reporter, Product product) {
         this.reporter = reporter;
-        this.product = product;
+        setReportItem(product);
     }
 
     public Report(User reporter, Review review) {
         this.reporter = reporter;
-        this.review = review;
+        setReportItem(review);
     }
 
     public boolean checkReport(Report report){
