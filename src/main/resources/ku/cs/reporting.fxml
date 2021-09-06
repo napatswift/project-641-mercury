@@ -41,6 +41,7 @@
                         </HBox>
                         <VBox fx:id="radioBtnVBox" prefWidth="400.0" spacing="5.0" />
                         <TextArea fx:id="reportDetailsTA" prefHeight="200.0" promptText="Details" />
+                        <VBox fx:id="assistiveTextVBox" />
                         <HBox alignment="TOP_RIGHT" prefHeight="36.0" prefWidth="400.0">
                            <children>
                               <Button mnemonicParsing="false" onAction="#handleSubmitReportBtn" styleClass="contained-btn" text="REPORT" />

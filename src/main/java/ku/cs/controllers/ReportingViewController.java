@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ku.cs.models.ComponentBuilder;
@@ -25,7 +27,7 @@ public class ReportingViewController {
     private Label reportPromptLabel;
 
     @FXML
-    private VBox radioBtnVBox;
+    private VBox radioBtnVBox, assistiveTextVBox;
 
     @FXML
     private TextArea reportDetailsTA;
@@ -46,17 +48,24 @@ public class ReportingViewController {
 
     @FXML
     void handleSubmitReportBtn(ActionEvent event) {
-        if (group.getSelectedToggle() == null
-                || group.getSelectedToggle().getUserData() == null
-                || reportDetailsTA.getText() == null
-                || reportDetailsTA.getText().equals(""))
-            return; // TODO show assistive text
+        assistiveTextVBox.getChildren().clear();
+        if (group.getSelectedToggle() == null || group.getSelectedToggle().getUserData() == null) {
+            assistiveTextVBox.getChildren().add(new Label("Please select what is wrong with this."));
+            return;
+        }
+
+        if (reportDetailsTA.getText() == null || reportDetailsTA.getText().equals("")) {
+            assistiveTextVBox.getChildren().add(new Label("Please tell us more details about this report."));
+            return;
+        }
+
         report.setType(group.getSelectedToggle().getUserData().toString());
         report.setDetail(reportDetailsTA.getText());
         report.setReportDateTime(LocalDateTime.now());
         dataSource.getReports().addReport(report);
         dataSource.getReports().setCurrReport(null);
         dataSource.saveReport();
+
         try {
             FXRouter.goTo("marketplace", dataSource);
         } catch (IOException e) {
@@ -79,6 +88,7 @@ public class ReportingViewController {
             newBtn.setToggleGroup(group);
             radioBtnVBox.getChildren().add(newBtn);
         }
+        group.selectedToggleProperty().addListener((observableValue, toggle, t1) -> assistiveTextVBox.getChildren().clear());
     }
 
     private void buildCard(){
@@ -90,6 +100,14 @@ public class ReportingViewController {
             reportItemHBox.getChildren().add(builder.smallReviewCard(report.getReview()));
     }
 
+    private void clearText(KeyEvent e){
+        assistiveTextVBox.getChildren().clear();
+    }
+
+    private void clearText(MouseEvent e){
+        assistiveTextVBox.getChildren().clear();
+    }
+
     @FXML
     public void initialize() throws IOException {
       dataSource = (DataSource) FXRouter.getData();
@@ -98,6 +116,9 @@ public class ReportingViewController {
           reportPromptLabel.setText("What's wrong with this review?");
       populateReportType();
       buildCard();
+
+      reportDetailsTA.setOnMouseClicked(this::clearText);
+      reportDetailsTA.setOnKeyPressed(this::clearText);
     }
 
 }
