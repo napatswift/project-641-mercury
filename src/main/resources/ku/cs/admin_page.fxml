@@ -159,14 +159,18 @@
                                                 <Insets left="15.0" />
                                              </padding>
                                           </Label>
-                                          <TextField fx:id="addCategoryTF" promptText="Add Category">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </TextField>
+                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                             <VBox.margin>
+                                                <Insets left="5.0" right="5.0" top="30.0" />
+                                             </VBox.margin>
+                                             <children>
+                                                <TextField fx:id="addCategoryTF" prefWidth="900.0" promptText="Add Category" styleClass="round-overlay-text-field" />
+                                                <Button fx:id="handleAddCategoryButton" minWidth="100.0" mnemonicParsing="false" onAction="#handleAddCategoryButton" prefWidth="100.0" styleClass="outline-btn" text="ADD" />
+                                             </children>
+                                          </HBox>
                                           <ListView fx:id="categoryListView" prefHeight="900.0" prefWidth="389.0">
                                              <VBox.margin>
-                                                <Insets top="30.0" />
+                                                <Insets top="5.0" />
                                              </VBox.margin>
                                           </ListView>
                                        </children>
@@ -174,11 +178,6 @@
                                           <Insets top="50.0" />
                                        </padding>
                                     </VBox>
-                                    <HBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                       <children>
-                                          <Button fx:id="handleAddCategoryButton" mnemonicParsing="false" onAction="#handleAddCategoryButton" prefHeight="34.0" prefWidth="72.0" styleClass="outline-btn" text="ADD" />
-                                       </children>
-                                    </HBox>
                                  </children>
                               </AnchorPane>
                               <AnchorPane>
@@ -193,14 +192,18 @@
                                                 <Insets left="15.0" />
                                              </padding>
                                           </Label>
-                                          <TextField fx:id="addSubCategoryTF" promptText="Add Category">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </TextField>
+                                          <HBox spacing="10.0">
+                                             <VBox.margin>
+                                                <Insets left="5.0" right="5.0" top="30.0" />
+                                             </VBox.margin>
+                                             <children>
+                                                <TextField fx:id="addSubCategoryTF" prefWidth="900.0" promptText="Add Subcategory" styleClass="round-overlay-text-field" />
+                                                <Button fx:id="handleAddSubCategoryButton" minWidth="100.0" mnemonicParsing="false" onAction="#handleAddSubCategoryButton" prefHeight="34.0" prefWidth="100.0" styleClass="outline-btn" text="ADD" />
+                                             </children>
+                                          </HBox>
                                           <ListView fx:id="subCategoryListView" prefHeight="900.0" prefWidth="222.0">
                                              <VBox.margin>
-                                                <Insets top="30.0" />
+                                                <Insets top="5.0" />
                                              </VBox.margin>
                                           </ListView>
                                        </children>
@@ -208,11 +211,6 @@
                                           <Insets top="50.0" />
                                        </padding>
                                     </VBox>
-                                    <HBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                       <children>
-                                          <Button fx:id="handleAddSubCategoryButton" mnemonicParsing="false" onAction="#handleAddSubCategoryButton" prefHeight="34.0" prefWidth="72.0" styleClass="outline-btn" text="ADD" />
-                                       </children>
-                                    </HBox>
                                  </children>
                               </AnchorPane>
                            </items>
