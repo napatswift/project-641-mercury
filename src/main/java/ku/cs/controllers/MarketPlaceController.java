@@ -47,8 +47,7 @@ public class MarketPlaceController {
     FlowPane productFlowPane;
     @FXML
     Button seeMoreBtn,
-            starBtn1, starBtn2, starBtn3, starBtn4, starBtn5,
-            submitReviewBtn;
+            starBtn1, starBtn2, starBtn3, starBtn4, starBtn5;
     @FXML
     MenuButton sortingMB;
     @FXML
@@ -231,7 +230,7 @@ public class MarketPlaceController {
         String id = productList.getSelectedProduct().getId();
         ArrayList<Review> selectedProductReview = reviewList.getProductReviewList(id);
         for(Review review: selectedProductReview){
-            reviewVBox.getChildren().add(componentBuilder.reviewCard(review));
+            reviewVBox.getChildren().add(componentBuilder.reviewCard(review, this));
             sumOfRating += review.getRating();
         }
 
@@ -243,18 +242,44 @@ public class MarketPlaceController {
 
         double rating = selectedProductReview.size() == 0 ? 0 : (double) sumOfRating / selectedProductReview.size();
 
-        ComponentBuilder.starsRating(reviewRatingPanelStarHBox, rating);
-        reviewRatingPanelStarHBox.getChildren().add(new Label(rating + "/5 (" + selectedProductReview.size() + ")"));
+        componentBuilder.starsRating(reviewRatingPanelStarHBox, rating);
+        reviewRatingPanelStarHBox.getChildren().add(new Label(String.format("%.2f",rating) + "/5 (" + selectedProductReview.size() + ")"));
         productList.getSelectedProduct().setReview(selectedProductReview.size());
         productList.getSelectedProduct().setRating(rating);
 
         // handling product rating
         starsHBox.getChildren().clear();
-        ComponentBuilder.starsRating(starsHBox, productList.getSelectedProduct().getRating());
-        starsHBox.getChildren().add(new Label(productList.getSelectedProduct().getRating()+"/5 (" + productList.getSelectedProduct().getReview() + ")"));
+        componentBuilder.starsRating(starsHBox, productList.getSelectedProduct().getRating());
+        starsHBox.getChildren().add(new Label(String.format("%.2f",rating) + "/5 (" + productList.getSelectedProduct().getReview() + ")"));
     }
 
     // handler
+    @FXML
+    private void handleReportProductBtn(MouseEvent event){
+        if (dataSource.getReports() == null)
+            dataSource.parseReport();
+        dataSource.getReports().setCurrReport(new Report(currUser, dataSource.getProducts().getSelectedProduct()));
+        try {
+            FXRouter.goTo("reporting", dataSource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleReportReviewBtn(MouseEvent event){
+        if (dataSource.getReports() == null)
+            dataSource.parseReport();
+        HBox source = (HBox) event.getSource();
+        Review sourceReview =  dataSource.getReviews().getReviewByID(source.getId());
+        Report newReport = new Report(currUser, sourceReview);
+        dataSource.getReports().setCurrReport(newReport);
+        try {
+            FXRouter.goTo("reporting", dataSource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void handleAmountBtn(ActionEvent event){
         setBodyToggle();
@@ -423,6 +448,7 @@ public class MarketPlaceController {
                 for (Category category : product.getCategories()) {
                     if (category.getName().equals(filterCategory)){
                         isFound = true;
+                        break;
                     }
                 }
                 if (!isFound)
@@ -467,6 +493,8 @@ public class MarketPlaceController {
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
     }
+
+
 
     @FXML
     public void initialize() throws IOException {

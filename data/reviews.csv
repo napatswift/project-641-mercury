@@ -1,24 +1,4 @@
-productId,title,detail,rating,reviewerUsername
-AH2430,"Good stuff","best thing ever!",4,abc
-AH2430,"abre","abren aner",5,nptswt
-AH2430,"goodd","aobaornbaw abr",5,nptswt
-AH2430,"good","aobe abr brb",3,nptswt
-AH2430,"laobre","abr ar bwr bte",5,nptswt
-AH2430,"abr","breber breb",5,nptswt
-G27341,"arbw berbnr, br4n","ntbn ,ner nqe",5,nptswt
-AH2430,"aonbre","eb",5,nptswt
-AH2430,"oabr, brw, bar","abrwbrw, abreb",5,nptswt
-AH2430,"H""ppy""aoonvro, abreb","abrebr enr",5,nptswt
-AH2430,"a""a""a""""","avrea aber, abr""""",5,nptswt
-EE4553,"a","aaa, avewber",5,nptswt
-EE4553,"abrebw","aer, ar",3,nptswt
-G27341,"agr","abre",2,nptswt
-CM0081,"egw","ber  erb e,a ane",5,nptswt
-CG4051,"oae","berbm ber, bareb",5,nptswt
-B44832,"avew","abr rbr",5,nptswt
-F35281,"good wow","i dont know what else to say",5,nptswt
-EG0000,"abr abre","sometingsss.... things...",5,nptswt
-EF9220,"abe","baer baer",4,nptswt
-EF9315,"ewbv","aber bre",4,nptswt
-EG0000,"ti tlee..","abr..",4,nptswt
-CK9741,"good shoesss","goodd",3,nptswt
+id,productId,title,detail,rating,reviewerUsername
+45f40580-398c-49af-9bc6-d40b6aacebd2,B43601,"Neque porro quisquam est qui dolorem ipsum","In hac habitasse platea dictumst. Nam bibendum massa ornare sem aliquet maximus. Maecenas molestie rhoncus pellentesque. Duis auctor congue nisl, vel aliquam lectus lobortis id. Etiam ligula augue, pellentesque convallis arcu eu, tincidunt viverra lorem. Cras orci augue, elementum a lacinia ac, malesuada porta velit. Donec eleifend diam eu felis feugiat interdum. Suspendisse turpis libero, placerat eu est tincidunt, scelerisque posuere libero. Sed rhoncus vestibulum magna ut venenatis. Proin pellentesque purus nulla, vel rutrum sem fermentum eget. Nulla a sem laoreet, porttitor nulla ut, hendrerit augue.",4,nptswt
+d34699a6-1c32-4b03-8451-0b8e3940cc12,EE9929,"Cras porta lectus a odio interdum volutpat.","Suspendisse iaculis commodo eros. Cras nibh nisl, consequat sit amet justo ut, sagittis luctus purus. Cras volutpat tincidunt diam et vulputate. Nam eget molestie lacus, nec sagittis ligula. Cras quis nibh sed ante tristique tempor. Duis hendrerit, libero sit amet suscipit fringilla, lectus risus imperdiet augue, ac commodo tellus diam in neque. In vehicula massa lectus, nec elementum neque luctus vel. Aenean vitae velit dignissim, tincidunt orci sed, lobortis lectus.",3,nptswt
+6340be44-30ce-40d1-b0ac-52422c507aea,AH2430,"ac commodo tellus diam in neque.","Proin varius aliquam mollis. Vivamus tincidunt mauris luctus nisi eleifend aliquet. Curabitur a lacus lobortis ligula interdum condimentum nec ut arcu. Donec id tristique nunc. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris et nulla nec magna finibus hendrerit vel non mauris. Duis condimentum orci et ipsum accumsan mattis. Praesent pellentesque maximus erat nec dignissim. Proin eget magna auctor, aliquam sapien eget, fermentum lectus. Duis quis dolor ligula. Quisque pulvinar, lectus tempus efficitur auctor, nisl enim tempor lorem, quis dictum quam elit ut leo. Morbi eu felis sit amet risus sagittis lacinia. Donec facilisis nisl sit amet leo bibendum pharetra. Mauris id mi sem.",4,nptswt
