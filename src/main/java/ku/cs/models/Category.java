@@ -1,5 +1,6 @@
 package ku.cs.models;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.VBox;
@@ -64,6 +65,7 @@ public class Category implements Comparable<Category>{
             label.setStyle("-fx-text-fill: on-surface-color");
             content = new VBox(label);
             content.setSpacing(3);
+            content.setPadding(new Insets(10, 0, 10, 0));
         }
 
         @Override
