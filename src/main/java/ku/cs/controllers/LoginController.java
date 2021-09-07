@@ -8,14 +8,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import ku.cs.models.AccountList;
 import ku.cs.models.User;
+import ku.cs.models.UserList;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
 
 public class LoginController {
-    private AccountList accountList;
+    private UserList userList;
     DataSource dataSource;
 
     @FXML
@@ -37,7 +37,7 @@ public class LoginController {
     public void initialize(){
         dataSource = new DataSource("data");
         dataSource.parseAccount();
-        accountList = dataSource.getAccounts();
+        userList = dataSource.getAccounts();
     }
 
     public void removeErrorStyleClass(KeyEvent event){
@@ -52,7 +52,7 @@ public class LoginController {
     public void handleLogin(ActionEvent event){
         String username = usernameTF.getText();
         String password = passwordTF.getText();
-        User currAcc = accountList.getUserAccount(username);
+        User currAcc = userList.getUser(username);
 
         if ( currAcc == null){
             addErrorStyleClass(passwordTF);
@@ -66,7 +66,7 @@ public class LoginController {
         if (loginSuccess == 2){
             loginText.setText("Login success");
             dataSource.saveAccount();
-            accountList.login(username, password);
+            userList.login(username, password);
             if(currAcc.getRole() == User.Role.ADMIN)
             {
                 try {
@@ -86,7 +86,7 @@ public class LoginController {
                 }
             }
         } else if (loginSuccess == 0) {
-            loginText.setText("Account has been banned");
+            loginText.setText("User has been banned");
             dataSource.saveAccount();
         } else{
             addErrorStyleClass(passwordTF);
@@ -96,7 +96,7 @@ public class LoginController {
     }
 
     public void handleSignUp(ActionEvent event) throws IOException {
-        if(this.accountList == null) {
+        if(this.userList == null) {
             signUpBtn.setText("CANNOT SIGN-UP");
             return;
         }
@@ -106,7 +106,7 @@ public class LoginController {
 
     public void handleHowTo(ActionEvent event){
         try {
-            FXRouter.goTo("how_to_register");
+            FXRouter.goTo("how_to");
         } catch (IOException e) {
             System.err.println("ไปที่หน้า How To ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");

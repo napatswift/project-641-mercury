@@ -9,16 +9,32 @@ import java.time.format.DateTimeFormatter;
 
 public class Report {
 
-    private final ReportType type;
+    private String type;
     private User suspectedPerson;
     private final User reporter;
     private LocalDateTime reportDateTime;
     private Review review;
     private Product product;
     private String detail;
-    public enum ReportType {HARASSMENT, ABUSE}
 
-    public Report(ReportType type, User suspectedPerson, User reporter, LocalDateTime reportDateTime, Review review, Product product, String detail) {
+    private String [] productReportType = {
+            "Copyright",
+            "Offensive or sexually explicit",
+            "Privacy concern",
+            "Legal issue",
+            "Others"
+    };
+
+    private String [] reviewReportType = {
+            "Spam",
+            "Unuseful",
+            "Offensive or sexually explicit",
+            "Privacy concern",
+            "Legal issue",
+            "Others"
+    };
+
+    public Report(String type, User suspectedPerson, User reporter, LocalDateTime reportDateTime, Review review, Product product, String detail) {
         this.type = type;
         this.suspectedPerson = suspectedPerson;
         this.reporter = reporter;
@@ -28,17 +44,25 @@ public class Report {
         this.detail = detail;
     }
 
-    public Report(ReportType type, User reporter) {
-        this.type = type;
+    public Report(User reporter, Product product) {
         this.reporter = reporter;
+        setReportItem(product);
     }
 
-    public User getReporter() {
-        return reporter;
+    public Report(User reporter, Review review) {
+        this.reporter = reporter;
+        setReportItem(review);
     }
 
-    public ReportType getType() {
-        return type;
+    public boolean checkReport(Report report){
+        if(report == this)
+            return true;
+        return false;
+    }
+
+    //setter
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setDetail(String detail) {
@@ -61,6 +85,19 @@ public class Report {
         this.product = null;
     }
 
+    public void setReportDateTime(LocalDateTime reportDateTime) {
+        this.reportDateTime = reportDateTime;
+    }
+
+    //getter
+    public String[] getProductReportType() {
+        return productReportType;
+    }
+
+    public String[] getReviewReportType() {
+        return reviewReportType;
+    }
+
     public String getDetail() {
         return detail;
     }
@@ -79,6 +116,24 @@ public class Report {
 
     public Product getProduct() {
         return product;
+    }
+
+    public User getReporter() {
+        return reporter;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String toCSV() {
+        return "" + type + ","
+                + (suspectedPerson == null ? null :suspectedPerson.getUsername()) + ","
+                + reporter.getUsername() + ","
+                + (reportDateTime == null ? null : reportDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)) + ","
+                + (review == null ? null : review.getId()) + ","
+                + (product == null ? null : product.getId()) + ","
+                + "\"" + detail.replace("\"", "\"\"") + "\"";
     }
 
     public static class ReportListCell extends ListCell<Report> {
@@ -113,6 +168,7 @@ public class Report {
                 setGraphic(content);
             } else {
                 setGraphic(null);
+                setStyle(null);
             }
         }
     }

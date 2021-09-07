@@ -5,25 +5,25 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.TreeSet;
 
-public class AccountList {
-    private Collection<User> accounts;
+public class UserList {
+    private Collection<User> users;
 
-    private User currAccount;
+    private User currUser;
 
-    public AccountList() {
-        accounts = new TreeSet<>();
+    public UserList() {
+        users = new TreeSet<>();
     }
 
-    public boolean addAccount(User account){
-        return accounts.add(account);
+    public boolean addUser(User user){
+        return users.add(user);
     }
 
-    public void removeAccount(String name){
-        accounts.removeIf(userAccount -> userAccount.getName().equals(name));
+    public void removeUser(String name){
+        users.removeIf(userAccount -> userAccount.getName().equals(name));
     }
 
     public boolean isExist(String username){
-        for(User acc : accounts){
+        for(User acc : users){
             if(acc.getUsername().equals(username))
                 return true;
         }
@@ -31,10 +31,10 @@ public class AccountList {
     }
 
     public boolean login(String username, String password){
-        for(User user: accounts){
+        for(User user : users){
             if(user.getUsername().equals(username)){
                 if (user.login(password) == 2){
-                    currAccount = user;
+                        currUser = user;
                     return true;
                 }
             }
@@ -42,8 +42,8 @@ public class AccountList {
         return false;
     }
 
-    public User getUserAccount(String username){
-        for(User user: accounts){
+    public User getUser(String username){
+        for(User user : users){
             if(user.getUsername().equals(username)){
                 return user;
             }
@@ -51,21 +51,21 @@ public class AccountList {
         return null;
     }
 
-    public boolean checkAccount(String username, String password){
+    public boolean checkUser(String username, String password){
         //TODO: implement this method or delete it
         return true;
     }
 
-    public User getCurrAccount() {
-        return currAccount;
+    public User getCurrUser() {
+        return currUser;
     }
 
     public Collection<User> toList() {
-        return accounts;
+        return users;
     }
 
     public Collection<User> toListReverse() {
-        ArrayList<User> newList = new ArrayList<>(accounts);
+        ArrayList<User> newList = new ArrayList<>(users);
         Collections.reverse(newList);
         return newList;
     }
@@ -75,7 +75,7 @@ public class AccountList {
                 StringBuilder("username,role,name,password,picturePath," +
                 "last_login,isBanned,loginAttempt,hasStore,store");
         stringBuilder.append("\n");
-        for(User acc: accounts){
+        for(User acc: users){
             stringBuilder.append(acc.toCsv());
             stringBuilder.append("\n");
         }

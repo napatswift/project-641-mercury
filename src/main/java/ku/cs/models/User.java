@@ -11,11 +11,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class User implements Comparable<User>{
+
     public enum Role {ADMIN, USER}
     public Role role;
-    private String username;
+    private final String username;
     private String password;
-    private String name;
+    private final String name;
     private String picturePath;
     private LocalDateTime loginDateTime;
     private boolean isBanned;
@@ -50,7 +51,7 @@ public class User implements Comparable<User>{
         this.setPassword(password);
     }
 
-    public User( String username, Role role, String name, String password, String picturePath, LocalDateTime loginDateTime, boolean isBanned, int loginAttempt, boolean hasStore, Store store) {
+    public User(String username, Role role, String name, String password, String picturePath, LocalDateTime loginDateTime, boolean isBanned, int loginAttempt, boolean hasStore, Store store) {
         this.role = role;
         this.username = username;
         this.password = password;
@@ -95,21 +96,13 @@ public class User implements Comparable<User>{
     public static boolean isUsername(String username){
         Pattern passwordPattern = Pattern.compile("^[A-Za-z0-9_]{3,}$");
         Matcher matcher = passwordPattern.matcher(username);
-        if (matcher.find()){
-            return true;
-        } else{
-            return false;
-        }
+        return matcher.find();
     }
 
     public static boolean isPassword(String password){
         Pattern passwordPattern = Pattern.compile("^[A-Za-z0-9@$!%*#?&:+~{}<>_-]{6,25}$");
         Matcher matcher = passwordPattern.matcher(password);
-        if (matcher.find()){
-            return true;
-        } else{
-            return false;
-        }
+        return matcher.find();
     }
 
     public Role getRole() {
@@ -136,6 +129,10 @@ public class User implements Comparable<User>{
 
     public Boolean getHasStore() {return hasStore;}
 
+    public boolean isBanned() {
+        return isBanned;
+    }
+
     //setter
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
@@ -150,24 +147,35 @@ public class User implements Comparable<User>{
         }
     }
 
-    public boolean setIsBannedBy(User other){
-        if (other.getRole() == Role.ADMIN & this.role == Role.USER){
-            this.isBanned = true;
-            return true;
-        } else{
-            return false;
-        }
-    }
-
     public void createStore(String storeName){
         if(this.store == null){
             this.store = new Store(storeName, username);
             hasStore = true;
         }
     }
+
+    public boolean setIsBanned(User other){
+        if (this.getRole() == Role.ADMIN & other.role == Role.USER){
+            other.isBanned = true;
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    public boolean setIsUnbanned(User other){
+        if (this.getRole() == Role.ADMIN & other.role == Role.USER){
+            other.isBanned = false;
+            return true;
+        } else{
+            return false;
+        }
+    }
+
     public void openStore(String name){
         this.hasStore = true;
     }
+
 
     public String toCsv(){
         //username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
@@ -222,6 +230,7 @@ public class User implements Comparable<User>{
                 setStyle("-fx-border-width: 0 0 2 0; -fx-border-color: surface-overlay");
             } else {
                 setGraphic(null);
+                setStyle(null);
             }
         }
     }

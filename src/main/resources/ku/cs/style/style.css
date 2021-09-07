@@ -65,6 +65,11 @@
     -fx-border-color: primary-color;
 }
 
+.round-overlay-text-field{
+    -fx-background-color: transparent;
+    -fx-border-color: surface-overlay;
+}
+
 .review-text-field{
     -fx-border-radius: 0px;
     -fx-background-color: surface-overlay;

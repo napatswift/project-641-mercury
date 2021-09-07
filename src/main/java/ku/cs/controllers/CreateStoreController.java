@@ -50,9 +50,9 @@ public class CreateStoreController {
     @FXML
     public void handleSubmit(ActionEvent event) throws IOException {
         String nameStore = nameStoreTF.getText();
-        Store newStore = new Store(nameStore, dataSource.getAccounts().getCurrAccount().getUsername());
+        Store newStore = new Store(nameStore, dataSource.getAccounts().getCurrUser().getUsername());
         newStore.toCsv();
-        dataSource.getAccounts().getCurrAccount().createStore(nameStore);
+        dataSource.getAccounts().getCurrUser().createStore(nameStore);
         dataSource.saveAccount();
 
         try {

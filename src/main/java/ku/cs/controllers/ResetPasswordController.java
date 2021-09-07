@@ -6,8 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import ku.cs.models.AccountList;
 import ku.cs.models.User;
+import ku.cs.models.UserList;
 import com.github.saacsos.FXRouter;
 import ku.cs.service.DataSource;
 
@@ -16,7 +16,7 @@ import java.io.IOException;
 public class ResetPasswordController {
 
     private User user;
-    private AccountList accountList;
+    private UserList userList;
     DataSource dataSource;
 
     @FXML private TextField oldPasswordTextField
@@ -32,8 +32,8 @@ public class ResetPasswordController {
     @FXML
     public void initialize() throws IOException {
         dataSource = (DataSource) FXRouter.getData();
-        user = dataSource.getAccounts().getCurrAccount();
-        accountList = dataSource.getAccounts();
+        user = dataSource.getAccounts().getCurrUser();
+        userList = dataSource.getAccounts();
         showUser(user);
     }
 
