@@ -5,7 +5,7 @@ import java.util.Collection;
 
 public class ReportList {
     private ArrayList<Report> reportArrayList;
-    private Report report;
+    private Report currReport;
 
     public ReportList() {
        reportArrayList = new ArrayList<>();
@@ -24,6 +24,14 @@ public class ReportList {
             }
             ++i;
         }
+    }
+
+    public Report getCurrReport() {
+        return currReport;
+    }
+
+    public void setCurrReport(Report currReport) {
+        this.currReport = currReport;
     }
 
     public Collection<Report> toList() {

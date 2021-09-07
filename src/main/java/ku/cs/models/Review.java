@@ -8,13 +8,13 @@ public class Review {
     private User author;
     private String productId;
 
-    public Review(String title, String detail, int rating, User user, Product product) {
+    public Review(String id, String title, String detail, int rating, User user, Product product) {
         this.title = title;
         this.detail = detail;
         setRating(rating);
         this.author = user;
         this.productId = product.getId();
-        this.id = productId + product.getReview();
+        this.id = id;
     }
 
     public String getId() {
@@ -50,9 +50,10 @@ public class Review {
         return productId;
     }
 
-    // productId,title,detail,rating,reviewerUsername
+    // id,productId,title,detail,rating,reviewerUsername
     public String toCsv(){
-        return productId + ","
+        return id + ","
+                + productId + ","
                 + "\"" + title.replace("\"", "\"\"") + "\"" + ","
                 + "\"" + detail.replace("\"", "\"\"") + "\"" + ","
                 + rating + ","

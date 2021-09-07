@@ -88,14 +88,15 @@ public class DataSource {
             reader.readNext();
             String [] entry;
             while ((entry = reader.readNext()) != null) {
-                String productId = entry[0];
-                String title = entry[1];
-                String detail = entry[2];
-                int rating = Integer.parseInt(entry[3]);
-                String reviewerUsername = entry[4];
+                String id = entry[0];
+                String productId = entry[1];
+                String title = entry[2];
+                String detail = entry[3];
+                int rating = Integer.parseInt(entry[4]);
+                String reviewerUsername = entry[5];
                 Product product = products.getProduct(productId);
-                User reviewerUser = accounts.getUser(reviewerUsername);
-                reviews.addReview(new Review(title, detail, rating, reviewerUser, product));
+                User reviewerUser = accounts.getUserAccount(reviewerUsername);
+                reviews.addReview(new Review(id, title, detail, rating, reviewerUser, product));
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -135,6 +136,11 @@ public class DataSource {
         if(accounts.toList() == null) {
             parseAccount();
         }
+        if(products == null) {
+            parseProduct();
+        }
+        if(reviews == null)
+            parseReview();
         reports = new ReportList();
         try {
             CSVReader reader = new CSVReader(
@@ -142,11 +148,9 @@ public class DataSource {
             reader.readNext();
             String [] entry;
             while ((entry = reader.readNext()) != null) {
-
-                Report.ReportType reportType = Report.ReportType.HARASSMENT;
-                User suspectedPerson = accounts.getUser(entry[1]);
-                User reporter = accounts.getUser(entry[2]);
-
+                String reportType = entry[0].toLowerCase().equals("null") ? null : entry[0];
+                User suspectedPerson = accounts.getUserAccount(entry[1]);
+                User reporter = accounts.getUserAccount(entry[2]);
                 LocalDateTime localDateTime =
                         entry[3].equals("null") ? null :
                                 LocalDateTime.parse(entry[3], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
