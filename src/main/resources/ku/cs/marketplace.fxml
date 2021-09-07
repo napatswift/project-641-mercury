@@ -338,7 +338,7 @@
         <items>
           <Button mnemonicParsing="false" onMouseReleased="#handleMargetPlaceBtn" styleClass="active-btn" text="Marketplace" />
             <Button mnemonicParsing="false" onAction="#handleCategoryBtn" text="Category" />
-            <Button layoutX="103.0" layoutY="11.0" mnemonicParsing="false" text="My account" />
+            <Button layoutX="103.0" layoutY="11.0" mnemonicParsing="false" text="My user" />
             <Button layoutX="176.0" layoutY="11.0" mnemonicParsing="false" onAction="#handleMyStore" text="My store" />
             <Button mnemonicParsing="false" onAction="#handleLogOutBtn" text="Log-out" />
         </items>

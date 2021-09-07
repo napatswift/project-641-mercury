@@ -7,31 +7,30 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import ku.cs.models.AccountList;
-import ku.cs.models.Report;
-import ku.cs.models.ReportList;
-import ku.cs.models.User;
+import ku.cs.models.*;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Map;
 
 public class AdminPageController {
 
     private DataSource dataSource;
-    private AccountList accountList;
+    private UserList userList;
     private ReportList reportList;
     private Report selectReport;
-    private User selectUser,adminUser;
+    private User selectUser, adminUser;
+    private String selectCategory;
+    private Map<String, ArrayList<String>> categories;
 
     @FXML private Label nameAdmin
             ,role
@@ -50,9 +49,14 @@ public class AdminPageController {
             ,suspectedPersonImage;
     @FXML private ListView<User> userListView;
     @FXML private ListView<Report> reportListView;
+    @FXML private ListView<String> categoryListView;
+    @FXML private ListView<String> subCategoryListView;
     @FXML private TabPane adminTP;
     @FXML private VBox userLeftVBox, reportLeftVBox;
     @FXML private Button userButton, categoryButton, reportButton, resetPasswordButton, logOutButton,banAndUnbanBtn;
+    @FXML private TextField addCategoryTF
+            , addSubCategoryTF;
+
 
     @FXML
     public void initialize() throws IOException {
@@ -60,10 +64,13 @@ public class AdminPageController {
         reportLeftVBox.setVisible(false);
 
         dataSource = (DataSource) FXRouter.getData();
-        accountList = dataSource.getAccounts();
-        adminUser = dataSource.getAccounts().getCurrAccount();
+        userList = dataSource.getAccounts();
+        adminUser = userList.getCurrUser();
         dataSource.parseReport();
         reportList = dataSource.getReports();
+
+        dataSource.parseCategory();
+        categories = dataSource.getMapCategories();
 
         showAdmin(adminUser);
         showUserListView();
@@ -73,6 +80,10 @@ public class AdminPageController {
         showReportListView();
         clearSelectedReport();
         handleSelectedReportListView();
+
+        showCategoryListView();
+        handleSelectedCategoryListView();
+
     }
 
     public void showAdmin(User user){
@@ -82,16 +93,10 @@ public class AdminPageController {
         imageView.setClip(new Circle(37, 37, 37));
     }
 
-    private void resetBtn(Button btn){
-        Button [] buttons = {userButton, categoryButton, reportButton};
-        int idx = adminTP.getSelectionModel().getSelectedIndex();
-        buttons[idx].getStyleClass().removeAll("list-item-active-btn");
-        btn.getStyleClass().add("list-item-active-btn");
-    }
-
+    // User Page
     private void showUserListView() throws IOException {
         ObservableList<User> data = FXCollections.observableArrayList();
-        for(User user : accountList.toListReverse()) {
+        for(User user : userList.toListReverse()) {
             if(user.getRole() == User.Role.USER){
                 data.add(user);
             }
@@ -148,6 +153,7 @@ public class AdminPageController {
         storeName.setText("");
     }
 
+    // Report Page
     private void showReportListView() throws IOException {
         reportListView.getItems().addAll(reportList.toList());
         reportListView.setCellFactory(reportListView -> new Report.ReportListCell());
@@ -174,7 +180,6 @@ public class AdminPageController {
     }
 
     private void showSelectedReport(Report report) {
-
         reportLeftVBox.setVisible(true);
         if(report != null) {
             selectReport = report;
@@ -200,6 +205,41 @@ public class AdminPageController {
         reportTime.setText("");
         suspectedPersonStoreName.setText("");
         detailText.setText("");
+    }
+
+    // Category Page
+    private void showCategoryListView() throws IOException {
+        categoryListView.getItems().addAll(categories.keySet());
+        categoryListView.setCellFactory(categoryListView -> new Category.CategoryListCell());
+        categoryListView.refresh();
+    }
+
+    private void handleSelectedCategoryListView() {
+        categoryListView.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue<? extends String> observable,
+                                        String oldValue, String newValue) {
+                        showSelectedCategory(newValue);
+                    }
+                });
+    }
+
+    private void showSelectedCategory(String category) {
+        subCategoryListView.getItems().clear();
+        selectCategory = category;
+        if(categories.containsKey(category))
+            subCategoryListView.getItems().addAll(categories.get(selectCategory));
+        subCategoryListView.setCellFactory(subCategoryListView -> new SubCategory.SubCategoryListCell());
+        subCategoryListView.refresh();
+    }
+
+    // Button
+    private void resetBtn(Button btn){
+        Button [] buttons = {userButton, categoryButton, reportButton};
+        int idx = adminTP.getSelectionModel().getSelectedIndex();
+        buttons[idx].getStyleClass().removeAll("list-item-active-btn");
+        btn.getStyleClass().add("list-item-active-btn");
     }
 
     @FXML
@@ -240,10 +280,30 @@ public class AdminPageController {
         }
     }
 
-    public void handleAddCategoryButton(ActionEvent actionEvent) {
+    public void handleAddCategoryButton(ActionEvent actionEvent) throws IOException {
+        if(addCategoryTF.getText() != null
+                && !categories.containsKey(addCategoryTF.getText())
+                && !addCategoryTF.getText().equals("")) {
+            categories.put(addCategoryTF.getText().toLowerCase(Locale.ROOT), new ArrayList<String>());
+            dataSource.saveCategory();
+            categoryListView.getItems().clear();
+            showCategoryListView();
+        }
+        addCategoryTF.clear();
+
     }
 
-    public void handleAddSubCategoryButton(ActionEvent actionEvent) {
+    public void handleAddSubCategoryButton(ActionEvent actionEvent) throws IOException {
+        ArrayList<String> newList = categories.get(selectCategory);
+        if(addSubCategoryTF.getText() != null
+                && !newList.contains(addSubCategoryTF.getText())
+                && !addSubCategoryTF.getText().equals("")){
+            newList.add(addSubCategoryTF.getText().toLowerCase(Locale.ROOT));
+            categories.put(selectCategory,newList);
+            dataSource.saveCategory();
+            showSelectedCategory(selectCategory);
+        }
+        addSubCategoryTF.clear();
     }
 
     public void handleDismissBtn(ActionEvent actionEvent) throws IOException {
@@ -251,7 +311,7 @@ public class AdminPageController {
     }
 
     public void handleBanBtn(ActionEvent actionEvent) throws IOException {
-        if(selectReport != null && selectReport.getSuspectedPerson().setIsBannedBy(adminUser)) {
+        if(selectReport != null && adminUser.setIsBanned(selectUser)) {
             removeReportFormReportListView(selectReport);
             dataSource.saveAccount();
         }
@@ -259,10 +319,10 @@ public class AdminPageController {
 
     public void handleBanAndUnbanBtn(ActionEvent actionEvent) {
         if(!selectUser.isBanned()){
-            selectUser.setIsBannedBy(adminUser);
+            adminUser.setIsBanned(selectUser);
         }
         else{
-            selectUser.setIsUnbannedBy(adminUser);
+            adminUser.setIsUnbanned(selectUser);
         }
         dataSource.saveAccount();
         showSelectedUser(selectUser);

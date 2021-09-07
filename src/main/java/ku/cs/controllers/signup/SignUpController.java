@@ -6,15 +6,15 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import ku.cs.models.AccountList;
 import ku.cs.models.User;
+import ku.cs.models.UserList;
 import com.github.saacsos.FXRouter;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
 
 public class SignUpController {
-    private AccountList accountList;
+    private UserList userList;
     private DataSource dataSource;
     private String username;
     private String name;
@@ -31,7 +31,7 @@ public class SignUpController {
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
-        this.accountList = dataSource.getAccounts();
+        this.userList = dataSource.getAccounts();
     }
 
 
@@ -79,7 +79,7 @@ public class SignUpController {
             passwordAssistiveText.setStyle("-fx-fill: error-color;");
         }
 
-        if (accountList.isExist(username)){
+        if (userList.isExist(username)){
             addErrorStyleClass(usernameTF);
             usernameAssistiveText.setText("username already existed");
         } else if (!User.isUsername(username)){
@@ -189,7 +189,7 @@ public class SignUpController {
 
         User newUser = new User(this.username, this.name);
         if (newUser.setPassword(this.password)){
-            if(this.accountList == null) {
+            if(this.userList == null) {
                 return;
             }
             Object[] data = {newUser, dataSource};

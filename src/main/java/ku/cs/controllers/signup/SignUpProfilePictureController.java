@@ -6,8 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import ku.cs.models.AccountList;
 import ku.cs.models.User;
+import ku.cs.models.UserList;
 import com.github.saacsos.FXRouter;
 import ku.cs.service.DataSource;
 
@@ -24,7 +24,7 @@ import java.time.LocalDate;
 public class SignUpProfilePictureController {
     private DataSource dataSource;
     private User currUser;
-    private AccountList accountList;
+    private UserList userList;
     private File file;
     private Path target;
     private String prevView;
@@ -38,7 +38,7 @@ public class SignUpProfilePictureController {
     public void initialize() {
         Object[] data = (Object[]) FXRouter.getData();
         dataSource = (DataSource) data[1];
-        accountList = dataSource.getAccounts();
+        userList = dataSource.getAccounts();
         currUser = (User) data[0];
     }
 
@@ -52,9 +52,9 @@ public class SignUpProfilePictureController {
             }
         }
 
-        if (accountList.addAccount(currUser)){
+        if (userList.addUser(currUser)){
             dataSource.saveAccount();
-            if (this.accountList == null) {
+            if (this.userList == null) {
                 return;
             }
             FXRouter.goTo("login");
