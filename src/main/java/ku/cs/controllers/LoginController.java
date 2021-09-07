@@ -119,6 +119,7 @@ public class LoginController {
         } catch (IOException e) {
             System.err.println("ไปที่หน้า About Us ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
+            e.printStackTrace();
         }
     }
 }
