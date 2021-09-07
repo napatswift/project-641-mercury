@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DataSource {
-    private UserList accounts;
+    private UserList userList;
     private ProductList products;
     private ReviewList reviews;
     private ReportList reports;
@@ -88,14 +88,15 @@ public class DataSource {
             reader.readNext();
             String [] entry;
             while ((entry = reader.readNext()) != null) {
-                String productId = entry[0];
-                String title = entry[1];
-                String detail = entry[2];
-                int rating = Integer.parseInt(entry[3]);
-                String reviewerUsername = entry[4];
+                String id = entry[0];
+                String productId = entry[1];
+                String title = entry[2];
+                String detail = entry[3];
+                int rating = Integer.parseInt(entry[4]);
+                String reviewerUsername = entry[5];
                 Product product = products.getProduct(productId);
-                User reviewerUser = accounts.getUser(reviewerUsername);
-                reviews.addReview(new Review(title, detail, rating, reviewerUser, product));
+                User reviewerUser = userList.getUser(reviewerUsername);
+                reviews.addReview(new Review(id ,title, detail, rating, reviewerUser, product));
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -103,7 +104,7 @@ public class DataSource {
     }
 
     public void parseAccount() {
-        accounts = new UserList();
+        userList = new UserList();
         try {
             CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "accounts.csv"));
             reader.readNext();
@@ -124,7 +125,7 @@ public class DataSource {
                 Store store = entry[9].equals("null") ? null : new Store(entry[9]);
 
                 User newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
-                accounts.addUser(newUser);
+                userList.addUser(newUser);
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -132,9 +133,14 @@ public class DataSource {
     }
 
     public void parseReport() {
-        if(accounts.toList() == null) {
+        if(userList.toList() == null) {
             parseAccount();
         }
+        if(products == null) {
+            parseProduct();
+        }
+        if(reviews == null)
+            parseReview();
         reports = new ReportList();
         try {
             CSVReader reader = new CSVReader(
@@ -142,10 +148,9 @@ public class DataSource {
             reader.readNext();
             String [] entry;
             while ((entry = reader.readNext()) != null) {
-
-                Report.ReportType reportType = Report.ReportType.HARASSMENT;
-                User suspectedPerson = accounts.getUser(entry[1]);
-                User reporter = accounts.getUser(entry[2]);
+                String reportType = entry[0].toLowerCase().equals("null") ? null : entry[0];
+                User suspectedPerson = userList.getUser(entry[1]);
+                User reporter = userList.getUser(entry[2]);
 
                 LocalDateTime localDateTime =
                         entry[3].equals("null") ? null :
@@ -198,8 +203,8 @@ public class DataSource {
         this.directoryPath = directoryPath;
     }
 
-    public UserList getAccounts() {
-        return accounts;
+    public UserList getUserList() {
+        return userList;
     }
 
     public ProductList getProducts() {
@@ -249,7 +254,7 @@ public class DataSource {
     }
 
     public void saveAccount(){
-        save(accounts.toCsv(), "accounts.csv");
+        save(userList.toCsv(), "accounts.csv");
     }
 
     public void saveProduct(){
