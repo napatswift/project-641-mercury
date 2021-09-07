@@ -375,6 +375,7 @@ public class MarketPlaceController {
             } catch (IOException e) {
                 System.err.println("ไปที่หน้า my_store ไม่ได้");
                 System.err.println("ตรวจสอบ Route");
+                e.printStackTrace();
             }
         }
     }

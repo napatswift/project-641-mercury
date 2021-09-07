@@ -11,24 +11,38 @@ import com.github.saacsos.FXRouter;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import ku.cs.models.Category;
 import ku.cs.models.Product;
 import ku.cs.models.Store;
 import ku.cs.models.StoreList;
 import ku.cs.service.DataSource;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class MyStoreController  {
     DataSource dataSource;
-    ArrayList<String> subcategoryList = new ArrayList<>();
+    Product product;
+    private File file;
+    private Path target;
+
     @FXML Label usernameLabel;
     @FXML Label nameLabel;
     @FXML Label nameStoreLabel;
     @FXML TabPane myStoreTP;
     @FXML ImageView userImage;
     @FXML ChoiceBox<String> categoryCB, subCategoryCB;
-    @FXML TextField valueTF;
+    @FXML TextField valueTF, nameProductTF, priceTF, stockTF;
+    @FXML TextArea descriptionTF;
+    @FXML ImageView pictureViewIV;
+    @FXML Button selectProductPictureBtn;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
@@ -76,7 +90,52 @@ public class MyStoreController  {
 
     @FXML public void handleAddBtn(){
         String value = valueTF.getText();
-        System.err.println(value);
+        if(!value.equals("")) {
+            valueTF.setText("");
+            String category = categoryCB.getSelectionModel().getSelectedItem().toString();
+            String subCategory = subCategoryCB.getSelectionModel().getSelectedItem().toString();
+            product.addSubCategory(category,subCategory,value);
+        }
+    }
+
+    @FXML public void handleNextBtn(){
+        String name = nameProductTF.getText();
+        double price = Double.parseDouble(priceTF.getText());
+        int stock = Integer.parseInt(stockTF.getText());
+        String detail = descriptionTF.getText();
+        if(!name.equals("") && price > 0 && stock > 0 && !detail.equals("")) {
+            product.setName(name);
+            product.setPrice(price);
+            product.setStock(stock);
+            product.setDetails(detail);
+        }
+    }
+
+    public void handleSelectProductPicture(ActionEvent event) throws FileNotFoundException {
+
+        FileChooser chooser = new FileChooser();
+        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
+
+        file = chooser.showOpenDialog(selectProductPictureBtn.getScene().getWindow());
+
+        if (file != null){
+            File destDir = new File("images");
+            destDir.mkdirs();
+
+            Image uploadedImage = new Image(new FileInputStream(file.getPath()));
+            String[] fileSplit = file.getName().split("\\.");
+            String filename = LocalDate.now()
+                    + "_" + System.currentTimeMillis()
+                    + "." + fileSplit[fileSplit.length - 1];
+
+            target = FileSystems.getDefault().getPath(
+                    destDir.getAbsolutePath()
+                            + System.getProperty("file.separator")
+                            + filename);
+
+            pictureViewIV.setImage(uploadedImage);
+        }
     }
 
 }
