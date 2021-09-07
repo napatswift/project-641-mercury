@@ -219,6 +219,8 @@ public class DataSource {
         return categories.keySet();
     }
 
+    public ArrayList<String> getSubCategory(String key) {return categories.get(key);}
+
     public ReportList getReports() {
         return reports;
     }
