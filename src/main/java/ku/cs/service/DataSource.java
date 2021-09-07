@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DataSource {
-    private AccountList accounts;
+    private UserList accounts;
     private ProductList products;
     private ReviewList reviews;
     private ReportList reports;
@@ -104,7 +104,7 @@ public class DataSource {
     }
 
     public void parseAccount() {
-        accounts = new AccountList();
+        accounts = new UserList();
         try {
             CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "accounts.csv"));
             reader.readNext();
@@ -125,7 +125,7 @@ public class DataSource {
                 Store store = entry[9].equals("null") ? null : new Store(entry[9]);
 
                 User newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
-                accounts.addAccount(newUser);
+                accounts.addUser(newUser);
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -151,7 +151,6 @@ public class DataSource {
                 String reportType = entry[0].toLowerCase().equals("null") ? null : entry[0];
                 User suspectedPerson = accounts.getUserAccount(entry[1]);
                 User reporter = accounts.getUserAccount(entry[2]);
-
                 LocalDateTime localDateTime =
                         entry[3].equals("null") ? null :
                                 LocalDateTime.parse(entry[3], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
@@ -203,7 +202,7 @@ public class DataSource {
         this.directoryPath = directoryPath;
     }
 
-    public AccountList getAccounts() {
+    public UserList getAccounts() {
         return accounts;
     }
 
@@ -217,6 +216,10 @@ public class DataSource {
 
     public Set<String> getCategories() {
         return categories.keySet();
+    }
+
+    public Map<String, ArrayList<String>> getMapCategories(){
+        return categories;
     }
 
     public ReportList getReports() {

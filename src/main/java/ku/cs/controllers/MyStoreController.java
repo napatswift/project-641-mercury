@@ -3,14 +3,10 @@ package ku.cs.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import com.github.saacsos.FXRouter;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import ku.cs.models.Store;
-import ku.cs.models.StoreList;
 import ku.cs.service.DataSource;
 import java.io.IOException;
 
@@ -24,10 +20,10 @@ public class MyStoreController  {
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
-        usernameLabel.setText(dataSource.getAccounts().getCurrAccount().getUsername());
-        nameStoreLabel.setText(dataSource.getAccounts().getCurrAccount().getStoreName());
-        nameLabel.setText(dataSource.getAccounts().getCurrAccount().getName());
-        userImage.setImage(new Image(dataSource.getAccounts().getCurrAccount().getPicturePath()));
+        usernameLabel.setText(dataSource.getAccounts().getCurrUser().getUsername());
+        nameStoreLabel.setText(dataSource.getAccounts().getCurrUser().getStoreName());
+        nameLabel.setText(dataSource.getAccounts().getCurrUser().getName());
+        userImage.setImage(new Image(dataSource.getAccounts().getCurrUser().getPicturePath()));
     }
 
     @FXML
