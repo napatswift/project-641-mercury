@@ -95,7 +95,7 @@ public class DataSource {
                 int rating = Integer.parseInt(entry[4]);
                 String reviewerUsername = entry[5];
                 Product product = products.getProduct(productId);
-                User reviewerUser = accounts.getUserAccount(reviewerUsername);
+                User reviewerUser = accounts.getUser(reviewerUsername);
                 reviews.addReview(new Review(id, title, detail, rating, reviewerUser, product));
             }
         } catch (IOException | CsvValidationException e) {
@@ -149,8 +149,8 @@ public class DataSource {
             String [] entry;
             while ((entry = reader.readNext()) != null) {
                 String reportType = entry[0].toLowerCase().equals("null") ? null : entry[0];
-                User suspectedPerson = accounts.getUserAccount(entry[1]);
-                User reporter = accounts.getUserAccount(entry[2]);
+                User suspectedPerson = accounts.getUser(entry[1]);
+                User reporter = accounts.getUser(entry[2]);
                 LocalDateTime localDateTime =
                         entry[3].equals("null") ? null :
                                 LocalDateTime.parse(entry[3], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
