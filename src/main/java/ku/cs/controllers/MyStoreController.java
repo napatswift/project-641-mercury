@@ -45,10 +45,10 @@ public class MyStoreController  {
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
-        usernameLabel.setText(dataSource.getAccounts().getCurrAccount().getUsername());
-        nameStoreLabel.setText(dataSource.getAccounts().getCurrAccount().getStoreName());
-        nameLabel.setText(dataSource.getAccounts().getCurrAccount().getName());
-        userImage.setImage(new Image(dataSource.getAccounts().getCurrAccount().getPicturePath()));
+        usernameLabel.setText(dataSource.getAccounts().getCurrUser().getUsername());
+        nameStoreLabel.setText(dataSource.getAccounts().getCurrUser().getStoreName());
+        nameLabel.setText(dataSource.getAccounts().getCurrUser().getName());
+        userImage.setImage(new Image(dataSource.getAccounts().getCurrUser().getPicturePath()));
         loadCategory();
     }
 
