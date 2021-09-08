@@ -124,7 +124,11 @@ public class DataSource {
                 boolean hasStore = entry[8].toLowerCase(Locale.ROOT).equals("true");
                 Store store = entry[9].equals("null") ? null : new Store(entry[9]);
 
-                User newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
+                User newUser = null;
+                if(User.Role.USER == role)
+                    newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
+                else
+                    newUser = new Admin(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
                 userList.addUser(newUser);
             }
         } catch (IOException | CsvValidationException e) {

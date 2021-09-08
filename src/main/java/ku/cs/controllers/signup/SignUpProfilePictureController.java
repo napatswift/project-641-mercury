@@ -38,7 +38,7 @@ public class SignUpProfilePictureController {
     public void initialize() {
         Object[] data = (Object[]) FXRouter.getData();
         dataSource = (DataSource) data[1];
-        userList = dataSource.getAccounts();
+        userList = dataSource.getUserList();
         currUser = (User) data[0];
     }
 

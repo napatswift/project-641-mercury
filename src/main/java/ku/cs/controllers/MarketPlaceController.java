@@ -362,7 +362,7 @@ public class MarketPlaceController {
     @FXML
     public void handleMyStore(ActionEvent event) {
         setBodyToggle();
-        if (!dataSource.getAccounts().getCurrUser().getHasStore()) {
+        if (!dataSource.getUserList().getCurrUser().getHasStore()) {
             try {
                 FXRouter.goTo("create_store", dataSource);
             } catch (IOException e) {
@@ -505,7 +505,7 @@ public class MarketPlaceController {
         dataSource.saveCategory();
         productList = dataSource.getProducts();
         reviewList = dataSource.getReviews();
-        currUser = dataSource.getAccounts().getCurrUser();
+        currUser = dataSource.getUserList().getCurrUser();
         productList.sort();
         populateProduct(15);
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);

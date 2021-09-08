@@ -32,8 +32,8 @@ public class ResetPasswordController {
     @FXML
     public void initialize() throws IOException {
         dataSource = (DataSource) FXRouter.getData();
-        user = dataSource.getAccounts().getCurrUser();
-        userList = dataSource.getAccounts();
+        user = dataSource.getUserList().getCurrUser();
+        userList = dataSource.getUserList();
         showUser(user);
     }
 

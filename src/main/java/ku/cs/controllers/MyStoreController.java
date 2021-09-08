@@ -20,10 +20,10 @@ public class MyStoreController  {
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
-        usernameLabel.setText(dataSource.getAccounts().getCurrUser().getUsername());
-        nameStoreLabel.setText(dataSource.getAccounts().getCurrUser().getStoreName());
-        nameLabel.setText(dataSource.getAccounts().getCurrUser().getName());
-        userImage.setImage(new Image(dataSource.getAccounts().getCurrUser().getPicturePath()));
+        usernameLabel.setText(dataSource.getUserList().getCurrUser().getUsername());
+        nameStoreLabel.setText(dataSource.getUserList().getCurrUser().getStoreName());
+        nameLabel.setText(dataSource.getUserList().getCurrUser().getName());
+        userImage.setImage(new Image(dataSource.getUserList().getCurrUser().getPicturePath()));
     }
 
     @FXML

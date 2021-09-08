@@ -122,6 +122,11 @@ public class Report {
         return reporter;
     }
 
+    public String getReportType(){
+        return type;
+    }
+
+
     public String getType() {
         return type;
     }
@@ -163,7 +168,7 @@ public class Report {
             super.updateItem(item, empty);
             if (item != null && !empty) {
                 topLabel.setText(getTimeString(item.getReportDateTime()));
-                label.setText("Report - #ID Report Type");
+                label.setText("Report - #ID");
                 setStyle("-fx-border-width: 0 0 2 0; -fx-border-color: surface-overlay");
                 setGraphic(content);
             } else {

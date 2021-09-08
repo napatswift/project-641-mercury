@@ -64,8 +64,12 @@ public class UserList {
         return users;
     }
 
-    public Collection<User> toListReverse() {
+    public Collection<User> toListOnlyRoleUser(){
         ArrayList<User> newList = new ArrayList<>(users);
+        for(User temp : users){
+            if(temp.role == User.Role.ADMIN)
+                newList.remove(temp);
+        }
         Collections.reverse(newList);
         return newList;
     }

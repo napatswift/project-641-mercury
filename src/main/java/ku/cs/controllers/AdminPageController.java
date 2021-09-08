@@ -28,7 +28,8 @@ public class AdminPageController {
     private UserList userList;
     private ReportList reportList;
     private Report selectReport;
-    private User selectUser, adminUser;
+    private User selectUser;
+    private Admin adminUser;
     private String selectCategory;
     private Map<String, ArrayList<String>> categories;
 
@@ -43,7 +44,8 @@ public class AdminPageController {
             ,suspectedPersonRealName
             ,suspectedPersonStoreName
             ,detailText
-            , statusUserBan;
+            ,statusUserBan
+            ,reportType;
     @FXML private ImageView imageView
             ,userImage
             ,suspectedPersonImage;
@@ -64,8 +66,10 @@ public class AdminPageController {
         reportLeftVBox.setVisible(false);
 
         dataSource = (DataSource) FXRouter.getData();
-        userList = dataSource.getAccounts();
-        adminUser = userList.getCurrUser();
+        userList = dataSource.getUserList();
+
+        adminUser = (Admin) userList.getCurrUser();
+
         dataSource.parseReport();
         reportList = dataSource.getReports();
 
@@ -95,13 +99,7 @@ public class AdminPageController {
 
     // User Page
     private void showUserListView() throws IOException {
-        ObservableList<User> data = FXCollections.observableArrayList();
-        for(User user : userList.toListReverse()) {
-            if(user.getRole() == User.Role.USER){
-                data.add(user);
-            }
-        }
-        userListView.getItems().addAll(data);
+        userListView.getItems().addAll(userList.toListOnlyRoleUser());
         userListView.setCellFactory(userListView -> new User.UserListCell());
         userListView.refresh();
     }
@@ -131,17 +129,17 @@ public class AdminPageController {
                 storeName.setText(user.getStoreName());
             } else
                 storeName.setText("This User Don't Have Store");
-            if(!user.isBanned()){
-                banAndUnbanBtn.setText("Ban");
-                statusUserBan.setText("Not Banned");
-                statusUserBan.setTextFill(Color.BLUE);
-                banAndUnbanBtn.setTextFill(Color.RED);
-            }
-            else{
+            if(user.isBanned()){
                 banAndUnbanBtn.setText("Unban");
                 statusUserBan.setText("Banned");
                 statusUserBan.setTextFill(Color.RED);
                 banAndUnbanBtn.setTextFill(Color.BLUE);
+            }
+            else{
+                banAndUnbanBtn.setText("Ban");
+                statusUserBan.setText("Not Banned");
+                statusUserBan.setTextFill(Color.BLUE);
+                banAndUnbanBtn.setTextFill(Color.RED);
             }
         }
     }
@@ -190,6 +188,7 @@ public class AdminPageController {
             suspectedPersonUserName.setText(report.getSuspectedPerson().getName());
             reportTime.setText("report time " + report.getReportDateTime().format(formatter));
             detailText.setText(report.getDetail());
+            reportType.setText(report.getReportType());
 
             if (report.getSuspectedPerson().getHasStore()) {
                 suspectedPersonStoreName.setText(report.getSuspectedPerson().getStoreName());

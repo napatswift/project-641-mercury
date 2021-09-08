@@ -154,22 +154,8 @@ public class User implements Comparable<User>{
         }
     }
 
-    public boolean setIsBanned(User other){
-        if (this.getRole() == Role.ADMIN & other.role == Role.USER){
-            other.isBanned = true;
-            return true;
-        } else{
-            return false;
-        }
-    }
-
-    public boolean setIsUnbanned(User other){
-        if (this.getRole() == Role.ADMIN & other.role == Role.USER){
-            other.isBanned = false;
-            return true;
-        } else{
-            return false;
-        }
+    public void setBanned(boolean banned) {
+        isBanned = banned;
     }
 
     public void openStore(String name){
