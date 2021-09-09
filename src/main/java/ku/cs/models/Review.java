@@ -8,12 +8,12 @@ public class Review {
     private User author;
     private String productId;
 
-    public Review(String id, String title, String detail, int rating, User user, Product product) {
+    public Review(String id, String title, String detail, int rating, User user, String productId) {
         this.title = title;
         this.detail = detail;
         setRating(rating);
         this.author = user;
-        this.productId = product.getId();
+        this.productId = productId;
         this.id = id;
     }
 

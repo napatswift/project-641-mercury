@@ -15,9 +15,9 @@ public class Product implements Comparable<Product>{
     private Store store;
 
     private double rating;
-    private int review;
     private final LocalDateTime rolloutDate;
     private ArrayList<Category> categories;
+    private ArrayList<Review> reviews;
 
     @Override
     public int compareTo(Product other) {
@@ -25,18 +25,16 @@ public class Product implements Comparable<Product>{
     }
 
     public Product(String name, String picturePath, String details,
-                   double price, int stock, String id, double rating,
-                   int review, String rolloutDate, Store store) {
+                   double price, int stock, String id, String rolloutDate, Store store) {
         this.name = name;
         this.picturePath = picturePath;
         this.details = details;
         setPrice(price);
         setStock(stock);
         this.id = id;
-        this.rating = rating;
-        this.review = review;
         this.store = store;
         categories = new ArrayList<>();
+        reviews = new ArrayList<>();
         this.rolloutDate = rolloutDate.equals("null") ?
                 null : LocalDateTime.parse(rolloutDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
@@ -86,7 +84,7 @@ public class Product implements Comparable<Product>{
     }
 
     public int getReview() {
-        return review;
+        return reviews.size();
     }
 
     public String getId(){
@@ -111,12 +109,11 @@ public class Product implements Comparable<Product>{
         }
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
-    public void setReview(int review) {
-        this.review = review;
+    public void addReview(Review review){
+        int temp = reviews.size();
+        if (reviews.add(review)){
+            rating = ((rating * temp) + review.getRating()) / reviews.size();
+        }
     }
 
     public void setPicturePath(String picturePath) {
@@ -137,6 +134,10 @@ public class Product implements Comparable<Product>{
         } else{
             return false;
         }
+    }
+
+    public ArrayList<Review> getReviews() {
+        return reviews;
     }
 
     public boolean sell(int amount){
@@ -180,7 +181,7 @@ public class Product implements Comparable<Product>{
                 + stock + ","
                 + "\"" + details.replace("\"", "\"\"") + "\"" + ","
                 + rating + ","
-                + review + ","
+                + getReview() + ","
                 + picturePath + ","
                 + rolloutDate.toString() + ","
                 + stringJoiner;

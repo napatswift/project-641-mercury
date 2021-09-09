@@ -33,6 +33,8 @@ public class DataSource {
         CSVReader reader;
         if (categories == null)
             parseCategory();
+        if (reviews == null)
+            parseReview();
         try {
             reader = new CSVReader(
                     new FileReader(directoryPath + File.separator + "products.csv"));
@@ -47,20 +49,23 @@ public class DataSource {
                 Store store = new Store(nextLine[3]);
                 int stock = Integer.parseInt(nextLine[4]);
                 String details = nextLine[5];
-                double rating = Double.parseDouble(nextLine[6]);
-                int review = Integer.parseInt(nextLine[7]);
                 String picturePath = nextLine[8];
                 String rolloutDate = nextLine[9];
 
                 Product newProduct =
                         new Product(name, picturePath, details,
-                                price, stock, id, rating, review, rolloutDate, store);
+                                price, stock, id, rolloutDate, store);
+
                 for (int idx = 10; idx < entry_len; idx++) {
                     String[] col = nextLine[idx].split(":");
                     if (col.length == 3) {
                         newProduct.addSubCategory(col[0], col[1], col[2]);
                         addCategory(col);
                     }
+                }
+                Iterator<Review> iterator = reviews.iterator(id);
+                while (iterator.hasNext()){
+                    newProduct.addReview(iterator.next());
                 }
                 products.addProduct(newProduct);
             }
@@ -83,6 +88,7 @@ public class DataSource {
 
     public void parseReview() {
         reviews = new ReviewList();
+
         try {
             CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "reviews.csv"));
             reader.readNext();
@@ -94,9 +100,8 @@ public class DataSource {
                 String detail = entry[3];
                 int rating = Integer.parseInt(entry[4]);
                 String reviewerUsername = entry[5];
-                Product product = products.getProduct(productId);
                 User reviewerUser = userList.getUser(reviewerUsername);
-                reviews.addReview(new Review(id ,title, detail, rating, reviewerUser, product));
+                reviews.addReview(new Review(id ,title, detail, rating, reviewerUser, productId));
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();

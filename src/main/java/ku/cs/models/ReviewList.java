@@ -5,16 +5,16 @@ import java.util.*;
 public class ReviewList implements Iterable<Review> {
     private final ArrayList<Review> reviews;
     private final Collection<String> ids;
-    private Review reportingReview;
 
-    public ReviewList(){
+    public ReviewList() {
         reviews = new ArrayList<>();
         ids = new TreeSet<>();
     }
 
     public void addReview(Review review){
-        reviews.add(review);
-        ids.add(review.getId());
+        if (reviews.add(review)) {
+            ids.add(review.getId());
+        }
     }
 
     public boolean addReview(String title, String detail,
@@ -27,7 +27,7 @@ public class ReviewList implements Iterable<Review> {
             return false;
         }
         String id = UUID.randomUUID().toString();
-        addReview(new Review(id, title, detail, rating, user, product));
+        addReview(new Review(id, title, detail, rating, user, product.getId()));
         return true;
     }
 
@@ -49,15 +49,6 @@ public class ReviewList implements Iterable<Review> {
         return null;
     }
 
-    public void setReportingReview(Review reportingReview) {
-        if (reportingReview != null)
-            this.reportingReview = reportingReview;
-    }
-
-    public void resetReportingReview(){
-        this.reportingReview = null;
-    }
-
     public String toCsv(){
         StringBuilder stringBuilder = new StringBuilder("id,productId,title,detail,rating,reviewerUsername");
         stringBuilder.append("\n");
@@ -75,5 +66,9 @@ public class ReviewList implements Iterable<Review> {
     @Override
     public Iterator<Review> iterator() {
         return reviews.iterator();
+    }
+
+    public Iterator<Review> iterator(String productId){
+        return reviews.stream().filter(r -> r.getProductId().equals(productId)).iterator();
     }
 }

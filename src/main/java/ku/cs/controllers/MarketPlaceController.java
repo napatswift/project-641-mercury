@@ -227,31 +227,26 @@ public class MarketPlaceController {
         reviewRatingPanelStarHBox.getChildren().clear();
 
         reviewVBox.getChildren().clear();
-        int sumOfRating = 0;
-        String id = productList.getSelectedProduct().getId();
-        ArrayList<Review> selectedProductReview = reviewList.getProductReviewList(id);
-        for(Review review: selectedProductReview){
+        Product product = dataSource.getProducts().getSelectedProduct();
+        for (Review review: product.getReviews()){
             reviewVBox.getChildren().add(componentBuilder.reviewCard(review, this));
-            sumOfRating += review.getRating();
         }
 
-        if (selectedProductReview.size() == 0){
+        if (product.getReview() == 0){
             Label noReviewLabel = new Label("No review yet! You'll first!");
             noReviewLabel.setPadding(new Insets(10));
             reviewVBox.getChildren().add(noReviewLabel);
         }
 
-        double rating = selectedProductReview.size() == 0 ? 0 : (double) sumOfRating / selectedProductReview.size();
-
-        componentBuilder.starsRating(reviewRatingPanelStarHBox, rating);
-        reviewRatingPanelStarHBox.getChildren().add(new Label(String.format("%.2f",rating) + "/5 (" + selectedProductReview.size() + ")"));
-        productList.getSelectedProduct().setReview(selectedProductReview.size());
-        productList.getSelectedProduct().setRating(rating);
+        componentBuilder.starsRating(reviewRatingPanelStarHBox, product.getRating());
+        reviewRatingPanelStarHBox.getChildren().add(
+                new Label(String.format("%.2f", product.getRating()) + "/5 (" + product.getReview() + " reviews)"));
 
         // handling product rating
         starsHBox.getChildren().clear();
         componentBuilder.starsRating(starsHBox, productList.getSelectedProduct().getRating());
-        starsHBox.getChildren().add(new Label(String.format("%.2f",rating) + "/5 (" + productList.getSelectedProduct().getReview() + ")"));
+        starsHBox.getChildren().add(
+                new Label(String.format("%.2f", product.getRating()) + "/5 (" + product.getReview() + " reviews)"));
     }
 
     // handler

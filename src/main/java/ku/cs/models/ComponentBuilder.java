@@ -96,11 +96,13 @@ public class ComponentBuilder {
         reportFlag.setScaleY(.8);
         reportFlag.setScaleX(.8);
         reportFlag.setStyle("-fx-fill: error-color");
-        HBox reportFlagContainer = new HBox(reportFlag);
+        HBox area = new HBox(reportFlag);
+
+        HBox reportFlagContainer = new HBox(area);
         reportFlagContainer.setAlignment(Pos.CENTER_RIGHT);
-        reportFlagContainer.setId(review.getId());
-        reportFlagContainer.setOnMouseReleased(controller::handleReportReviewBtn);
-        reportFlagContainer.setCursor(Cursor.HAND);
+        area.setId(review.getId());
+        area.setOnMouseReleased(controller::handleReportReviewBtn);
+        area.setCursor(Cursor.HAND);
 
         HBox starsHBox = new HBox();
         starsRating(starsHBox, review.getRating());
