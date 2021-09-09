@@ -8,10 +8,9 @@ public class Review {
     private User author;
     private String productId;
 
-    public Review(String id, String title, String detail, int rating, User user, String productId) {
+    public Review(String id, String title, String detail, User user, String productId) {
         this.title = title;
         this.detail = detail;
-        setRating(rating);
         this.author = user;
         this.productId = productId;
         this.id = id;
@@ -21,9 +20,12 @@ public class Review {
         return id;
     }
 
-    public void setRating(int rating){
-        if (rating >= 0 && rating <= 5)
+    public boolean setRating(int rating){
+        if (rating >= 0 && rating <= 5) {
             this.rating = rating;
+            return true;
+        }
+        return false;
     }
 
     public String getTitle() {

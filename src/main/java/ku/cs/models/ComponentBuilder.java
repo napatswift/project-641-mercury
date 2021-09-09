@@ -17,21 +17,22 @@ import javafx.scene.shape.SVGPath;
 import ku.cs.controllers.MarketPlaceController;
 
 public class ComponentBuilder {
-    public VBox productCard(String name, double price, String imagePath, String id){
+    public VBox productCard(Product product){
+
         int cardWidth = 250;
         int height = cardWidth * 80 / 100;
         ImageView image = new ImageView();
         image.setFitWidth(cardWidth);
         image.setFitHeight(height);
-        Image productImage = new Image(imagePath);
+        Image productImage = new Image(product.getPicturePath());
         PixelReader pixelReader = productImage.getPixelReader();
         WritableImage croppedImage = new WritableImage(pixelReader,
                 (int) productImage.getWidth(),
                 (int) (productImage.getHeight() * height / cardWidth));
         image.setImage(croppedImage);
 
-        Label productNameLabel = new Label(name);
-        Label priceLabel = new Label("$" + String.format("%.2f", price));
+        Label productNameLabel = new Label(product.getName());
+        Label priceLabel = new Label("$" + String.format("%.2f", product.getPrice()));
         productNameLabel.getStyleClass().add("subtitle1");
         priceLabel.getStyleClass().add("h6");
 
@@ -49,7 +50,8 @@ public class ComponentBuilder {
         card.setAccessibleRole(AccessibleRole.BUTTON);
         card.setCursor(Cursor.HAND);
         card.getStyleClass().add("product-card");
-        card.setId(id);
+        card.setId(product.getId());
+        card.setUserData(product);
 
         return card;
     }

@@ -20,7 +20,6 @@ import ku.cs.models.*;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
@@ -136,31 +135,31 @@ public class MarketPlaceController {
         }
     }
 
-    // product page builder
+    /* product page builder */
     private void buildProductPage(){
         resetStar();
-        // reset amount to 1
+        /* reset amount to 1 */
         amountTF.setText("1");
-        // clear boxes
+        /* clear boxes */
         categoriesVBox.getChildren().clear();
 
         populateReview();
 
-        // set product information
+        /* set product information */
         productNameLabel.setText(productList.getSelectedProduct().getName());
         productPriceLabel.setText("$"+productList.getSelectedProduct().getPrice());
         productDetailLabel.setText(productList.getSelectedProduct().getDetails());
         selectedProductIV.setImage(new Image(productList.getSelectedProduct().getPicturePath()));
 
-        // set store name;
+        /* set store name */
         storeNameLabel.setText(productList.getSelectedProduct().getStore().getName().toUpperCase(Locale.ROOT));
 
-        // set bread crumbs info
+        /* set bread crumbs info */
         categoryBreadcrumbsLabel.setText(productList.getSelectedProduct().getCategory().getName());
         categoryBreadcrumbsLabel.setOnMouseReleased(this::handleCategoryBreadcrumbsLabel);
         productNameBreadcrumbsLabel.setText(productList.getSelectedProduct().getName());
 
-        // handling in stock label and icon
+        /* handling in stock label and icon */
         amountInStockLabel.setText("" + productList.getSelectedProduct().getStock() + " in stock");
         if (productList.getSelectedProduct().getStock() < 5){
             inStockStatusSvg.setContent(
@@ -177,7 +176,7 @@ public class MarketPlaceController {
                     "15,9H9Zm-.21,13.9L8.19,15l1.4-1.4,2.2,2.1L16,11.5l1.4,1.4Z");
         }
 
-        // handling category
+        /* handling category */
         for(Category category: productList.getSelectedProduct().getCategories())
             categoriesVBox.getChildren().add(componentBuilder.categoryPane(category));
     }
@@ -233,7 +232,7 @@ public class MarketPlaceController {
         }
 
         if (product.getReview() == 0){
-            Label noReviewLabel = new Label("No review yet! You'll first!");
+            Label noReviewLabel = new Label("No review yet! You'll be first!");
             noReviewLabel.setPadding(new Insets(10));
             reviewVBox.getChildren().add(noReviewLabel);
         }
@@ -249,7 +248,7 @@ public class MarketPlaceController {
                 new Label(String.format("%.2f", product.getRating()) + "/5 (" + product.getReview() + " reviews)"));
     }
 
-    // handler
+    /* handler */
     @FXML
     private void handleReportProductBtn(MouseEvent event){
         if (dataSource.getReports() == null)
@@ -280,23 +279,25 @@ public class MarketPlaceController {
     private void handleAmountBtn(ActionEvent event){
         setBodyToggle();
         Button button = (Button) event.getSource();
+        int stock = productList.getSelectedProduct().getStock();
         String amountStr = amountTF.getText();
         int amount;
+
         try {
             amount = Integer.parseInt(amountStr);
         } catch (NumberFormatException e){
             amount = 1;
         }
+
         if (button.getId().equals("increase")){
-            if(productList.getSelectedProduct().getStock() > amount)
+            if(stock > amount)
                 amount++;
         } else if (button.getId().equals("decrease")){
-            if(amount > 1)
-                amount--;
+            if(amount > 1) amount--;
         }
-        if (amount > productList.getSelectedProduct().getStock()) {
-            amount = productList.getSelectedProduct().getStock();
-        }
+
+        if (amount > stock) amount = stock;
+
         amount = Math.max(amount, 1);
         amountTF.setText(amount + "");
     }
@@ -310,7 +311,11 @@ public class MarketPlaceController {
     @FXML
     private void handleSubmitReviewBtn(ActionEvent e){
         setBodyToggle();
-        //TODO user can only review one time on a product
+        for(Review review: dataSource.getProducts().getSelectedProduct().getReviews())
+            if (review.getAuthor().getUsername().equals(currUser.getUsername())) {
+                resetReviewForm();
+                return;
+            }
         String title = reviewTitleTF.getText();
         String detail = detailReviewTA.getText();
         reviewList.addReview(title, detail, newReviewRating,
@@ -431,15 +436,14 @@ public class MarketPlaceController {
         populateProduct(temp + 1);
     }
 
-    // marketplace page
+    /* marketplace page */
     private void populateProduct(int amount){
         int i = 0;
         Iterator<Product> iterator;
         iterator = productList.iterator(lowerBoundParsed, upperBoundParsed, filterCategory);
         while(iterator.hasNext() && i++ < amount) {
             Product product = iterator.next();
-            VBox card = componentBuilder.productCard(product.getName(), product.getPrice(),
-                    product.getPicturePath(), product.getId());
+            VBox card = componentBuilder.productCard(product);
             card.setOnMouseReleased(this::handleProductCard);
             productFlowPane.getChildren().add(card);
         }
@@ -466,10 +470,11 @@ public class MarketPlaceController {
         categoriesMenuHBox.getChildren().add(box);
     }
 
-    public void handleLogOutBtn(ActionEvent actionEvent) {
+    public void handleLogOutBtn(ActionEvent e) {
         try {
             com.github.saacsos.FXRouter.goTo("login");
-        } catch (IOException e) {
+        } catch (IOException exception) {
+            exception.printStackTrace();
             System.err.println("ไปที่หน้า login ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }

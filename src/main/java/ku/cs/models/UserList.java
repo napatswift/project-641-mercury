@@ -51,11 +51,6 @@ public class UserList {
         return null;
     }
 
-    public boolean checkUser(String username, String password){
-        //TODO: implement this method or delete it
-        return true;
-    }
-
     public User getCurrUser() {
         return currUser;
     }

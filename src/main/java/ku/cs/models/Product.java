@@ -2,12 +2,11 @@ package ku.cs.models;
 
 import java.io.File;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Product implements Comparable<Product>{
     private String name;
-    private String picturePath;
+    private String pictureName;
     private String details;
     private double price;
     private int stock;
@@ -24,19 +23,18 @@ public class Product implements Comparable<Product>{
         return this.id.compareTo(other.id);
     }
 
-    public Product(String name, String picturePath, String details,
-                   double price, int stock, String id, String rolloutDate, Store store) {
+    public Product(String name, String details, String id, LocalDateTime rolloutDate, Store store) {
         this.name = name;
-        this.picturePath = picturePath;
         this.details = details;
-        setPrice(price);
-        setStock(stock);
         this.id = id;
         this.store = store;
         categories = new ArrayList<>();
         reviews = new ArrayList<>();
-        this.rolloutDate = rolloutDate.equals("null") ?
-                null : LocalDateTime.parse(rolloutDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        this.rolloutDate = rolloutDate;
+    }
+
+    public Product(String name, String details, String id, Store store){
+        this(name, details, id, LocalDateTime.now(), store);
     }
 
     public String getName() {
@@ -48,7 +46,7 @@ public class Product implements Comparable<Product>{
                 + File.separator
                 + "/images/product_images"
                 + File.separator
-                + picturePath).toURI().toString();
+                + pictureName).toURI().toString();
     }
 
     public ArrayList<Category> getCategories() {
@@ -103,10 +101,12 @@ public class Product implements Comparable<Product>{
         return false;
     }
 
-    public void setStock(int stock){
+    public boolean setStock(int stock){
         if(stock >= 0){
             this.stock = stock;
+            return true;
         }
+        return false;
     }
 
     public void addReview(Review review){
@@ -116,8 +116,12 @@ public class Product implements Comparable<Product>{
         }
     }
 
-    public void setPicturePath(String picturePath) {
-        this.picturePath = picturePath;
+    public boolean setPictureName(String pictureName) {
+        File file = new File("images"
+                + File.separator + "product_images"
+                + File.separator + pictureName);
+        this.pictureName = pictureName;
+        return file.exists();
     }
 
     public void setName(String name) {
@@ -182,7 +186,7 @@ public class Product implements Comparable<Product>{
                 + "\"" + details.replace("\"", "\"\"") + "\"" + ","
                 + rating + ","
                 + getReview() + ","
-                + picturePath + ","
+                + pictureName + ","
                 + rolloutDate.toString() + ","
                 + stringJoiner;
     }

@@ -71,7 +71,9 @@ public class SignUpProfilePictureController {
 
         if (file != null){
             File destDir = new File("images");
-            destDir.mkdirs();
+            if (!destDir.exists()) {
+                destDir.mkdirs();
+            }
 
             Image uploadedImage = new Image(new FileInputStream(file.getPath()));
             String[] fileSplit = file.getName().split("\\.");

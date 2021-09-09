@@ -27,7 +27,13 @@ public class ReviewList implements Iterable<Review> {
             return false;
         }
         String id = UUID.randomUUID().toString();
-        addReview(new Review(id, title, detail, rating, user, product.getId()));
+        Review newReview = new Review(id, title, detail, user, product.getId());
+
+        if (!newReview.setRating(rating))
+            return false;
+
+        product.addReview(newReview);
+        addReview(newReview);
         return true;
     }
 
