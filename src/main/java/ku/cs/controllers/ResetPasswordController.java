@@ -41,13 +41,13 @@ public class ResetPasswordController {
         String oldPassword = oldPasswordTextField.getText();
         String newPassword = newPasswordTextField.getText();
         String confirmNewPassword = confirmNewPasswordTextField.getText();
-        if(user.login(oldPassword) == 2){
+        if (user.login(oldPassword) == 2) {
             if(newPassword.equals(confirmNewPassword) && User.isPassword(newPassword)){
                 user.setPassword(newPassword);
                 dataSource.saveAccount();
                 return 1;
             }
-            else if(!User.isPassword(newPassword)){
+            else if (!User.isPassword(newPassword)){
                 description.setText("Your new password invalid password format");
                 return 0;
             }
@@ -70,7 +70,7 @@ public class ResetPasswordController {
     }
 
     public void holdBackButton(ActionEvent actionEvent) {
-        if(user.getRole() == User.Role.ADMIN) {
+        if (user.getRole() == User.Role.ADMIN) {
             try {
                 com.github.saacsos.FXRouter.goTo("admin_page", dataSource);
             } catch (IOException e) {
@@ -90,7 +90,7 @@ public class ResetPasswordController {
 
     public void holdResetPasswordButton(ActionEvent actionEvent) {
         int check = resetPassword();
-        if(check == 1){
+        if (check == 1) {
             try {
                 com.github.saacsos.FXRouter.goTo("login");
             } catch (IOException e) {
@@ -98,7 +98,6 @@ public class ResetPasswordController {
                 System.err.println("ให้ตรวจสอบการกำหนด route");
             }
         }
-        else
-            return;
+        return;
     }
 }

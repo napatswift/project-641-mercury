@@ -94,7 +94,7 @@ public class Product implements Comparable<Product>{
     }
 
     public boolean setPrice(double price) {
-        if(price >= 0){
+        if (price >= 0) {
             this.price = price;
             return true;
         }
@@ -102,7 +102,7 @@ public class Product implements Comparable<Product>{
     }
 
     public boolean setStock(int stock){
-        if(stock >= 0){
+        if (stock >= 0) {
             this.stock = stock;
             return true;
         }
@@ -133,11 +133,7 @@ public class Product implements Comparable<Product>{
     }
 
     public boolean isInStock(){
-        if (this.stock > 0){
-            return true;
-        } else{
-            return false;
-        }
+        return this.stock > 0;
     }
 
     public ArrayList<Review> getReviews() {

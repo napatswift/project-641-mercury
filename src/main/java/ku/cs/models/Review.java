@@ -1,12 +1,12 @@
 package ku.cs.models;
 
 public class Review {
-    private String title;
-    private String id;
-    private String detail;
+    private final String title;
+    private final String id;
+    private final String detail;
     private int rating;
-    private User author;
-    private String productId;
+    private final User author;
+    private final String productId;
 
     public Review(String id, String title, String detail, User user, String productId) {
         this.title = title;

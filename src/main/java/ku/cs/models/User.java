@@ -69,15 +69,14 @@ public class User implements Comparable<User>{
         return name;
     }
 
+    /**
+     *
+     * @param password string
+     * @return 0 user is being banned,
+     * 1 password not match,
+     * 2 login success
+     */
     public int login(String password){
-        /**
-         * return value description
-         *
-         * 0 user is being banned
-         * 1 password not match
-         * 2 login success
-         */
-
         if (this.isBanned){
             this.loginAttempt++;
             return 0;
@@ -117,9 +116,8 @@ public class User implements Comparable<User>{
 
     public String getPicturePath() {
         String picturePath = this.picturePath;
-        if (this.picturePath.equals("null")){
+        if (this.picturePath == null || this.picturePath.equals("null"))
             picturePath = "media-cup-holder.png";
-        }
         return (new File(System.getProperty("user.dir") + File.separator + "/images" + File.separator + picturePath)).toURI().toString();
     }
 

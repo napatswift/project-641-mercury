@@ -17,7 +17,7 @@ public class Report {
     private Product product;
     private String detail;
 
-    private String [] productReportType = {
+    private final String [] productReportType = {
             "Copyright",
             "Offensive or sexually explicit",
             "Privacy concern",
@@ -25,7 +25,7 @@ public class Report {
             "Others"
     };
 
-    private String [] reviewReportType = {
+    private final String [] reviewReportType = {
             "Spam",
             "Unuseful",
             "Offensive or sexually explicit",

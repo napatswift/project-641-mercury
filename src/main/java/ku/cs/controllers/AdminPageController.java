@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -55,7 +56,7 @@ public class AdminPageController {
     @FXML private ListView<String> subCategoryListView;
     @FXML private TabPane adminTP;
     @FXML private VBox userLeftVBox, reportLeftVBox;
-    @FXML private Button userButton, categoryButton, reportButton, resetPasswordButton, logOutButton,banAndUnbanBtn;
+    @FXML private Button userButton, categoryButton, reportButton, resetPasswordButton, logOutButton, banAndUnbanBtn;
     @FXML private TextField addCategoryTF
             , addSubCategoryTF;
 
@@ -90,7 +91,7 @@ public class AdminPageController {
 
     }
 
-    public void showAdmin(User user){
+    public void showAdmin(User user) {
         nameAdmin.setText(user.getName());
         role.setText(""+ user.getRole());
         imageView.setImage(new Image(user.getPicturePath()));
@@ -98,7 +99,7 @@ public class AdminPageController {
     }
 
     // User Page
-    private void showUserListView() throws IOException {
+    private void showUserListView() {
         userListView.getItems().addAll(userList.toListOnlyRoleUser());
         userListView.setCellFactory(userListView -> new User.UserListCell());
         userListView.refresh();
@@ -106,13 +107,7 @@ public class AdminPageController {
 
     private void handleSelectedUserListView() {
         userListView.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener<User>() {
-                    @Override
-                    public void changed(ObservableValue<? extends User> observable,
-                                        User oldValue, User newValue) {
-                        showSelectedUser(newValue);
-                    }
-                });
+                (observable, oldValue, newValue) -> showSelectedUser(newValue));
     }
 
     private void showSelectedUser(User user) {
@@ -152,13 +147,13 @@ public class AdminPageController {
     }
 
     // Report Page
-    private void showReportListView() throws IOException {
+    private void showReportListView() {
         reportListView.getItems().addAll(reportList.toList());
         reportListView.setCellFactory(reportListView -> new Report.ReportListCell());
         reportListView.refresh();
     }
 
-    private void removeReportFormReportListView(Report report) throws IOException {
+    private void removeReportFormReportListView(Report report) {
         if(selectReport != null) {
             reportList.removeReport(report);
             dataSource.saveReport();
@@ -207,21 +202,17 @@ public class AdminPageController {
     }
 
     // Category Page
-    private void showCategoryListView() throws IOException {
+    private void showCategoryListView() {
         categoryListView.getItems().addAll(categories.keySet());
         categoryListView.setCellFactory(categoryListView -> new Category.CategoryListCell());
         categoryListView.refresh();
     }
 
     private void handleSelectedCategoryListView() {
-        categoryListView.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener<String>() {
-                    @Override
-                    public void changed(ObservableValue<? extends String> observable,
-                                        String oldValue, String newValue) {
-                        showSelectedCategory(newValue);
-                    }
-                });
+        categoryListView
+                .getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> showSelectedCategory(newValue));
     }
 
     private void showSelectedCategory(String category) {
@@ -283,7 +274,7 @@ public class AdminPageController {
         if(addCategoryTF.getText() != null
                 && !categories.containsKey(addCategoryTF.getText())
                 && !addCategoryTF.getText().equals("")) {
-            categories.put(addCategoryTF.getText().toLowerCase(Locale.ROOT), new ArrayList<String>());
+            categories.put(addCategoryTF.getText().toLowerCase(Locale.ROOT), new ArrayList<>());
             dataSource.saveCategory();
             categoryListView.getItems().clear();
             showCategoryListView();
@@ -292,7 +283,7 @@ public class AdminPageController {
 
     }
 
-    public void handleAddSubCategoryButton(ActionEvent actionEvent) throws IOException {
+    public void handleAddSubCategoryButton(ActionEvent actionEvent) {
         ArrayList<String> newList = categories.get(selectCategory);
         if(addSubCategoryTF.getText() != null
                 && !newList.contains(addSubCategoryTF.getText())
