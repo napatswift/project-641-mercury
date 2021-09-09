@@ -97,20 +97,18 @@ public class Product implements Comparable<Product>{
         return store;
     }
 
-    public void setPrice(double price) {
+    public boolean setPrice(double price) {
         if(price >= 0){
             this.price = price;
+            return true;
         }
+        return false;
     }
 
     public void setStock(int stock){
         if(stock >= 0){
             this.stock = stock;
         }
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
     }
 
     public void setRating(double rating) {
@@ -129,7 +127,9 @@ public class Product implements Comparable<Product>{
         this.name = name;
     }
 
-    public void setStore(Store store) { this.store = store; }
+    public void setStore(Store store) {
+        this.store = store;
+    }
 
     public boolean isInStock(){
         if (this.stock > 0){
@@ -146,6 +146,14 @@ public class Product implements Comparable<Product>{
         }else{
             return false;
         }
+    }
+
+    public boolean containsCategory(String category){
+        for (Category cat: categories) {
+            if (cat.getName().equals(category))
+                return true;
+        }
+        return false;
     }
 
     public String toCsv(int numCat){

@@ -21,6 +21,7 @@ import ku.cs.service.DataSource;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
 
@@ -128,11 +129,11 @@ public class MarketPlaceController {
     private void handleFilter(KeyEvent ke){
         if( ke.getCode() == KeyCode.ENTER){
             filterProduct();
+            productFlowPane.getChildren().clear();
+            int temp = productIndex;
+            productIndex = -1;
+            populateProduct(temp + 1);
         }
-        productFlowPane.getChildren().clear();
-        int temp = productIndex;
-        productIndex = -1;
-        populateProduct(temp + 1);
     }
 
     // product page builder
@@ -438,29 +439,14 @@ public class MarketPlaceController {
     // marketplace page
     private void populateProduct(int amount){
         int i = 0;
-        for(Product product: productList){
-            // TODO: move to models
-            if (product.getPrice() > upperBoundParsed
-                    || product.getPrice() < lowerBoundParsed)
-                continue;
-            if (filterCategory != null) {
-                boolean isFound = false;
-                for (Category category : product.getCategories()) {
-                    if (category.getName().equals(filterCategory)){
-                        isFound = true;
-                        break;
-                    }
-                }
-                if (!isFound)
-                    continue;
-            }
-            if (i > productIndex && i <= productIndex + amount) {
-                VBox card = componentBuilder.productCard(product.getName(), product.getPrice(),
-                        product.getPicturePath(), product.getId());
-                card.setOnMouseReleased(this::handleProductCard);
-                productFlowPane.getChildren().add(card);
-            }
-            i++;
+        Iterator<Product> iterator;
+        iterator = productList.iterator(lowerBoundParsed, upperBoundParsed, filterCategory);
+        while(iterator.hasNext() && i++ < amount) {
+            Product product = iterator.next();
+            VBox card = componentBuilder.productCard(product.getName(), product.getPrice(),
+                    product.getPicturePath(), product.getId());
+            card.setOnMouseReleased(this::handleProductCard);
+            productFlowPane.getChildren().add(card);
         }
         productIndex += amount;
     }
@@ -493,8 +479,6 @@ public class MarketPlaceController {
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
     }
-
-
 
     @FXML
     public void initialize() throws IOException {

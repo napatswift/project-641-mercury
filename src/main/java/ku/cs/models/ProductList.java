@@ -1,6 +1,7 @@
 package ku.cs.models;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class ProductList implements Iterable<Product>{
     private final List<Product> products;
@@ -8,8 +9,16 @@ public class ProductList implements Iterable<Product>{
 
     @Override
     public Iterator<Product> iterator() {
-        // TODO implement iterator by condition if any
         return products.iterator();
+    }
+
+    public Iterator<Product> iterator(double lowerBound, double upperBound, String category){
+        return products.stream()
+                .filter(p -> p.getPrice() >= lowerBound
+                        && p.getPrice() <= upperBound
+                        && (category == null || p.containsCategory(category)))
+                .iterator();
+
     }
 
     public enum SortType {BY_ROLLOUT_DATE, BY_LOWEST, BY_HIGHEST}
