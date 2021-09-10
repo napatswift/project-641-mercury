@@ -169,8 +169,8 @@ public class DataSource {
             String [] entry;
             while ((entry = reader.readNext()) != null) {
                 String reportType = entry[0].toLowerCase().equals("null") ? null : entry[0];
-                User suspectedPerson = accounts.getUser(entry[1]);
-                User reporter = accounts.getUser(entry[2]);
+                User suspectedPerson = userList.getUser(entry[1]);
+                User reporter = userList.getUser(entry[2]);
                 LocalDateTime localDateTime =
                         entry[2].equalsIgnoreCase("null") ? null :
                                 LocalDateTime.parse(entry[2], DateTimeFormatter.ISO_LOCAL_DATE_TIME);

@@ -21,7 +21,7 @@ public class ProductReport extends Report<Product>{
     @Override
     public String toCSV() {
         return "" + getType() + ","
-                + getSuspectedPerson().getUsername() + "," // TODO get owner of store
+                + ( null /* getSuspectedPerson().getUsername()*/ ) + "," // TODO get owner of store
                 + (getReportDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)) + ","
                 + null + ","
                 + (getReportItem().getId()) + ","
