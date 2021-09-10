@@ -69,21 +69,20 @@ public class User implements Comparable<User>{
         return name;
     }
 
-    public int login(String password){
-        /**
-         * return value description
-         *
-         * 0 user is being banned
-         * 1 password not match
-         * 2 login success
-         */
-
+    /**
+     *
+     * @param password string
+     * @return 0 user is being banned,
+     * 1 password not match,
+     * 2 login success
+     */
+    public int login(String password, boolean saveTime){
         if (this.isBanned){
             this.loginAttempt++;
             return 0;
         } else{
             if (password.equals(this.password)){
-                this.loginDateTime = LocalDateTime.now();
+                if (saveTime) this.loginDateTime = LocalDateTime.now();
                 if (this.loginAttempt > 0)
                     this.loginAttempt = 0;
                 return 2;
@@ -91,6 +90,10 @@ public class User implements Comparable<User>{
                 return 1;
             }
         }
+    }
+
+    public int login(String password){
+        return login(password, true);
     }
 
     public static boolean isUsername(String username){
@@ -117,9 +120,8 @@ public class User implements Comparable<User>{
 
     public String getPicturePath() {
         String picturePath = this.picturePath;
-        if (this.picturePath.equals("null")){
+        if (this.picturePath == null || this.picturePath.equals("null"))
             picturePath = "media-cup-holder.png";
-        }
         return (new File(System.getProperty("user.dir") + File.separator + "/images" + File.separator + picturePath)).toURI().toString();
     }
 
@@ -171,50 +173,6 @@ public class User implements Comparable<User>{
                 + loginAttempt + ","
                 + hasStore + ","
                 + (store == null ? null : store.getName());
-    }
-
-    @Override
-    public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return  loginDateTime.format(formatter) + "\n"
-                + username;
-    }
-
-    public static class UserListCell extends ListCell<User> {
-        private final VBox content;
-        private final Label topLabel;
-        private final Label label;
-
-        public UserListCell() {
-            topLabel = new Label();
-            label = new Label();
-            topLabel.getStyleClass().add("body2");
-            topLabel.setStyle("-fx-text-fill: on-surface-med-color;");
-            label.getStyleClass().add("body1");
-            label.setStyle("-fx-text-fill: on-surface-color");
-            content = new VBox(topLabel, label);
-            content.setSpacing(3);
-        }
-
-        private String getTimeString(LocalDateTime time){
-            String pattern = "HH:mm - d MMM";
-            DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern(pattern);
-            return simpleDateFormat.format(time);
-        }
-
-        @Override
-        protected void updateItem(User item, boolean empty) {
-            super.updateItem(item, empty);
-            if (item != null && !empty) {
-                topLabel.setText(getTimeString(item.getLoginDateTime()));
-                label.setText(item.getUsername());
-                setGraphic(content);
-                setStyle("-fx-border-width: 0 0 2 0; -fx-border-color: surface-overlay");
-            } else {
-                setGraphic(null);
-                setStyle(null);
-            }
-        }
     }
 }
 

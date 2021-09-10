@@ -25,10 +25,6 @@ public class Store {
         return nameStore;
     }
 
-//    private void setId(){
-//
-//    }
-
     public void addProduct(Product product){
         products.add(product);
         product.setStore(this);

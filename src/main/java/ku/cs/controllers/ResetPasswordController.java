@@ -37,29 +37,24 @@ public class ResetPasswordController {
         showUser(user);
     }
 
-    public int resetPassword(){
+    public boolean resetPassword(){
         String oldPassword = oldPasswordTextField.getText();
         String newPassword = newPasswordTextField.getText();
         String confirmNewPassword = confirmNewPasswordTextField.getText();
-        if(user.login(oldPassword) == 2){
+        if (user.login(oldPassword, false) == 2) {
             if(newPassword.equals(confirmNewPassword) && User.isPassword(newPassword)){
                 user.setPassword(newPassword);
                 dataSource.saveAccount();
-                return 1;
-            }
-            else if(!User.isPassword(newPassword)){
+                return true;
+            } else if (!User.isPassword(newPassword)){
                 description.setText("Your new password invalid password format");
-                return 0;
-            }
-            else {
+            } else {
                 description.setText("Your new password not match.");
-                return 0;
             }
-        }
-        else{
+        } else{
             description.setText("Your old password is wrong.");
-            return 0;
         }
+        return false;
     }
 
 
@@ -70,7 +65,7 @@ public class ResetPasswordController {
     }
 
     public void holdBackButton(ActionEvent actionEvent) {
-        if(user.getRole() == User.Role.ADMIN) {
+        if (user.getRole() == User.Role.ADMIN) {
             try {
                 com.github.saacsos.FXRouter.goTo("admin_page", dataSource);
             } catch (IOException e) {
@@ -89,8 +84,8 @@ public class ResetPasswordController {
     }
 
     public void holdResetPasswordButton(ActionEvent actionEvent) {
-        int check = resetPassword();
-        if(check == 1){
+        boolean check = resetPassword();
+        if (check) {
             try {
                 com.github.saacsos.FXRouter.goTo("login");
             } catch (IOException e) {
@@ -98,7 +93,6 @@ public class ResetPasswordController {
                 System.err.println("ให้ตรวจสอบการกำหนด route");
             }
         }
-        else
-            return;
+        return;
     }
 }

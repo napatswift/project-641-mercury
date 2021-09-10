@@ -5,7 +5,6 @@ import java.util.Collection;
 
 public class ReportList {
     private ArrayList<Report> reportArrayList;
-    private Report currReport;
 
     public ReportList() {
        reportArrayList = new ArrayList<>();
@@ -16,22 +15,7 @@ public class ReportList {
     }
 
     public void removeReport(Report report){
-        int i = 0;
-        for(Report reportTemp : reportArrayList){
-            if(reportTemp.checkReport(report)){
-                reportArrayList.remove(i);
-                return;
-            }
-            ++i;
-        }
-    }
-
-    public Report getCurrReport() {
-        return currReport;
-    }
-
-    public void setCurrReport(Report currReport) {
-        this.currReport = currReport;
+        reportArrayList.removeIf(report1 -> report1 == report);
     }
 
     public Collection<Report> toList() {
@@ -39,7 +23,7 @@ public class ReportList {
     }
 
     public String toCsv(){
-        StringBuilder stringBuilder = new StringBuilder("type_report,suspected_person,reporter,report_time,id_review,id_product,detail");
+        StringBuilder stringBuilder = new StringBuilder("type_report,suspected_person,report_time,id_review,id_product,detail");
         stringBuilder.append("\n");
         for(Report report : reportArrayList){
             stringBuilder.append(report.toCSV());

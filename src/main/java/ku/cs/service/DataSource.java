@@ -31,8 +31,12 @@ public class DataSource {
     public void parseProduct() {
         products = new ProductList();
         CSVReader reader;
+        if (userList == null)
+            parseAccount();
         if (categories == null)
             parseCategory();
+        if (reviews == null)
+            parseReview();
         try {
             reader = new CSVReader(
                     new FileReader(directoryPath + File.separator + "products.csv"));
@@ -47,20 +51,28 @@ public class DataSource {
                 Store store = new Store(nextLine[3]);
                 int stock = Integer.parseInt(nextLine[4]);
                 String details = nextLine[5];
-                double rating = Double.parseDouble(nextLine[6]);
-                int review = Integer.parseInt(nextLine[7]);
                 String picturePath = nextLine[8];
-                String rolloutDate = nextLine[9];
+                LocalDateTime rolloutDate = nextLine[9].equals("null") ? null : LocalDateTime.parse(nextLine[9], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
                 Product newProduct =
-                        new Product(name, picturePath, details,
-                                price, stock, id, rating, review, rolloutDate, store);
+                        new Product(name, details, id, rolloutDate, store);
+
+                if (!newProduct.setPictureName(picturePath)
+                        || !newProduct.setPrice(price)
+                        || !newProduct.setStock(stock))
+                    continue;
+
                 for (int idx = 10; idx < entry_len; idx++) {
                     String[] col = nextLine[idx].split(":");
                     if (col.length == 3) {
                         newProduct.addSubCategory(col[0], col[1], col[2]);
                         addCategory(col);
                     }
+                }
+
+                Iterator<Review> iterator = reviews.iterator(id);
+                while (iterator.hasNext()){
+                    newProduct.addReview(iterator.next());
                 }
                 products.addProduct(newProduct);
             }
@@ -83,8 +95,10 @@ public class DataSource {
 
     public void parseReview() {
         reviews = new ReviewList();
+
         try {
-            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "reviews.csv"));
+            CSVReader reader = new CSVReader(
+                    new FileReader(directoryPath + File.separator + "reviews.csv"));
             reader.readNext();
             String [] entry;
             while ((entry = reader.readNext()) != null) {
@@ -94,9 +108,12 @@ public class DataSource {
                 String detail = entry[3];
                 int rating = Integer.parseInt(entry[4]);
                 String reviewerUsername = entry[5];
-                Product product = products.getProduct(productId);
                 User reviewerUser = userList.getUser(reviewerUsername);
-                reviews.addReview(new Review(id ,title, detail, rating, reviewerUser, product));
+
+                Review review = new Review(id ,title, detail, reviewerUser, productId);
+
+                if (review.setRating(rating))
+                    reviews.addReview(review);
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -137,15 +154,14 @@ public class DataSource {
     }
 
     public void parseReport() {
-        if(userList.toList() == null) {
-            parseAccount();
-        }
-        if(products == null) {
-            parseProduct();
-        }
-        if(reviews == null)
-            parseReview();
+        if(userList.toList() == null) parseAccount();
+
+        if(products == null) parseProduct();
+
+        if(reviews == null) parseReview();
+
         reports = new ReportList();
+
         try {
             CSVReader reader = new CSVReader(
                     new FileReader(directoryPath + File.separator + "reports.csv"));
@@ -155,17 +171,18 @@ public class DataSource {
                 String reportType = entry[0].toLowerCase().equals("null") ? null : entry[0];
                 User suspectedPerson = userList.getUser(entry[1]);
                 User reporter = userList.getUser(entry[2]);
-
                 LocalDateTime localDateTime =
-                        entry[3].equals("null") ? null :
-                                LocalDateTime.parse(entry[3], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                        entry[2].equalsIgnoreCase("null") ? null :
+                                LocalDateTime.parse(entry[2], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-                Review review = entry[4].equals("null") ? null : reviews.getReviewByID(entry[4]);
-                Product product = entry[5].equals("null") ? null : products.getProduct(entry[5]);
-                String detail = entry[6];
-                Report newReport = new Report(reportType, suspectedPerson, reporter,
-                        localDateTime, review, product, detail);
-                reports.addReport(newReport);
+                Review review = entry[3].equalsIgnoreCase("null") ? null : reviews.getReviewByID(entry[3]);
+                Product product = entry[4].equalsIgnoreCase("null") ? null : products.getProduct(entry[4]);
+                String detail = entry[5];
+                if (review != null){
+                    reports.addReport(new ReviewReport(reportType, review, localDateTime, detail));
+                } else if (product != null){
+                    reports.addReport(new ProductReport(reportType, product, localDateTime, detail));
+                }
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -251,7 +268,9 @@ public class DataSource {
         }
     }
 
-    public void  saveReport(){ save(reports.toCsv(), "reports.csv");}
+    public void saveReport() {
+        save(reports.toCsv(), "reports.csv");
+    }
 
     public void saveReview(){
         save(reviews.toCsv(), "reviews.csv");

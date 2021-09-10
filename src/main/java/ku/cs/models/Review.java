@@ -1,19 +1,18 @@
 package ku.cs.models;
 
 public class Review {
-    private String title;
-    private String id;
-    private String detail;
+    private final String title;
+    private final String id;
+    private final String detail;
     private int rating;
-    private User author;
-    private String productId;
+    private final User author;
+    private final String productId;
 
-    public Review(String id, String title, String detail, int rating, User user, Product product) {
+    public Review(String id, String title, String detail, User author, String productId) {
         this.title = title;
         this.detail = detail;
-        setRating(rating);
-        this.author = user;
-        this.productId = product.getId();
+        this.author = author;
+        this.productId = productId;
         this.id = id;
     }
 
@@ -21,9 +20,12 @@ public class Review {
         return id;
     }
 
-    public void setRating(int rating){
-        if (rating >= 0 && rating <= 5)
+    public boolean setRating(int rating){
+        if (rating >= 0 && rating <= 5) {
             this.rating = rating;
+            return true;
+        }
+        return false;
     }
 
     public String getTitle() {
