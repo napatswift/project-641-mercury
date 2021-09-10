@@ -74,7 +74,7 @@ public class Report {
     }
 
     public void setReportItem(Product product){
-        //this.suspectedPerson = เจ้าของสินค้า
+//        this.suspectedPerson = เจ้าของสินค้า
         this.product = product;
         this.review = null;
     }

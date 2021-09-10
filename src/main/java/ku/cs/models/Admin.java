@@ -7,17 +7,17 @@ public class Admin extends User {
         super(username, role, name, password, picturePath, loginDateTime, isBanned, loginAttempt, hasStore, store);
     }
 
-    public boolean setIsBanned(User other) {
+    public boolean bans(User other) {
         if (this.getRole() == Role.ADMIN & other.role == Role.USER) {
-            other.setBanned(true);
+            other.isBanned = true;
             return true;
         } else
             return false;
     }
 
-    public boolean setIsUnbanned(User other) {
+    public boolean unbans(User other) {
         if (this.getRole() == Role.ADMIN & other.role == Role.USER) {
-            other.setBanned(false);
+            other.isBanned = false;
             return true;
         } else {
             return false;

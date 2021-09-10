@@ -19,7 +19,7 @@ public class User implements Comparable<User>{
     private final String name;
     private String picturePath;
     private LocalDateTime loginDateTime;
-    private boolean isBanned;
+    protected boolean isBanned;
     private int loginAttempt;
     private boolean hasStore;
     private Store store;
@@ -152,10 +152,6 @@ public class User implements Comparable<User>{
             this.store = new Store(storeName, username);
             hasStore = true;
         }
-    }
-
-    public void setBanned(boolean banned) {
-        isBanned = banned;
     }
 
     public void openStore(String name){

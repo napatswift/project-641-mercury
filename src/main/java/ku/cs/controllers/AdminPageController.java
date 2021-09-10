@@ -3,8 +3,6 @@ package ku.cs.controllers;
 import com.github.saacsos.FXRouter;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -125,19 +123,21 @@ public class AdminPageController {
             userName.setText(user.getUsername());
             realNameUser.setText(user.getName());
             lastLogin.setText("last login " + user.getLoginDateTime().format(formatter));
-            if (user.getHasStore()) {
+
+            if (user.getHasStore())
                 storeName.setText(user.getStoreName());
-            } else
+            else
                 storeName.setText("This User Don't Have Store");
+
             if(user.isBanned()){
                 banAndUnbanBtn.setText("Unban");
-                statusUserBan.setText("Banned");
+                statusUserBan.setText("InActivate");
                 statusUserBan.setTextFill(Color.RED);
                 banAndUnbanBtn.setTextFill(Color.BLUE);
             }
             else{
                 banAndUnbanBtn.setText("Ban");
-                statusUserBan.setText("Not Banned");
+                statusUserBan.setText("Activate");
                 statusUserBan.setTextFill(Color.BLUE);
                 banAndUnbanBtn.setTextFill(Color.RED);
             }
@@ -307,21 +307,23 @@ public class AdminPageController {
 
     public void handleDismissBtn(ActionEvent actionEvent) throws IOException {
         removeReportFormReportListView(selectReport);
+        reportLeftVBox.setVisible(false);
     }
 
     public void handleBanBtn(ActionEvent actionEvent) throws IOException {
-        if(selectReport != null && adminUser.setIsBanned(selectUser)) {
+        if(selectReport != null && adminUser.bans(selectUser)) {
             removeReportFormReportListView(selectReport);
             dataSource.saveAccount();
+            reportLeftVBox.setVisible(false);
         }
     }
 
     public void handleBanAndUnbanBtn(ActionEvent actionEvent) {
         if(!selectUser.isBanned()){
-            adminUser.setIsBanned(selectUser);
+            adminUser.bans(selectUser);
         }
         else{
-            adminUser.setIsUnbanned(selectUser);
+            adminUser.unbans(selectUser);
         }
         dataSource.saveAccount();
         showSelectedUser(selectUser);
