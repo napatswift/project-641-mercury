@@ -37,7 +37,7 @@ public class LoginController {
     public void initialize(){
         dataSource = new DataSource("data");
         dataSource.parseAccount();
-        userList = dataSource.getAccounts();
+        userList = dataSource.getUserList();
     }
 
     public void removeErrorStyleClass(KeyEvent event){

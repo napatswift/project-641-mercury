@@ -31,7 +31,7 @@ public class SignUpController {
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
-        this.userList = dataSource.getAccounts();
+        this.userList = dataSource.getUserList();
     }
 
 

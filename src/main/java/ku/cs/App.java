@@ -10,7 +10,6 @@ import com.github.saacsos.FXRouter;
 import java.io.IOException;
 
 public class App extends Application {
-    private static Scene scene;
     private String appName = "App Name";
     private static int S_WIDTH = 450;
     private static int L_WIDTH = 1024;
@@ -32,20 +31,11 @@ public class App extends Application {
         FXRouter.when("admin_page", packageStr+"admin_page.fxml");
         FXRouter.when("about_us", packageStr+"about_us.fxml");
         FXRouter.when("marketplace", packageStr + "marketplace.fxml");
-        FXRouter.when("reset_password", packageStr + "reset_password.fxml",S_WIDTH, 600);
+        FXRouter.when("reset_password", packageStr + "reset_password.fxml",S_WIDTH, HEIGHT);
         FXRouter.when("create_store", packageStr + "create_store.fxml");
         FXRouter.when("my_store", packageStr + "my_store.fxml");
         FXRouter.when("reporting", packageStr + "reporting.fxml");
 
-    }
-
-    public static void setRoot(FXMLLoader loader) throws IOException{
-        scene.setRoot(loader.load());
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
     }
 
     public static void main(String[] args) {
