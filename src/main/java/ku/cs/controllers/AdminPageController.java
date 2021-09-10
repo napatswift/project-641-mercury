@@ -15,6 +15,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import ku.cs.models.*;
+import ku.cs.models.components.CategoryListCell;
+import ku.cs.models.components.ReportListCell;
+import ku.cs.models.components.SubCategoryListCell;
+import ku.cs.models.components.UserListCell;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -101,7 +105,7 @@ public class AdminPageController {
     // User Page
     private void showUserListView() {
         userListView.getItems().addAll(userList.toListOnlyRoleUser());
-        userListView.setCellFactory(userListView -> new User.UserListCell());
+        userListView.setCellFactory(userListView -> new UserListCell());
         userListView.refresh();
     }
 
@@ -149,7 +153,7 @@ public class AdminPageController {
     // Report Page
     private void showReportListView() {
         reportListView.getItems().addAll(reportList.toList());
-        reportListView.setCellFactory(reportListView -> new Report.ReportListCell());
+        reportListView.setCellFactory(reportListView -> new ReportListCell());
         reportListView.refresh();
     }
 
@@ -204,7 +208,7 @@ public class AdminPageController {
     // Category Page
     private void showCategoryListView() {
         categoryListView.getItems().addAll(categories.keySet());
-        categoryListView.setCellFactory(categoryListView -> new Category.CategoryListCell());
+        categoryListView.setCellFactory(categoryListView -> new CategoryListCell());
         categoryListView.refresh();
     }
 
@@ -220,7 +224,7 @@ public class AdminPageController {
         selectCategory = category;
         if(categories.containsKey(category))
             subCategoryListView.getItems().addAll(categories.get(selectCategory));
-        subCategoryListView.setCellFactory(subCategoryListView -> new SubCategory.SubCategoryListCell());
+        subCategoryListView.setCellFactory(subCategoryListView -> new SubCategoryListCell());
         subCategoryListView.refresh();
     }
 
