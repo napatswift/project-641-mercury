@@ -253,7 +253,9 @@ public class MarketPlaceController {
     private void handleReportProductBtn(MouseEvent event){
         if (dataSource.getReports() == null)
             dataSource.parseReport();
-        dataSource.getReports().setCurrReport(new Report(currUser, dataSource.getProducts().getSelectedProduct()));
+
+        dataSource.getReviews().setCurrReview(null);
+
         try {
             FXRouter.goTo("reporting", dataSource);
         } catch (IOException e) {
@@ -264,10 +266,12 @@ public class MarketPlaceController {
     public void handleReportReviewBtn(MouseEvent event){
         if (dataSource.getReports() == null)
             dataSource.parseReport();
+
         HBox source = (HBox) event.getSource();
         Review sourceReview =  dataSource.getReviews().getReviewByID(source.getId());
-        Report newReport = new Report(currUser, sourceReview);
-        dataSource.getReports().setCurrReport(newReport);
+        dataSource.getProducts().setSelectedProduct(null);
+        dataSource.getReviews().setCurrReview(sourceReview);
+
         try {
             FXRouter.goTo("reporting", dataSource);
         } catch (IOException e) {
@@ -331,7 +335,8 @@ public class MarketPlaceController {
     private void handleProductCard(MouseEvent event) {
         setBodyToggle();
         VBox vBox = (VBox) event.getSource();
-        productList.setSelectedProduct(vBox.getId());
+        Product selectedProduct = productList.getProduct(vBox.getId());
+        productList.setSelectedProduct(selectedProduct);
         if(productList.getSelectedProduct() == null)
             return;
         buildProductPage();

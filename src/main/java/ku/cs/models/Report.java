@@ -7,139 +7,47 @@ import javafx.scene.layout.VBox;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Report {
+abstract public class Report<T> {
 
     private String type;
-    private User suspectedPerson;
-    private final User reporter;
     private LocalDateTime reportDateTime;
-    private Review review;
-    private Product product;
+    private T reportItem;
     private String detail;
 
-    private final String [] productReportType = {
-            "Copyright",
-            "Offensive or sexually explicit",
-            "Privacy concern",
-            "Legal issue",
-            "Others"
-    };
-
-    private final String [] reviewReportType = {
-            "Spam",
-            "Unuseful",
-            "Offensive or sexually explicit",
-            "Privacy concern",
-            "Legal issue",
-            "Others"
-    };
-
-    public Report(String type, User suspectedPerson, User reporter, LocalDateTime reportDateTime, Review review, Product product, String detail) {
+    public Report(String type, T reportItem, LocalDateTime reportDateTime, String detail) {
         this.type = type;
-        this.suspectedPerson = suspectedPerson;
-        this.reporter = reporter;
+        this.reportItem = reportItem;
         this.reportDateTime = reportDateTime;
-        this.review = review;
-        this.product = product;
         this.detail = detail;
     }
 
-    public Report(User reporter, Product product) {
-        this.reporter = reporter;
-        setReportItem(product);
-    }
-
-    public Report(User reporter, Review review) {
-        this.reporter = reporter;
-        setReportItem(review);
-    }
-
-    public boolean checkReport(Report report){
-        if(report == this)
-            return true;
-        return false;
-    }
-
-    //setter
-    public void setType(String type) {
+    public Report(String type, T reportItem, String detail) {
         this.type = type;
-    }
-
-    public void setDetail(String detail) {
-
-        if (detail.isBlank()){
-            return;
-        }
+        this.reportItem = reportItem;
+        this.reportDateTime = LocalDateTime.now();
         this.detail = detail;
-    }
 
-    public void setReportItem(Product product){
-        //this.suspectedPerson = เจ้าของสินค้า
-        this.product = product;
-        this.review = null;
-    }
-
-    public void setReportItem(Review review) {
-        this.suspectedPerson = review.getAuthor();
-        this.review = review;
-        this.product = null;
-    }
-
-    public void setReportDateTime(LocalDateTime reportDateTime) {
-        this.reportDateTime = reportDateTime;
-    }
-
-    //getter
-    public String[] getProductReportType() {
-        return productReportType;
-    }
-
-    public String[] getReviewReportType() {
-        return reviewReportType;
     }
 
     public String getDetail() {
         return detail;
     }
 
+    abstract public User getSuspectedPerson();
+
     public LocalDateTime getReportDateTime() {
         return reportDateTime;
     }
 
-    public User getSuspectedPerson() {
-        return suspectedPerson;
+    public T getReportItem() {
+        return reportItem;
     }
-
-    public Review getReview() {
-        return review;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public User getReporter() {
-        return reporter;
-    }
-
-    public String getReportType(){
-        return type;
-    }
-
 
     public String getType() {
         return type;
     }
 
-    public String toCSV() {
-        return "" + type + ","
-                + (suspectedPerson == null ? null :suspectedPerson.getUsername()) + ","
-                + reporter.getUsername() + ","
-                + (reportDateTime == null ? null : reportDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)) + ","
-                + (review == null ? null : review.getId()) + ","
-                + (product == null ? null : product.getId()) + ","
-                + "\"" + detail.replace("\"", "\"\"") + "\"";
-    }
+    abstract public String toCSV();
 
     public static class ReportListCell extends ListCell<Report> {
         private final VBox content;

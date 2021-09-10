@@ -183,7 +183,7 @@ public class AdminPageController {
             suspectedPersonUserName.setText(report.getSuspectedPerson().getName());
             reportTime.setText("report time " + report.getReportDateTime().format(formatter));
             detailText.setText(report.getDetail());
-            reportType.setText(report.getReportType());
+            reportType.setText(report.getType());
 
             if (report.getSuspectedPerson().getHasStore()) {
                 suspectedPersonStoreName.setText(report.getSuspectedPerson().getStoreName());

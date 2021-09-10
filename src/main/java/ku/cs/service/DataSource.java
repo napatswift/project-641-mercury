@@ -169,19 +169,19 @@ public class DataSource {
             String [] entry;
             while ((entry = reader.readNext()) != null) {
                 String reportType = entry[0].equalsIgnoreCase("null") ? null : entry[0];
-                User suspectedPerson = userList.getUser(entry[1]);
-                User reporter = userList.getUser(entry[2]);
 
                 LocalDateTime localDateTime =
-                        entry[3].equalsIgnoreCase("null") ? null :
-                                LocalDateTime.parse(entry[3], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                        entry[2].equalsIgnoreCase("null") ? null :
+                                LocalDateTime.parse(entry[2], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-                Review review = entry[4].equalsIgnoreCase("null") ? null : reviews.getReviewByID(entry[4]);
-                Product product = entry[5].equalsIgnoreCase("null") ? null : products.getProduct(entry[5]);
-                String detail = entry[6];
-                Report newReport = new Report(reportType, suspectedPerson, reporter,
-                        localDateTime, review, product, detail);
-                reports.addReport(newReport);
+                Review review = entry[3].equalsIgnoreCase("null") ? null : reviews.getReviewByID(entry[3]);
+                Product product = entry[4].equalsIgnoreCase("null") ? null : products.getProduct(entry[4]);
+                String detail = entry[5];
+                if (review != null){
+                    reports.addReport(new ReviewReport(reportType, review, localDateTime, detail));
+                } else if (product != null){
+                    reports.addReport(new ProductReport(reportType, product, localDateTime, detail));
+                }
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();

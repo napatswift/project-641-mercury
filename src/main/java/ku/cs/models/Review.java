@@ -8,10 +8,10 @@ public class Review {
     private final User author;
     private final String productId;
 
-    public Review(String id, String title, String detail, User user, String productId) {
+    public Review(String id, String title, String detail, User author, String productId) {
         this.title = title;
         this.detail = detail;
-        this.author = user;
+        this.author = author;
         this.productId = productId;
         this.id = id;
     }

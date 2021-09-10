@@ -55,10 +55,6 @@ public class ProductList implements Iterable<Product>{
         this.selectedProduct = selectedProduct;
     }
 
-    public void setSelectedProduct(String id) {
-        this.selectedProduct = getProduct(id);
-    }
-
     public void sort(SortType sortType) {
         if (sortType.equals(SortType.BY_ROLLOUT_DATE)) {
             products.sort(Comparator.comparing(Product::getId));

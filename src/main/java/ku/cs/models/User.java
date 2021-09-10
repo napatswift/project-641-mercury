@@ -76,13 +76,13 @@ public class User implements Comparable<User>{
      * 1 password not match,
      * 2 login success
      */
-    public int login(String password){
+    public int login(String password, boolean saveTime){
         if (this.isBanned){
             this.loginAttempt++;
             return 0;
         } else{
             if (password.equals(this.password)){
-                this.loginDateTime = LocalDateTime.now();
+                if (saveTime) this.loginDateTime = LocalDateTime.now();
                 if (this.loginAttempt > 0)
                     this.loginAttempt = 0;
                 return 2;
@@ -90,6 +90,10 @@ public class User implements Comparable<User>{
                 return 1;
             }
         }
+    }
+
+    public int login(String password){
+        return login(password, true);
     }
 
     public static boolean isUsername(String username){
@@ -173,13 +177,6 @@ public class User implements Comparable<User>{
                 + loginAttempt + ","
                 + hasStore + ","
                 + (store == null ? null : store.getName());
-    }
-
-    @Override
-    public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return  loginDateTime.format(formatter) + "\n"
-                + username;
     }
 
     public static class UserListCell extends ListCell<User> {

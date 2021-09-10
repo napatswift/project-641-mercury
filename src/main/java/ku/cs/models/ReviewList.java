@@ -4,21 +4,17 @@ import java.util.*;
 
 public class ReviewList implements Iterable<Review> {
     private final ArrayList<Review> reviews;
-    private final Collection<String> ids;
+    private Review currReview;
 
     public ReviewList() {
         reviews = new ArrayList<>();
-        ids = new TreeSet<>();
     }
 
     public void addReview(Review review){
-        if (reviews.add(review)) {
-            ids.add(review.getId());
-        }
+        reviews.add(review);
     }
 
-    public boolean addReview(String title, String detail,
-                          int rating, User user, Product product){
+    public boolean addReview(String title, String detail, int rating, User user, Product product){
         title = title.trim();
         detail = detail.trim();
         if (title.equals("") || detail.equals("") ||
@@ -37,6 +33,10 @@ public class ReviewList implements Iterable<Review> {
         return true;
     }
 
+    public void setCurrReview(Review currReview) {
+        this.currReview = currReview;
+    }
+
     public ArrayList<Review> getProductReviewList(String idProduct) {
         ArrayList<Review> gettingReviews = new ArrayList<>();
         for (Review review: reviews){
@@ -44,6 +44,10 @@ public class ReviewList implements Iterable<Review> {
                 gettingReviews.add(review);
         }
         return gettingReviews;
+    }
+
+    public Review getCurrReview() {
+        return currReview;
     }
 
     public Review getReviewByID(String id){

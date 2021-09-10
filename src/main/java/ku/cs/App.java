@@ -10,7 +10,6 @@ import com.github.saacsos.FXRouter;
 import java.io.IOException;
 
 public class App extends Application {
-    private static Scene scene;
     private String appName = "App Name";
     private static int S_WIDTH = 450;
     private static int L_WIDTH = 1024;
