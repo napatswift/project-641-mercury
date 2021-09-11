@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import ku.cs.models.User;
 import ku.cs.models.UserList;
@@ -27,7 +28,6 @@ public class SignUpProfilePictureController {
     private UserList userList;
     private File file;
     private Path target;
-    private String prevView;
 
     @FXML
     Button selectProfilePictureBtn;
@@ -38,11 +38,11 @@ public class SignUpProfilePictureController {
     public void initialize() {
         Object[] data = (Object[]) FXRouter.getData();
         dataSource = (DataSource) data[1];
-        userList = dataSource.getAccounts();
+        userList = dataSource.getUserList();
         currUser = (User) data[0];
     }
 
-    public void handleConfirmBtn(ActionEvent event) throws IOException{
+    public void handleConfirmBtn(ActionEvent event) {
         if (file != null) {
             try {
                 Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
@@ -54,10 +54,12 @@ public class SignUpProfilePictureController {
 
         if (userList.addUser(currUser)){
             dataSource.saveAccount();
-            if (this.userList == null) {
-                return;
+            if (this.userList == null) return;
+            try {
+                FXRouter.goTo("login");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            FXRouter.goTo("login");
         }
     }
 
@@ -71,7 +73,9 @@ public class SignUpProfilePictureController {
 
         if (file != null){
             File destDir = new File("images");
-            destDir.mkdirs();
+            if (!destDir.exists()) {
+                destDir.mkdirs();
+            }
 
             Image uploadedImage = new Image(new FileInputStream(file.getPath()));
             String[] fileSplit = file.getName().split("\\.");

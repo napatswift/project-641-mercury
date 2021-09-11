@@ -5,15 +5,21 @@ import java.util.*;
 public class ProductList implements Iterable<Product>{
     private final List<Product> products;
     private Product selectedProduct;
+    public enum SortType {BY_ROLLOUT_DATE, BY_LOWEST, BY_HIGHEST}
 
     @Override
     public Iterator<Product> iterator() {
-        // TODO implement iterator by condition if any
         return products.iterator();
     }
 
-    public enum SortType {BY_ROLLOUT_DATE, BY_LOWEST, BY_HIGHEST}
-    public SortType sortType;
+    public Iterator<Product> iterator(double lowerBound, double upperBound, String category){
+        return products.stream()
+                .filter(p -> p.getPrice() >= lowerBound
+                        && p.getPrice() <= upperBound
+                        && (category == null || p.containsCategory(category)))
+                .iterator();
+
+    }
 
     public ProductList(){
         products = new ArrayList<>();
@@ -27,7 +33,7 @@ public class ProductList implements Iterable<Product>{
         products.removeIf(product -> product.getId().equals(id));
     }
 
-    public boolean contains(String id){
+    public boolean containsId(String id){
         for(Product product: products)
             if(product.getId().equals(id))
                 return true;
@@ -49,10 +55,6 @@ public class ProductList implements Iterable<Product>{
         this.selectedProduct = selectedProduct;
     }
 
-    public void setSelectedProduct(String id) {
-        this.selectedProduct = getProduct(id);
-    }
-
     public void sort(SortType sortType) {
         if (sortType.equals(SortType.BY_ROLLOUT_DATE)) {
             products.sort(Comparator.comparing(Product::getId));
@@ -69,14 +71,14 @@ public class ProductList implements Iterable<Product>{
         sort(SortType.BY_ROLLOUT_DATE);
     }
 
-    public void addFilter(double lowerBound, double upperBound){
-        // TODO implement filtering
+    public int size(){
+        return products.size();
     }
-
 
     public String toCsv(int numCategory){
         StringBuilder stringBuilder =
-                new StringBuilder("name,product_id,price,store,stock,description,rating,reviews,image,rollout_date,");
+                new StringBuilder(
+                        "name,product_id,price,store,stock,description,rating,reviews,image,rollout_date,");
         StringJoiner stringJoiner = new StringJoiner(",");
 
         for (int i = 0; i < numCategory; i++) {

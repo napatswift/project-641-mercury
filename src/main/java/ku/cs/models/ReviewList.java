@@ -4,21 +4,17 @@ import java.util.*;
 
 public class ReviewList implements Iterable<Review> {
     private final ArrayList<Review> reviews;
-    private final Collection<String> ids;
-    private Review reportingReview;
+    private Review currReview;
 
-    public ReviewList(){
+    public ReviewList() {
         reviews = new ArrayList<>();
-        ids = new TreeSet<>();
     }
 
     public void addReview(Review review){
         reviews.add(review);
-        ids.add(review.getId());
     }
 
-    public boolean addReview(String title, String detail,
-                          int rating, User user, Product product){
+    public boolean addReview(String title, String detail, int rating, User user, Product product){
         title = title.trim();
         detail = detail.trim();
         if (title.equals("") || detail.equals("") ||
@@ -27,8 +23,18 @@ public class ReviewList implements Iterable<Review> {
             return false;
         }
         String id = UUID.randomUUID().toString();
-        addReview(new Review(id, title, detail, rating, user, product));
+        Review newReview = new Review(id, title, detail, user, product.getId());
+
+        if (!newReview.setRating(rating))
+            return false;
+
+        product.addReview(newReview);
+        addReview(newReview);
         return true;
+    }
+
+    public void setCurrReview(Review currReview) {
+        this.currReview = currReview;
     }
 
     public ArrayList<Review> getProductReviewList(String idProduct) {
@@ -40,6 +46,10 @@ public class ReviewList implements Iterable<Review> {
         return gettingReviews;
     }
 
+    public Review getCurrReview() {
+        return currReview;
+    }
+
     public Review getReviewByID(String id){
         for (Review review: reviews){
             if(review.getId().equals(id)){
@@ -47,15 +57,6 @@ public class ReviewList implements Iterable<Review> {
             }
         }
         return null;
-    }
-
-    public void setReportingReview(Review reportingReview) {
-        if (reportingReview != null)
-            this.reportingReview = reportingReview;
-    }
-
-    public void resetReportingReview(){
-        this.reportingReview = null;
     }
 
     public String toCsv(){
@@ -75,5 +76,9 @@ public class ReviewList implements Iterable<Review> {
     @Override
     public Iterator<Review> iterator() {
         return reviews.iterator();
+    }
+
+    public Iterator<Review> iterator(String productId){
+        return reviews.stream().filter(r -> r.getProductId().equals(productId)).iterator();
     }
 }

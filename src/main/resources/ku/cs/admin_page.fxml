@@ -291,7 +291,7 @@
                                           <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
                                              <children>
                                                 <SVGPath content="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
-                                                <Label text="ReportType">
+                                                <Label fx:id="reportType" text="reportType">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>

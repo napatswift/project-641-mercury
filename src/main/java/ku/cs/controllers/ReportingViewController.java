@@ -11,8 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import ku.cs.models.ComponentBuilder;
-import ku.cs.models.Report;
+import ku.cs.models.*;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -33,12 +32,12 @@ public class ReportingViewController {
     private TextArea reportDetailsTA;
 
     private DataSource dataSource;
-    private Report report;
     private ToggleGroup group;
 
     @FXML
     void handleBackBtn(ActionEvent event) {
-        dataSource.getReports().setCurrReport(null);
+        dataSource.getProducts().setSelectedProduct(null);
+        dataSource.getReviews().setCurrReview(null);
         try {
             FXRouter.goTo("marketplace", dataSource);
         } catch (IOException e) {
@@ -61,11 +60,25 @@ public class ReportingViewController {
             return;
         }
 
-        report.setType(group.getSelectedToggle().getUserData().toString());
-        report.setDetail(reportDetailsTA.getText());
-        report.setReportDateTime(LocalDateTime.now());
-        dataSource.getReports().addReport(report);
-        dataSource.getReports().setCurrReport(null);
+        String type = (String) group.getSelectedToggle().getUserData();
+        Product product = dataSource.getProducts().getSelectedProduct();
+        Review review = dataSource.getReviews().getCurrReview();
+        String details = reportDetailsTA.getText();
+
+        if (product != null) {
+            ProductReport report = new ProductReport(type, product, details);
+            dataSource.getReports().addReport(report);
+        } else if (review != null) {
+            ReviewReport report = new ReviewReport(type, review, details);
+            dataSource.getReports().addReport(report);
+        } else {
+            System.err.println("product and review are null");
+            return;
+        }
+
+        dataSource.getProducts().setSelectedProduct(null);
+        dataSource.getReviews().setCurrReview(null);
+
         dataSource.saveReport();
 
         try {
@@ -78,10 +91,21 @@ public class ReportingViewController {
     private void populateReportType(){
         String [] reportTypes;
         group = new ToggleGroup();
-        if (report.getProduct() != null)
-            reportTypes = report.getProductReportType();
+        if (dataSource.getProducts().getSelectedProduct() != null)
+            reportTypes = new String [] {
+                    "Copyright",
+                    "Offensive or sexually explicit",
+                    "Privacy concern",
+                    "Legal issue",
+                    "Others" };
         else
-            reportTypes = report.getReviewReportType();
+            reportTypes = new String [] {
+                "Spam",
+                "Unuseful",
+                "Offensive or sexually explicit",
+                "Privacy concern",
+                "Legal issue",
+                "Others" };
 
         for (String type: reportTypes){
             RadioButton newBtn = new RadioButton(type);
@@ -95,12 +119,14 @@ public class ReportingViewController {
     }
 
     private void buildCard(){
+        Product product = dataSource.getProducts().getSelectedProduct();
+        Review review = dataSource.getReviews().getCurrReview();
         ComponentBuilder builder = new ComponentBuilder();
         reportItemHBox.getStyleClass().add("review-card");
-        if (report.getProduct() != null)
-            reportItemHBox.getChildren().add(builder.smallProductCard(report.getProduct()));
+        if (product != null)
+            reportItemHBox.getChildren().add(builder.smallProductCard(product));
         else
-            reportItemHBox.getChildren().add(builder.smallReviewCard(report.getReview()));
+            reportItemHBox.getChildren().add(builder.smallReviewCard(review));
     }
 
     private void clearText(KeyEvent e){
@@ -114,8 +140,7 @@ public class ReportingViewController {
     @FXML
     public void initialize() throws IOException {
       dataSource = (DataSource) FXRouter.getData();
-      report = dataSource.getReports().getCurrReport();
-      if (report.getReview() != null)
+      if (dataSource.getReviews().getCurrReview() != null)
           reportPromptLabel.setText("What's wrong with this review?");
       populateReportType();
       buildCard();
