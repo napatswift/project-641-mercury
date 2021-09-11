@@ -33,8 +33,8 @@ public class Product implements Comparable<Product>{
         this.rolloutDate = rolloutDate;
     }
 
-    public Product(String name, String details, String id, Store store){
-        this(name, details, id, LocalDateTime.now(), store);
+    public Product(String name, String details, Store store){
+        this(name, details, UUID.randomUUID().toString(), LocalDateTime.now(), store);
     }
 
     public String getName() {
@@ -197,5 +197,9 @@ public class Product implements Comparable<Product>{
         Category newCategory = new Category(categoryName);
         newCategory.addSubCategory(new SubCategory(subCategoryName, value));
         categories.add(newCategory);
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 }

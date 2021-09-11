@@ -17,24 +17,29 @@ import ku.cs.models.Product;
 import ku.cs.models.Store;
 import ku.cs.models.StoreList;
 import ku.cs.service.DataSource;
+
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class MyStoreController  {
     DataSource dataSource;
     Product product;
+    Image image;
     private File file;
     private Path target;
 
-    @FXML Label usernameLabel;
-    @FXML Label nameLabel;
-    @FXML Label nameStoreLabel;
+    @FXML Label usernameLabel, nameLabel, nameStoreLabel;
     @FXML TabPane myStoreTP;
     @FXML ImageView userImage;
     @FXML ChoiceBox<String> categoryCB, subCategoryCB;
@@ -42,13 +47,16 @@ public class MyStoreController  {
     @FXML TextArea descriptionTF;
     @FXML ImageView pictureViewIV;
     @FXML Button selectProductPictureBtn;
+    @FXML Label nameProductLabel, priceLabel, stockLabel, descriptionLabel;
+    @FXML ListView<Category> categoryLV;
+    @FXML ImageView productIV;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
-        usernameLabel.setText(dataSource.getAccounts().getCurrUser().getUsername());
-        nameStoreLabel.setText(dataSource.getAccounts().getCurrUser().getStoreName());
-        nameLabel.setText(dataSource.getAccounts().getCurrUser().getName());
-        userImage.setImage(new Image(dataSource.getAccounts().getCurrUser().getPicturePath()));
+        usernameLabel.setText(dataSource.getUserList().getCurrUser().getUsername());
+        nameStoreLabel.setText(dataSource.getUserList().getCurrUser().getStoreName());
+        nameLabel.setText(dataSource.getUserList().getCurrUser().getName());
+        userImage.setImage(new Image(dataSource.getUserList().getCurrUser().getPicturePath()));
         loadCategory();
     }
 
@@ -62,13 +70,15 @@ public class MyStoreController  {
     }
 
     @FXML
-    public void handleAddProductBtn(ActionEvent event){
+    public void handleListProductBtn(ActionEvent event){
         myStoreTP.getSelectionModel().select(0);
     }
     @FXML
-    public void handleListProductBtn(ActionEvent event){
+    public void handleAddProductBtn(ActionEvent event){
+        product = new Product("", "", dataSource.getUserList().getCurrUser().getStore());
         myStoreTP.getSelectionModel().select(1);
     }
+
 
     public void loadCategory(){
         ObservableList<String> list = FXCollections.observableArrayList(dataSource.getCategories());
@@ -89,12 +99,10 @@ public class MyStoreController  {
 
     @FXML public void handleAddBtn(){
         String value = valueTF.getText();
-        if(!value.equals("")) {
-            valueTF.setText("");
-            String category = categoryCB.getSelectionModel().getSelectedItem().toString();
-            String subCategory = subCategoryCB.getSelectionModel().getSelectedItem().toString();
-            product.addSubCategory(category,subCategory,value);
-        }
+        valueTF.setText("");
+        String category = categoryCB.getSelectionModel().getSelectedItem().toString();
+        String subCategory = subCategoryCB.getSelectionModel().getSelectedItem().toString();
+        product.addSubCategory(category,subCategory,value);
     }
 
     @FXML public void handleNextBtn(){
@@ -102,11 +110,27 @@ public class MyStoreController  {
         double price = Double.parseDouble(priceTF.getText());
         int stock = Integer.parseInt(stockTF.getText());
         String detail = descriptionTF.getText();
+
+
+
         if(!name.equals("") && price > 0 && stock > 0 && !detail.equals("")) {
+
             product.setName(name);
             product.setPrice(price);
             product.setStock(stock);
             product.setDetails(detail);
+            product.setStore(dataSource.getUserList().getCurrUser().getStore());
+
+            myStoreTP.getSelectionModel().select(2);
+            nameProductLabel.setText(product.getName());
+            priceLabel.setText(String.format("%.2f", product.getPrice()));
+            stockLabel.setText(String.format("%d", product.getStock()));
+            descriptionLabel.setText(product.getDetails());
+
+            categoryLV.getItems().addAll(product.getCategories());
+            categoryLV.refresh();
+
+            productIV.setImage(image);
         }
     }
 
@@ -119,8 +143,10 @@ public class MyStoreController  {
         file = chooser.showOpenDialog(selectProductPictureBtn.getScene().getWindow());
 
         if (file != null){
-            File destDir = new File("images");
-            destDir.mkdirs();
+            File destDir = new File("images"+ File.separator + "product_images");
+            if (!destDir.exists()) {
+                destDir.mkdirs();
+            }
 
             Image uploadedImage = new Image(new FileInputStream(file.getPath()));
             String[] fileSplit = file.getName().split("\\.");
@@ -134,7 +160,20 @@ public class MyStoreController  {
                             + filename);
 
             pictureViewIV.setImage(uploadedImage);
+            image = uploadedImage;
         }
     }
 
+    public void handleConfirmBtn(){
+        if (file != null) {
+            try {
+                Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
+                product.setPictureName(target.getFileName().toString());
+                dataSource.getProducts().addProduct(product);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        dataSource.saveProduct();
+    }
 }
