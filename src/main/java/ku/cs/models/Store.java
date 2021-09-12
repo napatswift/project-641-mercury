@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Store {
     private String username;
     private String nameStore;
-    private ArrayList<Product> products;
+    private ProductList products;
 
     public Store(String nameStore) {
         this.nameStore = nameStore;
@@ -18,17 +18,13 @@ public class Store {
     public Store(String nameStore, String username) {
         this.username = username;
         this.nameStore = nameStore;
-        products = new ArrayList<>();
+        products = new ProductList();
     }
 
     public String getName() {
         return nameStore;
     }
 
-    public void addProduct(Product product){
-        products.add(product);
-        product.setStore(this);
-    }
 
     public void toCsv() throws IOException {
         FileWriter fileWriter = null;

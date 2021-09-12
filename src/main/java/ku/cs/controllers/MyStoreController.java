@@ -12,10 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import ku.cs.models.Category;
-import ku.cs.models.Product;
-import ku.cs.models.Store;
-import ku.cs.models.StoreList;
+import ku.cs.models.*;
 import ku.cs.service.DataSource;
 
 
@@ -49,7 +46,10 @@ public class MyStoreController  {
     @FXML Button selectProductPictureBtn;
     @FXML Label nameProductLabel, priceLabel, stockLabel, descriptionLabel;
     @FXML ListView<Category> categoryLV;
-    @FXML ImageView productIV;
+    @FXML ImageView productIV, productListIV;
+    @FXML ListView<Product> productsListLV;
+    @FXML Label nameProductLB, priceLB, stockLB, rateLB, detailsLB;
+
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
@@ -58,6 +58,12 @@ public class MyStoreController  {
         nameLabel.setText(dataSource.getUserList().getCurrUser().getName());
         userImage.setImage(new Image(dataSource.getUserList().getCurrUser().getPicturePath()));
         loadCategory();
+        handleListProductBtn();
+
+
+        showProductsListView();
+        clearSelectedProduct();
+        handleProductsListView();
     }
 
     @FXML
@@ -70,11 +76,11 @@ public class MyStoreController  {
     }
 
     @FXML
-    public void handleListProductBtn(ActionEvent event){
+    public void handleListProductBtn(){
         myStoreTP.getSelectionModel().select(0);
     }
     @FXML
-    public void handleAddProductBtn(ActionEvent event){
+    public void handleAddProductBtn(){
         product = new Product("", "", dataSource.getUserList().getCurrUser().getStore());
         myStoreTP.getSelectionModel().select(1);
     }
@@ -175,5 +181,47 @@ public class MyStoreController  {
             }
         }
         dataSource.saveProduct();
+        handleAddProductBtn();
+    }
+
+
+    /**
+     * @path Product List
+     */
+
+    public void showProductsListView(){
+        productsListLV.getItems().addAll(dataSource.getProductByNameStore
+                (dataSource.getUserList().getCurrUser().getStoreName()));
+        productsListLV.refresh();
+    }
+
+    public void handleProductsListView(){
+        productsListLV.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener<Product>(){
+                    @Override
+                    public void changed(ObservableValue<? extends Product> observable,
+                                        Product oldValue, Product newValue) {
+                        System.out.println(newValue + " is selected - "+ oldValue);
+                        showSelectedProduct(newValue);
+                    }
+                }
+        );
+    }
+
+    public void showSelectedProduct(Product product){
+        nameProductLB.setText(product.getName());
+        priceLB.setText(String.format("%.2f",product.getPrice()));
+        stockLB.setText(String.format("%d",product.getStock()));
+        rateLB.setText(String.format("%.2f",product.getRating()));
+        detailsLB.setText(product.getDetails());
+        productListIV.setImage(new Image(product.getPicturePath()));
+    }
+
+    public void clearSelectedProduct(){
+        nameProductLB.setText("");
+        priceLB.setText("");
+        stockLB.setText("");
+        rateLB.setText("");
+        detailsLB.setText("");
     }
 }

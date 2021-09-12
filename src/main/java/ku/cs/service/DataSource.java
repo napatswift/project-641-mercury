@@ -298,4 +298,13 @@ public class DataSource {
         save(stringJoiner.toString(), "categories.csv");
     }
 
+    public ArrayList<Product> getProductByNameStore(String name){
+        ArrayList<Product> productArrayList = new ArrayList<>();
+        for(Product product : products){
+            if(product.getStore().getName().equals(name)){
+                productArrayList.add(product);
+            }
+        }return productArrayList;
+    }
+
 }
