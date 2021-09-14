@@ -9,10 +9,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import com.github.saacsos.FXRouter;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.util.Callback;
 import ku.cs.models.*;
+import ku.cs.models.components.ProductListCell;
 import ku.cs.service.DataSource;
 
 
@@ -192,18 +195,14 @@ public class MyStoreController  {
     public void showProductsListView(){
         productsListLV.getItems().addAll(dataSource.getProductByNameStore
                 (dataSource.getUserList().getCurrUser().getStoreName()));
+        productsListLV.setCellFactory(productListView -> new ProductListCell(productListView));
         productsListLV.refresh();
     }
 
     public void handleProductsListView(){
         productsListLV.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener<Product>(){
-                    @Override
-                    public void changed(ObservableValue<? extends Product> observable,
-                                        Product oldValue, Product newValue) {
-                        System.out.println(newValue + " is selected - "+ oldValue);
-                        showSelectedProduct(newValue);
-                    }
+                (observable, oldValue, newValue) -> {
+                    showSelectedProduct(newValue);
                 }
         );
     }
