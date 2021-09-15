@@ -40,9 +40,9 @@ public class ProductListCell extends ListCell<Product> {
         warning.setContent("M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z");
         warning.setStyle("-fx-fill: error-color");
 
-        topLabel.getStyleClass().add("body2");
+        topLabel.getStyleClass().add("subtitle2");
         topLabel.setStyle("-fx-text-fill: on-surface-med-color;");
-        label.getStyleClass().add("body1");
+        label.getStyleClass().add("subtitle1");
         label.setStyle("-fx-text-fill: on-surface-color");
 
         ColumnConstraints col1 = new ColumnConstraints();

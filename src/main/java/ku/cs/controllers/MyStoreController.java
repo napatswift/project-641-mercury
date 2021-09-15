@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -54,7 +55,6 @@ public class MyStoreController  {
     @FXML TextField valueTF, nameProductTF, priceTF, stockTF;
     @FXML TextArea descriptionTF;
     @FXML ImageView pictureViewIV;
-    @FXML Button selectProductPictureBtn;
     @FXML Label nameProductLabel, priceLabel, stockLabel, descriptionLabel;
     @FXML ListView<Category> categoryLV;
     @FXML ImageView productIV, productListIV;
@@ -76,10 +76,11 @@ public class MyStoreController  {
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
-        usernameLabel.setText("@" + dataSource.getUserList().getCurrUser().getUsername());
-        nameStoreLabel.setText(dataSource.getUserList().getCurrUser().getStoreName());
-        nameLabel.setText(dataSource.getUserList().getCurrUser().getName());
-        userImage.setImage(new Image(dataSource.getUserList().getCurrUser().getPicturePath()));
+        User currUser = dataSource.getUserList().getCurrUser();
+        usernameLabel.setText("@" + currUser.getUsername());
+        nameStoreLabel.setText(currUser.getStoreName());
+        nameLabel.setText(currUser.getName());
+        userImage.setImage(new Image(currUser.getPicturePath()));
         userImage.setClip(new Circle(25, 25, 25));
         loadCategory();
         handleListProductBtn();
@@ -165,13 +166,13 @@ public class MyStoreController  {
         }
     }
 
-    public void handleSelectProductPicture(ActionEvent event) throws FileNotFoundException {
-
+    public void handleSelectProductPicture(MouseEvent event) throws FileNotFoundException {
+        ImageView imageBtn = (ImageView) event.getSource();
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
 
-        file = chooser.showOpenDialog(selectProductPictureBtn.getScene().getWindow());
+        file = chooser.showOpenDialog(imageBtn.getScene().getWindow());
 
         if (file != null){
             File destDir = new File("images"+ File.separator + "product_images");
