@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
@@ -75,10 +76,11 @@ public class MyStoreController  {
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
-        usernameLabel.setText(dataSource.getUserList().getCurrUser().getUsername());
+        usernameLabel.setText("@" + dataSource.getUserList().getCurrUser().getUsername());
         nameStoreLabel.setText(dataSource.getUserList().getCurrUser().getStoreName());
         nameLabel.setText(dataSource.getUserList().getCurrUser().getName());
         userImage.setImage(new Image(dataSource.getUserList().getCurrUser().getPicturePath()));
+        userImage.setClip(new Circle(25, 25, 25));
         loadCategory();
         handleListProductBtn();
 
