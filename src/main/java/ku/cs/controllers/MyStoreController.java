@@ -1,5 +1,6 @@
 package ku.cs.controllers;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -8,14 +9,20 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import com.github.saacsos.FXRouter;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import ku.cs.models.*;
 import ku.cs.models.components.ProductListCell;
+import ku.cs.models.components.ResizeableImageView;
 import ku.cs.service.DataSource;
 
 
@@ -51,7 +58,19 @@ public class MyStoreController  {
     @FXML ListView<Category> categoryLV;
     @FXML ImageView productIV, productListIV;
     @FXML ListView<Product> productsListLV;
-    @FXML Label nameProductLB, priceLB, stockLB, rateLB, detailsLB;
+    @FXML Label rateLB, detailsLB;
+    @FXML
+    TextField nameProductLB, priceLB, stockLB;
+    @FXML
+    VBox rightProductVB, ImageViewVBox;
+    @FXML
+    SplitPane productSP;
+    @FXML
+    HBox ratingStarsSelectedProduct;
+    @FXML
+    SVGPath stockWarningSelectedProductSVG;
+
+    ResizeableImageView resizeableImageView;
 
 
     public void initialize() {
@@ -63,6 +82,7 @@ public class MyStoreController  {
         loadCategory();
         handleListProductBtn();
 
+        rightProductVB.setVisible(false);
 
         showProductsListView();
         clearSelectedProduct();
@@ -165,7 +185,7 @@ public class MyStoreController  {
 
             target = FileSystems.getDefault().getPath(
                     destDir.getAbsolutePath()
-                            + System.getProperty("file.separator")
+                            + File.separator
                             + filename);
 
             pictureViewIV.setImage(uploadedImage);
@@ -202,18 +222,31 @@ public class MyStoreController  {
     public void handleProductsListView(){
         productsListLV.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
+                    ratingStarsSelectedProduct.getChildren().clear();
                     showSelectedProduct(newValue);
+                    productSP.setDividerPositions(0.5, 0.5);
+                    rightProductVB.setVisible(newValue != null);
                 }
         );
     }
 
     public void showSelectedProduct(Product product){
+        ComponentBuilder builder = new ComponentBuilder();
+        stockWarningSelectedProductSVG.setVisible(product.stockIsLow());
         nameProductLB.setText(product.getName());
         priceLB.setText(String.format("%.2f",product.getPrice()));
         stockLB.setText(String.format("%d",product.getStock()));
-        rateLB.setText(String.format("%.2f",product.getRating()));
+        rateLB.setText(String.format("%.2f/5",product.getRating()));
         detailsLB.setText(product.getDetails());
-        productListIV.setImage(new Image(product.getPicturePath()));
+
+        if (resizeableImageView == null) {
+            resizeableImageView = new ResizeableImageView(new Image(product.getPicturePath()));
+            resizeableImageView.fitWidthProperty().bind(rightProductVB.widthProperty());
+            ImageViewVBox.getChildren().add(resizeableImageView);
+        }
+
+        resizeableImageView.setImage(new Image(product.getPicturePath()));
+        builder.starsRating(ratingStarsSelectedProduct, product.getRating());
     }
 
     public void clearSelectedProduct(){

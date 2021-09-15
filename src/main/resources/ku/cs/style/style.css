@@ -65,6 +65,18 @@
     -fx-border-color: primary-color;
 }
 
+.text-field-underline{
+    -fx-background-color: transparent;
+    -fx-text-fill: on-surface-color;
+    -fx-border-radius: 0;
+    -fx-border-color: surface-overlay;
+    -fx-border-width: 0 0 2 0;
+}
+
+.text-field-underline:hover, .text-field:focused{
+    -fx-border-color: surface-focus-overlay;
+}
+
 .round-overlay-text-field{
     -fx-background-color: transparent;
     -fx-border-color: surface-overlay;
@@ -74,22 +86,6 @@
     -fx-border-radius: 0px;
     -fx-background-color: surface-overlay;
     -fx-background-radius: 0;
-}
-
-.text-area{
-    -fx-background-color: surface-overlay;
-    -fx-border-radius: 0px;
-    -fx-border-color: transparent;
-    -fx-highlight-text-fill: transparent;
-}
-
-.text-area:hover, .text-area:focused{
-    -fx-border-color: primary-color;
-}
-
-.text-area .content{
-    -fx-border-color: transparent;
-    -fx-background-color: transparent;
 }
 
 .error-text-field{
@@ -304,28 +300,6 @@
     -fx-padding: 0;
 }
 
-.list-view{
-    -fx-background-insets: 0;
-    -fx-padding: 1;
-}
-
-.list-cell:filled:selected:focused, .list-cell:filled:selected {
-    -fx-background-color: primary-overlay;
-}
-
-.list-cell:even, .list-cell:odd {
-    -fx-background-color: transparent;
-}
-
-.list-cell:filled:hover {
-    -fx-background-color: surface-overlay;
-    -fx-fill: on-surface-color;
-}
-
-.list-cell:selected {
-    -fx-text-fill: on-surface-color;
-}
-
 .list-item-btn{
     -fx-background-radius: 6px;
     -fx-font-size: 14px;
@@ -338,6 +312,12 @@
     -fx-fill: #000000;
 }
 
+.list-item-btn:focused{
+    -fx-background-color: primary-overlay;
+    -fx-text-fill: primary-color;
+    -fx-fill: primary-color;
+}
+
 .list-item-active-btn{
     -fx-background-color: primary-overlay;
     -fx-text-fill: primary-color;
@@ -347,4 +327,22 @@
     -fx-background-color: primary-overlay;
     -fx-text-fill: primary-dark-color;
     -fx-fill: primary-dark-color;
+}
+
+.ship-btn{
+    -fx-text-fill: primary-color;
+    -fx-fill: primary-color;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-background-color: primary-overlay;
+    -fx-padding: 8;
+}
+
+.ship-btn:hover{
+    -fx-text-fill: primary-dark-color;
+    -fx-background-color: primary-overlay-hover;
+}
+
+.ship-btn .svg-path{
+    -fx-fill: primary-color;
 }

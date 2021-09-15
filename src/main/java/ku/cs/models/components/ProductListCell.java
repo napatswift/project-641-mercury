@@ -81,7 +81,7 @@ public class ProductListCell extends ListCell<Product> {
             label.setText(product.getName());
             warning.setVisible(product.stockIsLow());
             setImage(product.getPicturePath());
-            setStyle("-fx-border-width: 0 0 2 0; -fx-border-color: surface-overlay");
+            setStyle("-fx-border-width: 0 0 1 0; -fx-border-color: surface-overlay");
             setPadding(new Insets(5, 15, 8, 8));
             setGraphic(gridPane);
         } else {
