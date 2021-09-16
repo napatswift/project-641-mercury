@@ -447,11 +447,13 @@ public class MarketPlaceController {
         int i = 0;
         Iterator<Product> iterator;
         iterator = productList.iterator(lowerBoundParsed, upperBoundParsed, filterCategory);
-        while(iterator.hasNext() && i++ < amount) {
+        while (iterator.hasNext()) {
             Product product = iterator.next();
-            VBox card = componentBuilder.productCard(product);
-            card.setOnMouseReleased(this::handleProductCard);
-            productFlowPane.getChildren().add(card);
+            if (i++ > productIndex && i < productIndex + amount) {
+                VBox card = componentBuilder.productCard(product);
+                card.setOnMouseReleased(this::handleProductCard);
+                productFlowPane.getChildren().add(card);
+            }
         }
         productIndex += amount;
     }
