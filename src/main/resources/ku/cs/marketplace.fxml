@@ -155,7 +155,7 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </HBox>
-                                          <GridPane alignment="TOP_CENTER" hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="900.0" prefWidth="718.0" VBox.vgrow="NEVER">
+                                          <GridPane alignment="TOP_CENTER" hgap="13.0" maxHeight="1.7976931348623157E308" maxWidth="900.0" prefWidth="718.0" VBox.vgrow="NEVER">
                                             <columnConstraints>
                                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="200.0" percentWidth="50.0" prefWidth="400.0" />
                                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="200.0" percentWidth="50.0" />

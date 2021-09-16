@@ -1,29 +1,25 @@
 package ku.cs.controllers;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import com.github.saacsos.FXRouter;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
-import javafx.util.Callback;
 import ku.cs.models.*;
 import ku.cs.models.components.ProductListCell;
+import ku.cs.models.components.RatingStars;
 import ku.cs.models.components.ResizeableImageView;
 import ku.cs.service.DataSource;
 
@@ -37,9 +33,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.UUID;
 
 public class MyStoreController  {
     DataSource dataSource;
@@ -57,7 +50,7 @@ public class MyStoreController  {
     @FXML ImageView pictureViewIV;
     @FXML Label nameProductLabel, priceLabel, stockLabel, descriptionLabel;
     @FXML ListView<Category> categoryLV;
-    @FXML ImageView productIV, productListIV;
+    @FXML ImageView productIV;
     @FXML ListView<Product> productsListLV;
     @FXML Label rateLB, detailsLB;
     @FXML
@@ -70,9 +63,12 @@ public class MyStoreController  {
     HBox ratingStarsSelectedProduct;
     @FXML
     SVGPath stockWarningSelectedProductSVG;
+    @FXML
+    AnchorPane productsRightPane;
+    @FXML
+    ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
 
-    ResizeableImageView resizeableImageView;
-
+    ResizeableImageView selectedProductResizeableImageView;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
@@ -85,11 +81,28 @@ public class MyStoreController  {
         loadCategory();
         handleListProductBtn();
 
-        rightProductVB.setVisible(false);
+        productsRightPane.setVisible(false);
 
         showProductsListView();
         clearSelectedProduct();
         handleProductsListView();
+
+        setGroup();
+    }
+
+    private void setGroup(){
+        ToggleGroup group = new ToggleGroup();
+        group.selectedToggleProperty().addListener((observableValue, ot, nt) -> {
+            if (ot != null)
+                ((ToggleButton) ot).getStyleClass().remove("list-item-active-btn");
+            ((ToggleButton) nt).getStyleClass().add("list-item-active-btn");
+        });
+        myAccountMenuBtn.setToggleGroup(group);
+        myStoreMenuBtn.setToggleGroup(group);
+        productsMenuBtn.setToggleGroup(group);
+        ordersMenuBtn.setToggleGroup(group);
+
+        productsMenuBtn.fire();
     }
 
     @FXML
@@ -116,12 +129,8 @@ public class MyStoreController  {
         ObservableList<String> list = FXCollections.observableArrayList(dataSource.getCategories());
         categoryCB.setItems(list);
 
-        categoryCB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                loadSubCategory(list.get(t1.intValue()));
-            }
-        });
+        categoryCB.getSelectionModel().selectedIndexProperty().addListener(
+                (observableValue, number, t1) -> loadSubCategory(list.get(t1.intValue())));
     }
 
     public void loadSubCategory(String category){
@@ -132,8 +141,8 @@ public class MyStoreController  {
     @FXML public void handleAddBtn(){
         String value = valueTF.getText();
         valueTF.setText("");
-        String category = categoryCB.getSelectionModel().getSelectedItem().toString();
-        String subCategory = subCategoryCB.getSelectionModel().getSelectedItem().toString();
+        String category = categoryCB.getSelectionModel().getSelectedItem();
+        String subCategory = subCategoryCB.getSelectionModel().getSelectedItem();
         product.addSubCategory(category,subCategory,value);
     }
 
@@ -228,13 +237,12 @@ public class MyStoreController  {
                     ratingStarsSelectedProduct.getChildren().clear();
                     showSelectedProduct(newValue);
                     productSP.setDividerPositions(0.5, 0.5);
-                    rightProductVB.setVisible(newValue != null);
+                    productsRightPane.setVisible(newValue != null);
                 }
         );
     }
 
     public void showSelectedProduct(Product product){
-        ComponentBuilder builder = new ComponentBuilder();
         stockWarningSelectedProductSVG.setVisible(product.stockIsLow());
         nameProductLB.setText(product.getName());
         priceLB.setText(String.format("%.2f",product.getPrice()));
@@ -242,14 +250,14 @@ public class MyStoreController  {
         rateLB.setText(String.format("%.2f/5",product.getRating()));
         detailsLB.setText(product.getDetails());
 
-        if (resizeableImageView == null) {
-            resizeableImageView = new ResizeableImageView(new Image(product.getPicturePath()));
-            resizeableImageView.fitWidthProperty().bind(rightProductVB.widthProperty());
-            ImageViewVBox.getChildren().add(resizeableImageView);
+        if (selectedProductResizeableImageView == null) {
+            selectedProductResizeableImageView = new ResizeableImageView(new Image(product.getPicturePath()));
+            selectedProductResizeableImageView.fitWidthProperty().bind(rightProductVB.widthProperty());
+            ImageViewVBox.getChildren().add(selectedProductResizeableImageView);
         }
 
-        resizeableImageView.setImage(new Image(product.getPicturePath()));
-        builder.starsRating(ratingStarsSelectedProduct, product.getRating());
+        selectedProductResizeableImageView.setImage(new Image(product.getPicturePath()));
+        ratingStarsSelectedProduct.getChildren().add(new RatingStars(product.getRating()));
     }
 
     public void clearSelectedProduct(){

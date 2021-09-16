@@ -4,7 +4,7 @@
     -fx-background-radius: 0;
     -fx-padding: 0;
     -fx-border-color: transparent;
-    -fx-highlight-text-fill: transparent;
+    -fx-highlight-fill: primary-color;
 }
 
 .text-area:hover, .text-area:focused{

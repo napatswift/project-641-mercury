@@ -5,6 +5,7 @@
     -fx-border-width: 0 0 2 0;
     -fx-padding: 0;
     -fx-border-color: transparent;
+    -fx-highlight-fill: primary-color;
 }
 
 .text-area:hover, .text-area:focused{

@@ -5,7 +5,8 @@
     -fx-cursor: hand;
     -fx-font-family: 'Roboto Medium';
     -fx-font-weight: 500;
-    -fx-border-radius: 4px;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
     -fx-background-color: transparent;
 }
 
@@ -14,7 +15,7 @@
 }
 
 .active-btn{
-    -fx-text-fill: rgba(0, 0, 0, 0.6);
+    -fx-text-fill: on-surface-med-color;
 }
 
 .text-btn{
@@ -32,14 +33,15 @@
 
 
 .outline-btn{
-     -fx-border-color: rgba(0, 0, 0, 0.12);
+     -fx-border-color: surface-overlay;
      -fx-border-width: 1px;
-     -fx-background-color: transparent;
+     -fx-background-color: surface-color;
      -fx-text-fill: primary-color;
  }
 
 .outline-btn:hover{
-     -fx-background-color: rgba(187, 134, 252, 0.12);
+    -fx-text-fill: primary-dark-color;
+    -fx-border-color: surface-focus-overlay;
  }
 
 
@@ -59,6 +61,7 @@
     -fx-text-fill: on-surface-color;
     -fx-border-radius: 4px;
     -fx-border-color: transparent;
+    -fx-highlight-fill: primary-color;
 }
 
 .text-field:hover, .text-field:focused{
@@ -71,9 +74,10 @@
     -fx-border-radius: 0;
     -fx-border-color: surface-overlay;
     -fx-border-width: 0 0 2 0;
+    -fx-highlight-fill: primary-color;
 }
 
-.text-field-underline:hover, .text-field:focused{
+.text-field-underline:hover, .text-field-underline:focused{
     -fx-border-color: surface-focus-overlay;
 }
 
@@ -116,7 +120,7 @@
 }
 
  .assistive-text{
-     -fx-fill: rgba(0, 0, 0, 0.6);
+     -fx-fill: on-surface-med-color;
  }
 
 .h2{
@@ -159,7 +163,7 @@
 
 .secondary-text{
     -fx-font-size: 14px;
-    -fx-text-fill: #00000099;
+    -fx-text-fill: on-surface-color;
 }
 
 .root{
@@ -168,9 +172,9 @@
 }
 
 .product-card{
-    -fx-background-radius: 5px;
+    -fx-background-radius: 0 0 5 5;
     -fx-border-width: 1px;
-    -fx-border-radius: 5px;
+    -fx-border-radius: 0 0 5 5;
     -fx-border-color: transparent;
     -fx-background-color: app-background-color;
     -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.14), 2, 0.5, 0, 1);
@@ -202,13 +206,13 @@
 .list-item-btn{
     -fx-background-radius: 6px;
     -fx-font-size: 14px;
-    -fx-text-fill: #000000de;
+    -fx-text-fill: on-surface-color;
 }
 
 .list-item-btn:hover{
     -fx-background-color: surface-overlay;
-    -fx-text-fill: #000000;
-    -fx-fill: #000000;
+    -fx-text-fill: on-surface-color;
+    -fx-fill: on-surface-color;
 }
 
 .list-item-active-btn{
@@ -254,14 +258,19 @@
 }
 
 .menu-button{
+    -fx-font-family: "Roboto Medium";
     -fx-background-color: transparent;
     -fx-cursor: hand;
     -fx-background-radius: 5px;
 }
 
 .menu-button > .label{
-    -fx-font-family: "Roboto Medium";
     -fx-text-fill: primary-color;
+}
+
+.menu-button .context-menu {
+    -fx-background-color: surface-color;
+    -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.12), 4, 0.5, 0, 1);;
 }
 
 .menu-button:hover{
@@ -272,6 +281,20 @@
     -fx-background-color: primary-color;
     -fx-shape: "M7 10l5 5 5-5z";
 }
+
+.menu-button .menu-item{
+    -fx-background-color: surface-color;
+    -fx-border-radius: 0;
+    -fx-border-width: 0;
+    -fx-padding: 10;
+    -fx-effect: none;
+}
+
+.menu-button .menu-item:focused{
+    -fx-font-family: "Roboto Medium";
+    -fx-background-color: primary-color;
+}
+
 
 .buy-button {
     -fx-background-color: primary-color;
@@ -285,6 +308,8 @@
     -fx-border-radius: 0;
     -fx-border-width: 0;
     -fx-background-radius: 0;
+    -fx-highlight-text-fill: primary-color;
+    -fx-highlight-fill: transparent;
 }
 
 .buy-text-field:hover{}
@@ -303,13 +328,13 @@
 .list-item-btn{
     -fx-background-radius: 6px;
     -fx-font-size: 14px;
-    -fx-text-fill: #000000de;
+    -fx-text-fill: on-surface-color;
 }
 
 .list-item-btn:hover{
     -fx-background-color: surface-overlay;
-    -fx-text-fill: #000000;
-    -fx-fill: #000000;
+    -fx-text-fill: on-surface-color;
+    -fx-fill: on-surface-color;
 }
 
 .list-item-btn:focused{
