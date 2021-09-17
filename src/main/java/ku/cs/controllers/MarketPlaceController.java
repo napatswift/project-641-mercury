@@ -455,7 +455,7 @@ public class MarketPlaceController {
         while (iterator.hasNext()) {
             Product product = iterator.next();
             if (i++ > productIndex && i < productIndex + amount) {
-                VBox card = componentBuilder.productCard(product);
+                ProductCard card = new ProductCard(product);
                 card.setOnMouseReleased(this::handleProductCard);
                 productFlowPane.getChildren().add(card);
             }
