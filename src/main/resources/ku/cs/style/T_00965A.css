@@ -1,10 +1,10 @@
 *{
-    primary-color : #6200ee;
-    primary-light-color : #6200ee;
-    primary-dark-color : #3700b3;
-    secondary-color : #03dac6;
-    secondary-light-color : #f95688;
-    secondary-dark-color : #018786;
+    primary-color : #00965a;
+    primary-light-color : #00854e;
+    primary-dark-color : #0ea967;
+    secondary-color : #ce0e44;
+    secondary-light-color : #d6345d;
+    secondary-dark-color : #96003c;
     primary-text-color : #ffffff;
     on-primary-color: #ffffff;
     secondary-text-color : #ffffff;
@@ -16,9 +16,8 @@
     on-surface-med-color: #21212199;
     surface-overlay: #21212114;
     surface-focus-overlay: #21212138;
-    primary-overlay : rgba(98, 0, 238, 0.08);
-    primary-overlay-hover : rgba(98, 0, 238, 0.06);
-    primary-med-overlay : rgba(98, 0, 238, 0.6);
+    primary-overlay : rgba(0, 150, 90, 0.08);
+    primary-overlay-hover : rgba(0, 150, 90, 0.06);
+    primary-med-overlay : rgba(0, 150, 90, 0.6);
     app-font-family: 'Roboto';
 }
-

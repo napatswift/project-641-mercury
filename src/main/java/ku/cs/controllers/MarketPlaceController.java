@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +19,7 @@ import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import ku.cs.models.*;
 import ku.cs.models.components.*;
+import ku.cs.models.components.theme.ThemeMenu;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -61,6 +63,8 @@ public class MarketPlaceController {
         reviewRatingPanelStarHBox, categoriesMenuHBox;
     @FXML
     VBox reviewVBox, categoriesVBox;
+    @FXML
+    ToolBar topBarTB;
 
     private boolean bodyToggle = false;
     private int productIndex = -1;
@@ -493,6 +497,13 @@ public class MarketPlaceController {
         }
     }
 
+    public void addThemeMenu(){
+        int size = topBarTB.getItems().size();
+        Node lastNode = topBarTB.getItems().get(size - 1);
+        topBarTB.getItems().set(size - 1, new ThemeMenu());
+        topBarTB.getItems().add(lastNode);
+    }
+
     @FXML
     public void initialize() throws IOException {
         dataSource = (DataSource) FXRouter.getData();
@@ -506,5 +517,7 @@ public class MarketPlaceController {
         productList.sort();
         populateProduct(15);
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
+
+        addThemeMenu();
     }
 }

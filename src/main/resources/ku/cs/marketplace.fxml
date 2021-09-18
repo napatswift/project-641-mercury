@@ -69,7 +69,7 @@
                                                       </HBox>
                                                       <HBox alignment="TOP_RIGHT" prefHeight="17.0">
                                                          <children>
-                                                            <MenuButton fx:id="sortingMB" graphicTextGap="10.0" mnemonicParsing="false" text="SORT BY : MOST RECENT">
+                                                            <MenuButton fx:id="sortingMB" graphicTextGap="10.0" mnemonicParsing="false" stylesheets="@style/menu-button.css" text="SORT BY : MOST RECENT">
                                                               <items>
                                                                 <MenuItem fx:id="lowestPrice" mnemonicParsing="false" onAction="#sortProductBy" text="lowest price" />
                                                                 <MenuItem fx:id="highestPrice" mnemonicParsing="false" onAction="#sortProductBy" text="highest price" />
@@ -334,9 +334,9 @@
             </TabPane>
          </children>
       </AnchorPane>
-      <ToolBar prefHeight="50.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ToolBar fx:id="topBarTB" prefHeight="50.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <Button mnemonicParsing="false" onMouseReleased="#handleMargetPlaceBtn" styleClass="active-btn" text="Marketplace" />
+          <Button mnemonicParsing="false" onMouseReleased="#handleMargetPlaceBtn" text="Marketplace" />
             <Button mnemonicParsing="false" onAction="#handleCategoryBtn" text="Category" />
             <Button layoutX="103.0" layoutY="11.0" mnemonicParsing="false" text="My account" />
             <Button layoutX="176.0" layoutY="11.0" mnemonicParsing="false" onAction="#handleMyStore" text="My store" />
