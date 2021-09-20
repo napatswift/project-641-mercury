@@ -5,7 +5,7 @@ import java.io.File;
 public class Theme {
     public enum ColorTheme {DEFAULT, T_262626, T_EE8002 , T_00965A};
     private ColorTheme currTheme;
-    private final String dir = "/ku/cs/style";
+    private final String dir = "/ku/cs/style/themes";
 
     public Theme() {
         this.currTheme = ColorTheme.DEFAULT;

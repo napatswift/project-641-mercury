@@ -13,8 +13,8 @@
     on-surface-color: #000;
     on-surface-text-med-color: #000000DD;
     on-surface-med-color: #00000099;
-    surface-overlay: #d4d4d4;
-    surface-focus-overlay: #070707;
+    surface-overlay: rgba(33, 33, 33, 0.08);
+    surface-focus-overlay: rgba(33, 33, 33, 0.12);
     primary-overlay : rgba(0, 150, 90, 0.16);
     primary-overlay-hover : rgba(0, 133, 78, 0.32);
     primary-med-overlay : rgba(0, 150, 90, 0.6);

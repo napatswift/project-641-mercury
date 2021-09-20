@@ -39,6 +39,10 @@
 }
 
 .menu-button .menu-item:focused{
-    -fx-font-family: "Roboto Medium";
     -fx-background-color: primary-color;
+    -fx-text-fill: on-primary-color;
+}
+
+.menu-button .menu-item:focused .label{
+    -fx-text-fill: on-primary-color;
 }
