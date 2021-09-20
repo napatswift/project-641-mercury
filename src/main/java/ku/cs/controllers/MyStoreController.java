@@ -95,7 +95,8 @@ public class MyStoreController  {
         group.selectedToggleProperty().addListener((observableValue, ot, nt) -> {
             if (ot != null)
                 ((ToggleButton) ot).getStyleClass().remove("list-item-active-btn");
-            ((ToggleButton) nt).getStyleClass().add("list-item-active-btn");
+            if (nt != null)
+                ((ToggleButton) nt).getStyleClass().add("list-item-active-btn");
         });
         myAccountMenuBtn.setToggleGroup(group);
         myStoreMenuBtn.setToggleGroup(group);

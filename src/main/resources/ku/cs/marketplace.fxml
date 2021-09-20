@@ -127,7 +127,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="477.0" prefWidth="583.0">
                            <children>
-                              <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+                              <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" vvalue="0.43" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
                                 <content>
                                     <VBox alignment="TOP_CENTER" prefWidth="100.0" spacing="3.0">
                                        <children>
@@ -226,7 +226,7 @@
                                                             <Insets bottom="3.0" />
                                                          </VBox.margin>
                                                       </VBox>
-                                                      <HBox alignment="CENTER_LEFT" maxHeight="20.0" prefHeight="0.0" prefWidth="377.0" style="-fx-border-color: primary-color;">
+                                                      <HBox alignment="CENTER_LEFT" maxHeight="20.0" prefHeight="0.0" prefWidth="377.0" style="-fx-border-color: primary-color; -fx-border-width: 0.115em;">
                                                          <children>
                                                             <Button fx:id="decrease" mnemonicParsing="false" onAction="#handleAmountBtn" text="-" />
                                                             <TextField fx:id="amountTF" alignment="CENTER" prefHeight="27.0" prefWidth="170.0" styleClass="buy-text-field" text="1" />

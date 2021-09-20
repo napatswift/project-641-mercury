@@ -10,7 +10,7 @@
 }
 
 .menu-button .context-menu {
-    -fx-background-color: surface-color;
+    -fx-background-color: derive(surface-color, 17%);
     -fx-padding: 8 0 8 0;
     -fx-background-radius: 10;
     -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.12), 4, 0.5, 0, 1);;
@@ -25,7 +25,7 @@
 }
 
 .menu-button .menu-item{
-    -fx-background-color: surface-color;
+    -fx-background-color: derive(surface-color, 17%);
     -fx-border-radius: 0;
     -fx-border-width: 0;
     -fx-padding: 10;
