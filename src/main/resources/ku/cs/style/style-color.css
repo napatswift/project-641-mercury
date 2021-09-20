@@ -1,24 +1,21 @@
 *{
-    primary-color : #6200ee;
+    primary-color : rgb(98, 0, 238);
     primary-light-color : #6200ee;
     primary-dark-color : #3700b3;
     secondary-color : #03dac6;
     secondary-light-color : #f95688;
     secondary-dark-color : #018786;
-    primary-text-color : #ffffff;
     on-primary-color: #ffffff;
-    secondary-text-color : #ffffff;
+    on-secondary-color : #ffffff;
     error-color: #b00020;
-    app-background-color: #ffffff;
     surface-color: #ffffff;
     on-error: #ffffff;
     on-surface-color: #000000;
-    on-surface-med-color: #21212199;
-    surface-overlay: #21212114;
-    surface-focus-overlay: #21212138;
+    on-surface-text-med-color: rgba(33, 33, 33, 0.87);
+    on-surface-med-color: rgba(33, 33, 33, 0.6);
+    surface-overlay: rgba(33, 33, 33, 0.08);
+    surface-focus-overlay: rgba(33, 33, 33, 0.22);
     primary-overlay : rgba(98, 0, 238, 0.08);
     primary-overlay-hover : rgba(98, 0, 238, 0.06);
     primary-med-overlay : rgba(98, 0, 238, 0.6);
-    app-font-family: 'Roboto';
 }
-

@@ -3,6 +3,7 @@
     -fx-background-color: transparent;
     -fx-cursor: hand;
     -fx-background-radius: 5px;
+    -fx-text-fill: on-surface-color;
 }
 
 .menu-button > .label{
@@ -31,6 +32,10 @@
     -fx-border-width: 0;
     -fx-padding: 10;
     -fx-effect: none;
+}
+
+.menu-button .menu-item .label{
+    -fx-text-fill: on-surface-color;
 }
 
 .menu-button .menu-item:focused{

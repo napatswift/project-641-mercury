@@ -21,13 +21,13 @@
    </VBox>
    <HBox alignment="BOTTOM_LEFT" prefHeight="15.0">
       <children>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="username" />
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: on-surface-med-color;" text="username" />
       </children>
    </HBox>
     <TextField fx:id="usernameTF" onKeyPressed="#removeErrorStyleClass" prefHeight="36.0" prefWidth="500.0" styleClass="shadow-02-dp" />
    <HBox alignment="BOTTOM_LEFT" prefHeight="15.0">
       <children>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="password" />
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: on-surface-med-color;" text="password" />
       </children>
    </HBox>
     <PasswordField fx:id="passwordTF" onKeyPressed="#removeErrorStyleClass" prefHeight="36.0" prefWidth="500.0" styleClass="shadow-02-dp" />
