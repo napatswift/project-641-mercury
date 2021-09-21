@@ -21,3 +21,7 @@
     primary-overlay-hover : rgba(255, 58, 50, 0.32);
     primary-med-overlay : rgba(255, 58, 50, 0.6);
 }
+
+.product-card{
+    -fx-background-color: derive(secondary-color, -90%);
+}

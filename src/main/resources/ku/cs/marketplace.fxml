@@ -127,7 +127,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="477.0" prefWidth="583.0">
                            <children>
-                              <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" vvalue="0.43" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+                              <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
                                 <content>
                                     <VBox alignment="TOP_CENTER" prefWidth="100.0" spacing="3.0">
                                        <children>
@@ -145,7 +145,7 @@
                                                    </cursor>
                                                 </Label>
                                                 <Label layoutX="84.0" layoutY="10.0" styleClass="subtitle2" text="&gt;" />
-                                                <Label fx:id="productNameBreadcrumbsLabel" accessibleRole="BUTTON" layoutX="91.0" layoutY="10.0" styleClass="subtitle2" text="Label">
+                                                <Label fx:id="productNameBreadcrumbsLabel" accessibleRole="BUTTON" layoutX="91.0" layoutY="10.0" maxWidth="500.0" styleClass="subtitle2" text="Label">
                                                    <cursor>
                                                       <Cursor fx:constant="DEFAULT" />
                                                    </cursor>

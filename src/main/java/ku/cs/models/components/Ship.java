@@ -12,9 +12,9 @@ public class Ship extends HBox {
         super();
         Label headerLabel = new Label(header);
         Label valueLabel = new Label(value);
-        headerLabel.getStyleClass().add("body1");
+        headerLabel.getStyleClass().add("subtitle2");
         headerLabel.setStyle("-fx-text-fill: on-surface-color;");
-        valueLabel.getStyleClass().add("body1");
+        valueLabel.getStyleClass().add("subtitle1");
 
         super.getChildren().addAll(headerLabel, valueLabel);
 
