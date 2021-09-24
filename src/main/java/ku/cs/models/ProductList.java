@@ -59,6 +59,7 @@ public class ProductList implements Iterable<Product>{
         if (sortType.equals(SortType.BY_ROLLOUT_DATE)) {
             products.sort(Comparator.comparing(Product::getId));
             products.sort(Comparator.comparing(Product::getRolloutDate));
+            Collections.reverse(products);
         } else if (sortType.equals(SortType.BY_LOWEST)){
             products.sort(Comparator.comparingDouble(Product::getPrice));
         } else if (sortType.equals(SortType.BY_HIGHEST)){
