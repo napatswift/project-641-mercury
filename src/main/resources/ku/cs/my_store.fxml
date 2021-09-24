@@ -51,7 +51,7 @@
                         </VBox>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                            <children>
-                              <SVGPath content="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z" />
+                              <SVGPath content="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z" style="-fx-fill: on-surface-color;" />
                               <Label fx:id="nameStoreLabel" styleClass="subtitle1" text="store" />
                            </children>
                            <padding>
@@ -280,9 +280,9 @@
                                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Label text="Category :" />
+                                          <Label styleClass="subtitle2" text="Category :" />
                                           <ChoiceBox fx:id="categoryCB" prefWidth="150.0" stylesheets="@style/choice-box.css" GridPane.rowIndex="1" />
-                                          <Label fx:id="subCatLabel" text="Please Enter Characteristics" GridPane.columnIndex="1" />
+                                          <Label fx:id="subCatLabel" styleClass="subtitle2" text="Characteristics" GridPane.columnIndex="1" />
                                           <TextField fx:id="valueTF" promptText="Enter Value" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                              <padding>
                                                 <Insets bottom="7.0" left="7.0" top="7.0" />

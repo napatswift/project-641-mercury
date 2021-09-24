@@ -1,0 +1,21 @@
+*{
+    primary-color : rgb(156, 112, 222);
+    primary-light-color : rgb(113, 66, 185);
+    primary-dark-color : rgb(183, 150, 229);
+    secondary-color : rgb(3, 66, 61);
+    secondary-light-color : rgb(2, 45, 42);
+    secondary-dark-color : rgb(12, 103, 96);
+    on-primary-color: rgb(255, 255, 255);
+    on-secondary-color : rgb(255, 255, 255);
+    error-color: rgb(176, 0, 32);
+    surface-color: rgb(38, 38, 38);
+    on-error: rgb(255, 255, 255);
+    on-surface-color: rgb(255, 255, 255);
+    on-surface-text-med-color: rgba(255, 255, 255, 0.87);
+    on-surface-med-color: rgba(255, 255, 255, 0.6);
+    surface-overlay: rgba(7, 7, 7, 0.08);
+    surface-focus-overlay: rgba(7, 7, 7, 0.12);
+    primary-overlay : rgba(156, 112, 222, 0.16);
+    primary-overlay-hover : rgba(169, 148, 232, 0.32);
+    primary-med-overlay : rgba(156, 112, 222, 0.6);
+}

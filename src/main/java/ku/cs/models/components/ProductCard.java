@@ -11,6 +11,7 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import ku.cs.models.Product;
 
 public class ProductCard extends VBox {
@@ -25,12 +26,12 @@ public class ProductCard extends VBox {
         image = new ImageView();
 
         image.setFitWidth(cardWidth);
-        image.setFitHeight(height);
+        image.setPreserveRatio(true);
         Image productImage = new Image(product.getPicturePath());
         PixelReader pixelReader = productImage.getPixelReader();
         WritableImage croppedImage = new WritableImage(pixelReader,
                 (int) productImage.getWidth(),
-                (int) (productImage.getHeight() * height / cardWidth));
+                (int) (productImage.getWidth() * height / cardWidth));
         image.setImage(croppedImage);
 
         Label productNameLabel = new Label(product.getName());

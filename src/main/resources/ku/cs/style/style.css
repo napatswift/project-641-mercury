@@ -1,8 +1,8 @@
 @import "Fonts.css";
-@import "style-color.css";
 
 .button, .toggle-button{
     -fx-cursor: hand;
+    -fx-text-fill: on-surface-color;
     -fx-font-family: 'Roboto Medium';
     -fx-font-weight: 500;
     -fx-border-radius: 4;
@@ -12,6 +12,10 @@
 
 .tool-bar{
     -fx-background-color: secondary-color;
+}
+
+.tool-bar .button{
+    -fx-text-fill: on-secondary-color;
 }
 
 .active-btn{
@@ -28,7 +32,7 @@
     -fx-cursor: hand;
     -fx-border-color: transparent;
     -fx-background-color: primary-color;
-    -fx-text-fill: primary-text-color;
+    -fx-text-fill: on-primary-color;
 }
 
 
@@ -105,7 +109,7 @@
 .outline-text-field{
     -fx-background-color: transparent;
     -fx-border-radius: 4px;
-    -fx-border-color: rgba(0, 0, 0, 0.12);
+    -fx-border-color: surface-overlay;
  }
 
 .error-outline-text-field{
@@ -126,63 +130,74 @@
 .h2{
     -fx-font-family: 'Roboto Light';
     -fx-font-size: 60px;
-}
+    -fx-text-fill: on-surface-color;
+    -fx-fill: on-surface-color;}
 
 .h3{
     -fx-font-family: 'Roboto Regular';
     -fx-font-size: 48px;
+    -fx-text-fill: on-surface-color;
+    -fx-fill: on-surface-color;
 }
 
 .h4{
     -fx-font-family: 'Roboto Regular';
     -fx-font-size: 32px;
+    -fx-text-fill: on-surface-color;
+    -fx-fill: on-surface-color;
 }
 
 .h6{
     -fx-font-family: 'Roboto Medium';
     -fx-font-size: 20px;
+    -fx-text-fill: on-surface-color;
+    -fx-fill: on-surface-color;
 }
 
 .subtitle1{
     -fx-font-family: 'Roboto Regular';
     -fx-font-size: 16px;
-    -fx-text-fill: rgba(0, 0, 0, 0.87);
+    -fx-text-fill: on-surface-text-med-color;
+    -fx-fill: on-surface-text-med-color;
 }
 
 .subtitle2{
     -fx-font-family: 'Roboto Medium';
     -fx-font-size: 14px;
-    -fx-text-fill: rgba(0, 0, 0, 0.87);
+    -fx-text-fill: on-surface-text-med-color;
+    -fx-fill: on-surface-text-med-color;
 }
 
 .body1{
     -fx-font-family: 'Roboto';
     -fx-font-size: 16px;
-    -fx-text-fill: rgba(0, 0, 0, 0.87);
+    -fx-text-fill: on-surface-text-med-color;
+    -fx-fill: on-surface-text-med-color;
 }
 
 .secondary-text{
     -fx-font-size: 14px;
-    -fx-text-fill: on-surface-color;
+    -fx-text-fill: on-surface-text-med-color;
+    -fx-fill: on-surface-text-med-color;
 }
 
 .root{
     -fx-font-family: 'Roboto Light';
-    -fx-background-color: app-background-color;
+    -fx-background-color: surface-color;
 }
 
 .product-card{
     -fx-background-radius: 0 0 5 5;
-    -fx-border-width: 1px;
+    -fx-border-width: 2px;
     -fx-border-radius: 0 0 5 5;
     -fx-border-color: transparent;
-    -fx-background-color: app-background-color;
+    -fx-background-color: surface-color;
     -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.14), 2, 0.5, 0, 1);
 }
 
 .product-card:hover{
-    -fx-background-color: primary-overlay;
-    -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0), 2, 0.5, 0, 1);
+    -fx-background-color: surface-color, primary-overlay;
+    -fx-border-color: derive(surface-color, 40%);
 }
 
 .product-card:pressed{
@@ -200,7 +215,7 @@
 }
 
 .split-pane .scroll-pane{
-    -fx-background-color: app-background-color;
+    -fx-background-color: surface-color;
 }
 
 .list-item-btn{
@@ -257,51 +272,10 @@
     -fx-background-color: transparent;
 }
 
-.menu-button{
-    -fx-font-family: "Roboto Medium";
-    -fx-background-color: transparent;
-    -fx-cursor: hand;
-    -fx-background-radius: 5px;
-}
-
-.menu-button > .label{
-    -fx-text-fill: primary-color;
-}
-
-.menu-button .context-menu {
-    -fx-background-color: surface-color;
-    -fx-padding: 8 0 8 0;
-    -fx-background-radius: 10;
-    -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.12), 4, 0.5, 0, 1);;
-}
-
-.menu-button:hover{
-    -fx-background-color: primary-overlay;
-}
-
-.menu-button > .arrow-button > .arrow {
-    -fx-background-color: primary-color;
-    -fx-shape: "M7 10l5 5 5-5z";
-}
-
-.menu-button .menu-item{
-    -fx-background-color: surface-color;
-    -fx-border-radius: 0;
-    -fx-border-width: 0;
-    -fx-padding: 10;
-    -fx-effect: none;
-}
-
-.menu-button .menu-item:focused{
-    -fx-font-family: "Roboto Medium";
-    -fx-background-color: primary-color;
-}
-
-
 .buy-button {
     -fx-background-color: primary-color;
     -fx-background-radius: 0;
-    -fx-text-fill: primary-text-color;
+    -fx-text-fill: on-primary-color;
 }
 .buy-text-field{
     -fx-text-fill: primary-color;
@@ -319,7 +293,7 @@
 .review-card{
     -fx-border-width: 1px;
     -fx-border-color: transparent;
-    -fx-background-color: app-background-color;
+    -fx-background-color: derive(surface-color, 5%);
     -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.14), 2, 0.5, 0, 1);
 }
 

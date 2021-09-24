@@ -10,10 +10,11 @@ public class Ship extends HBox {
 
     public Ship(String header, String value) {
         super();
-        super.setStyle("-fx-background-color: black");
         Label headerLabel = new Label(header);
         Label valueLabel = new Label(value);
-        valueLabel.setStyle("-fx-font-family: 'Roboto Medium'");
+        headerLabel.getStyleClass().add("subtitle2");
+        headerLabel.setStyle("-fx-text-fill: on-surface-color;");
+        valueLabel.getStyleClass().add("subtitle1");
 
         super.getChildren().addAll(headerLabel, valueLabel);
 
@@ -22,7 +23,8 @@ public class Ship extends HBox {
                 "-fx-background-radius: 40;" +
                 "-fx-background-color: primary-overlay;" +
                 "-fx-border-color: primary-dark-color;" +
-                "-fx-border-width: 1;" +
+                "-fx-text-fill: on-surface-text-med-color;" +
+                "-fx-border-width: .115em;" +
                 "-fx-border-radius: 40");
         setPadding(new Insets(8, 15, 8, 15));
         prefWidth(Region.USE_COMPUTED_SIZE);
