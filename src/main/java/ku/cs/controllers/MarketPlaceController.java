@@ -17,6 +17,7 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import ku.cs.models.*;
+import ku.cs.models.components.*;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -63,7 +64,6 @@ public class MarketPlaceController {
 
     private boolean bodyToggle = false;
     private int productIndex = -1;
-    private final ComponentBuilder componentBuilder = new ComponentBuilder();
     private double upperBoundParsed = Double.MAX_VALUE, lowerBoundParsed = 0;
     private int newReviewRating = -1;
     private User currUser;
@@ -178,7 +178,7 @@ public class MarketPlaceController {
 
         /* handling category */
         for(Category category: productList.getSelectedProduct().getCategories())
-            categoriesVBox.getChildren().add(componentBuilder.categoryPane(category));
+            categoriesVBox.getChildren().add(new CategoryPane(category));
     }
 
     private void handleCategoryBreadcrumbsLabel(MouseEvent event){
@@ -192,10 +192,12 @@ public class MarketPlaceController {
         star3.setStyle("-fx-fill: primary-overlay");
         star4.setStyle("-fx-fill: primary-overlay");
         star5.setStyle("-fx-fill: primary-overlay");
+        ratingSubmissionLabel.setText("0/5");
     }
 
     private void resetReviewForm(){
         resetStar();
+        newReviewRating = -1;
         reviewTitleTF.setText("");
         detailReviewTA.setText("");
     }
@@ -224,11 +226,14 @@ public class MarketPlaceController {
 
     private void populateReview(){
         reviewRatingPanelStarHBox.getChildren().clear();
+        starsHBox.getChildren().clear();
 
         reviewVBox.getChildren().clear();
         Product product = dataSource.getProducts().getSelectedProduct();
         for (Review review: product.getReviews()){
-            reviewVBox.getChildren().add(componentBuilder.reviewCard(review, this));
+            ReviewCard card = new ReviewCard(review);
+            card.getFlagArea().setOnMouseReleased(this::handleReportReviewBtn);
+            reviewVBox.getChildren().add(card);
         }
 
         if (product.getReview() == 0){
@@ -237,13 +242,12 @@ public class MarketPlaceController {
             reviewVBox.getChildren().add(noReviewLabel);
         }
 
-        componentBuilder.starsRating(reviewRatingPanelStarHBox, product.getRating());
+        reviewRatingPanelStarHBox.getChildren().add(new RatingStars(product.getRating()));
         reviewRatingPanelStarHBox.getChildren().add(
                 new Label(String.format("%.2f", product.getRating()) + "/5 (" + product.getReview() + " reviews)"));
 
         // handling product rating
-        starsHBox.getChildren().clear();
-        componentBuilder.starsRating(starsHBox, productList.getSelectedProduct().getRating());
+        starsHBox.getChildren().add(new RatingStars(productList.getSelectedProduct().getRating()));
         starsHBox.getChildren().add(
                 new Label(String.format("%.2f", product.getRating()) + "/5 (" + product.getReview() + " reviews)"));
     }
@@ -334,9 +338,10 @@ public class MarketPlaceController {
     @FXML
     private void handleProductCard(MouseEvent event) {
         setBodyToggle();
-        VBox vBox = (VBox) event.getSource();
-        Product selectedProduct = productList.getProduct(vBox.getId());
+        ProductCard productCard = (ProductCard) event.getSource();
+        Product selectedProduct = productCard.getProduct();
         productList.setSelectedProduct(selectedProduct);
+        resetReviewForm();
         if(productList.getSelectedProduct() == null)
             return;
         buildProductPage();
@@ -447,11 +452,13 @@ public class MarketPlaceController {
         int i = 0;
         Iterator<Product> iterator;
         iterator = productList.iterator(lowerBoundParsed, upperBoundParsed, filterCategory);
-        while(iterator.hasNext() && i++ < amount) {
+        while (iterator.hasNext()) {
             Product product = iterator.next();
-            VBox card = componentBuilder.productCard(product);
-            card.setOnMouseReleased(this::handleProductCard);
-            productFlowPane.getChildren().add(card);
+            if (i++ > productIndex && i < productIndex + amount) {
+                ProductCard card = new ProductCard(product);
+                card.setOnMouseReleased(this::handleProductCard);
+                productFlowPane.getChildren().add(card);
+            }
         }
         productIndex += amount;
     }

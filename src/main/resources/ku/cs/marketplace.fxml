@@ -25,7 +25,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="586.0" prefWidth="900.0" style="-fx-background-color: secondary-color;" stylesheets="@style/light.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.MarketPlaceController">
+<AnchorPane prefHeight="586.0" prefWidth="900.0" style="-fx-background-color: secondary-color;" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.MarketPlaceController">
    <children>
       <AnchorPane prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="49.0">
          <children>
@@ -127,7 +127,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="477.0" prefWidth="583.0">
                            <children>
-                              <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+                              <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" vvalue="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
                                 <content>
                                     <VBox alignment="TOP_CENTER" prefWidth="100.0" spacing="3.0" style="-fx-background-color: app-background-color;">
                                        <children>
@@ -155,7 +155,7 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </HBox>
-                                          <GridPane alignment="TOP_CENTER" hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="900.0" prefWidth="718.0" VBox.vgrow="NEVER">
+                                          <GridPane alignment="TOP_CENTER" hgap="13.0" maxHeight="1.7976931348623157E308" maxWidth="900.0" prefWidth="718.0" VBox.vgrow="NEVER">
                                             <columnConstraints>
                                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="200.0" percentWidth="50.0" prefWidth="400.0" />
                                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="200.0" percentWidth="50.0" />
@@ -305,7 +305,7 @@
                                                 <Label layoutX="10.0" layoutY="10.0" styleClass="subtitle1" text="Title" />
                                                 <TextField fx:id="reviewTitleTF" styleClass="review-text-field" />
                                                 <Label layoutX="10.0" layoutY="25.0" styleClass="subtitle1" text="Detail" />
-                                                <TextArea fx:id="detailReviewTA" prefHeight="300.0" prefWidth="200.0" styleClass="review-text-field" wrapText="true" />
+                                                <TextArea fx:id="detailReviewTA" prefHeight="300.0" prefWidth="200.0" stylesheets="@style/text-area.css" wrapText="true" />
                                                 <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                                                    <children>
                                                       <Button mnemonicParsing="false" onAction="#handleSubmitReviewBtn" styleClass="contained-btn" text="SUBMIT" />

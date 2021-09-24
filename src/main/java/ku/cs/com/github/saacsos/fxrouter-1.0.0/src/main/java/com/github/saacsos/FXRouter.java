@@ -26,6 +26,7 @@ public final class FXRouter {
     private static Double animationDuration;
     private static AbstractMap<String, RouteScene> routes = new HashMap();
     private static RouteScene currentRoute;
+    private static String stylePath;
 
     private FXRouter() {
     }
@@ -67,6 +68,10 @@ public final class FXRouter {
 
     }
 
+    public static void setStylePath(String stylePath) {
+        FXRouter.stylePath = stylePath;
+    }
+
     public static void when(String routeLabel, String scenePath) {
         RouteScene routeScene = new RouteScene(scenePath);
         routes.put(routeLabel, routeScene);
@@ -103,6 +108,8 @@ public final class FXRouter {
         String scenePath = "/" + route.scenePath;
         Parent resource = (Parent)FXMLLoader.load((new Object() {
         }).getClass().getResource(scenePath));
+        if (stylePath != null)
+            resource.getStylesheets().add(stylePath);
         window.setTitle(route.windowTitle);
         window.setScene(new Scene(resource, route.sceneWidth, route.sceneHeight));
         window.show();

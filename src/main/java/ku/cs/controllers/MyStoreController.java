@@ -3,7 +3,6 @@ package ku.cs.controllers;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,8 +10,17 @@ import com.github.saacsos.FXRouter;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
 import ku.cs.models.*;
+import ku.cs.models.components.ProductListCell;
+import ku.cs.models.components.RatingStars;
+import ku.cs.models.components.ResizeableImageView;
 import ku.cs.service.DataSource;
 
 
@@ -25,9 +33,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.UUID;
 
 public class MyStoreController  {
     DataSource dataSource;
@@ -43,27 +48,62 @@ public class MyStoreController  {
     @FXML TextField valueTF, nameProductTF, priceTF, stockTF;
     @FXML TextArea descriptionTF;
     @FXML ImageView pictureViewIV;
-    @FXML Button selectProductPictureBtn;
     @FXML Label nameProductLabel, priceLabel, stockLabel, descriptionLabel;
     @FXML ListView<Category> categoryLV;
-    @FXML ImageView productIV, productListIV;
+    @FXML ImageView productIV;
     @FXML ListView<Product> productsListLV;
-    @FXML Label nameProductLB, priceLB, stockLB, rateLB, detailsLB;
+    @FXML Label rateLB, detailsLB;
+    @FXML
+    TextField nameProductLB, priceLB, stockLB;
+    @FXML
+    VBox rightProductVB, ImageViewVBox;
+    @FXML
+    SplitPane productSP;
+    @FXML
+    HBox ratingStarsSelectedProduct;
+    @FXML
+    SVGPath stockWarningSelectedProductSVG;
+    @FXML
+    AnchorPane productsRightPane;
+    @FXML
+    ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
 
+    ResizeableImageView selectedProductResizeableImageView;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
-        usernameLabel.setText(dataSource.getUserList().getCurrUser().getUsername());
-        nameStoreLabel.setText(dataSource.getUserList().getCurrUser().getStoreName());
-        nameLabel.setText(dataSource.getUserList().getCurrUser().getName());
-        userImage.setImage(new Image(dataSource.getUserList().getCurrUser().getPicturePath()));
+        User currUser = dataSource.getUserList().getCurrUser();
+        usernameLabel.setText("@" + currUser.getUsername());
+        nameStoreLabel.setText(currUser.getStoreName());
+        nameLabel.setText(currUser.getName());
+        userImage.setImage(new Image(currUser.getPicturePath()));
+        userImage.setClip(new Circle(25, 25, 25));
         loadCategory();
         handleListProductBtn();
 
+        productsRightPane.setVisible(false);
 
         showProductsListView();
         clearSelectedProduct();
         handleProductsListView();
+
+        setGroup();
+    }
+
+    private void setGroup(){
+        ToggleGroup group = new ToggleGroup();
+        group.selectedToggleProperty().addListener((observableValue, ot, nt) -> {
+            if (ot != null)
+                ((ToggleButton) ot).getStyleClass().remove("list-item-active-btn");
+            if (nt != null)
+                ((ToggleButton) nt).getStyleClass().add("list-item-active-btn");
+        });
+        myAccountMenuBtn.setToggleGroup(group);
+        myStoreMenuBtn.setToggleGroup(group);
+        productsMenuBtn.setToggleGroup(group);
+        ordersMenuBtn.setToggleGroup(group);
+
+        productsMenuBtn.fire();
     }
 
     @FXML
@@ -90,12 +130,8 @@ public class MyStoreController  {
         ObservableList<String> list = FXCollections.observableArrayList(dataSource.getCategories());
         categoryCB.setItems(list);
 
-        categoryCB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                loadSubCategory(list.get(t1.intValue()));
-            }
-        });
+        categoryCB.getSelectionModel().selectedIndexProperty().addListener(
+                (observableValue, number, t1) -> loadSubCategory(list.get(t1.intValue())));
     }
 
     public void loadSubCategory(String category){
@@ -106,8 +142,8 @@ public class MyStoreController  {
     @FXML public void handleAddBtn(){
         String value = valueTF.getText();
         valueTF.setText("");
-        String category = categoryCB.getSelectionModel().getSelectedItem().toString();
-        String subCategory = subCategoryCB.getSelectionModel().getSelectedItem().toString();
+        String category = categoryCB.getSelectionModel().getSelectedItem();
+        String subCategory = subCategoryCB.getSelectionModel().getSelectedItem();
         product.addSubCategory(category,subCategory,value);
     }
 
@@ -140,13 +176,13 @@ public class MyStoreController  {
         }
     }
 
-    public void handleSelectProductPicture(ActionEvent event) throws FileNotFoundException {
-
+    public void handleSelectProductPicture(MouseEvent event) throws FileNotFoundException {
+        ImageView imageBtn = (ImageView) event.getSource();
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
 
-        file = chooser.showOpenDialog(selectProductPictureBtn.getScene().getWindow());
+        file = chooser.showOpenDialog(imageBtn.getScene().getWindow());
 
         if (file != null){
             File destDir = new File("images"+ File.separator + "product_images");
@@ -162,7 +198,7 @@ public class MyStoreController  {
 
             target = FileSystems.getDefault().getPath(
                     destDir.getAbsolutePath()
-                            + System.getProperty("file.separator")
+                            + File.separator
                             + filename);
 
             pictureViewIV.setImage(uploadedImage);
@@ -192,29 +228,37 @@ public class MyStoreController  {
     public void showProductsListView(){
         productsListLV.getItems().addAll(dataSource.getProductByNameStore
                 (dataSource.getUserList().getCurrUser().getStoreName()));
+        productsListLV.setCellFactory(productListView -> new ProductListCell(productListView));
         productsListLV.refresh();
     }
 
     public void handleProductsListView(){
         productsListLV.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener<Product>(){
-                    @Override
-                    public void changed(ObservableValue<? extends Product> observable,
-                                        Product oldValue, Product newValue) {
-                        System.out.println(newValue + " is selected - "+ oldValue);
-                        showSelectedProduct(newValue);
-                    }
+                (observable, oldValue, newValue) -> {
+                    ratingStarsSelectedProduct.getChildren().clear();
+                    showSelectedProduct(newValue);
+                    productSP.setDividerPositions(0.5, 0.5);
+                    productsRightPane.setVisible(newValue != null);
                 }
         );
     }
 
     public void showSelectedProduct(Product product){
+        stockWarningSelectedProductSVG.setVisible(product.stockIsLow());
         nameProductLB.setText(product.getName());
         priceLB.setText(String.format("%.2f",product.getPrice()));
         stockLB.setText(String.format("%d",product.getStock()));
-        rateLB.setText(String.format("%.2f",product.getRating()));
+        rateLB.setText(String.format("%.2f/5",product.getRating()));
         detailsLB.setText(product.getDetails());
-        productListIV.setImage(new Image(product.getPicturePath()));
+
+        if (selectedProductResizeableImageView == null) {
+            selectedProductResizeableImageView = new ResizeableImageView(new Image(product.getPicturePath()));
+            selectedProductResizeableImageView.fitWidthProperty().bind(rightProductVB.widthProperty());
+            ImageViewVBox.getChildren().add(selectedProductResizeableImageView);
+        }
+
+        selectedProductResizeableImageView.setImage(new Image(product.getPicturePath()));
+        ratingStarsSelectedProduct.getChildren().add(new RatingStars(product.getRating()));
     }
 
     public void clearSelectedProduct(){
