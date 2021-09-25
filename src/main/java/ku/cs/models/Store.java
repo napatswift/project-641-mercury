@@ -16,36 +16,42 @@ public class Store {
         this.nameStore = nameStore;
     }
 
-    public Store(String nameStore, String username) {
+    public Store(String username, String nameStore) {
+        this(username,nameStore,10);
+
+    }
+
+    public Store(String username, String nameStore, int stockLower) {
         this.username = username;
         this.nameStore = nameStore;
-        this.stockLower = 10;
+        this.stockLower = stockLower;
         products = new ProductList();
     }
 
-    public Store(String nameStore, String username, int stockLower) {
-        this(nameStore, username);
-        this.stockLower = stockLower;
-    }
-
-    public String getName() {
+    public String getNameStore() {
         return nameStore;
     }
 
-    public boolean stockIsLow(){
-        return products.getSelectedProduct().getStock() < stockLower;
+    public String getUsername() {
+        return username;
     }
 
-    public void toCsv() throws IOException {
-        FileWriter fileWriter = null;
-        try{
-            fileWriter = new FileWriter("data/store.csv",true);
-            PrintWriter out = new PrintWriter(new BufferedWriter(fileWriter));
-            out.println(username + "," + nameStore);
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public int getStockLower() {
+        return stockLower;
+    }
+
+    public void setStockLower(int stockLower) {
+        this.stockLower = stockLower;
+    }
+
+    public boolean stockIsLow(Product product){
+        return product.getStock() <= stockLower;
+    }
+
+    public String toCsv(){
+       return username + ","
+               + nameStore + ","
+               + stockLower;
     }
 
 }

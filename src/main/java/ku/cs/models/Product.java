@@ -177,7 +177,7 @@ public class Product implements Comparable<Product>{
         return "\"" + name.replace("\"", "\"\"") + "\"" + ","
                 + id + ","
                 + price + ","
-                + "\"" + store.getName() + "\"" + "," // TODO: add id to store
+                + "\"" + store.getNameStore() + "\"" + "," // TODO: add id to store
                 + stock + ","
                 + "\"" + details.replace("\"", "\"\"") + "\"" + ","
                 + rating + ","

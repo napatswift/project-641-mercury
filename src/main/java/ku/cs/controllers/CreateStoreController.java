@@ -51,9 +51,10 @@ public class CreateStoreController {
     public void handleSubmit(ActionEvent event) throws IOException {
         String nameStore = nameStoreTF.getText();
         Store newStore = new Store(nameStore, dataSource.getUserList().getCurrUser().getUsername());
-        newStore.toCsv();
         dataSource.getUserList().getCurrUser().createStore(nameStore);
         dataSource.saveAccount();
+        stores.addStore(dataSource.getUserList().getCurrUser().getStore());
+        dataSource.saveStore();
 
         try {
             FXRouter.goTo("my_store",dataSource);

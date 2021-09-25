@@ -79,7 +79,7 @@ public class ProductListCell extends ListCell<Product> {
         if (product != null && !b) {
             setTime(product.getRolloutDate());
             label.setText(product.getName());
-            warning.setVisible(product.getStore().stockIsLow());
+            warning.setVisible(product.getStore().stockIsLow(product));
             setImage(product.getPicturePath());
             setStyle("-fx-border-width: 0 0 1 0; -fx-border-color: surface-overlay");
             setPadding(new Insets(5, 15, 8, 8));

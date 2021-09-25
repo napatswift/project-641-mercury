@@ -37,6 +37,8 @@ public class DataSource {
             parseCategory();
         if (reviews == null)
             parseReview();
+        if(stores == null)
+            parseStore();
         try {
             reader = new CSVReader(
                     new FileReader(directoryPath + File.separator + "products.csv"));
@@ -48,7 +50,7 @@ public class DataSource {
                 String name = nextLine[0];
                 String id = nextLine[1];
                 double price = Double.parseDouble(nextLine[2]);
-                Store store = new Store(nextLine[3]);
+                Store store = stores.findStoreByName(nextLine[3]);
                 int stock = Integer.parseInt(nextLine[4]);
                 String details = nextLine[5];
                 String picturePath = nextLine[8];
@@ -121,6 +123,8 @@ public class DataSource {
     }
 
     public void parseAccount() {
+        if(stores == null)
+            parseStore();
         userList = new UserList();
         try {
             CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "accounts.csv"));
@@ -139,7 +143,7 @@ public class DataSource {
                 boolean isBanned = entry[6].toLowerCase(Locale.ROOT).equals("true");
                 int loginAttempt = Integer.parseInt(entry[7]);
                 boolean hasStore = entry[8].toLowerCase(Locale.ROOT).equals("true");
-                Store store = entry[9].equals("null") ? null : new Store(entry[9]);
+                Store store = entry[9].equals("null") ? null : stores.findStoreByName(entry[9]);
 
                 User newUser = null;
                 if(User.Role.USER == role)
@@ -299,10 +303,14 @@ public class DataSource {
         save(stringJoiner.toString(), "categories.csv");
     }
 
+    public void  saveStore(){
+        save(stores.toCsv(),"store.csv");
+    }
+
     public ArrayList<Product> getProductByNameStore(String name){
         ArrayList<Product> productArrayList = new ArrayList<>();
         for(Product product : products){
-            if(product.getStore().getName().equals(name)){
+            if(product.getStore().getNameStore().equals(name)){
                 productArrayList.add(product);
             }
         }return productArrayList;
