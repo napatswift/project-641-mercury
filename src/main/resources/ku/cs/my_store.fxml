@@ -26,7 +26,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.25" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768" prefWidth="1024" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.MyStoreController">
+<SplitPane dividerPositions="0.25" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768" prefWidth="1024" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.MyStoreController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="768.0" prefWidth="150.0">
          <children>
@@ -81,6 +81,11 @@
                            </padding>
                         </ToggleButton>
                         <ToggleButton fx:id="ordersMenuBtn" layoutX="10.0" layoutY="94.0" mnemonicParsing="false" prefWidth="999.0" styleClass="list-item-btn" text="Orders">
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                        </ToggleButton>
+                        <ToggleButton mnemonicParsing="false" prefWidth="999.0" styleClass="list-item-btn" text="Setting">
                            <padding>
                               <Insets bottom="10.0" top="10.0" />
                            </padding>
@@ -186,7 +191,7 @@
                                     </ScrollPane>
                                     <HBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <children>
-                                          <Button mnemonicParsing="false" style="-fx-padding: 5 30 5 30;" styleClass="outline-btn" text="EDIT" />
+                                          <Button mnemonicParsing="false" onAction="#handleEditBtn" style="-fx-padding: 5 30 5 30;" styleClass="outline-btn" text="EDIT" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -302,7 +307,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab text="confirm">
+                  <Tab text="confirm add">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -358,6 +363,56 @@
                                  </children>
                               </VBox>
                            </children></AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="confirm edit">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox layoutX="70.0" layoutY="119.0">
+                                 <children>
+                                    <VBox spacing="5.0">
+                                       <children>
+                                          <Label styleClass="h3" text="Add Product" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" top="50.0" />
+                                       </padding>
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" />
+                                       </VBox.margin>
+                                    </VBox>
+                                    <GridPane hgap="15.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="343.27630615234375" minWidth="10.0" prefWidth="246.03936767578125" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="358.96063232421875" minWidth="10.0" prefWidth="358.96063232421875" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints />
+                                          <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <ImageView fx:id="productIV1" fitHeight="150.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
+                                          <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                             <children>
+                                                <Label fx:id="nameProductLabel1" styleClass="body1" text="nameProductLabel" />
+                                                <Label fx:id="priceLabel1" styleClass="body1" text="priceLabel" />
+                                                <Label fx:id="stockLabel1" styleClass="body1" text="stockLabel" />
+                                                <Label fx:id="descriptionLabel1" style="-fx-text-fill: on-surface-med-color;" styleClass="subtitle1" text="descriptionLabel" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </GridPane>
+                                    <VBox />
+                                    <HBox alignment="TOP_RIGHT">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#handleConfirmBtn" styleClass="contained-btn" text="CONFIRM" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
                     </content>
                   </Tab>
               </tabs>

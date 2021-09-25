@@ -220,10 +220,12 @@ public class MyStoreController  {
         handleAddProductBtn();
     }
 
-
-    /**
-     * @path Product List
-     */
+    public void handleEditBtn(){
+        product.setName(nameProductLB.getText());
+        product.setPrice(Double.parseDouble(priceLB.getText()));
+        product.setStock(Integer.parseInt(stockLB.getText()));
+        dataSource.saveProduct();
+    }
 
     public void showProductsListView(){
         productsListLV.getItems().addAll(dataSource.getProductByNameStore
@@ -239,6 +241,7 @@ public class MyStoreController  {
                     showSelectedProduct(newValue);
                     productSP.setDividerPositions(0.5, 0.5);
                     productsRightPane.setVisible(newValue != null);
+                    product = newValue;
                 }
         );
     }
