@@ -140,6 +140,10 @@ public class Product implements Comparable<Product>{
         return reviews;
     }
 
+    public boolean checkStock(int amount){
+        return stock >= amount;
+    }
+
     public boolean sell(int amount){
         if (stock >= amount){
             stock -= amount;

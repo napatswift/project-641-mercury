@@ -14,7 +14,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import ku.cs.models.*;
 import ku.cs.service.DataSource;
@@ -314,21 +317,21 @@ public class MarketPlaceController {
 
     @FXML
     private void handleSubmitReviewBtn(ActionEvent e){
-        setBodyToggle();
-        for(Review review: dataSource.getProducts().getSelectedProduct().getReviews())
-            if (review.getAuthor().getUsername().equals(currUser.getUsername())) {
-                resetReviewForm();
-                return;
-            }
-        String title = reviewTitleTF.getText();
-        String detail = detailReviewTA.getText();
-        reviewList.addReview(title, detail, newReviewRating,
-                currUser, productList.getSelectedProduct());
-        populateReview();
-        resetReviewForm();
-        dataSource.saveReview();
-        dataSource.saveProduct();
-        newReviewRating = -1;
+            setBodyToggle();
+            for (Review review : dataSource.getProducts().getSelectedProduct().getReviews())
+                if (review.getAuthor().getUsername().equals(currUser.getUsername())) {
+                    resetReviewForm();
+                    return;
+                }
+            String title = reviewTitleTF.getText();
+            String detail = detailReviewTA.getText();
+            reviewList.addReview(title, detail, newReviewRating,
+                    currUser, productList.getSelectedProduct());
+            populateReview();
+            resetReviewForm();
+            dataSource.saveReview();
+            dataSource.saveProduct();
+            newReviewRating = -1;
     }
 
     @FXML
@@ -500,5 +503,26 @@ public class MarketPlaceController {
         productList.sort();
         populateProduct(15);
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
+    }
+
+    public void handleBuyBtn(ActionEvent actionEvent) {
+        int amountBuy = Integer.parseInt(amountTF.getText());
+        if(productList.getSelectedProduct().checkStock(amountBuy)){
+            try {
+                Object[] data = {dataSource,amountBuy};
+                FXRouter.goTo("order-summary",data);
+            } catch (IOException e) {
+                System.err.println("ไปที่หน้า Order Summary ไม่ได้");
+                System.err.println("ให้ตรวจสอบการกำหนด route");
+                e.printStackTrace();
+            }
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.NONE,"สินค้ามีจำนวนไม่เพียงพอกับความต้องการ" + "\n"
+                    + "กรุณาลดจำนวนสินค้าลง", ButtonType.OK);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setHeaderText("คำเตือน");
+            alert.showAndWait();
+        }
     }
 }
