@@ -10,7 +10,7 @@ public class Admin extends User {
     public boolean bans(User other) {
         if (this.getRole() == Role.ADMIN & other.role == Role.USER) {
             other.isBanned = true;
-            other.setLoginAttempt(0);
+            other.loginAttempt = 0;
             return true;
         } else
             return false;

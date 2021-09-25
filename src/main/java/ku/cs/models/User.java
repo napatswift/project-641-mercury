@@ -118,10 +118,6 @@ public class User implements Comparable<User>{
 
     public String getStoreName() {return this.store.getName();}
 
-    public int getLoginAttempt() {
-        return loginAttempt;
-    }
-
     public String getPicturePath() {
         String picturePath = this.picturePath;
         if (this.picturePath == null || this.picturePath.equals("null"))
