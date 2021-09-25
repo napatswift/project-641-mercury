@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Store {
     private String username;
     private String nameStore;
+    private int stockLower;
     private ProductList products;
 
     public Store(String nameStore) {
@@ -18,13 +19,22 @@ public class Store {
     public Store(String nameStore, String username) {
         this.username = username;
         this.nameStore = nameStore;
+        this.stockLower = 10;
         products = new ProductList();
+    }
+
+    public Store(String nameStore, String username, int stockLower) {
+        this(nameStore, username);
+        this.stockLower = stockLower;
     }
 
     public String getName() {
         return nameStore;
     }
 
+    public boolean stockIsLow(){
+        return products.getSelectedProduct().getStock() < stockLower;
+    }
 
     public void toCsv() throws IOException {
         FileWriter fileWriter = null;

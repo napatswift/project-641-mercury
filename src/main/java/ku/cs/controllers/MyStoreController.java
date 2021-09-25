@@ -244,7 +244,7 @@ public class MyStoreController  {
     }
 
     public void showSelectedProduct(Product product){
-        stockWarningSelectedProductSVG.setVisible(product.stockIsLow());
+        stockWarningSelectedProductSVG.setVisible(product.getStore().stockIsLow());
         nameProductLB.setText(product.getName());
         priceLB.setText(String.format("%.2f",product.getPrice()));
         stockLB.setText(String.format("%d",product.getStock()));
@@ -267,5 +267,8 @@ public class MyStoreController  {
         stockLB.setText("");
         rateLB.setText("");
         detailsLB.setText("");
+    }
+
+    public void handleChangeNumberLower(ActionEvent actionEvent) {
     }
 }

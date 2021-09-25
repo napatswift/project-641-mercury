@@ -136,10 +136,6 @@ public class Product implements Comparable<Product>{
         return this.stock > 0;
     }
 
-    public boolean stockIsLow(){
-        return stock < 10;
-    }
-
     public ArrayList<Review> getReviews() {
         return reviews;
     }

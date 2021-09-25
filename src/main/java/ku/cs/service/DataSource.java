@@ -198,7 +198,8 @@ public class DataSource {
             while ((entry = reader.readNext()) != null){
                 String username = entry[0];
                 String nameStore = entry[1];
-                Store store = new Store(username, nameStore);
+                int stockLower = Integer.parseInt(entry[2]);
+                Store store = new Store(username, nameStore, stockLower);
                 stores.addStore(store);
             }
         }catch (IOException | CsvValidationException e){
