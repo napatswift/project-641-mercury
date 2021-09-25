@@ -115,15 +115,28 @@
                                                 <Insets bottom="10.0" left="10.0" top="10.0" />
                                              </padding>
                                           </HBox>
+                                          <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
+                                             <children>
+                                                <SVGPath content="M21 21.78L4.22 5 3 6.22l2.04 2.04C4.42 8.6 4 9.25 4 10v10c0 1.1.9 2 2 2h12c.23 0 .45-.05.66-.12L19.78 23 21 21.78zM8.9 6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2H9.66L20 18.34V10c0-1.1-.9-2-2-2h-1V6c0-2.76-2.24-5-5-5-2.56 0-4.64 1.93-4.94 4.4L8.9 7.24V6z" />
+                                                <Label fx:id="statusUserBan" styleClass="subtitle2" text="statusUserBan">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" top="10.0" />
+                                             </padding>
+                                          </HBox>
                                        </children>
                                        <VBox.margin>
                                           <Insets top="15.0" />
                                        </VBox.margin>
                                     </VBox>
-                                    <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
+                                    <HBox fx:id="countUserBannedLoginHBox" prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
                                        <children>
-                                          <SVGPath content="M21 21.78L4.22 5 3 6.22l2.04 2.04C4.42 8.6 4 9.25 4 10v10c0 1.1.9 2 2 2h12c.23 0 .45-.05.66-.12L19.78 23 21 21.78zM8.9 6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2H9.66L20 18.34V10c0-1.1-.9-2-2-2h-1V6c0-2.76-2.24-5-5-5-2.56 0-4.64 1.93-4.94 4.4L8.9 7.24V6z" />
-                                          <Label fx:id="statusUserBan" styleClass="subtitle2" text="statusUserBan">
+                                          <SVGPath content="M22 4v-.5C22 2.12 20.88 1 19.5 1S17 2.12 17 3.5V4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1h5c.55 0 1-.45 1-1V5c0-.55-.45-1-1-1zm-.8 0h-3.4v-.5c0-.94.76-1.7 1.7-1.7s1.7.76 1.7 1.7V4zm-2.28 8c.04.33.08.66.08 1 0 2.08-.8 3.97-2.1 5.39-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H7v-2h2c.55 0 1-.45 1-1V8h2c1.1 0 2-.9 2-2V3.46c-.95-.3-1.95-.46-3-.46C5.48 3 1 7.48 1 13s4.48 10 10 10 10-4.48 10-10c0-.34-.02-.67-.05-1h-2.03zM10 20.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L8 16v1c0 1.1.9 2 2 2v1.93z" />
+                                          <Label fx:id="countUserBanedLogin" styleClass="subtitle2" text="countUserBanedLogin">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>

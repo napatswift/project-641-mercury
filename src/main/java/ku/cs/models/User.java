@@ -20,7 +20,7 @@ public class User implements Comparable<User>{
     private String picturePath;
     private LocalDateTime loginDateTime;
     protected boolean isBanned;
-    private int loginAttempt;
+    protected int loginAttempt;
     private boolean hasStore;
     private Store store;
 
@@ -114,6 +114,10 @@ public class User implements Comparable<User>{
 
     public String getUsername() {
         return username;
+    }
+
+    public int getLoginAttempt() {
+        return loginAttempt;
     }
 
     public String getStoreName() {return this.store.getName();}
