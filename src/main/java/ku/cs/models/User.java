@@ -116,6 +116,10 @@ public class User implements Comparable<User>{
         return username;
     }
 
+    public int getLoginAttempt() {
+        return loginAttempt;
+    }
+
     public String getStoreName() {return this.store.getName();}
 
     public String getPicturePath() {
@@ -147,10 +151,6 @@ public class User implements Comparable<User>{
         }else{
             return false;
         }
-    }
-
-    public void setLoginAttempt(int loginAttempt) {
-        this.loginAttempt = loginAttempt;
     }
 
     public void createStore(String storeName){
