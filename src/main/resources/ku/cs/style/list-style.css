@@ -19,3 +19,22 @@
 .list-cell:selected {
     -fx-text-fill: on-surface-color;
 }
+
+.order-list-view {
+
+}
+
+.order-list-view .list-cell:filled:hover {
+    -fx-background-color: derive(surface-overlay, 80%);
+}
+
+.order-list-view .list-cell .text-field{
+    -fx-background-color: derive(surface-overlay, 80%);
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+}
+
+.order-list-view .list-cell .text-field:hover{
+    -fx-background-color: derive(surface-overlay, 10%);
+}
