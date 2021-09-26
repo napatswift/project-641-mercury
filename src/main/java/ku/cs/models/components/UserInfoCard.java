@@ -14,7 +14,7 @@ public class UserInfoCard extends HBox {
     private Label usernameLabel;
     private Label nameLabel;
 
-    public UserInfoCard(User user) {
+    public UserInfoCard() {
         imageView = new ImageView();
 
         imageView.setFitHeight(18);
@@ -31,11 +31,14 @@ public class UserInfoCard extends HBox {
         getChildren().addAll(imageView, nameLabel, usernameLabel);
         setSpacing(7.);
         setAlignment(Pos.CENTER_LEFT);
+    }
 
+    public UserInfoCard(User user) {
+        this();
         setUser(user);
     }
 
-    private void updateUser(){
+    public void updateUser(){
         imageView.setImage(new Image(user.getPicturePath()));
         nameLabel.setText(user.getName());
         usernameLabel.setText("@" + user.getUsername());
