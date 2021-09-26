@@ -152,7 +152,7 @@ public class MarketPlaceController {
         selectedProductIV.setImage(new Image(productList.getSelectedProduct().getPicturePath()));
 
         /* set store name */
-        storeNameLabel.setText(productList.getSelectedProduct().getStore().getName().toUpperCase(Locale.ROOT));
+        storeNameLabel.setText(productList.getSelectedProduct().getStore().getNameStore().toUpperCase(Locale.ROOT));
 
         /* set bread crumbs info */
         categoryBreadcrumbsLabel.setText(productList.getSelectedProduct().getCategory().getName());

@@ -1,9 +1,5 @@
 package ku.cs.models;
 
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.layout.VBox;
-
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -116,7 +112,7 @@ public class User implements Comparable<User>{
         return username;
     }
 
-    public String getStoreName() {return this.store.getName();}
+    public String getStoreName() {return this.store.getNameStore();}
 
     public Store getStore() {
         return store;
@@ -172,7 +168,7 @@ public class User implements Comparable<User>{
                 + isBanned + ","
                 + loginAttempt + ","
                 + hasStore + ","
-                + (store == null ? null : store.getName());
+                + (store == null ? null : store.getNameStore());
     }
 }
 
