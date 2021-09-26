@@ -80,7 +80,7 @@
                               <Insets bottom="10.0" top="10.0" />
                            </padding>
                         </ToggleButton>
-                        <ToggleButton fx:id="ordersMenuBtn" layoutX="10.0" layoutY="94.0" mnemonicParsing="false" prefWidth="999.0" styleClass="list-item-btn" text="Orders">
+                        <ToggleButton fx:id="ordersMenuBtn" layoutX="10.0" layoutY="94.0" mnemonicParsing="false" onAction="#handleOrdersBtn" prefWidth="999.0" styleClass="list-item-btn" text="Orders">
                            <padding>
                               <Insets bottom="10.0" top="10.0" />
                            </padding>
@@ -119,6 +119,34 @@
                                                 <SVGPath content="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" styleClass="icon-primary-color" />
                                              </graphic>
                                           </Button>
+                                          <HBox spacing="10.0">
+                                             <children>
+                                                <Label prefHeight="18.0" prefWidth="116.0" text="Bottom Edge">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="numberLowerLabel" prefHeight="18.0" prefWidth="116.0" text="numberLower">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <Button fx:id="changeNumberLower" mnemonicParsing="false" onAction="#handleChangeNumberLower" prefHeight="22.0" prefWidth="95.0" style="-fx-padding: 5 30 5 30;" styleClass="outline-btn" text="EDIT">
+                                                   <font>
+                                                      <Font size="10.0" />
+                                                   </font>
+                                                </Button>
+                                             </children>
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                             <padding>
+                                                <Insets left="10.0" top="10.0" />
+                                             </padding>
+                                          </HBox>
                                        </children>
                                        <VBox.margin>
                                           <Insets left="8.0" right="8.0" />
@@ -411,6 +439,15 @@
                                     </HBox>
                                  </children>
                               </VBox>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="order">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ListView fx:id="orderLV" layoutX="60.0" layoutY="147.0" prefHeight="513.0" prefWidth="377.0" />
                            </children>
                         </AnchorPane>
                     </content>

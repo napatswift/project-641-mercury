@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import ku.cs.models.*;
 import ku.cs.models.components.ProductListCell;
@@ -33,11 +34,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class MyStoreController  {
     DataSource dataSource;
     Product product;
     Image image;
+    private User currUser;
     private File file;
     private Path target;
 
@@ -52,7 +55,8 @@ public class MyStoreController  {
     @FXML ListView<Category> categoryLV;
     @FXML ImageView productIV;
     @FXML ListView<Product> productsListLV;
-    @FXML Label rateLB, detailsLB;
+    @FXML ListView<Order> orderLV;
+    @FXML Label rateLB, detailsLB,numberLowerLabel;
     @FXML
     TextField nameProductLB, priceLB, stockLB;
     @FXML
@@ -72,14 +76,16 @@ public class MyStoreController  {
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
-        User currUser = dataSource.getUserList().getCurrUser();
+        currUser = dataSource.getUserList().getCurrUser();
         usernameLabel.setText("@" + currUser.getUsername());
         nameStoreLabel.setText(currUser.getStoreName());
         nameLabel.setText(currUser.getName());
+        numberLowerLabel.setText("" + currUser.getStore().getStockLower());
         userImage.setImage(new Image(currUser.getPicturePath()));
         userImage.setClip(new Circle(25, 25, 25));
         loadCategory();
         handleListProductBtn();
+
 
         productsRightPane.setVisible(false);
 
@@ -115,14 +121,17 @@ public class MyStoreController  {
         }
     }
 
-    @FXML
     public void handleListProductBtn(){
         myStoreTP.getSelectionModel().select(0);
     }
-    @FXML
     public void handleAddProductBtn(){
         product = new Product("", "", dataSource.getUserList().getCurrUser().getStore());
         myStoreTP.getSelectionModel().select(1);
+    }
+    public void handleOrdersBtn(){
+        myStoreTP.getSelectionModel().select(4);
+        showOrderListView();
+        handleOrderListView();
     }
 
 
@@ -220,12 +229,10 @@ public class MyStoreController  {
         handleAddProductBtn();
     }
 
-    public void handleEditBtn(){
-        product.setName(nameProductLB.getText());
-        product.setPrice(Double.parseDouble(priceLB.getText()));
-        product.setStock(Integer.parseInt(stockLB.getText()));
-        dataSource.saveProduct();
-    }
+
+    /**
+     * @path Product List
+     */
 
     public void showProductsListView(){
         productsListLV.getItems().addAll(dataSource.getProductByNameStore
@@ -234,20 +241,8 @@ public class MyStoreController  {
         productsListLV.refresh();
     }
 
-    public void handleProductsListView(){
-        productsListLV.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    ratingStarsSelectedProduct.getChildren().clear();
-                    showSelectedProduct(newValue);
-                    productSP.setDividerPositions(0.5, 0.5);
-                    productsRightPane.setVisible(newValue != null);
-                    product = newValue;
-                }
-        );
-    }
-
     public void showSelectedProduct(Product product){
-        stockWarningSelectedProductSVG.setVisible(product.stockIsLow());
+        stockWarningSelectedProductSVG.setVisible(currUser.getStore().stockIsLow(product));
         nameProductLB.setText(product.getName());
         priceLB.setText(String.format("%.2f",product.getPrice()));
         stockLB.setText(String.format("%d",product.getStock()));
@@ -264,11 +259,61 @@ public class MyStoreController  {
         ratingStarsSelectedProduct.getChildren().add(new RatingStars(product.getRating()));
     }
 
+    public void handleProductsListView(){
+        productsListLV.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    ratingStarsSelectedProduct.getChildren().clear();
+                    showSelectedProduct(newValue);
+                    productSP.setDividerPositions(0.5, 0.5);
+                    productsRightPane.setVisible(newValue != null);
+                    product = newValue;
+                }
+        );
+    }
+
+    public void showOrderListView(){
+        orderLV.getItems().addAll(orders);
+        orderLV.refresh();
+    }
+
+    public void showSelectOrder(Order order){
+
+    }
+
+    public void handleOrderListView(){
+        orderLV.getSelectionModel().selectedItemProperty().addListener(
+                (observableValue, oldValue, newValue) ->{
+                    showSelectOrder(newValue);
+                }
+        );
+    }
+
+
+
+
+
+
     public void clearSelectedProduct(){
         nameProductLB.setText("");
         priceLB.setText("");
         stockLB.setText("");
         rateLB.setText("");
         detailsLB.setText("");
+    }
+
+    public void handleChangeNumberLower(ActionEvent actionEvent) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setGraphic(null);
+        dialog.setHeaderText(null);
+        dialog.setTitle("กำหนดขั้นต่ำจำนวนสินค้า");
+        dialog.setContentText("please input your number:");
+
+        Optional<String> newLower = dialog.showAndWait();
+        newLower.ifPresent(s -> currUser.getStore().setStockLower(Integer.parseInt(s)));
+        newLower.ifPresent(s -> numberLowerLabel.setText(s));
+        dataSource.saveStore();
+        productsListLV.refresh();
+
+
     }
 }
