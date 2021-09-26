@@ -80,7 +80,7 @@
                               <Insets bottom="10.0" top="10.0" />
                            </padding>
                         </ToggleButton>
-                        <ToggleButton fx:id="ordersMenuBtn" layoutX="10.0" layoutY="94.0" mnemonicParsing="false" prefWidth="999.0" styleClass="list-item-btn" text="Orders">
+                        <ToggleButton fx:id="ordersMenuBtn" layoutX="10.0" layoutY="94.0" mnemonicParsing="false" onAction="#handleOrdersBtn" prefWidth="999.0" styleClass="list-item-btn" text="Orders">
                            <padding>
                               <Insets bottom="10.0" top="10.0" />
                            </padding>
@@ -411,6 +411,15 @@
                                     </HBox>
                                  </children>
                               </VBox>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="order">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ListView fx:id="orderLV" layoutX="60.0" layoutY="147.0" prefHeight="513.0" prefWidth="377.0" />
                            </children>
                         </AnchorPane>
                     </content>

@@ -54,6 +54,7 @@ public class MyStoreController  {
     @FXML ListView<Category> categoryLV;
     @FXML ImageView productIV;
     @FXML ListView<Product> productsListLV;
+    @FXML ListView<Order> orderLV;
     @FXML Label rateLB, detailsLB;
     @FXML
     TextField nameProductLB, priceLB, stockLB;
@@ -118,14 +119,17 @@ public class MyStoreController  {
         }
     }
 
-    @FXML
     public void handleListProductBtn(){
         myStoreTP.getSelectionModel().select(0);
     }
-    @FXML
     public void handleAddProductBtn(){
         product = new Product("", "", dataSource.getUserList().getCurrUser().getStore());
         myStoreTP.getSelectionModel().select(1);
+    }
+    public void handleOrdersBtn(){
+        myStoreTP.getSelectionModel().select(4);
+        showOrderListView();
+        handleOrderListView();
     }
 
 
@@ -237,18 +241,6 @@ public class MyStoreController  {
         productsListLV.refresh();
     }
 
-    public void handleProductsListView(){
-        productsListLV.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    ratingStarsSelectedProduct.getChildren().clear();
-                    showSelectedProduct(newValue);
-                    productSP.setDividerPositions(0.5, 0.5);
-                    productsRightPane.setVisible(newValue != null);
-                    product = newValue;
-                }
-        );
-    }
-
     public void showSelectedProduct(Product product){
         stockWarningSelectedProductSVG.setVisible(product.stockIsLow());
         nameProductLB.setText(product.getName());
@@ -266,6 +258,40 @@ public class MyStoreController  {
         selectedProductResizeableImageView.setImage(new Image(product.getPicturePath()));
         ratingStarsSelectedProduct.getChildren().add(new RatingStars(product.getRating()));
     }
+
+    public void handleProductsListView(){
+        productsListLV.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    ratingStarsSelectedProduct.getChildren().clear();
+                    showSelectedProduct(newValue);
+                    productSP.setDividerPositions(0.5, 0.5);
+                    productsRightPane.setVisible(newValue != null);
+                    product = newValue;
+                }
+        );
+    }
+
+    public void showOrderListView(){
+        orderLV.getItems().addAll(orders);
+        orderLV.refresh();
+    }
+
+    public void showSelectOrder(Order order){
+
+    }
+
+    public void handleOrderListView(){
+        orderLV.getSelectionModel().selectedItemProperty().addListener(
+                (observableValue, oldValue, newValue) ->{
+                    showSelectOrder(newValue);
+                }
+        );
+    }
+
+
+
+
+
 
     public void clearSelectedProduct(){
         nameProductLB.setText("");
