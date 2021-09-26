@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import ku.cs.models.*;
 import ku.cs.models.components.ProductListCell;
@@ -33,15 +34,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Optional;
 
 public class MyStoreController  {
     DataSource dataSource;
     Product product;
     Image image;
+    private User currUser;
     private File file;
     private Path target;
-    private ArrayList<Order> orders;
 
     @FXML Label usernameLabel, nameLabel, nameStoreLabel;
     @FXML TabPane myStoreTP;
@@ -55,7 +56,7 @@ public class MyStoreController  {
     @FXML ImageView productIV;
     @FXML ListView<Product> productsListLV;
     @FXML ListView<Order> orderLV;
-    @FXML Label rateLB, detailsLB;
+    @FXML Label rateLB, detailsLB,numberLowerLabel;
     @FXML
     TextField nameProductLB, priceLB, stockLB;
     @FXML
@@ -75,22 +76,23 @@ public class MyStoreController  {
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
-        dataSource.parseOrder();
-        orders = dataSource.getOrders().getOrdersByStore(dataSource.getUserList().getCurrUser().getStoreName());
-        User currUser = dataSource.getUserList().getCurrUser();
+        currUser = dataSource.getUserList().getCurrUser();
         usernameLabel.setText("@" + currUser.getUsername());
         nameStoreLabel.setText(currUser.getStoreName());
         nameLabel.setText(currUser.getName());
+        numberLowerLabel.setText("" + currUser.getStore().getStockLower());
         userImage.setImage(new Image(currUser.getPicturePath()));
         userImage.setClip(new Circle(25, 25, 25));
         loadCategory();
         handleListProductBtn();
+
 
         productsRightPane.setVisible(false);
 
         showProductsListView();
         clearSelectedProduct();
         handleProductsListView();
+
         setGroup();
     }
 
@@ -227,12 +229,10 @@ public class MyStoreController  {
         handleAddProductBtn();
     }
 
-    public void handleEditBtn(){
-        product.setName(nameProductLB.getText());
-        product.setPrice(Double.parseDouble(priceLB.getText()));
-        product.setStock(Integer.parseInt(stockLB.getText()));
-        dataSource.saveProduct();
-    }
+
+    /**
+     * @path Product List
+     */
 
     public void showProductsListView(){
         productsListLV.getItems().addAll(dataSource.getProductByNameStore
@@ -242,7 +242,7 @@ public class MyStoreController  {
     }
 
     public void showSelectedProduct(Product product){
-        stockWarningSelectedProductSVG.setVisible(product.stockIsLow());
+        stockWarningSelectedProductSVG.setVisible(currUser.getStore().stockIsLow(product));
         nameProductLB.setText(product.getName());
         priceLB.setText(String.format("%.2f",product.getPrice()));
         stockLB.setText(String.format("%d",product.getStock()));
@@ -299,5 +299,21 @@ public class MyStoreController  {
         stockLB.setText("");
         rateLB.setText("");
         detailsLB.setText("");
+    }
+
+    public void handleChangeNumberLower(ActionEvent actionEvent) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setGraphic(null);
+        dialog.setHeaderText(null);
+        dialog.setTitle("กำหนดขั้นต่ำจำนวนสินค้า");
+        dialog.setContentText("please input your number:");
+
+        Optional<String> newLower = dialog.showAndWait();
+        newLower.ifPresent(s -> currUser.getStore().setStockLower(Integer.parseInt(s)));
+        newLower.ifPresent(s -> numberLowerLabel.setText(s));
+        dataSource.saveStore();
+        productsListLV.refresh();
+
+
     }
 }
