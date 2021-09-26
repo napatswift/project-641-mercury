@@ -17,6 +17,7 @@ public class DataSource {
     private String directoryPath;
     private Map<String, ArrayList<String>> categories;
     private StoreList stores;
+    private OrderList orders;
 
     public DataSource(String directoryPath){
         this.directoryPath = directoryPath;
@@ -220,6 +221,27 @@ public class DataSource {
         }
     }
 
+    public void parseOrder(){
+        orders = new OrderList();
+        try {
+            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "order.csv"));
+            reader.readNext();
+            String[] entry;
+            while((entry = reader.readNext()) != null){
+                String productName = entry[0];
+                String productId = entry[1];
+                String storeName = entry[2];
+                int amount = Integer.parseInt(entry[3]);
+                String status = entry[4];
+                String tracking = entry[5];
+                String buyer = entry[6];
+                orders.addOrder(new Order(productName, productId, storeName, amount, status, tracking, buyer));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setDirectoryPath(String directoryPath) {
         this.directoryPath = directoryPath;
     }
@@ -239,6 +261,8 @@ public class DataSource {
     public Set<String> getCategories() {
         return categories.keySet();
     }
+
+    public OrderList getOrders(){return orders;}
 
 
     public ArrayList<String> getSubCategory(String key) {return categories.get(key);}

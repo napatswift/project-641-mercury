@@ -33,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class MyStoreController  {
     DataSource dataSource;
@@ -40,6 +41,7 @@ public class MyStoreController  {
     Image image;
     private File file;
     private Path target;
+    private ArrayList<Order> orders;
 
     @FXML Label usernameLabel, nameLabel, nameStoreLabel;
     @FXML TabPane myStoreTP;
@@ -72,6 +74,8 @@ public class MyStoreController  {
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
+        dataSource.parseOrder();
+        orders = dataSource.getOrders().getOrdersByStore(dataSource.getUserList().getCurrUser().getStoreName());
         User currUser = dataSource.getUserList().getCurrUser();
         usernameLabel.setText("@" + currUser.getUsername());
         nameStoreLabel.setText(currUser.getStoreName());
@@ -86,7 +90,6 @@ public class MyStoreController  {
         showProductsListView();
         clearSelectedProduct();
         handleProductsListView();
-
         setGroup();
     }
 

@@ -160,10 +160,6 @@ public class User implements Comparable<User>{
         }
     }
 
-    public void openStore(String name){
-        this.hasStore = true;
-    }
-
 
     public String toCsv(){
         //username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
