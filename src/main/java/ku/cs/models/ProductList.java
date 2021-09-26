@@ -51,6 +51,7 @@ public class ProductList implements Iterable<Product>{
         return selectedProduct;
     }
 
+
     public void setSelectedProduct(Product selectedProduct) {
         this.selectedProduct = selectedProduct;
     }

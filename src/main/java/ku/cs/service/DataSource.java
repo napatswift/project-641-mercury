@@ -17,6 +17,7 @@ public class DataSource {
     private String directoryPath;
     private Map<String, ArrayList<String>> categories;
     private StoreList stores;
+    private OrderList orders;
 
     public DataSource(String directoryPath){
         this.directoryPath = directoryPath;
@@ -37,6 +38,8 @@ public class DataSource {
             parseCategory();
         if (reviews == null)
             parseReview();
+        if(stores == null)
+            parseStore();
         try {
             reader = new CSVReader(
                     new FileReader(directoryPath + File.separator + "products.csv"));
@@ -48,7 +51,7 @@ public class DataSource {
                 String name = nextLine[0];
                 String id = nextLine[1];
                 double price = Double.parseDouble(nextLine[2]);
-                Store store = new Store(nextLine[3]);
+                Store store = stores.findStoreByName(nextLine[3]);
                 int stock = Integer.parseInt(nextLine[4]);
                 String details = nextLine[5];
                 String picturePath = nextLine[8];
@@ -121,6 +124,8 @@ public class DataSource {
     }
 
     public void parseAccount() {
+        if(stores == null)
+            parseStore();
         userList = new UserList();
         try {
             CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "accounts.csv"));
@@ -139,7 +144,7 @@ public class DataSource {
                 boolean isBanned = entry[6].toLowerCase(Locale.ROOT).equals("true");
                 int loginAttempt = Integer.parseInt(entry[7]);
                 boolean hasStore = entry[8].toLowerCase(Locale.ROOT).equals("true");
-                Store store = entry[9].equals("null") ? null : new Store(entry[9]);
+                Store store = entry[9].equals("null") ? null : stores.findStoreByName(entry[9]);
 
                 User newUser = null;
                 if(User.Role.USER == role)
@@ -198,7 +203,8 @@ public class DataSource {
             while ((entry = reader.readNext()) != null){
                 String username = entry[0];
                 String nameStore = entry[1];
-                Store store = new Store(username, nameStore);
+                int stockLower = Integer.parseInt(entry[2]);
+                Store store = new Store(username, nameStore, stockLower);
                 stores.addStore(store);
             }
         }catch (IOException | CsvValidationException e){
@@ -216,6 +222,27 @@ public class DataSource {
                 addCategory(entry);
             }
         } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void parseOrder(){
+        orders = new OrderList();
+        try {
+            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "order.csv"));
+            reader.readNext();
+            String[] entry;
+            while((entry = reader.readNext()) != null){
+                String productName = entry[0];
+                String productId = entry[1];
+                String storeName = entry[2];
+                int amount = Integer.parseInt(entry[3]);
+                String status = entry[4];
+                String tracking = entry[5];
+                String buyer = entry[6];
+                orders.addOrder(new Order(productName, productId, storeName, amount, status, tracking, buyer));
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -239,6 +266,8 @@ public class DataSource {
     public Set<String> getCategories() {
         return categories.keySet();
     }
+
+    public OrderList getOrders(){return orders;}
 
 
     public ArrayList<String> getSubCategory(String key) {return categories.get(key);}
@@ -298,10 +327,14 @@ public class DataSource {
         save(stringJoiner.toString(), "categories.csv");
     }
 
+    public void  saveStore(){
+        save(stores.toCsv(),"store.csv");
+    }
+
     public ArrayList<Product> getProductByNameStore(String name){
         ArrayList<Product> productArrayList = new ArrayList<>();
         for(Product product : products){
-            if(product.getStore().getName().equals(name)){
+            if(product.getStore().getNameStore().equals(name)){
                 productArrayList.add(product);
             }
         }return productArrayList;
