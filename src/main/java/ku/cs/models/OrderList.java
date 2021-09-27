@@ -22,4 +22,11 @@ public class OrderList {
         }
         return orderReturn;
     }
+
+    public String toCsv(){
+        String result = "id,product_id,amount,is_shipped,tracking_id,buyer,time\n";
+        for(Order order : orders){
+            result += order.toCsv() + "\n";
+        }return result;
+    }
 }

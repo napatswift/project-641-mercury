@@ -161,6 +161,11 @@
     -fx-text-fill: rgba(0, 0, 0, 0.87);
 }
 
+.overline{
+    -fx-font-family: 'Roboto Medium';
+    -fx-font-size: 12px;
+}
+
 .secondary-text{
     -fx-font-size: 14px;
     -fx-text-fill: on-surface-color;

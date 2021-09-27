@@ -233,15 +233,15 @@ public class DataSource {
             reader.readNext();
             String[] entry;
             while((entry = reader.readNext()) != null){
-                String productName = entry[0];
-                String productId = entry[1];
-                String storeName = entry[2];
-                int amount = Integer.parseInt(entry[3]);
-                String status = entry[4];
-                String tracking = entry[5];
-                String buyer = entry[6];
-                LocalDateTime localDateTime = LocalDateTime.parse(entry[7], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                orders.addOrder(new Order(productName, productId, storeName, amount, status, tracking, buyer, localDateTime));
+                String id = entry[0];
+                Product product = products.getProduct(entry[1]);
+                int amount = Integer.parseInt(entry[2]);
+                boolean status = Boolean.parseBoolean(entry[3]);
+                String tracking = entry[4];
+                User buyer = userList.getUser(entry[5]);
+                if(buyer == null || product == null) continue;
+                LocalDateTime localDateTime = LocalDateTime.parse(entry[6], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                orders.addOrder(new Order(id, product, amount, status, tracking, buyer, localDateTime));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -317,6 +317,10 @@ public class DataSource {
         for(String key: categories.keySet())
             numCategory += categories.get(key).size();
         save(products.toCsv(numCategory), "products.csv");
+    }
+
+    public void saveOrder(){
+        save(orders.toCsv(), "order.csv");
     }
 
     public void saveCategory(){

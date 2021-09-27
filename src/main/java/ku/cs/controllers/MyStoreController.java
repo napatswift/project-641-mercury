@@ -19,6 +19,7 @@ import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import ku.cs.models.*;
+import ku.cs.models.components.OrderListCell;
 import ku.cs.models.components.ProductListCell;
 import ku.cs.models.components.RatingStars;
 import ku.cs.models.components.ResizeableImageView;
@@ -75,6 +76,7 @@ public class MyStoreController  {
     ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
 
     ResizeableImageView selectedProductResizeableImageView;
+    ResizeableImageView selectedOrderResizeableImageView;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
@@ -279,11 +281,17 @@ public class MyStoreController  {
 
     public void showOrderListView(){
         orderLV.getItems().addAll(orders);
+        orderLV.setCellFactory(orderListView -> new OrderListCell(dataSource));
         orderLV.refresh();
     }
 
     public void showSelectOrder(Order order){
-
+        if (selectedOrderResizeableImageView == null) {
+            selectedOrderResizeableImageView = new ResizeableImageView(new Image(order.getProduct().getPicturePath()));
+            selectedOrderResizeableImageView.fitWidthProperty().bind(rightProductVB.widthProperty());
+            ImageViewVBox.getChildren().add(selectedOrderResizeableImageView);
+        }
+        selectedOrderResizeableImageView.setImage(new Image(order.getProduct().getPicturePath()));
     }
 
     public void handleOrderListView(){

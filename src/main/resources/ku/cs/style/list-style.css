@@ -35,6 +35,6 @@
     -fx-border-width: 0;
 }
 
-.order-list-view .list-cell .text-field:hover{
+.order-list-view .list-cell .text-field:hover, .order-list-view .list-cell .text-field:focused{
     -fx-background-color: derive(surface-overlay, 10%);
 }

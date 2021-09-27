@@ -1,39 +1,38 @@
 package ku.cs.models;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Order {
-    private final String productName;
-    private final String productId;
-    private final String storeName;
+    private Product product;
     private final int amount;
-    private String status = "to sent";
-    private String tracking = "-";
-    private final String buyerName;
+    private boolean isShipped;
+    private String tracking;
+    private final User buyer;
     private LocalDateTime localDateTime;
+    private String id;
 
-    public Order(String productName, String productId, String storeName, int amount, String buyerName, LocalDateTime localDateTime) {
-        this.productName = productName;
-        this.productId = productId;
-        this.storeName = storeName;
+    public Order(Product product, int amount, String buyerName, User buyer, LocalDateTime localDateTime) {
+        this.product = product;
         this.amount = amount;
-        this.buyerName = buyerName;
+        this.buyer = buyer;
         this.localDateTime = localDateTime;
+        isShipped = false;
+        id = UUID.randomUUID().toString();
     }
 
-    public Order(String productName, String productId, String storeName, int amount, String status, String tracking, String buyerName, LocalDateTime localDateTime) {
-        this.productName = productName;
-        this.productId = productId;
-        this.storeName = storeName;
+    public Order(String id, Product product, int amount, boolean isShipped, String tracking, User buyer, LocalDateTime localDateTime) {
+        this.product = product;
         this.amount = amount;
-        this.status = status;
+        this.isShipped = isShipped;
+        this.buyer = buyer;
         this.tracking = tracking;
-        this.buyerName = buyerName;
         this.localDateTime = localDateTime;
+        this.id = id;
     }
 
     private void changeStatus() {
-        this.status = "sent";;
+        this.isShipped = true;
     }
 
     public void setTracking(String tracking) {
@@ -41,20 +40,23 @@ public class Order {
         changeStatus();
     }
 
-    public String getProductName() {
-        return productName;
+    public Product getProduct() {
+        return product;
     }
 
-    public String getProductId() {
-        return productId;
+    public LocalDateTime getTime() {
+        return localDateTime;
+    }
+    public String getStoreName(){
+        return product.getStore().getNameStore();
     }
 
-    public String getStatus() {
-        return status;
+    public boolean isShipped() {
+        return isShipped;
     }
 
-    public String getStoreName() {
-        return storeName;
+    public User getBuyer() {
+        return buyer;
     }
 
     public int getAmount() {
@@ -65,17 +67,14 @@ public class Order {
         return tracking;
     }
 
-    public String getBuyerName() {
-        return buyerName;
-    }
 
     public String toCsv(){
-        return productName + ","
-                + productId + ","
-                + storeName + ","
+        return  id + ","
+                + product.getId() + ","
                 + amount + ","
-                + status + ","
+                + isShipped + ","
                 + tracking + ","
-                + buyerName;
+                + buyer.getUsername() + ","
+                + localDateTime.toString();
     }
 }

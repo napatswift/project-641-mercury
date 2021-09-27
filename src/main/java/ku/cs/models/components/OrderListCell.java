@@ -17,6 +17,9 @@ import javafx.scene.shape.SVGPath;
 import ku.cs.models.Order;
 import ku.cs.models.Product;
 import ku.cs.models.User;
+import ku.cs.service.DataSource;
+
+import java.time.format.DateTimeFormatter;
 
 public class OrderListCell extends ListCell<Order> {
     private final VBox content;
@@ -24,7 +27,7 @@ public class OrderListCell extends ListCell<Order> {
     private final ImageView productImage;
     private final Label timeLabel;
     private final Label productNameLabel;
-    private final Label amount;
+    private final Label amountLabel;
     private final Label totalCostLabel;
     private final VBox trackingNumberVBox;
     private final SVGPath statusSVGPath;
@@ -34,15 +37,17 @@ public class OrderListCell extends ListCell<Order> {
     private final VBox statusVBox;
 
     private Order order;
+    private DataSource dataSource;
 
-    public OrderListCell() {
+    public OrderListCell(DataSource dataSource) {
+        this.dataSource = dataSource;
         content = new VBox();
         userInfoCard = new UserInfoCard();
         productImage = new ImageView();
-        timeLabel = new Label("19:01 - 25Jul");
-        productNameLabel = new Label("Product Name");
-        amount = new Label("x13");
-        totalCostLabel = new Label("$1499");
+        timeLabel = new Label();
+        productNameLabel = new Label();
+        amountLabel = new Label();
+        totalCostLabel = new Label();
         trackingNumberVBox = new VBox();
         statusVBox = new VBox();
         statusSVGPath = new SVGPath();
@@ -51,8 +56,8 @@ public class OrderListCell extends ListCell<Order> {
         submitTrackingNumberBtn = new Button();
 
         productImage.setPreserveRatio(true);
-        productImage.setFitWidth(40);
-        productImage.setFitHeight(40);
+        productImage.setFitWidth(50);
+        productImage.setFitHeight(50);
         submitTrackingNumberBtn.setGraphic(statusSVGPath);
         trackingNumberVBox.setAlignment(Pos.CENTER_LEFT);
         statusVBox.setAlignment(Pos.CENTER);
@@ -84,9 +89,10 @@ public class OrderListCell extends ListCell<Order> {
 
         HBox productInfo = new HBox(productImage, productNameLabel);
         productInfo.setAlignment(Pos.CENTER_LEFT);
+        productInfo.setSpacing(8);
 
         bottomGridPane.add(productInfo, 0, 0);
-        bottomGridPane.add(amount, 1, 0);
+        bottomGridPane.add(amountLabel, 1, 0);
         bottomGridPane.add(totalCostLabel, 2, 0);
         bottomGridPane.add(trackingNumberVBox, 3, 0);
         bottomGridPane.add(statusVBox, 4, 0);
@@ -98,7 +104,7 @@ public class OrderListCell extends ListCell<Order> {
         /* styling */
         topGridPane.setStyle("-fx-background-color: surface-overlay");
         productNameLabel.getStyleClass().add("subtitle1");
-        amount.getStyleClass().add("overline");
+        amountLabel.getStyleClass().add("overline");
         totalCostLabel.getStyleClass().add("subtitle1");
         trackingNumberLabel.getStyleClass().add("subtitle1");
         timeLabel.getStyleClass().add("overline");
@@ -109,50 +115,60 @@ public class OrderListCell extends ListCell<Order> {
         updateStatus();
         updateUser();
         updateProductInfo();
+        updateTime();
     }
-    private void updateUser() { userInfoCard.setUser(new User("username", "Name")); }
+
+    private void updateUser() { userInfoCard.setUser(order.getBuyer()); }
 
     private void updateProductInfo(){
-        Product product = null;
-        if (product == null) return;
-        Image image = new Image(product.getPicturePath());
+        Product product = order.getProduct();
+        String picturePath = product.getPicturePath();
+        Image image = new Image(picturePath);
         PixelReader pixelReader = image.getPixelReader();
         WritableImage croppedImage = new WritableImage(pixelReader,
                 (int) image.getWidth(),
-                (int) image.getWidth());
+                (int) image.getHeight());
         productImage.setImage(croppedImage);
         productNameLabel.setText(product.getName());
+        amountLabel.setText("x" + order.getAmount());
         totalCostLabel.setText(String.format("$%.2f", product.getPrice() * order.getAmount()));
     }
 
     private void updateStatus(){
         trackingNumberVBox.getChildren().clear();
-        boolean shipped = order.getStatus().equals("sent");
+        boolean shipped = order.isShipped();
         String trackingNumber = order.getTracking();
 
         if (shipped) {
             statusVBox.getChildren().remove(submitTrackingNumberBtn);
             statusVBox.getChildren().add(statusSVGPath);
             submitTrackingNumberBtn.setGraphic(null);
-
-            statusSVGPath.setContent("M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z");
-            trackingNumberLabel.setText(trackingNumber);
+            statusSVGPath.setContent("M20.7,10.7h-2V8h-1.1l1.3-1.3l-1.4-1.4L14.8,8L8,14.8l-1.1,1.1l-4.2-4.2l-1.4,1.4l5.6,5.6l2-2h0.5c0,0.4,0.1,0.8,0.4,1.2c0.4,0.5,1,0.8,1.6,0.8c1.1,0,2-0.9,2-2h4c0,1.1,0.9,2,2,2c1.1,0,2-0.9,2-2h1.3v-3.3L20.7,10.7z M11.4,17.7c-0.4,0-0.7-0.2-0.9-0.6c-0.1-0.1-0.1-0.3-0.1-0.4c0-0.6,0.4-1,1-1c0.2,0,0.3,0,0.4,0.1c0.3,0.1,0.6,0.5,0.6,0.9C12.4,17.3,11.9,17.7,11.4,17.7zM19.4,17.7c-0.6,0-1-0.5-1-1c0-0.6,0.4-1,1-1c0.6,0,1,0.4,1,1C20.4,17.3,19.9,17.7,19.4,17.7z M18.7,13.4v-1.7h1.7l1.3,1.7H18.7zM9.4,8C8.6,8,8,8.6,8,9.4v3.4L12.7,8H9.4z");
+            trackingNumberLabel.setText(trackingNumber.toUpperCase());
             trackingNumberVBox.getChildren().add(trackingNumberLabel);
         } else {
-
             statusVBox.getChildren().add(submitTrackingNumberBtn);
             submitTrackingNumberBtn.setGraphic(statusSVGPath);
             statusSVGPath.setContent("M11.59 7.41L15.17 11H1v2h14.17l-3.59 3.59L13 18l6-6-6-6-1.41 1.41zM20 6v12h2V6h-2z");
             trackingNumberVBox.getChildren().add(trackingNumberTextField);
-            submitTrackingNumberBtn.setOnAction(this::setTrackingNumber);
+            submitTrackingNumberBtn.setOnAction(this::submitTrackingNumberButtonHandler);
         }
     }
 
-    private void setTrackingNumber(ActionEvent event){
+    private void updateTime(){
+        String pattern = "HH:mm - dMMM";
+        DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern(pattern);
+        String timeString = simpleDateFormat.format(order.getTime());
+        timeLabel.setText(timeString.toUpperCase());
+    }
+
+    private void submitTrackingNumberButtonHandler(ActionEvent event){
         order.setTracking(trackingNumberTextField.getText());
         updateStatus();
         updateUser();
         updateProductInfo();
+        dataSource.saveOrder();
+
     }
 
     @Override
@@ -168,5 +184,7 @@ public class OrderListCell extends ListCell<Order> {
     }
 
     @Override
-    public void updateSelected(boolean selected) { super.updateSelected(false); }
+    public void updateSelected(boolean selected) {
+        super.updateSelected(false);
+    }
 }

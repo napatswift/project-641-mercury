@@ -495,8 +495,14 @@ public class MarketPlaceController {
 
     @FXML
     public void initialize() throws IOException {
-        dataSource = (DataSource) FXRouter.getData();
-        dataSource.parseProduct();
+//        dataSource = (DataSource) FXRouter.getData();
+//        dataSource.parseProduct();
+
+        dataSource = new DataSource("data");
+        dataSource.parseAll();
+        dataSource.getUserList().login("aaa", "123456");
+
+
         populateCategory(dataSource.getCategories());
         dataSource.parseReview();
         dataSource.saveCategory();
