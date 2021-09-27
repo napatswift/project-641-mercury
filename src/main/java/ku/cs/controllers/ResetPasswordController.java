@@ -75,9 +75,9 @@ public class ResetPasswordController {
         }
         else{
             try {
-                com.github.saacsos.FXRouter.goTo("marketplace", dataSource);
+                com.github.saacsos.FXRouter.goTo("my_account", dataSource);
             } catch (IOException e) {
-                System.err.println("ไปที่หน้า marketplace ไม่ได้");
+                System.err.println("ไปที่หน้า my_account ไม่ได้");
                 System.err.println("ให้ตรวจสอบการกำหนด route");
             }
         }

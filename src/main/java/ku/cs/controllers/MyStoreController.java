@@ -36,9 +36,7 @@ public class MyStoreController  {
     }
 
     @FXML
-    public void handleAddProductBtn(ActionEvent event){
-        myStoreTP.getSelectionModel().select(0);
-    }
+    public void handleAddProductBtn(ActionEvent event) { myStoreTP.getSelectionModel().select(0); }
     @FXML
     public void handleListProductBtn(ActionEvent event){
         myStoreTP.getSelectionModel().select(1);

@@ -501,4 +501,12 @@ public class MarketPlaceController {
         populateProduct(15);
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
     }
+
+    public void handleMyAccount() {
+        try{
+            FXRouter.goTo("my_account", dataSource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
