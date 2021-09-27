@@ -240,7 +240,8 @@ public class DataSource {
                 String status = entry[4];
                 String tracking = entry[5];
                 String buyer = entry[6];
-                orders.addOrder(new Order(productName, productId, storeName, amount, status, tracking, buyer));
+                LocalDateTime localDateTime = LocalDateTime.parse(entry[7], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                orders.addOrder(new Order(productName, productId, storeName, amount, status, tracking, buyer, localDateTime));
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -34,6 +34,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class MyStoreController  {
@@ -43,6 +44,7 @@ public class MyStoreController  {
     private User currUser;
     private File file;
     private Path target;
+    private ArrayList<Order> orders;
 
     @FXML Label usernameLabel, nameLabel, nameStoreLabel;
     @FXML TabPane myStoreTP;
@@ -77,6 +79,8 @@ public class MyStoreController  {
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
         currUser = dataSource.getUserList().getCurrUser();
+        dataSource.parseOrder();
+        orders = dataSource.getOrders().getOrdersByStore(dataSource.getUserList().getCurrUser().getStoreName());
         usernameLabel.setText("@" + currUser.getUsername());
         nameStoreLabel.setText(currUser.getStoreName());
         nameLabel.setText(currUser.getName());
@@ -92,6 +96,8 @@ public class MyStoreController  {
         showProductsListView();
         clearSelectedProduct();
         handleProductsListView();
+        showOrderListView();
+        handleOrderListView();
 
         setGroup();
     }
@@ -130,8 +136,6 @@ public class MyStoreController  {
     }
     public void handleOrdersBtn(){
         myStoreTP.getSelectionModel().select(4);
-        showOrderListView();
-        handleOrderListView();
     }
 
 
@@ -229,10 +233,12 @@ public class MyStoreController  {
         handleAddProductBtn();
     }
 
-
-    /**
-     * @path Product List
-     */
+    public void handleEditBtn(){
+        product.setName(nameProductLB.getText());
+        product.setPrice(Double.parseDouble(priceLB.getText()));
+        product.setStock(Integer.parseInt(stockLB.getText()));
+        dataSource.saveProduct();
+    }
 
     public void showProductsListView(){
         productsListLV.getItems().addAll(dataSource.getProductByNameStore
@@ -287,11 +293,6 @@ public class MyStoreController  {
                 }
         );
     }
-
-
-
-
-
 
     public void clearSelectedProduct(){
         nameProductLB.setText("");

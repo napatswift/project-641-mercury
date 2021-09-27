@@ -447,7 +447,7 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ListView fx:id="orderLV" layoutX="60.0" layoutY="147.0" prefHeight="513.0" prefWidth="377.0" />
+                              <ListView fx:id="orderLV" layoutX="34.0" layoutY="138.0" prefHeight="584.0" prefWidth="700.0" />
                            </children>
                         </AnchorPane>
                     </content>

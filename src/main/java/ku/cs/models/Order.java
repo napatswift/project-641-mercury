@@ -1,5 +1,7 @@
 package ku.cs.models;
 
+import java.time.LocalDateTime;
+
 public class Order {
     private final String productName;
     private final String productId;
@@ -8,16 +10,18 @@ public class Order {
     private String status = "to sent";
     private String tracking = "-";
     private final String buyerName;
+    private LocalDateTime localDateTime;
 
-    public Order(String productName, String productId, String storeName, int amount, String buyerName) {
+    public Order(String productName, String productId, String storeName, int amount, String buyerName, LocalDateTime localDateTime) {
         this.productName = productName;
         this.productId = productId;
         this.storeName = storeName;
         this.amount = amount;
         this.buyerName = buyerName;
+        this.localDateTime = localDateTime;
     }
 
-    public Order(String productName, String productId, String storeName, int amount, String status, String tracking, String buyerName) {
+    public Order(String productName, String productId, String storeName, int amount, String status, String tracking, String buyerName, LocalDateTime localDateTime) {
         this.productName = productName;
         this.productId = productId;
         this.storeName = storeName;
@@ -25,6 +29,7 @@ public class Order {
         this.status = status;
         this.tracking = tracking;
         this.buyerName = buyerName;
+        this.localDateTime = localDateTime;
     }
 
     private void changeStatus() {
