@@ -31,7 +31,6 @@ public class Store {
     public String getNameStore() {
         return nameStore;
     }
-
     public String getUsername() {
         return username;
     }

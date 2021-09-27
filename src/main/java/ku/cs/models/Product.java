@@ -4,7 +4,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class Product implements Comparable<Product>{
+public class Product implements Comparable<Product> {
     private String name;
     private String pictureName;
     private String details;
