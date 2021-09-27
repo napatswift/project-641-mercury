@@ -27,6 +27,9 @@ public class DataSource {
         parseProduct();
         parseAccount();
         parseReview();
+        parseOrder();
+        parseStore();
+        parseReport();
     }
 
     public void parseProduct() {
@@ -38,7 +41,7 @@ public class DataSource {
             parseCategory();
         if (reviews == null)
             parseReview();
-        if(stores == null)
+        if (stores == null)
             parseStore();
         try {
             reader = new CSVReader(
@@ -62,7 +65,7 @@ public class DataSource {
 
                 if (!newProduct.setPictureName(picturePath)
                         || !newProduct.setPrice(price)
-                        || !newProduct.setStock(stock))
+                        || !newProduct.setStock(stock) || store == null)
                     continue;
 
                 for (int idx = 10; idx < entry_len; idx++) {
@@ -124,8 +127,6 @@ public class DataSource {
     }
 
     public void parseAccount() {
-        if(stores == null)
-            parseStore();
         userList = new UserList();
         try {
             CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "accounts.csv"));
@@ -144,13 +145,12 @@ public class DataSource {
                 boolean isBanned = entry[6].toLowerCase(Locale.ROOT).equals("true");
                 int loginAttempt = Integer.parseInt(entry[7]);
                 boolean hasStore = entry[8].toLowerCase(Locale.ROOT).equals("true");
-                Store store = entry[9].equals("null") ? null : stores.findStoreByName(entry[9]);
 
                 User newUser = null;
                 if(User.Role.USER == role)
-                    newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
+                    newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt);
                 else
-                    newUser = new Admin(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt, hasStore, store);
+                    newUser = new Admin(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt);
                 userList.addUser(newUser);
             }
         } catch (IOException | CsvValidationException e) {
@@ -195,17 +195,20 @@ public class DataSource {
     }
               
     public void parseStore(){
+        if (userList == null) parseAccount();
+
         stores = new StoreList();
         try{
             CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "store.csv"));
             reader.readNext();
             String [] entry;
             while ((entry = reader.readNext()) != null){
-                String username = entry[0];
+                User owner = userList.getUser(entry[0]);
                 String nameStore = entry[1];
                 int stockLower = Integer.parseInt(entry[2]);
-                Store store = new Store(username, nameStore, stockLower);
-                stores.addStore(store);
+                owner.createStore(nameStore);
+                owner.getStore().setStockLower(stockLower);
+                stores.addStore(owner.getStore());
             }
         }catch (IOException | CsvValidationException e){
             e.printStackTrace();
@@ -334,15 +337,6 @@ public class DataSource {
 
     public void  saveStore(){
         save(stores.toCsv(),"store.csv");
-    }
-
-    public ArrayList<Product> getProductByNameStore(String name){
-        ArrayList<Product> productArrayList = new ArrayList<>();
-        for(Product product : products){
-            if(product.getStore().getNameStore().equals(name)){
-                productArrayList.add(product);
-            }
-        }return productArrayList;
     }
 
 }

@@ -1,28 +1,17 @@
 package ku.cs.models;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-
 public class Store {
-    private String username;
+    private User owner;
     private String nameStore;
     private int stockLower;
     private ProductList products;
 
-    public Store(String nameStore) {
-        this.nameStore = nameStore;
+    public Store(User owner, String nameStore) {
+        this(owner,nameStore,10);
     }
 
-    public Store(String username, String nameStore) {
-        this(username,nameStore,10);
-
-    }
-
-    public Store(String username, String nameStore, int stockLower) {
-        this.username = username;
+    public Store(User owner, String nameStore, int stockLower) {
+        this.owner = owner;
         this.nameStore = nameStore;
         this.stockLower = stockLower;
         products = new ProductList();
@@ -30,9 +19,6 @@ public class Store {
 
     public String getNameStore() {
         return nameStore;
-    }
-    public String getUsername() {
-        return username;
     }
 
     public int getStockLower() {
@@ -48,8 +34,8 @@ public class Store {
     }
 
     public String toCsv(){
-       return username + ","
-               + nameStore + ","
+       return owner.getUsername() + ","
+               + "\"" + nameStore.replace("\"", "\"\"") + "\"" + ","
                + stockLower;
     }
 

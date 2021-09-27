@@ -19,11 +19,10 @@ public class StoreList {
 
     public Store findStoreByName(String nameStore){
         for(Store store : storeList) {
-            if(store.getNameStore().equals(nameStore)) {
+            if(store.getNameStore().equals(nameStore))
                 return store;
-            }
         }
-        return new Store(nameStore);
+        return null;
     }
 
     public boolean isExit(String nameStore){

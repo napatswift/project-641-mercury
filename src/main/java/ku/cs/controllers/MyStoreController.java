@@ -243,8 +243,7 @@ public class MyStoreController  {
     }
 
     public void showProductsListView(){
-        productsListLV.getItems().addAll(dataSource.getProductByNameStore
-                (dataSource.getUserList().getCurrUser().getStoreName()));
+        productsListLV.getItems().addAll(dataSource.getProducts().getProductByNameStore(dataSource.getUserList().getCurrUser().getStoreName()));
         productsListLV.setCellFactory(productListView -> new ProductListCell(productListView));
         productsListLV.refresh();
     }
