@@ -1,6 +1,7 @@
 package ku.cs.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,6 +12,9 @@ public class HowToController {
 
     @FXML
     TabPane howToTP;
+
+    @FXML
+    Label firstPageLabel;
 
     @FXML
     public void handleRegisterBtn(ActionEvent event){
@@ -53,6 +57,18 @@ public class HowToController {
         image_sign_up_page.setImage(new Image(pathSignUpPage));
         String pathSignUpPage2 = getClass().getResource("/ku/cs/image/sign-up-page2.png").toExternalForm();
         image_sign_up_page_2.setImage(new Image(pathSignUpPage2));
+        readData();
+    }
+
+    public void readData() {
+        firstPageLabel.setText("หน้าแรก เมื่อกดเข้าใช้งานโปรแกรม จะปรากฏหน้าแรกเป็นหน้าที่มีส่วนของการลงชื่อเข้าใช้ระบบ โดยให้ใส่ " +
+                "\n(1) username  " +
+                "\n(2) รหัสผ่าน (password) " +
+                "\n(3) LOGIN เพื่อเข้าสู่ระบบ หากยังไม่มีบัญชีสำหรับการใช้เข้าใช้งานระบบให้กดปุ่ม " +
+                "\n(4) SIGN-UP เพื่อทำการลงทะเบียนบัญชีผู้ใช้ \n" +
+                "นอกจากนี้ยังมีปุ่ม " +
+                "\n(5) About Us เพื่อไปยังหน้าที่แสดงรายชื่อผู้จัดทำ " +
+                "\n(6) How-To เพื่อไปอ่านวิธีการใช้งานเบื้องต้น");
     }
 
 }
