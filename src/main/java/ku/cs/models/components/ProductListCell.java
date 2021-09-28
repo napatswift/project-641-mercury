@@ -23,22 +23,21 @@ public class ProductListCell extends ListCell<Product> {
     private final Label label;
     private final SVGPath warning;
     private final ImageView imageView;
+    private final ColumnConstraints col2;
+    private final ColumnConstraints col3;
 
     public ProductListCell(ListView<Product> listView) {
         gridPane = new GridPane();
         topLabel = new Label();
         label = new Label();
         imageView = new ImageView();
+        warning = new SVGPath();
 
-        prefWidthProperty().bind(listView.widthProperty().subtract(5));
+        prefWidthProperty().bind(listView.widthProperty().subtract(20));
         setMaxWidth(Control.USE_PREF_SIZE);
 
         imageView.setFitHeight(40);
         imageView.setPreserveRatio(true);
-
-        warning = new SVGPath();
-        warning.setContent("M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z");
-        warning.setStyle("-fx-fill: error-color");
 
         topLabel.getStyleClass().add("subtitle2");
         topLabel.setStyle("-fx-text-fill: on-surface-med-color;");
@@ -46,12 +45,12 @@ public class ProductListCell extends ListCell<Product> {
         label.setStyle("-fx-text-fill: on-surface-color");
 
         ColumnConstraints col1 = new ColumnConstraints();
-        ColumnConstraints col2 = new ColumnConstraints();
-        ColumnConstraints col3 = new ColumnConstraints();
+        col2 = new ColumnConstraints();
         col1.setPercentWidth(15);
-        col2.setPercentWidth(65);
+        col2.setPercentWidth(85);
+        col3 = new ColumnConstraints();
         col3.setPercentWidth(20);
-        gridPane.getColumnConstraints().addAll(col1, col2, col3);
+        gridPane.getColumnConstraints().addAll(col1, col2);
         gridPane.setHgap(8);
 
         GridPane.setHalignment(warning, HPos.RIGHT);
@@ -60,7 +59,6 @@ public class ProductListCell extends ListCell<Product> {
         box.setSpacing(3);
         gridPane.add(imageView, 0, 0);
         gridPane.add(box, 1, 0);
-        gridPane.add(warning, 2, 0);
     }
 
     private void setTime(LocalDateTime time){
@@ -71,6 +69,21 @@ public class ProductListCell extends ListCell<Product> {
 
     private void setImage(String imagePath){
         imageView.setImage(new Image(imagePath));
+    }
+
+    private void updateStock(boolean stockIsLow){
+        warning.setContent("M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z");
+        warning.setStyle("-fx-fill: error-color");
+
+        if (stockIsLow){
+            if (!gridPane.getColumnConstraints().contains(col3))
+                gridPane.getColumnConstraints().add(col3);
+            if (!gridPane.getChildren().contains(warning))
+                gridPane.add(warning, 2, 0);
+        } else {
+            gridPane.getColumnConstraints().remove(col3);
+            gridPane.getChildren().remove(warning);
+        }
     }
 
     @Override

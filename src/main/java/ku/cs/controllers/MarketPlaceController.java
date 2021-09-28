@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +19,7 @@ import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import ku.cs.models.*;
 import ku.cs.models.components.*;
+import ku.cs.models.components.theme.ThemeMenu;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -61,6 +63,8 @@ public class MarketPlaceController {
         reviewRatingPanelStarHBox, categoriesMenuHBox;
     @FXML
     VBox reviewVBox, categoriesVBox;
+    @FXML
+    ToolBar topBarTB;
 
     private boolean bodyToggle = false;
     private int productIndex = -1;
@@ -175,7 +179,6 @@ public class MarketPlaceController {
                     "21h13a2,2,0,0,0,1.93-1.46L23,10.27,23,10A1,1,0,0,0,22,9ZM12,4.6," +
                     "15,9H9Zm-.21,13.9L8.19,15l1.4-1.4,2.2,2.1L16,11.5l1.4,1.4Z");
         }
-
         /* handling category */
         for(Category category: productList.getSelectedProduct().getCategories())
             categoriesVBox.getChildren().add(new CategoryPane(category));
@@ -238,18 +241,23 @@ public class MarketPlaceController {
 
         if (product.getReview() == 0){
             Label noReviewLabel = new Label("No review yet! You'll be first!");
+            noReviewLabel.getStyleClass().add("subtitle1");
             noReviewLabel.setPadding(new Insets(10));
             reviewVBox.getChildren().add(noReviewLabel);
         }
 
         reviewRatingPanelStarHBox.getChildren().add(new RatingStars(product.getRating()));
-        reviewRatingPanelStarHBox.getChildren().add(
-                new Label(String.format("%.2f", product.getRating()) + "/5 (" + product.getReview() + " reviews)"));
+        Label reviewRatingPanelLabel =
+                new Label(String.format("%.2f", product.getRating()) + "/5 (" + product.getReview() + " reviews)");
+        reviewRatingPanelLabel.getStyleClass().add("subtitle1");
+        reviewRatingPanelStarHBox.getChildren().add(reviewRatingPanelLabel);
 
         // handling product rating
         starsHBox.getChildren().add(new RatingStars(productList.getSelectedProduct().getRating()));
-        starsHBox.getChildren().add(
-                new Label(String.format("%.2f", product.getRating()) + "/5 (" + product.getReview() + " reviews)"));
+        Label starsHBoxLabel =
+                new Label(String.format("%.2f", product.getRating()) + "/5 (" + product.getReview() + " reviews)");
+        starsHBoxLabel.getStyleClass().add("subtitle1");
+        starsHBox.getChildren().add(starsHBoxLabel);
     }
 
     /* handler */
@@ -404,6 +412,7 @@ public class MarketPlaceController {
         Label filterLabel = new Label("Filter");
         filterLabel.getStyleClass().add("subtitle1");
         Label headerLabel = new Label(category);
+        headerLabel.getStyleClass().add("subtitle2");
         filerHBox.getChildren().add(filterLabel);
 
         SVGPath closeSVG = new SVGPath();
@@ -474,7 +483,7 @@ public class MarketPlaceController {
                 box.setSpacing(3);
             }
             Button categoryBtn = new Button(category);
-            categoryBtn.setStyle("-fx-text-fill: secondary-text-color");
+            categoryBtn.setStyle("-fx-text-fill: on-secondary-color");
             categoryBtn.setId(category);
             categoryBtn.setOnMouseReleased(this::handleFilterByCategory);
             box.getChildren().add(categoryBtn);
@@ -491,6 +500,15 @@ public class MarketPlaceController {
             System.err.println("ไปที่หน้า login ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
+    }
+
+    public void addThemeMenu(){
+        int size = topBarTB.getItems().size();
+        Node lastNode = topBarTB.getItems().get(size - 1);
+        MenuButton themeMenu = new ThemeMenu();
+        themeMenu.getStyleClass().add("on-secondary-color-menu-button");
+        topBarTB.getItems().set(size - 1, themeMenu);
+        topBarTB.getItems().add(lastNode);
     }
 
     @FXML
@@ -512,5 +530,7 @@ public class MarketPlaceController {
         productList.sort();
         populateProduct(15);
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
+
+        addThemeMenu();
     }
 }

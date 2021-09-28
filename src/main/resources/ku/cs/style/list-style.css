@@ -1,4 +1,5 @@
 .list-view{
+    -fx-background-color: surface-color;
     -fx-background-insets: 0;
     -fx-padding: 1;
 }
