@@ -186,9 +186,13 @@
     -fx-fill: on-surface-text-med-color;
 }
 
-.root{
+.root {
     -fx-font-family: 'Roboto Light';
     -fx-background-color: surface-color;
+}
+
+.label {
+    -fx-text-fill: on-surface-color;
 }
 
 .product-card{

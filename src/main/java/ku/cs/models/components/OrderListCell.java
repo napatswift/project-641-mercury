@@ -142,7 +142,7 @@ public class OrderListCell extends ListCell<Order> {
         if (shipped) {
             statusVBox.getChildren().remove(submitTrackingNumberBtn);
             submitTrackingNumberBtn.setGraphic(null);
-            if(statusVBox.getChildren().contains(statusSVGPath)){
+            if(!statusVBox.getChildren().contains(statusSVGPath)){
                 statusVBox.getChildren().add(statusSVGPath);
             }
             statusSVGPath.setContent("M20.7,10.7h-2V8h-1.1l1.3-1.3l-1.4-1.4L14.8,8L8,14.8l-1.1,1.1l-4.2-4.2l-1.4,1.4l5.6,5.6l2-2h0.5c0,0.4,0.1,0.8,0.4,1.2c0.4,0.5,1,0.8,1.6,0.8c1.1,0,2-0.9,2-2h4c0,1.1,0.9,2,2,2c1.1,0,2-0.9,2-2h1.3v-3.3L20.7,10.7z M11.4,17.7c-0.4,0-0.7-0.2-0.9-0.6c-0.1-0.1-0.1-0.3-0.1-0.4c0-0.6,0.4-1,1-1c0.2,0,0.3,0,0.4,0.1c0.3,0.1,0.6,0.5,0.6,0.9C12.4,17.3,11.9,17.7,11.4,17.7zM19.4,17.7c-0.6,0-1-0.5-1-1c0-0.6,0.4-1,1-1c0.6,0,1,0.4,1,1C20.4,17.3,19.9,17.7,19.4,17.7z M18.7,13.4v-1.7h1.7l1.3,1.7H18.7zM9.4,8C8.6,8,8,8.6,8,9.4v3.4L12.7,8H9.4z");

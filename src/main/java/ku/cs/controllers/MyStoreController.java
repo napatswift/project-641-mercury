@@ -39,9 +39,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class MyStoreController  {
-    DataSource dataSource;
-    Product product;
-    Image image;
+    private DataSource dataSource;
+    private Product product;
+    private Image image;
     private User currUser;
     private File file;
     private Path target;
@@ -76,7 +76,6 @@ public class MyStoreController  {
     ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
 
     ResizeableImageView selectedProductResizeableImageView;
-    ResizeableImageView selectedOrderResizeableImageView;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
@@ -92,14 +91,12 @@ public class MyStoreController  {
         loadCategory();
         handleListProductBtn();
 
-
         productsRightPane.setVisible(false);
 
         showProductsListView();
         clearSelectedProduct();
         handleProductsListView();
         showOrderListView(orders);
-        handleOrderListView();
 
         setGroup();
     }
@@ -132,6 +129,7 @@ public class MyStoreController  {
     public void handleListProductBtn(){
         myStoreTP.getSelectionModel().select(0);
     }
+
     public void handleAddProductBtn(){
         product = new Product("", "", dataSource.getUserList().getCurrUser().getStore());
         myStoreTP.getSelectionModel().select(1);
@@ -168,10 +166,7 @@ public class MyStoreController  {
         int stock = Integer.parseInt(stockTF.getText());
         String detail = descriptionTF.getText();
 
-
-
         if(!name.equals("") && price > 0 && stock > 0 && !detail.equals("")) {
-
             product.setName(name);
             product.setPrice(price);
             product.setStock(stock);
@@ -207,7 +202,7 @@ public class MyStoreController  {
 
             Image uploadedImage = new Image(new FileInputStream(file.getPath()));
             String[] fileSplit = file.getName().split("\\.");
-            String filename = LocalDate.now()
+            String filename = "PRODUCT_IMG" +LocalDate.now()
                     + "_" + System.currentTimeMillis()
                     + "." + fileSplit[fileSplit.length - 1];
 
@@ -292,25 +287,8 @@ public class MyStoreController  {
         showOrderListView(OrderList.getToShipOrder(orders));
     }
 
-    public void handleShipedBtn(){
+    public void handleShippedBtn(){
         showOrderListView(OrderList.getShipedOrder(orders));
-    }
-
-    public void showSelectOrder(Order order){
-        if (selectedOrderResizeableImageView == null) {
-            selectedOrderResizeableImageView = new ResizeableImageView(new Image(order.getProduct().getPicturePath()));
-            selectedOrderResizeableImageView.fitWidthProperty().bind(rightProductVB.widthProperty());
-            ImageViewVBox.getChildren().add(selectedOrderResizeableImageView);
-        }
-        selectedOrderResizeableImageView.setImage(new Image(order.getProduct().getPicturePath()));
-    }
-
-    public void handleOrderListView(){
-        orderLV.getSelectionModel().selectedItemProperty().addListener(
-                (observableValue, oldValue, newValue) ->{
-                    showSelectOrder(newValue);
-                }
-        );
     }
 
     public void clearSelectedProduct(){

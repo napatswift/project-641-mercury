@@ -37,6 +37,7 @@ public class ProductListCell extends ListCell<Product> {
         setMaxWidth(Control.USE_PREF_SIZE);
 
         imageView.setFitHeight(40);
+        imageView.setFitWidth(40);
         imageView.setPreserveRatio(true);
 
         topLabel.getStyleClass().add("subtitle2");
@@ -47,6 +48,7 @@ public class ProductListCell extends ListCell<Product> {
         ColumnConstraints col1 = new ColumnConstraints();
         col2 = new ColumnConstraints();
         col1.setPercentWidth(15);
+        col2.setMaxWidth(1);
         col2.setPercentWidth(85);
         col3 = new ColumnConstraints();
         col3.setPercentWidth(20);
@@ -97,6 +99,7 @@ public class ProductListCell extends ListCell<Product> {
             setStyle("-fx-border-width: 0 0 1 0; -fx-border-color: surface-overlay");
             setPadding(new Insets(5, 15, 8, 8));
             setGraphic(gridPane);
+            updateStock(product.stockIsLow());
         } else {
             setGraphic(null);
             setStyle(null);

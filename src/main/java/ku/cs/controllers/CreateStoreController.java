@@ -34,20 +34,6 @@ public class CreateStoreController {
     }
 
     @FXML
-    public void handleTF(ActionEvent event){
-        String nameStore = nameStoreTF.getText();
-        TextField textField = (TextField) event.getSource();
-        textField.getStyleClass().removeAll("error-outline-text-field");
-        textField.getStyleClass().add("outline-text-field");
-
-        if(stores.isExit(nameStore)){
-
-        }
-
-
-    }
-
-    @FXML
     public void handleSubmit(ActionEvent event) throws IOException {
         String nameStore = nameStoreTF.getText();
         dataSource.getUserList().getCurrUser().createStore(nameStore);

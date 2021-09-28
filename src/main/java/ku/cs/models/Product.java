@@ -149,6 +149,10 @@ public class Product implements Comparable<Product> {
         }
     }
 
+    public boolean stockIsLow(){
+        return store.stockIsLow(this);
+    }
+
     public boolean containsCategory(String category){
         for (Category cat: categories) {
             if (cat.getName().equals(category))
