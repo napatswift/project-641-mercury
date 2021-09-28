@@ -3,9 +3,7 @@ package ku.cs.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import com.github.saacsos.FXRouter;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -29,24 +27,25 @@ public class MyAccountController {
     private Path target;
     private User user;
 
+    @FXML
+    private ImageView imageIIV;
 
+    @FXML
+    private Label nameLabel;
 
-    @FXML ImageView imageIV;
-    @FXML ImageView imageIIV;
-    @FXML Button selectProfilePictureBtn;
-    @FXML TabPane myAccountTP;
-    @FXML private Label username,name;
+    @FXML
+    private Label usernameLabel;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
         user = dataSource.getUserList().getCurrUser();
-        imageIV.setImage(new Image(dataSource.getUserList().getCurrUser().getPicturePath()));
+        imageIIV.setImage(new Image(user.getPicturePath()));
         showUser(user);
     }
 
     public void showUser(User user){
-        username.setText(user.getUsername());
-        name.setText(user.getName());
+        usernameLabel.setText(user.getUsername());
+        nameLabel.setText(user.getName());
         imageIIV.setImage(new Image(dataSource.getUserList().getCurrUser().getPicturePath()));
     }
 
@@ -59,54 +58,23 @@ public class MyAccountController {
         }
     }
 
-    public void handleChangePicture() {
-        myAccountTP.getSelectionModel().select(1);
-    }
-
     public void handleConfirmBtn(ActionEvent event) throws FileNotFoundException {
         if (file != null) {
             try {
                 Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
                 dataSource.getUserList().getCurrUser().setPicturePath(target.getFileName().toString());
-                FXRouter.goTo("my_account", dataSource);
             } catch (IOException e) {
                 e.printStackTrace();
-                System.err.println("ไปที่หน้า my_account ไม่ได้");
-                System.err.println("ให้ตรวจสอบการกำหนด route");
-            }finally {
-                dataSource.saveAccount();
             }
-
         }
     }
 
-    @FXML
-    public void handleBackBtn(ActionEvent event){
-        try {
-            FXRouter.goTo("marketplace",dataSource);
-        } catch (IOException e) {
-            System.err.println("ไปที่หน้า marketplace ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
-        }
-    }
-
-    @FXML
-    public void handleCancelBtn(ActionEvent event) {
-        try {
-            FXRouter.goTo("my_account", dataSource);
-        } catch (IOException e) {
-            System.err.println("ไปที่หน้า my_account ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
-        }
-    }
-
-        public void handleSelectProfilePicture(ActionEvent event) throws FileNotFoundException {
-
+    public void handleSelectProfilePicture() throws FileNotFoundException {
             FileChooser chooser = new FileChooser();
             chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
             chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
 
-            file = chooser.showOpenDialog(selectProfilePictureBtn.getScene().getWindow());
+            file = chooser.showOpenDialog(usernameLabel.getScene().getWindow());
 
             if (file != null) {
                 File destDir = new File("images");
@@ -125,7 +93,6 @@ public class MyAccountController {
                                 + System.getProperty("file.separator")
                                 + filename);
 
-                imageIV.setImage(uploadedImage);
                 imageIIV.setImage(uploadedImage);
             }
         }

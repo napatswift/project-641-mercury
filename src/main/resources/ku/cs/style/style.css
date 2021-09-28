@@ -348,3 +348,9 @@
     -fx-text-fill: primary-dark-color;
     -fx-fill: primary-dark-color;
 }
+
+.border-card {
+    -fx-border-color: surface-overlay;
+    -fx-border-width: 0.115em;
+    -fx-border-radius: 11;
+}
