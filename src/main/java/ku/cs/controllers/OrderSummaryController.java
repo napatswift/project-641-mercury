@@ -43,14 +43,13 @@ public class OrderSummaryController {
         showProduct(productList.getSelectedProduct(),amountBuy);
     }
 
-    public void initialize() {
-    }
-
     public void showProduct(Product product, int amountBuy){
         nameProductText.setText(product.getName());
+
         unitPriceText.setText("$" + product.getPrice() + " per each");
         unitText.setText("x" + amountBuy);
-        allPaymentText.setText("$" + ( amountBuy * product.getPrice()));
+
+        allPaymentText.setText(String.format("$%.2f", amountBuy * product.getPrice()));
         selectedProductImageView.setImage(new Image(product.getPicturePath()));
     }
 

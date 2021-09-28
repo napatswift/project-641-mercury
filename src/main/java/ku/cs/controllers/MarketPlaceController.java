@@ -543,6 +543,7 @@ public class MarketPlaceController {
         productTP.getSelectionModel().select(0);
     }
 
+    @FXML
     public void handleBuyBtn(ActionEvent actionEvent) {
         int amountBuy = Integer.parseInt(amountTF.getText());
         if(productList.getSelectedProduct().isInStock(amountBuy)){
