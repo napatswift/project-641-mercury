@@ -19,7 +19,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         FXRouter.bind(this, stage, appName, L_WIDTH, HEIGHT);
         configRoute();
-        FXRouter.goTo("login");
+        FXRouter.goTo("marketplace");
     }
 
     private static void configRoute(){
@@ -35,7 +35,6 @@ public class App extends Application {
         FXRouter.when("create_store", packageStr + "create_store.fxml");
         FXRouter.when("my_store", packageStr + "my_store.fxml");
         FXRouter.when("reporting", packageStr + "reporting.fxml");
-        FXRouter.when("order-summary", packageStr + "order-summary.fxml");
 
     }
 

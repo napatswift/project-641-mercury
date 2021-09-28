@@ -15,7 +15,9 @@
     on-surface-color: #000000;
     on-surface-med-color: rgba(33, 33, 33, 0.6);
     surface-overlay: rgba(33, 33, 33, 0.08);
+    surface-focus-overlay: rgba(33, 33, 33, 0.22);
     primary-overlay : rgba(98, 0, 238, 0.08);
+    primary-overlay-hover : rgba(98, 0, 238, 0.06);
     primary-med-overlay : rgba(98, 0, 238, 0.6);
     app-font-family: 'Roboto';
 }

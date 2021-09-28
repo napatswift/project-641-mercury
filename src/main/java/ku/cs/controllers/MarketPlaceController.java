@@ -20,6 +20,7 @@ import javafx.scene.shape.SVGPath;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import ku.cs.models.*;
+import ku.cs.models.components.*;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -68,7 +69,6 @@ public class MarketPlaceController {
 
     private boolean bodyToggle = false;
     private int productIndex = -1;
-    private final ComponentBuilder componentBuilder = new ComponentBuilder();
     private double upperBoundParsed = Double.MAX_VALUE, lowerBoundParsed = 0;
     private int newReviewRating = -1;
     private User currUser;
@@ -157,7 +157,7 @@ public class MarketPlaceController {
         selectedProductIV.setImage(new Image(productList.getSelectedProduct().getPicturePath()));
 
         /* set store name */
-        storeNameLabel.setText(productList.getSelectedProduct().getStore().getName().toUpperCase(Locale.ROOT));
+        storeNameLabel.setText(productList.getSelectedProduct().getStore().getNameStore().toUpperCase(Locale.ROOT));
 
         /* set bread crumbs info */
         categoryBreadcrumbsLabel.setText(productList.getSelectedProduct().getCategory().getName());
@@ -183,7 +183,7 @@ public class MarketPlaceController {
 
         /* handling category */
         for(Category category: productList.getSelectedProduct().getCategories())
-            categoriesVBox.getChildren().add(componentBuilder.categoryPane(category));
+            categoriesVBox.getChildren().add(new CategoryPane(category));
     }
 
     private void handleCategoryBreadcrumbsLabel(MouseEvent event){
@@ -197,10 +197,12 @@ public class MarketPlaceController {
         star3.setStyle("-fx-fill: primary-overlay");
         star4.setStyle("-fx-fill: primary-overlay");
         star5.setStyle("-fx-fill: primary-overlay");
+        ratingSubmissionLabel.setText("0/5");
     }
 
     private void resetReviewForm(){
         resetStar();
+        newReviewRating = -1;
         reviewTitleTF.setText("");
         detailReviewTA.setText("");
     }
@@ -229,11 +231,14 @@ public class MarketPlaceController {
 
     private void populateReview(){
         reviewRatingPanelStarHBox.getChildren().clear();
+        starsHBox.getChildren().clear();
 
         reviewVBox.getChildren().clear();
         Product product = dataSource.getProducts().getSelectedProduct();
         for (Review review: product.getReviews()){
-            reviewVBox.getChildren().add(componentBuilder.reviewCard(review, this));
+            ReviewCard card = new ReviewCard(review);
+            card.getFlagArea().setOnMouseReleased(this::handleReportReviewBtn);
+            reviewVBox.getChildren().add(card);
         }
 
         if (product.getReview() == 0){
@@ -242,13 +247,12 @@ public class MarketPlaceController {
             reviewVBox.getChildren().add(noReviewLabel);
         }
 
-        componentBuilder.starsRating(reviewRatingPanelStarHBox, product.getRating());
+        reviewRatingPanelStarHBox.getChildren().add(new RatingStars(product.getRating()));
         reviewRatingPanelStarHBox.getChildren().add(
                 new Label(String.format("%.2f", product.getRating()) + "/5 (" + product.getReview() + " reviews)"));
 
         // handling product rating
-        starsHBox.getChildren().clear();
-        componentBuilder.starsRating(starsHBox, productList.getSelectedProduct().getRating());
+        starsHBox.getChildren().add(new RatingStars(productList.getSelectedProduct().getRating()));
         starsHBox.getChildren().add(
                 new Label(String.format("%.2f", product.getRating()) + "/5 (" + product.getReview() + " reviews)"));
     }
@@ -331,29 +335,30 @@ public class MarketPlaceController {
 
     @FXML
     private void handleSubmitReviewBtn(ActionEvent e){
-            setBodyToggle();
-            for (Review review : dataSource.getProducts().getSelectedProduct().getReviews())
-                if (review.getAuthor().getUsername().equals(currUser.getUsername())) {
-                    resetReviewForm();
-                    return;
-                }
-            String title = reviewTitleTF.getText();
-            String detail = detailReviewTA.getText();
-            reviewList.addReview(title, detail, newReviewRating,
-                    currUser, productList.getSelectedProduct());
-            populateReview();
-            resetReviewForm();
-            dataSource.saveReview();
-            dataSource.saveProduct();
-            newReviewRating = -1;
+        setBodyToggle();
+        for(Review review: dataSource.getProducts().getSelectedProduct().getReviews())
+            if (review.getAuthor().getUsername().equals(currUser.getUsername())) {
+                resetReviewForm();
+                return;
+            }
+        String title = reviewTitleTF.getText();
+        String detail = detailReviewTA.getText();
+        reviewList.addReview(title, detail, newReviewRating,
+                currUser, productList.getSelectedProduct());
+        populateReview();
+        resetReviewForm();
+        dataSource.saveReview();
+        dataSource.saveProduct();
+        newReviewRating = -1;
     }
 
     @FXML
     private void handleProductCard(MouseEvent event) {
         setBodyToggle();
-        VBox vBox = (VBox) event.getSource();
-        Product selectedProduct = productList.getProduct(vBox.getId());
+        ProductCard productCard = (ProductCard) event.getSource();
+        Product selectedProduct = productCard.getProduct();
         productList.setSelectedProduct(selectedProduct);
+        resetReviewForm();
         if(productList.getSelectedProduct() == null)
             return;
         buildProductPage();
@@ -398,6 +403,7 @@ public class MarketPlaceController {
             } catch (IOException e) {
                 System.err.println("ไปที่หน้า my_store ไม่ได้");
                 System.err.println("ตรวจสอบ Route");
+                e.printStackTrace();
             }
         }
     }
@@ -466,7 +472,7 @@ public class MarketPlaceController {
         while (iterator.hasNext()) {
             Product product = iterator.next();
             if (i++ > productIndex && i < productIndex + amount) {
-                VBox card = componentBuilder.productCard(product);
+                ProductCard card = new ProductCard(product);
                 card.setOnMouseReleased(this::handleProductCard);
                 productFlowPane.getChildren().add(card);
             }
@@ -508,8 +514,14 @@ public class MarketPlaceController {
 
     @FXML
     public void initialize() throws IOException {
-        dataSource = (DataSource) FXRouter.getData();
-        dataSource.parseProduct();
+//        dataSource = (DataSource) FXRouter.getData();
+//        dataSource.parseProduct();
+
+        dataSource = new DataSource("data");
+        dataSource.parseAll();
+        dataSource.getUserList().login("aaa", "123456");
+
+
         populateCategory(dataSource.getCategories());
         dataSource.parseReview();
         dataSource.saveCategory();

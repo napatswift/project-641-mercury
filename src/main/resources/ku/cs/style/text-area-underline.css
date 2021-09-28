@@ -1,0 +1,21 @@
+.text-area{
+    -fx-background-color: surface-overlay;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-border-width: 0 0 2 0;
+    -fx-padding: 0;
+    -fx-border-color: transparent;
+    -fx-highlight-fill: primary-color;
+}
+
+.text-area:hover, .text-area:focused{
+    -fx-border-color: surface-focus-overlay;
+    -fx-padding: 0;
+}
+
+.text-area .content{
+    -fx-border-color: transparent;
+    -fx-border-radius: 0;
+    -fx-background-color: transparent;
+    -fx-progress-color: transparent;
+}

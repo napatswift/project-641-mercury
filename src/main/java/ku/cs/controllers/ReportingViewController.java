@@ -9,6 +9,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ku.cs.models.*;
+import ku.cs.models.components.SmallProductCard;
+import ku.cs.models.components.SmallReviewCard;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;

@@ -1,9 +1,5 @@
 package ku.cs.models;
 
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.layout.VBox;
-
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,7 +16,7 @@ public class User implements Comparable<User>{
     private String picturePath;
     private LocalDateTime loginDateTime;
     protected boolean isBanned;
-    protected int loginAttempt;
+    private int loginAttempt;
     private boolean hasStore;
     private Store store;
 
@@ -51,7 +47,7 @@ public class User implements Comparable<User>{
         this.setPassword(password);
     }
 
-    public User(String username, Role role, String name, String password, String picturePath, LocalDateTime loginDateTime, boolean isBanned, int loginAttempt, boolean hasStore, Store store) {
+    public User(String username, Role role, String name, String password, String picturePath, LocalDateTime loginDateTime, boolean isBanned, int loginAttempt) {
         this.role = role;
         this.username = username;
         this.password = password;
@@ -60,8 +56,6 @@ public class User implements Comparable<User>{
         this.loginDateTime = loginDateTime;
         this.isBanned = isBanned;
         this.loginAttempt = loginAttempt;
-        this.hasStore = hasStore;
-        this.store = store;
     }
 
     //getter
@@ -116,11 +110,11 @@ public class User implements Comparable<User>{
         return username;
     }
 
-    public int getLoginAttempt() {
-        return loginAttempt;
-    }
+    public String getStoreName() {return this.store.getNameStore();}
 
-    public String getStoreName() {return this.store.getName();}
+    public Store getStore() {
+        return store;
+    }
 
     public String getPicturePath() {
         String picturePath = this.picturePath;
@@ -155,13 +149,9 @@ public class User implements Comparable<User>{
 
     public void createStore(String storeName){
         if(this.store == null){
-            this.store = new Store(storeName, username);
+            this.store = new Store(this, storeName);
             hasStore = true;
         }
-    }
-
-    public void openStore(String name){
-        this.hasStore = true;
     }
 
 
@@ -176,7 +166,7 @@ public class User implements Comparable<User>{
                 + isBanned + ","
                 + loginAttempt + ","
                 + hasStore + ","
-                + (store == null ? null : store.getName());
+                + (store == null ? null : store.getNameStore());
     }
 }
 
