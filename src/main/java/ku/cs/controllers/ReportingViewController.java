@@ -108,8 +108,7 @@ public class ReportingViewController {
     }
 
     public void setReportItem(Product product){
-        ComponentBuilder builder = new ComponentBuilder();
-        reportItemHBox.getChildren().add(builder.smallProductCard(product));
+        reportItemHBox.getChildren().add(new SmallProductCard(product));
         reportTypes = new String [] {
                 "Copyright",
                 "Offensive or sexually explicit",
@@ -123,8 +122,7 @@ public class ReportingViewController {
 
     public void setReportItem(Review review){
         reportPromptLabel.setText("What's wrong with this review?");
-        ComponentBuilder builder = new ComponentBuilder();
-        reportItemHBox.getChildren().add(builder.smallReviewCard(review));
+        reportItemHBox.getChildren().add(new SmallReviewCard(review));
         reportTypes = new String [] {
                 "Spam",
                 "Unuseful",

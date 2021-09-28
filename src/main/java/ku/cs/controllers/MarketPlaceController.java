@@ -545,7 +545,7 @@ public class MarketPlaceController {
 
     public void handleBuyBtn(ActionEvent actionEvent) {
         int amountBuy = Integer.parseInt(amountTF.getText());
-        if(productList.getSelectedProduct().checkStock(amountBuy)){
+        if(productList.getSelectedProduct().isInStock(amountBuy)){
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/order-summary.fxml"));
                 Node node = loader.load();
