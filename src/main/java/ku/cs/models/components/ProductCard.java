@@ -29,9 +29,9 @@ public class ProductCard extends VBox {
         image.setPreserveRatio(true);
         Image productImage = new Image(product.getPicturePath());
         PixelReader pixelReader = productImage.getPixelReader();
-        WritableImage croppedImage = new WritableImage(pixelReader,
-                (int) productImage.getWidth(),
-                (int) (productImage.getWidth() * height / cardWidth));
+        int width = (int) productImage.getWidth();
+        if (width > (int) productImage.getHeight()) width = (int) productImage.getHeight();
+        WritableImage croppedImage = new WritableImage(pixelReader, width, (width * height / cardWidth));
         image.setImage(croppedImage);
 
         Label productNameLabel = new Label(product.getName());
