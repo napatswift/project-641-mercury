@@ -1,57 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="407.0" prefWidth="854.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.OrderSummaryController">
+<VBox alignment="TOP_CENTER" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.OrderSummaryController">
    <children>
-      <ImageView fx:id="selectedProductImageView" fitHeight="344.0" fitWidth="370.0" layoutX="25.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" />
-      <Label layoutX="426.0" layoutY="100.0" prefHeight="27.0" prefWidth="102.0" text="Unit Price">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="427.0" layoutY="170.0" text="Unit">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="422.0" layoutY="240.0" text="All Payments :">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Text fx:id="nameProductText" layoutX="427.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nameProductText">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <Text fx:id="unitPriceText" layoutX="681.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="unitPriceText">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Text>
-      <Text fx:id="unitText" layoutX="686.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="unitText">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Text>
-      <Text fx:id="allPaymentText" layoutX="686.0" layoutY="261.0" strokeType="OUTSIDE" strokeWidth="0.0" text="allPaymentText">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Text>
-      <Button fx:id="orderBtn" layoutX="703.0" layoutY="320.0" mnemonicParsing="false" onAction="#handleOrderBtn" text="Order">
-         <font>
-            <Font name="Angsana New" size="20.0" />
-         </font></Button>
-      <Button fx:id="cancelBtn" layoutX="429.0" layoutY="320.0" mnemonicParsing="false" onAction="#handleCancelBtn" text="Cancel">
-         <font>
-            <Font name="Angsana New" size="20.0" />
-         </font></Button>
+      <VBox alignment="TOP_CENTER" maxWidth="600.0" prefWidth="600.0" spacing="15.0">
+         <children>
+            <HBox alignment="TOP_CENTER" styleClass="product-card">
+               <children>
+                  <ImageView fx:id="selectedProductImageView" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label fx:id="nameProductText" styleClass="h6" text="nameProductText" wrapText="true" />
+                        <Label fx:id="unitPriceText" styleClass="body1" text="unitPriceText" />
+                        <Label fx:id="unitText" styleClass="h6" text="unitText" />
+                        <Label fx:id="allPaymentText" styleClass="h6" text="allPaymentText" />
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="TOP_RIGHT">
+               <children>
+                  <Button fx:id="cancelBtn" mnemonicParsing="false" text="Cancel" />
+                  <Button fx:id="orderBtn" mnemonicParsing="false" onAction="#handleOrderBtn" styleClass="contained-btn" text="Order" />
+               </children>
+            </HBox>
+         </children>
+         <VBox.margin>
+            <Insets left="30.0" right="30.0" />
+         </VBox.margin>
+      </VBox>
    </children>
-</AnchorPane>
+   <padding>
+      <Insets top="30.0" />
+   </padding>
+</VBox>

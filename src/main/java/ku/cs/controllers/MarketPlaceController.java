@@ -4,9 +4,11 @@ import com.github.saacsos.FXRouter;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,9 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
-import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import ku.cs.models.*;
@@ -63,6 +63,8 @@ public class MarketPlaceController {
         reviewRatingPanelStarHBox, categoriesMenuHBox;
     @FXML
     VBox reviewVBox, categoriesVBox;
+
+    Tab orderSummaryTab, reportingTab;
 
     private boolean bodyToggle = false;
     private int productIndex = -1;
@@ -253,17 +255,24 @@ public class MarketPlaceController {
 
     /* handler */
     @FXML
-    private void handleReportProductBtn(MouseEvent event){
+    private void handleReportProductBtn(){
         if (dataSource.getReports() == null)
             dataSource.parseReport();
 
-        dataSource.getReviews().setCurrReview(null);
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/reporting.fxml"));
         try {
-            FXRouter.goTo("reporting", dataSource);
+            Node node = loader.load();
+            ReportingViewController controller = loader.getController();
+            controller.setReportItem(productList.getSelectedProduct());
+            controller.setDataSource(dataSource);
+            controller.setCancelBtnHandler(this::handleCancelBtn);
+            reportingTab.setContent(node);
+            productTP.getTabs().add(reportingTab);
+            productTP.getSelectionModel().select(reportingTab);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void handleReportReviewBtn(MouseEvent event){
@@ -272,11 +281,16 @@ public class MarketPlaceController {
 
         HBox source = (HBox) event.getSource();
         Review sourceReview =  dataSource.getReviews().getReviewByID(source.getId());
-        dataSource.getProducts().setSelectedProduct(null);
-        dataSource.getReviews().setCurrReview(sourceReview);
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/reporting.fxml"));
         try {
-            FXRouter.goTo("reporting", dataSource);
+            Node node = loader.load();
+            ReportingViewController controller = loader.getController();
+            controller.setReportItem(sourceReview);
+            controller.setDataSource(dataSource);
+            controller.setCancelBtnHandler(this::handleCancelBtn);
+            reportingTab.setContent(node);
+            productTP.getTabs().add(reportingTab);
+            productTP.getSelectionModel().select(reportingTab);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -457,7 +471,9 @@ public class MarketPlaceController {
                 productFlowPane.getChildren().add(card);
             }
         }
+
         productIndex += amount;
+        seeMoreBtn.setDisable(productIndex >= productList.size());
     }
 
     private void populateCategory(Set<String> categories){
@@ -503,25 +519,43 @@ public class MarketPlaceController {
         productList.sort();
         populateProduct(15);
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
+
+        orderSummaryTab = new Tab("order_summary");
+        reportingTab = new Tab("reporting");
+    }
+
+    private void handleCancelBtn(ActionEvent event){
+        setBodyToggle();
+        productTP.getTabs().remove(orderSummaryTab);
+        productTP.getTabs().remove(reportingTab);
+        productTP.getSelectionModel().select(0);
     }
 
     public void handleBuyBtn(ActionEvent actionEvent) {
         int amountBuy = Integer.parseInt(amountTF.getText());
         if(productList.getSelectedProduct().checkStock(amountBuy)){
             try {
-                Object[] data = {dataSource,amountBuy};
-                FXRouter.goTo("order-summary",data);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/order-summary.fxml"));
+                Node node = loader.load();
+                orderSummaryTab.setContent(node);
+                productTP.getTabs().add(orderSummaryTab);
+                OrderSummaryController controller = loader.getController();
+                controller.setDataSource(dataSource);
+                controller.setAmountBuy(amountBuy);
+                controller.setOnActionCancelBtn(this::handleCancelBtn);
+                productTP.getSelectionModel().select(orderSummaryTab);
             } catch (IOException e) {
-                System.err.println("ไปที่หน้า Order Summary ไม่ได้");
-                System.err.println("ให้ตรวจสอบการกำหนด route");
                 e.printStackTrace();
             }
         }
         else {
-            Alert alert = new Alert(Alert.AlertType.NONE,"สินค้ามีจำนวนไม่เพียงพอกับความต้องการ" + "\n"
-                    + "กรุณาลดจำนวนสินค้าลง", ButtonType.OK);
+            Alert alert = new Alert(
+                    Alert.AlertType.NONE,
+                    "Our product in stock is lower than your demand" + "\n"
+                            + "please enter amount again",
+                    ButtonType.OK);
             alert.initStyle(StageStyle.UTILITY);
-            alert.setHeaderText("คำเตือน");
+            alert.setHeaderText("Sorry");
             alert.showAndWait();
         }
     }

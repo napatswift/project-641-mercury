@@ -1,12 +1,14 @@
 package ku.cs.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Text;
 import javafx.stage.StageStyle;
 import ku.cs.models.Product;
 import ku.cs.models.ProductList;
@@ -21,36 +23,42 @@ public class OrderSummaryController {
     private int amountBuy;
 
     @FXML
-    private Text nameProductText,
+    private Label nameProductText,
             unitPriceText,
             unitText,
             allPaymentText;
     @FXML
     private ImageView selectedProductImageView;
 
+    @FXML
+    private Button cancelBtn;
 
-    public void initialize() {
-        Object[] data = (Object[]) FXRouter.getData();
-        dataSource = (DataSource) data[0];
-        amountBuy = (int) data[1];
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public void setAmountBuy(int amountBuy) {
+        this.amountBuy = amountBuy;
         productList = dataSource.getProducts();
-
         showProduct(productList.getSelectedProduct(),amountBuy);
     }
 
-    public void showProduct(Product product,int amountBuy){
+    public void initialize() {
+    }
+
+    public void showProduct(Product product, int amountBuy){
         nameProductText.setText(product.getName());
-        unitPriceText.setText(""+product.getPrice());
-        unitText.setText(""+amountBuy);
-        allPaymentText.setText("" + (amountBuy*product.getPrice()));
+        unitPriceText.setText("$" + product.getPrice() + " per each");
+        unitText.setText("x" + amountBuy);
+        allPaymentText.setText("$" + ( amountBuy * product.getPrice()));
         selectedProductImageView.setImage(new Image(product.getPicturePath()));
     }
 
-    public void handleOrderBtn(ActionEvent actionEvent) {
+    public void handleOrderBtn() {
         if(productList.getSelectedProduct().sell(amountBuy)) {
-            Alert alert = new Alert(Alert.AlertType.NONE,"กรุณารอรัยสิ้นค้าของคุณ ณ ปลายทาง", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.NONE, "Your order has been placed.", ButtonType.OK);
             alert.initStyle(StageStyle.UTILITY);
-            alert.setHeaderText("การซื้อขายสำเร็จ");
+            alert.setHeaderText("Thank you!");
             alert.showAndWait();
             try {
                 dataSource.saveProduct();
@@ -63,13 +71,7 @@ public class OrderSummaryController {
         }
     }
 
-    public void handleCancelBtn(ActionEvent actionEvent) {
-        try {
-            FXRouter.goTo("marketplace", dataSource);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("ไปที่หน้า marketplace ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
-        }
+    public void setOnActionCancelBtn(EventHandler<ActionEvent> eventEventHandler) {
+        cancelBtn.setOnAction(eventEventHandler);
     }
 }

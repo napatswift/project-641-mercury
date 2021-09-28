@@ -1,12 +1,9 @@
 package ku.cs.controllers;
 
-import com.github.saacsos.FXRouter;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -15,7 +12,6 @@ import ku.cs.models.*;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 public class ReportingViewController {
 
@@ -26,23 +22,30 @@ public class ReportingViewController {
     private Label reportPromptLabel;
 
     @FXML
-    private VBox radioBtnVBox, assistiveTextVBox;
+    private VBox radioBtnVBox;
 
     @FXML
     private TextArea reportDetailsTA;
 
-    private DataSource dataSource;
-    private ToggleGroup group;
+    @FXML
+    private VBox assistiveTextVBox;
 
     @FXML
-    void handleBackBtn(ActionEvent event) {
-        dataSource.getProducts().setSelectedProduct(null);
-        dataSource.getReviews().setCurrReview(null);
-        try {
-            FXRouter.goTo("marketplace", dataSource);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private Button cancelBtn;
+
+    @FXML
+    private Button submitReportBtn;
+
+    private ToggleGroup group;
+    private String [] reportTypes;
+    private Product product;
+    private Review review;
+    private DataSource dataSource;
+    private EventHandler<ActionEvent> goBack;
+
+    void setCancelBtnHandler(EventHandler<ActionEvent> event) {
+        goBack = event;
+        cancelBtn.setOnAction(goBack);
     }
 
     @FXML
@@ -61,8 +64,6 @@ public class ReportingViewController {
         }
 
         String type = (String) group.getSelectedToggle().getUserData();
-        Product product = dataSource.getProducts().getSelectedProduct();
-        Review review = dataSource.getReviews().getCurrReview();
         String details = reportDetailsTA.getText();
 
         if (product != null) {
@@ -80,33 +81,11 @@ public class ReportingViewController {
         dataSource.getReviews().setCurrReview(null);
 
         dataSource.saveReport();
-
-        try {
-            FXRouter.goTo("marketplace", dataSource);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        goBack.handle(event);
     }
 
     private void populateReportType(){
-        String [] reportTypes;
         group = new ToggleGroup();
-        if (dataSource.getProducts().getSelectedProduct() != null)
-            reportTypes = new String [] {
-                    "Copyright",
-                    "Offensive or sexually explicit",
-                    "Privacy concern",
-                    "Legal issue",
-                    "Others" };
-        else
-            reportTypes = new String [] {
-                "Spam",
-                "Unuseful",
-                "Offensive or sexually explicit",
-                "Privacy concern",
-                "Legal issue",
-                "Others" };
-
         for (String type: reportTypes){
             RadioButton newBtn = new RadioButton(type);
             newBtn.getStyleClass().add("subtitle1");
@@ -119,14 +98,41 @@ public class ReportingViewController {
     }
 
     private void buildCard(){
-        Product product = dataSource.getProducts().getSelectedProduct();
-        Review review = dataSource.getReviews().getCurrReview();
-        ComponentBuilder builder = new ComponentBuilder();
         reportItemHBox.getStyleClass().add("review-card");
-        if (product != null)
-            reportItemHBox.getChildren().add(builder.smallProductCard(product));
-        else
-            reportItemHBox.getChildren().add(builder.smallReviewCard(review));
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public void setReportItem(Product product){
+        ComponentBuilder builder = new ComponentBuilder();
+        reportItemHBox.getChildren().add(builder.smallProductCard(product));
+        reportTypes = new String [] {
+                "Copyright",
+                "Offensive or sexually explicit",
+                "Privacy concern",
+                "Legal issue",
+                "Others" };
+
+        populateReportType();
+        this.product = product;
+    }
+
+    public void setReportItem(Review review){
+        reportPromptLabel.setText("What's wrong with this review?");
+        ComponentBuilder builder = new ComponentBuilder();
+        reportItemHBox.getChildren().add(builder.smallReviewCard(review));
+        reportTypes = new String [] {
+                "Spam",
+                "Unuseful",
+                "Offensive or sexually explicit",
+                "Privacy concern",
+                "Legal issue",
+                "Others" };
+
+        populateReportType();
+        this.review = review;
     }
 
     private void clearText(KeyEvent e){
@@ -139,10 +145,6 @@ public class ReportingViewController {
 
     @FXML
     public void initialize() throws IOException {
-      dataSource = (DataSource) FXRouter.getData();
-      if (dataSource.getReviews().getCurrReview() != null)
-          reportPromptLabel.setText("What's wrong with this review?");
-      populateReportType();
       buildCard();
 
       reportDetailsTA.setOnMouseClicked(this::clearText);
