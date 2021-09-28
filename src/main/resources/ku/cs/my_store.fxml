@@ -448,6 +448,13 @@
                         <VBox>
                            <children>
                               <Label styleClass="h3" text="Product" />
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#handleAllBtn" text="All" />
+                                    <Button mnemonicParsing="false" onAction="#handleToShipBtn" text="To Ship" />
+                                    <Button mnemonicParsing="false" onAction="#handleShipedBtn" text="Shiped" />
+                                 </children>
+                              </HBox>
                               <ListView fx:id="orderLV" prefHeight="1000.0" styleClass="order-list-view" stylesheets="@style/list-style.css" />
                            </children>
                         </VBox>

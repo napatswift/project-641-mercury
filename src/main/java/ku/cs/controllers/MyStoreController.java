@@ -98,7 +98,7 @@ public class MyStoreController  {
         showProductsListView();
         clearSelectedProduct();
         handleProductsListView();
-        showOrderListView();
+        showOrderListView(orders);
         handleOrderListView();
 
         setGroup();
@@ -278,10 +278,22 @@ public class MyStoreController  {
         );
     }
 
-    public void showOrderListView(){
-        orderLV.getItems().addAll(orders);
+    public void showOrderListView(ArrayList<Order> orderArrayList){
+        orderLV.getItems().clear();
+        orderLV.getItems().addAll(orderArrayList);
         orderLV.setCellFactory(orderListView -> new OrderListCell(dataSource));
         orderLV.refresh();
+    }
+
+    public void handleAllBtn(){
+        showOrderListView(orders);
+    }
+    public void handleToShipBtn(){
+        showOrderListView(OrderList.getToShipOrder(orders));
+    }
+
+    public void handleShipedBtn(){
+        showOrderListView(OrderList.getShipedOrder(orders));
     }
 
     public void showSelectOrder(Order order){
