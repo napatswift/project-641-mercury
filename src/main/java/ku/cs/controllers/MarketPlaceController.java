@@ -584,4 +584,12 @@ public class MarketPlaceController {
 
         setProductTPModel();
     }
+
+    public void handleMyAccount() {
+        try{
+            FXRouter.goTo("my_account", dataSource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
