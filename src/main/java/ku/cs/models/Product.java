@@ -4,7 +4,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class Product implements Comparable<Product>{
+public class Product implements Comparable<Product> {
     private String name;
     private String pictureName;
     private String details;
@@ -33,8 +33,8 @@ public class Product implements Comparable<Product>{
         this.rolloutDate = rolloutDate;
     }
 
-    public Product(String name, String details, String id, Store store){
-        this(name, details, id, LocalDateTime.now(), store);
+    public Product(String name, String details, Store store){
+        this(name, details, UUID.randomUUID().toString(), LocalDateTime.now(), store);
     }
 
     public String getName() {
@@ -149,6 +149,10 @@ public class Product implements Comparable<Product>{
         }
     }
 
+    public boolean stockIsLow(){
+        return store.stockIsLow(this);
+    }
+
     public boolean containsCategory(String category){
         for (Category cat: categories) {
             if (cat.getName().equals(category))
@@ -177,7 +181,7 @@ public class Product implements Comparable<Product>{
         return "\"" + name.replace("\"", "\"\"") + "\"" + ","
                 + id + ","
                 + price + ","
-                + "\"" + store.getName() + "\"" + "," // TODO: add id to store
+                + "\"" + store.getName() + "\"" + ","
                 + stock + ","
                 + "\"" + details.replace("\"", "\"\"") + "\"" + ","
                 + rating + ","
@@ -197,5 +201,9 @@ public class Product implements Comparable<Product>{
         Category newCategory = new Category(categoryName);
         newCategory.addSubCategory(new SubCategory(subCategoryName, value));
         categories.add(newCategory);
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 }

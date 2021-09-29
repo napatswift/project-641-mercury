@@ -1,0 +1,20 @@
+.text-area{
+    -fx-background-color: surface-overlay;
+    -fx-border-radius: 0;
+    -fx-text-fill: on-surface-color;
+    -fx-background-radius: 0;
+    -fx-padding: 0;
+    -fx-border-color: transparent;
+    -fx-highlight-fill: primary-color;
+}
+
+.text-area:hover, .text-area:focused{
+    -fx-border-color: primary-color;
+    -fx-padding: 0;
+}
+
+.text-area .content{
+    -fx-border-color: transparent;
+    -fx-border-radius: 0;
+    -fx-background-color: transparent;
+}
