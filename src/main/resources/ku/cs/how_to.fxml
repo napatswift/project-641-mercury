@@ -59,10 +59,13 @@
                                                 <DropShadow />
                                              </effect>
                                           </ImageView>
-                                          <Label fx:id="firstPageLabel" text="Label" />
+                                          <Label fx:id="firstPageLabel" text="Label">
+                                             <HBox.margin>
+                                                <Insets top="50.0" />
+                                             </HBox.margin></Label>
                                        </children>
                                     </HBox>
-                                    <HBox alignment="TOP_RIGHT">
+                                    <HBox spacing="10.0">
                                        <children>
                                           <ImageView fx:id="image_sign_up_page" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                              <effect>
@@ -72,15 +75,25 @@
                                                 <Insets />
                                              </HBox.margin>
                                           </ImageView>
+                                          <Label fx:id="signUpPageLabel" text="Label">
+                                             <HBox.margin>
+                                                <Insets top="20.0" />
+                                             </HBox.margin>
+                                          </Label>
                                        </children>
                                     </HBox>
-                                    <HBox>
+                                    <HBox spacing="10.0">
                                        <children>
                                           <ImageView fx:id="image_sign_up_page_2" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                              <effect>
                                                 <DropShadow />
                                              </effect>
                                           </ImageView>
+                                          <Label fx:id="signUpUploadLabel" text="Label">
+                                             <HBox.margin>
+                                                <Insets top="50.0" />
+                                             </HBox.margin>
+                                          </Label>
                                        </children>
                                     </HBox>
                                  </children>
