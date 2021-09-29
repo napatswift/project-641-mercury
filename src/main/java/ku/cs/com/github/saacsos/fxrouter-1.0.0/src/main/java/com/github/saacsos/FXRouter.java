@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import ku.cs.service.Theme;
 
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -26,6 +27,7 @@ public final class FXRouter {
     private static Double animationDuration;
     private static AbstractMap<String, RouteScene> routes = new HashMap();
     private static RouteScene currentRoute;
+    private static Theme theme = new Theme();
 
     private FXRouter() {
     }
@@ -67,6 +69,11 @@ public final class FXRouter {
 
     }
 
+    public static void setTheme(Theme.ColorTheme colorTheme) throws IOException {
+        if (theme.setCurrTheme(colorTheme))
+            loadNewRoute(currentRoute);
+    }
+
     public static void when(String routeLabel, String scenePath) {
         RouteScene routeScene = new RouteScene(scenePath);
         routes.put(routeLabel, routeScene);
@@ -88,7 +95,7 @@ public final class FXRouter {
     }
 
     public static void goTo(String routeLabel) throws IOException {
-        RouteScene route = (RouteScene)routes.get(routeLabel);
+        RouteScene route = (RouteScene) routes.get(routeLabel);
         loadNewRoute(route);
     }
 
@@ -103,6 +110,7 @@ public final class FXRouter {
         String scenePath = "/" + route.scenePath;
         Parent resource = (Parent)FXMLLoader.load((new Object() {
         }).getClass().getResource(scenePath));
+        resource.getStylesheets().add(theme.getThemePath());
         window.setTitle(route.windowTitle);
         window.setScene(new Scene(resource, route.sceneWidth, route.sceneHeight));
         window.show();

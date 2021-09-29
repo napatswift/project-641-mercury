@@ -1,0 +1,27 @@
+/*https://github.com/Miodec/monkeytype/blob/master/static/themes/red_dragon.css*/
+
+*{
+    primary-color : rgb(255, 58, 50);
+    primary-light-color : rgb(255, 58, 50);
+    primary-dark-color : #c5211b;
+    secondary-color : rgb(226, 165, 40);
+    secondary-light-color : rgb(226, 165, 70);
+    secondary-dark-color : rgb(226, 105, 40);
+    on-primary-color: #ffffff;
+    on-secondary-color : #4a4d4e;
+    error-color: #771b1f;
+    surface-color: #2a1213;
+    on-error: #ffffff;
+    on-surface-color: rgb(216, 228, 231);
+    on-surface-text-med-color: rgba(216, 228, 231, 0.87);
+    on-surface-med-color: rgba(216, 228, 231, 0.6);
+    surface-overlay: rgba(204, 83, 92, 0.08);
+    surface-focus-overlay: rgba(204, 83, 92, 0.12);
+    primary-overlay : rgba(255, 58, 50, 0.16);
+    primary-overlay-hover : rgba(255, 58, 50, 0.32);
+    primary-med-overlay : rgba(255, 58, 50, 0.6);
+}
+
+.product-card{
+    -fx-background-color: derive(secondary-color, -90%);
+}

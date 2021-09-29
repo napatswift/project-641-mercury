@@ -1,45 +1,44 @@
 package ku.cs.models;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-
 public class Store {
-    private String username;
-    private String nameStore;
-    private ArrayList<Product> products;
+    private final User owner;
+    private final String nameStore;
+    private int stockLowerBound;
 
-    public Store(String nameStore) {
-        this.nameStore = nameStore;
+    public Store(User owner, String nameStore) {
+        this(owner,nameStore,10);
     }
 
-    public Store(String nameStore, String username) {
-        this.username = username;
+    public Store(User owner, String nameStore, int stockLowerBound) {
+        this.owner = owner;
         this.nameStore = nameStore;
-        products = new ArrayList<>();
+        this.stockLowerBound = stockLowerBound;
     }
 
     public String getName() {
         return nameStore;
     }
 
-    public void addProduct(Product product){
-        products.add(product);
-        product.setStore(this);
+    public User getOwner() {
+        return owner;
     }
 
-    public void toCsv() throws IOException {
-        FileWriter fileWriter = null;
-        try{
-            fileWriter = new FileWriter("data/store.csv",true);
-            PrintWriter out = new PrintWriter(new BufferedWriter(fileWriter));
-            out.println(username + "," + nameStore);
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public int getStockLowerBound() {
+        return stockLowerBound;
+    }
+
+    public void setStockLowerBound(int stockLowerBound) {
+        this.stockLowerBound = stockLowerBound;
+    }
+
+    public boolean stockIsLow(Product product){
+        return product.getStock() <= stockLowerBound;
+    }
+
+    public String toCsv(){
+       return owner.getUsername() + ","
+               + "\"" + nameStore.replace("\"", "\"\"") + "\"" + ","
+               + stockLowerBound;
     }
 
 }
