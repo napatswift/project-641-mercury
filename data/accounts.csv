@@ -1,22 +1,7 @@
 username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
-jiddiensdq,USER,"Josie Iddiens",G9nZHAcdH,null,2020-10-24T15:26:40,false,0,false,
-kleavyap,USER,"Kessia Leavy",48gDKGF,photo-1546617605-f5cb50fc6ef3.jpeg,2021-04-02T00:17:14,true,75,false,
-sgrimstead0,USER,"Silvanus Grimstead",ewE8lxpfq,photo-1588171515133-63d63affa6cf.jpeg,2021-04-06T14:19:05,false,0,false,
-msolway4,USER,"Melina Solway",ty5o6nD9,photo-1627840240904-9c7064e96cf5.jpeg,2021-04-09T23:19:36,true,52,true,Collier
-fcardillo2,USER,"Frederik Cardillo",gOY5sbrdwn18,photo-1628191080740-dad84f3c993c.jpeg,2021-05-06T04:10:23,false,0,false,
-skiellor46,USER,"Sancho Kiellor",pdNZEZJm,photo-1632228089254-f4f340854e9e.jpeg,2021-05-12T01:24:27,false,0,false,
-atommeod1,USER,"Allyn Tommeo",h7VYJNk0,null,2021-05-21T23:21:45,false,0,false,
-csacco22,USER,"Christabel Sacco",B3uDTspEnA,null,2021-06-08T13:04:44,true,50,false,
-tzylbermann1,USER,"Tony Zylbermann",mgqk6SyPxB,photo-1632603241425-1ad10aff95a8.jpeg,2021-07-02T05:42:06,true,66,true,Durgan-Graham
-sericsson3e,USER,"Sissie Ericsson",l5uZR8TGO,photo-1632751618985-60e16c6dae91.jpeg,2021-07-07T18:35:32,false,0,false,
-dpetrielloah,USER,"Derick Petriello",79ewpCBvt2u,photo-1632752872113-d0f619e4b0a5.jpeg,2021-08-12T08:45:02,true,36,false,
-enovotne67,USER,"Ebony Novotne",pZ9Ao9qu30,photo-1632765929485-15b5c2f11f33.jpeg,2021-08-20T14:56:35,false,0,false,
 aaa,USER,"chang",123456,null,2021-08-25T22:55:45,false,0,false,null
-fmichele2x,USER,"Faina Michele",RuejQTmdGZAo,photo-1632836986357-09388f7465e3.jpeg,2021-08-28T08:41:02,true,84,false,
-anethercott3,USER,"Abeu Nethercott",M687uDhVlw,photo-1632766557709-696303805973.jpeg,2021-08-28T10:45:18,true,33,true,Schulist
 Naisato,ADMIN,"Murasaki",123456,2021-08-08_1628399328656.jpg,2021-08-29T23:09:21.021358,false,0,false,null
 abc,USER,"abc",123456,null,2021-09-05T14:37:33.1803063,false,0,false,null
-mpakes1r,USER,"Morie Pakes",QZzQaLtIuxsh,null,2021-09-11T06:35:45,true,25,false,
+nptswt,USER,"Napat",napat123,null,2021-09-08T00:08:15.090129,false,0,false,null
 KaiKai,USER,"KaiKai",123456,2021-08-28_1630133317813.jpg,2021-09-25T17:44:15.3741357,false,0,false,null
-admin,ADMIN,"abc",admin,null,2021-09-29T15:32:44.160095,false,0,false,null
-nptswt,USER,"Napat",napat123,null,2021-09-29T15:32:09.765203,false,0,false,null
+admin,ADMIN,"abc",admin,null,2021-09-25T22:14:25.0867262,false,0,false,null
