@@ -16,10 +16,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
 import ku.cs.models.*;
-import ku.cs.models.components.OrderListCell;
-import ku.cs.models.components.ProductListCell;
-import ku.cs.models.components.RatingStars;
-import ku.cs.models.components.ResizeableImageView;
+import ku.cs.models.components.*;
+import ku.cs.models.components.dialogs.ConfirmEditProductDialog;
+import ku.cs.models.components.dialogs.PictureConfirmDialog;
 import ku.cs.service.DataSource;
 
 
@@ -73,6 +72,7 @@ public class MyStoreController  {
     ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
 
     ResizeableImageView selectedProductResizeableImageView;
+    Product selectedProduct;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
@@ -183,13 +183,12 @@ public class MyStoreController  {
         }
     }
 
-    public void handleSelectProductPicture(MouseEvent event) throws FileNotFoundException {
-        ImageView imageBtn = (ImageView) event.getSource();
+    public void handleSelectProductPicture(MouseEvent event) {
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
 
-        file = chooser.showOpenDialog(imageBtn.getScene().getWindow());
+        file = chooser.showOpenDialog(pictureViewIV.getScene().getWindow());
 
         if (file != null){
             File destDir = new File("images"+ File.separator + "product_images");
@@ -197,7 +196,14 @@ public class MyStoreController  {
                 destDir.mkdirs();
             }
 
-            Image uploadedImage = new Image(new FileInputStream(file.getPath()));
+            Image uploadedImage = null;
+
+            try {
+                uploadedImage = new Image(new FileInputStream(file.getPath()));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
             String[] fileSplit = file.getName().split("\\.");
             String filename = "PRODUCT_IMG" +LocalDate.now()
                     + "_" + System.currentTimeMillis()
@@ -228,10 +234,17 @@ public class MyStoreController  {
     }
 
     public void handleEditBtn(){
-        product.setName(nameProductLB.getText());
-        product.setPrice(Double.parseDouble(priceLB.getText()));
-        product.setStock(Integer.parseInt(stockLB.getText()));
-        dataSource.saveProduct();
+        String productName = nameProductLB.getText();
+        String price = priceLB.getText();
+        String stock = stockLB.getText();
+        ConfirmEditProductDialog dialog = new ConfirmEditProductDialog(productName, price, stock);
+        Optional<Boolean> result = dialog.showAndWait();
+        if (result.isPresent() && result.get()) {
+            product.setName(productName);
+            product.setPrice(Double.parseDouble(price));
+            product.setStock(Integer.parseInt(stock));
+            dataSource.saveProduct();
+        }
     }
 
     public void showProductsListView(){
@@ -241,6 +254,7 @@ public class MyStoreController  {
     }
 
     public void showSelectedProduct(Product product){
+        selectedProduct = product;
         stockWarningSelectedProductSVG.setVisible(currUser.getStore().stockIsLow(product));
         nameProductLB.setText(product.getName());
         priceLB.setText(String.format("%.2f",product.getPrice()));
@@ -280,6 +294,7 @@ public class MyStoreController  {
     public void handleAllBtn(){
         showOrderListView(orders);
     }
+
     public void handleToShipBtn(){
         showOrderListView(OrderList.getToShipOrder(orders));
     }
@@ -300,8 +315,8 @@ public class MyStoreController  {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setGraphic(null);
         dialog.setHeaderText(null);
-        dialog.setTitle("กำหนดขั้นต่ำจำนวนสินค้า");
-        dialog.setContentText("please input your number:");
+        dialog.setTitle("Set Lower Bound");
+        dialog.setContentText("Enter your lower bound stock warning");
 
         Optional<String> newLower = dialog.showAndWait();
         newLower.ifPresent(s -> currUser.getStore().setStockLowerBound(Integer.parseInt(s)));
@@ -309,6 +324,50 @@ public class MyStoreController  {
         dataSource.saveStore();
         productsListLV.refresh();
 
+    }
+
+    @FXML
+    private void handleUploadNewPictureForProduct() {
+        FileChooser chooser = new FileChooser();
+        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
+
+        File file = chooser.showOpenDialog(pictureViewIV.getScene().getWindow());
+        
+        if (file == null) return;
+
+        String[] fileSplit = file.getName().split("\\.");
+
+        File destDir = new File("images" + File.separator + "product_images");
+
+        if (!destDir.exists()) {
+            if (!destDir.mkdirs()) return;
+        }
+
+        try {
+            Image uploadedImage = new Image(new FileInputStream(file.getPath()));
+            PictureConfirmDialog dialog = new PictureConfirmDialog(uploadedImage);
+            Optional<Boolean> result = dialog.showAndWait();
+
+            if (result.isPresent() && result.get()) {
+                String filename = "PRODUCT_IMG" + LocalDate.now()
+                        + "_" + System.currentTimeMillis()
+                        + "." + fileSplit[fileSplit.length - 1];
+
+                Path target = FileSystems.getDefault().getPath(
+                        destDir.getAbsolutePath()
+                                + File.separator
+                                + filename);
+
+                Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
+                selectedProduct.setPictureName(target.getFileName().toString());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

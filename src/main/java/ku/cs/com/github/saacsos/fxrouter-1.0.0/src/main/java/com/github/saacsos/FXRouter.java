@@ -74,6 +74,10 @@ public final class FXRouter {
             loadNewRoute(currentRoute);
     }
 
+    public static Theme getTheme() {
+        return theme;
+    }
+
     public static void when(String routeLabel, String scenePath) {
         RouteScene routeScene = new RouteScene(scenePath);
         routes.put(routeLabel, routeScene);

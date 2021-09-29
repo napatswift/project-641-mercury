@@ -71,8 +71,8 @@ public class UserList {
 
     public String toCsv(){
         StringBuilder stringBuilder = new
-                StringBuilder("username,role,name,password,picturePath," +
-                "last_login,isBanned,loginAttempt,hasStore,store");
+                StringBuilder("username,role,name,password,picture_path," +
+                "last_login,is_banned,login_attempt,has_store,store");
         stringBuilder.append("\n");
         for(User acc: users){
             stringBuilder.append(acc.toCsv());
