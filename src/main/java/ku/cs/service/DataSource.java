@@ -192,7 +192,7 @@ public class DataSource {
     public void parseStore(){
         stores = new StoreList();
         try{
-            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "stores.csv"));
+            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + "store.csv"));
             reader.readNext();
             String [] entry;
             while ((entry = reader.readNext()) != null){

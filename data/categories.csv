@@ -1,46 +1,21 @@
 category,subcategory
-Beauty,Beauty by Top Brands
-Beauty,Skin Care
-Beauty,Makeup
-Beauty,Here for Every Beauty
-Beauty,Hair Care
+shirt,size
 pants,size
 pants,color
-Personal Care,Oral Care
-Personal Care,Bath & Body
-Personal Care,Sun Care
-Personal Care,Feminine Care
-Personal Care,Incontinence
-Personal Care,Personal Care by Brand
-Health,Vitamins & Supplements
-Health,Aromatherapy
-Health,Superfoods & Cleanses
-Health,Lip Care
-Health,Sleep Better
-cpu,intel
-cpu,amd
-Household Essentials,Cleaning Supplies
-Household Essentials,Laundry
-shoes,size
-shoes,color
-shoes,sex
-shoes,sport
-Sports & Outdoors,Exercise & Fitness
-Auto & Tires,Auto Detailing & Car Care
-shirt,size
 car,seats
 car,wheels
 car,color
-shoese,brand
+cpu,intel
+cpu,amd
 jackets,color
 jackets,size
 jackets,sex
 wood,color
-Books,House
-Books,House, Home & Gardening Books
-Home,Bedding
+shoes,size
+shoes,color
+shoes,sex
+shoes,sport
 fashion,sex
 ram,drr
 ram,bus
 ram,cl-time
-Food,Organic Foods
