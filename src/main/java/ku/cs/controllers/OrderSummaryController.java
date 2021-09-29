@@ -10,8 +10,10 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.StageStyle;
+import ku.cs.models.Order;
 import ku.cs.models.Product;
 import ku.cs.models.ProductList;
+import ku.cs.models.User;
 import ku.cs.service.DataSource;
 import com.github.saacsos.FXRouter;
 
@@ -32,18 +34,21 @@ public class OrderSummaryController {
 
     @FXML
     private Button cancelBtn;
+    private Product product;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
+        dataSource.parseOrder();
     }
 
     public void setAmountBuy(int amountBuy) {
         this.amountBuy = amountBuy;
         productList = dataSource.getProducts();
-        showProduct(productList.getSelectedProduct(),amountBuy);
+        showProduct(productList.getSelectedProduct(), amountBuy);
     }
 
     public void showProduct(Product product, int amountBuy){
+        this.product = product;
         nameProductText.setText(product.getName());
 
         unitPriceText.setText("$" + product.getPrice() + " per each");
@@ -59,14 +64,12 @@ public class OrderSummaryController {
             alert.initStyle(StageStyle.UTILITY);
             alert.setHeaderText("Thank you!");
             alert.showAndWait();
-            try {
-                dataSource.saveProduct();
-                FXRouter.goTo("marketplace", dataSource);
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.err.println("ไปที่หน้า marketplace ไม่ได้");
-                System.err.println("ให้ตรวจสอบการกำหนด route");
-            }
+            User buyer = dataSource.getUserList().getCurrUser();
+            Order order = new Order(product, amountBuy, buyer);
+            dataSource.getOrders().addOrder(order);
+            dataSource.saveOrder();
+            dataSource.saveProduct();
+            cancelBtn.fire();
         }
     }
 
