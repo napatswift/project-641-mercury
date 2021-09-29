@@ -1,7 +1,5 @@
 package ku.cs.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,7 +14,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import ku.cs.models.*;
 import ku.cs.models.components.OrderListCell;
@@ -85,7 +82,7 @@ public class MyStoreController  {
         usernameLabel.setText("@" + currUser.getUsername());
         nameStoreLabel.setText(currUser.getStoreName());
         nameLabel.setText(currUser.getName());
-        numberLowerLabel.setText("" + currUser.getStore().getStockLower());
+        numberLowerLabel.setText("" + currUser.getStore().getStockLowerBound());
         userImage.setImage(new Image(currUser.getPicturePath()));
         userImage.setClip(new Circle(25, 25, 25));
         loadCategory();
@@ -307,7 +304,7 @@ public class MyStoreController  {
         dialog.setContentText("please input your number:");
 
         Optional<String> newLower = dialog.showAndWait();
-        newLower.ifPresent(s -> currUser.getStore().setStockLower(Integer.parseInt(s)));
+        newLower.ifPresent(s -> currUser.getStore().setStockLowerBound(Integer.parseInt(s)));
         newLower.ifPresent(s -> numberLowerLabel.setText(s));
         dataSource.saveStore();
         productsListLV.refresh();

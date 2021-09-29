@@ -2,8 +2,11 @@ package ku.cs.controllers;
 
 import com.github.saacsos.FXRouter;
 import javafx.animation.TranslateTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -23,9 +26,10 @@ import ku.cs.models.components.theme.ThemeMenu;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.Flow;
 
 public class MarketPlaceController {
     @FXML
@@ -45,7 +49,7 @@ public class MarketPlaceController {
     SVGPath inStockStatusSvg,
             star1, star2, star3, star4, star5;
     @FXML
-    ImageView selectedProductIV;
+    ImageView storeImageIV, selectedProductIV;
     @FXML
     FlowPane productFlowPane;
     @FXML
@@ -60,11 +64,14 @@ public class MarketPlaceController {
     TextArea detailReviewTA;
     @FXML
     HBox starsHBox, filerHBox,
-        reviewRatingPanelStarHBox, categoriesMenuHBox;
+        reviewRatingPanelStarHBox, categoriesMenuHBox,
+        selectedProductStoreHBox;
     @FXML
     VBox reviewVBox, categoriesVBox;
     @FXML
     ToolBar topBarTB;
+
+    Tab storeProductPageTab;
 
     private boolean bodyToggle = false;
     private int productIndex = -1;
@@ -156,7 +163,12 @@ public class MarketPlaceController {
         selectedProductIV.setImage(new Image(productList.getSelectedProduct().getPicturePath()));
 
         /* set store name */
-        storeNameLabel.setText(productList.getSelectedProduct().getStore().getNameStore().toUpperCase(Locale.ROOT));
+        Store store = productList.getSelectedProduct().getStore();
+        User owner = store.getOwner();
+        selectedProductStoreHBox.setUserData(store);
+        selectedProductStoreHBox.setOnMouseReleased(this::handleSelectedProductStoreBtn);
+        storeNameLabel.setText(store.getName().toUpperCase());
+        storeImageIV.setImage(new Image(owner.getPicturePath()));
 
         /* set bread crumbs info */
         categoryBreadcrumbsLabel.setText(productList.getSelectedProduct().getCategory().getName());
@@ -405,6 +417,29 @@ public class MarketPlaceController {
         setFilterCategory(button.getId());
     }
 
+    private void handleSelectedProductStoreBtn(MouseEvent e){
+        HBox source = (HBox) e.getSource();
+        Store store = (Store) source.getUserData();
+        if (storeProductPageTab == null) storeProductPageTab = new Tab("storeProductPage");
+        productTP.getTabs().add(storeProductPageTab);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/store_product_page.fxml"));
+
+        try {
+            Node node = loader.load();
+            storeProductPageTab.setContent(node);
+            StoreProductPageController controller = loader.getController();
+            controller.setStore(store);
+            productTP.getSelectionModel().select(storeProductPageTab);
+            FlowPane flowPane = controller.getProductFlowPane();
+
+            ProductList products = dataSource.getProducts();
+            populateProduct(flowPane, products.getProductByNameStore(store.getName()));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     private void setFilterCategory(String category){
         productTP.getSelectionModel().select(0);
         filerHBox.getChildren().clear();
@@ -472,6 +507,14 @@ public class MarketPlaceController {
         productIndex += amount;
     }
 
+    private void populateProduct(FlowPane flowPane, ArrayList<Product> products){
+        for (Product p: products) {
+                ProductCard card = new ProductCard(p);
+                card.setOnMouseReleased(this::handleProductCard);
+                flowPane.getChildren().add(card);
+        }
+    }
+
     private void populateCategory(Set<String> categories){
         int i = 0;
         VBox box = new VBox();
@@ -511,12 +554,21 @@ public class MarketPlaceController {
         topBarTB.getItems().add(lastNode);
     }
 
+    private void setProductTPModel(){
+        productTP.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.getText().equals("marketplace") || newValue.getText().equals("product_view")) {
+                if (storeProductPageTab != null ) {
+                    storeProductPageTab.setContent(null);
+                    productTP.getTabs().remove(storeProductPageTab);
+                }
+            }
+        });
+    }
+
     @FXML
     public void initialize() throws IOException {
         dataSource = (DataSource) FXRouter.getData();
         dataSource.parseProduct();
-
-
 
         populateCategory(dataSource.getCategories());
         dataSource.parseReview();
@@ -529,5 +581,7 @@ public class MarketPlaceController {
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
 
         addThemeMenu();
+
+        setProductTPModel();
     }
 }

@@ -171,7 +171,7 @@
                                                 </ImageView>
                                                 <VBox prefWidth="900.0" spacing="5.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                                                    <children>
-                                                      <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                                      <HBox fx:id="selectedProductStoreHBox" alignment="CENTER_LEFT" spacing="5.0">
                                                          <children>
                                                             <ImageView fx:id="storeImageIV" fitHeight="20.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -180,9 +180,9 @@
                                                             </ImageView>
                                                             <Label fx:id="storeNameLabel" styleClass="subtitle2" text="Label" />
                                                          </children>
-                                                         <VBox.margin>
-                                                            <Insets bottom="5.0" />
-                                                         </VBox.margin>
+                                                         <cursor>
+                                                            <Cursor fx:constant="HAND" />
+                                                         </cursor>
                                                       </HBox>
                                                       <Label fx:id="productNameLabel" alignment="TOP_LEFT" lineSpacing="1.0" prefWidth="900.0" styleClass="h3" text="Label" wrapText="true" />
                                                       <HBox fx:id="starsHBox" alignment="BOTTOM_LEFT" prefHeight="20.0" prefWidth="200.0">

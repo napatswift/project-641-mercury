@@ -110,7 +110,7 @@ public class User implements Comparable<User>{
         return username;
     }
 
-    public String getStoreName() {return this.store.getNameStore();}
+    public String getStoreName() {return this.store.getName();}
 
     public Store getStore() {
         return store;
@@ -166,7 +166,7 @@ public class User implements Comparable<User>{
                 + isBanned + ","
                 + loginAttempt + ","
                 + hasStore + ","
-                + (store == null ? null : store.getNameStore());
+                + (store == null ? null : store.getName());
     }
 }
 
