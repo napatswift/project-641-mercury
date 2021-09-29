@@ -119,8 +119,12 @@ public class User implements Comparable<User>{
     public String getPicturePath() {
         String picturePath = this.picturePath;
         if (this.picturePath == null || this.picturePath.equals("null"))
-            picturePath = "media-cup-holder.png";
+            return getClass().getResource("/ku/cs/image/media-cup-holder.png").toString();
         return (new File(System.getProperty("user.dir") + File.separator + "/images" + File.separator + picturePath)).toURI().toString();
+    }
+
+    public String getPictureName(){
+        return picturePath;
     }
 
     public LocalDateTime getLoginDateTime(){

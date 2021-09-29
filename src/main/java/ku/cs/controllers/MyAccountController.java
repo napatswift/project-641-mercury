@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import ku.cs.models.User;
 import ku.cs.models.UserList;
+import ku.cs.models.components.dialogs.PictureConfirmDialog;
 import ku.cs.service.DataSource;
 
 import java.io.File;
@@ -20,11 +21,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class MyAccountController {
     DataSource dataSource;
-    private File file;
-    private Path target;
     private User user;
 
     @FXML
@@ -36,17 +36,21 @@ public class MyAccountController {
     @FXML
     private Label usernameLabel;
 
+    @FXML
+    private Label storeNameLabel;
+
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
         user = dataSource.getUserList().getCurrUser();
-        imageIIV.setImage(new Image(user.getPicturePath()));
         showUser(user);
     }
 
     public void showUser(User user){
         usernameLabel.setText(user.getUsername());
         nameLabel.setText(user.getName());
-        imageIIV.setImage(new Image(dataSource.getUserList().getCurrUser().getPicturePath()));
+        imageIIV.setImage(new Image(user.getPicturePath()));
+        String storeName = user.getHasStore() ? user.getStoreName() : "you didn't have store";
+        storeNameLabel.setText(storeName);
     }
 
     public void handleResetPassword() {
@@ -58,42 +62,53 @@ public class MyAccountController {
         }
     }
 
-    public void handleConfirmBtn(ActionEvent event) throws FileNotFoundException {
-        if (file != null) {
-            try {
-                Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
-                dataSource.getUserList().getCurrUser().setPicturePath(target.getFileName().toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void handleBackBtn(ActionEvent event) {
+        try {
+            FXRouter.goTo("marketplace", dataSource);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public void handleSelectProfilePicture() throws FileNotFoundException {
-            FileChooser chooser = new FileChooser();
-            chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-            chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
+    public void handleSelectProfilePicture() {
+        FileChooser chooser = new FileChooser();
 
-            file = chooser.showOpenDialog(usernameLabel.getScene().getWindow());
+        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
 
-            if (file != null) {
-                File destDir = new File("images");
-                if (!destDir.exists()) {
-                    destDir.mkdirs();
-                }
+        File file = chooser.showOpenDialog(imageIIV.getScene().getWindow());
 
-                Image uploadedImage = new Image(new FileInputStream(file.getPath()));
-                String[] fileSplit = file.getName().split("\\.");
+        if (file == null) return;
+
+        String[] fileSplit = file.getName().split("\\.");
+
+        File destDir = new File("images");
+
+        if (!destDir.exists())
+            if (!destDir.mkdirs()) return;
+
+        try {
+            Image uploadedImage = new Image(new FileInputStream(file.getPath()));
+            PictureConfirmDialog dialog = new PictureConfirmDialog(uploadedImage);
+            Optional<Boolean> result = dialog.showAndWait();
+
+            if (result.isPresent() && result.get()) {
                 String filename = LocalDate.now()
                         + "_" + System.currentTimeMillis()
                         + "." + fileSplit[fileSplit.length - 1];
 
-                target = FileSystems.getDefault().getPath(
+                Path target = FileSystems.getDefault().getPath(
                         destDir.getAbsolutePath()
-                                + System.getProperty("file.separator")
+                                + File.separator
                                 + filename);
 
-                imageIIV.setImage(uploadedImage);
+                Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
+                user.setPicturePath(target.getFileName().toString());
+                imageIIV.setImage(new Image(user.getPicturePath()));
+                dataSource.saveAccount();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 }

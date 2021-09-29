@@ -164,7 +164,7 @@ public class DataSource {
                 User.Role role = entry[1].toUpperCase(Locale.ROOT).equals("USER") ? User.Role.USER : User.Role.ADMIN;
                 String name = entry[2];
                 String password = entry[3];
-                String pictureName = entry[4];
+                String pictureName = entry[4].equals("null") ? null : entry[4];
 
                 LocalDateTime localDateTime =
                         entry[5].equals("null") ? null : LocalDateTime.parse(entry[5], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
