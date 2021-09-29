@@ -153,6 +153,10 @@ public class Product implements Comparable<Product> {
         }
     }
 
+    public boolean stockIsLow(){
+        return store.stockIsLow(this);
+    }
+
     public boolean containsCategory(String category){
         for (Category cat: categories) {
             if (cat.getName().equals(category))
@@ -181,7 +185,7 @@ public class Product implements Comparable<Product> {
         return "\"" + name.replace("\"", "\"\"") + "\"" + ","
                 + id + ","
                 + price + ","
-                + "\"" + store.getNameStore() + "\"" + "," // TODO: add id to store
+                + "\"" + store.getName() + "\"" + ","
                 + stock + ","
                 + "\"" + details.replace("\"", "\"\"") + "\"" + ","
                 + rating + ","

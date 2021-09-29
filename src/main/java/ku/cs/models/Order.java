@@ -48,7 +48,7 @@ public class Order {
         return localDateTime;
     }
     public String getStoreName(){
-        return product.getStore().getNameStore();
+        return product.getStore().getName();
     }
 
     public boolean isShipped() {
@@ -66,6 +66,7 @@ public class Order {
     public String getTracking() {
         return tracking;
     }
+
 
 
     public String toCsv(){

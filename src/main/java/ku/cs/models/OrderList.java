@@ -23,6 +23,28 @@ public class OrderList {
         return orderReturn;
     }
 
+    public ArrayList<Order> getAllOrder(){
+        return orders;
+    }
+
+    public static ArrayList<Order> getToShipOrder(ArrayList<Order> orders){
+        ArrayList<Order> orderArrayList = new ArrayList<>();
+        for(Order order : orders){
+            if(!order.isShipped()){
+                orderArrayList.add(order);
+            }
+        }return orderArrayList;
+    }
+
+    public static ArrayList<Order> getShipedOrder(ArrayList<Order> orders){
+        ArrayList<Order> orderArrayList = new ArrayList<>();
+        for(Order order : orders){
+            if(order.isShipped()){
+                orderArrayList.add(order);
+            }
+        }return orderArrayList;
+    }
+
     public String toCsv(){
         String result = "id,product_id,amount,is_shipped,tracking_id,buyer,time\n";
         for(Order order : orders){

@@ -1,7 +1,5 @@
 package ku.cs.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,7 +14,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import ku.cs.models.*;
 import ku.cs.models.components.OrderListCell;
@@ -39,9 +36,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class MyStoreController  {
-    DataSource dataSource;
-    Product product;
-    Image image;
+    private DataSource dataSource;
+    private Product product;
+    private Image image;
     private User currUser;
     private File file;
     private Path target;
@@ -76,7 +73,6 @@ public class MyStoreController  {
     ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
 
     ResizeableImageView selectedProductResizeableImageView;
-    ResizeableImageView selectedOrderResizeableImageView;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
@@ -86,20 +82,18 @@ public class MyStoreController  {
         usernameLabel.setText("@" + currUser.getUsername());
         nameStoreLabel.setText(currUser.getStoreName());
         nameLabel.setText(currUser.getName());
-        numberLowerLabel.setText("" + currUser.getStore().getStockLower());
+        numberLowerLabel.setText("" + currUser.getStore().getStockLowerBound());
         userImage.setImage(new Image(currUser.getPicturePath()));
         userImage.setClip(new Circle(25, 25, 25));
         loadCategory();
         handleListProductBtn();
-
 
         productsRightPane.setVisible(false);
 
         showProductsListView();
         clearSelectedProduct();
         handleProductsListView();
-        showOrderListView();
-        handleOrderListView();
+        showOrderListView(orders);
 
         setGroup();
     }
@@ -132,6 +126,7 @@ public class MyStoreController  {
     public void handleListProductBtn(){
         myStoreTP.getSelectionModel().select(0);
     }
+
     public void handleAddProductBtn(){
         product = new Product("", "", dataSource.getUserList().getCurrUser().getStore());
         myStoreTP.getSelectionModel().select(1);
@@ -168,10 +163,7 @@ public class MyStoreController  {
         int stock = Integer.parseInt(stockTF.getText());
         String detail = descriptionTF.getText();
 
-
-
         if(!name.equals("") && price > 0 && stock > 0 && !detail.equals("")) {
-
             product.setName(name);
             product.setPrice(price);
             product.setStock(stock);
@@ -207,7 +199,7 @@ public class MyStoreController  {
 
             Image uploadedImage = new Image(new FileInputStream(file.getPath()));
             String[] fileSplit = file.getName().split("\\.");
-            String filename = LocalDate.now()
+            String filename = "PRODUCT_IMG" +LocalDate.now()
                     + "_" + System.currentTimeMillis()
                     + "." + fileSplit[fileSplit.length - 1];
 
@@ -278,27 +270,22 @@ public class MyStoreController  {
         );
     }
 
-    public void showOrderListView(){
-        orderLV.getItems().addAll(orders);
+    public void showOrderListView(ArrayList<Order> orderArrayList){
+        orderLV.getItems().clear();
+        orderLV.getItems().addAll(orderArrayList);
         orderLV.setCellFactory(orderListView -> new OrderListCell(dataSource));
         orderLV.refresh();
     }
 
-    public void showSelectOrder(Order order){
-        if (selectedOrderResizeableImageView == null) {
-            selectedOrderResizeableImageView = new ResizeableImageView(new Image(order.getProduct().getPicturePath()));
-            selectedOrderResizeableImageView.fitWidthProperty().bind(rightProductVB.widthProperty());
-            ImageViewVBox.getChildren().add(selectedOrderResizeableImageView);
-        }
-        selectedOrderResizeableImageView.setImage(new Image(order.getProduct().getPicturePath()));
+    public void handleAllBtn(){
+        showOrderListView(orders);
+    }
+    public void handleToShipBtn(){
+        showOrderListView(OrderList.getToShipOrder(orders));
     }
 
-    public void handleOrderListView(){
-        orderLV.getSelectionModel().selectedItemProperty().addListener(
-                (observableValue, oldValue, newValue) ->{
-                    showSelectOrder(newValue);
-                }
-        );
+    public void handleShippedBtn(){
+        showOrderListView(OrderList.getShipedOrder(orders));
     }
 
     public void clearSelectedProduct(){
@@ -317,7 +304,7 @@ public class MyStoreController  {
         dialog.setContentText("please input your number:");
 
         Optional<String> newLower = dialog.showAndWait();
-        newLower.ifPresent(s -> currUser.getStore().setStockLower(Integer.parseInt(s)));
+        newLower.ifPresent(s -> currUser.getStore().setStockLowerBound(Integer.parseInt(s)));
         newLower.ifPresent(s -> numberLowerLabel.setText(s));
         dataSource.saveStore();
         productsListLV.refresh();

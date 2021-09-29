@@ -1,0 +1,48 @@
+.menu-button{
+    -fx-font-family: "Roboto Medium";
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-background-radius: 5px;
+    -fx-text-fill: on-surface-color;
+}
+
+.menu-button > .label{
+    -fx-text-fill: primary-color;
+}
+
+.menu-button .context-menu {
+    -fx-background-color: surface-color;
+    -fx-padding: 8 0 8 0;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.12), 4, 0.5, 0, 1);;
+}
+
+.menu-button:hover{
+    -fx-background-color: primary-overlay;
+}
+
+.menu-button > .arrow-button > .arrow {
+    -fx-background-color: primary-color;
+    -fx-shape: "M7 10l5 5 5-5z";
+}
+
+.menu-button .menu-item{
+    -fx-background-color: surface-color;
+    -fx-border-radius: 0;
+    -fx-border-width: 0;
+    -fx-padding: 10;
+    -fx-effect: none;
+}
+
+.menu-button .menu-item .label{
+    -fx-text-fill: on-surface-color;
+}
+
+.menu-button .menu-item:focused{
+    -fx-background-color: primary-color;
+    -fx-text-fill: on-primary-color;
+}
+
+.menu-button .menu-item:focused .label{
+    -fx-text-fill: on-primary-color;
+}

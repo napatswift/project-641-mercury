@@ -54,7 +54,7 @@ public class ProductList implements Iterable<Product>{
     public ArrayList<Product> getProductByNameStore(String name){
         ArrayList<Product> productArrayList = new ArrayList<>();
         for(Product product : products){
-            if(product.getStore().getNameStore().equals(name)){
+            if(product.getStore().getName().equals(name)){
                 productArrayList.add(product);
             }
         }return productArrayList;
