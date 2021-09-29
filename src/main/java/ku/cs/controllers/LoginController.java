@@ -7,9 +7,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import ku.cs.models.User;
 import ku.cs.models.UserList;
+import ku.cs.models.components.theme.ThemeMenu;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -28,6 +30,9 @@ public class LoginController {
     private Button signUpBtn, logInBtn;
 
     @FXML
+    VBox bottomButtonVB;
+
+    @FXML
     public void handlePassword(KeyEvent event){
         if (event.getCode() == KeyCode.ENTER){
             logInBtn.fire();
@@ -38,6 +43,14 @@ public class LoginController {
         dataSource = new DataSource("data");
         dataSource.parseAccount();
         userList = dataSource.getUserList();
+
+        addThemeMenu();
+    }
+
+    public void addThemeMenu(){
+        ThemeMenu themeMenu = new ThemeMenu();
+        themeMenu.getStyleClass().add("primary-color-menu-button");
+        bottomButtonVB.getChildren().add(themeMenu);
     }
 
     public void removeErrorStyleClass(KeyEvent event){
@@ -110,6 +123,7 @@ public class LoginController {
         } catch (IOException e) {
             System.err.println("ไปที่หน้า How To ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
+            e.printStackTrace();
         }
     }
 

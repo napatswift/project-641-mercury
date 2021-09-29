@@ -1,11 +1,12 @@
 @import "Fonts.css";
-@import "style-color.css";
 
 .button, .toggle-button{
     -fx-cursor: hand;
+    -fx-text-fill: on-surface-color;
     -fx-font-family: 'Roboto Medium';
     -fx-font-weight: 500;
-    -fx-border-radius: 4px;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
     -fx-background-color: transparent;
 }
 
@@ -13,8 +14,12 @@
     -fx-background-color: secondary-color;
 }
 
+.tool-bar .button{
+    -fx-text-fill: on-secondary-color;
+}
+
 .active-btn{
-    -fx-text-fill: rgba(0, 0, 0, 0.6);
+    -fx-text-fill: on-surface-med-color;
 }
 
 .text-btn{
@@ -27,19 +32,20 @@
     -fx-cursor: hand;
     -fx-border-color: transparent;
     -fx-background-color: primary-color;
-    -fx-text-fill: primary-text-color;
+    -fx-text-fill: on-primary-color;
 }
 
 
 .outline-btn{
-     -fx-border-color: rgba(0, 0, 0, 0.12);
+     -fx-border-color: surface-overlay;
      -fx-border-width: 1px;
-     -fx-background-color: transparent;
+     -fx-background-color: surface-color;
      -fx-text-fill: primary-color;
  }
 
 .outline-btn:hover{
-     -fx-background-color: rgba(187, 134, 252, 0.12);
+    -fx-text-fill: primary-dark-color;
+    -fx-border-color: surface-focus-overlay;
  }
 
 
@@ -59,10 +65,24 @@
     -fx-text-fill: on-surface-color;
     -fx-border-radius: 4px;
     -fx-border-color: transparent;
+    -fx-highlight-fill: primary-color;
 }
 
 .text-field:hover, .text-field:focused{
     -fx-border-color: primary-color;
+}
+
+.text-field-underline{
+    -fx-background-color: transparent;
+    -fx-text-fill: on-surface-color;
+    -fx-border-radius: 0;
+    -fx-border-color: surface-overlay;
+    -fx-border-width: 0 0 2 0;
+    -fx-highlight-fill: primary-color;
+}
+
+.text-field-underline:hover, .text-field-underline:focused{
+    -fx-border-color: surface-focus-overlay;
 }
 
 .round-overlay-text-field{
@@ -74,22 +94,6 @@
     -fx-border-radius: 0px;
     -fx-background-color: surface-overlay;
     -fx-background-radius: 0;
-}
-
-.text-area{
-    -fx-background-color: surface-overlay;
-    -fx-border-radius: 0px;
-    -fx-border-color: transparent;
-    -fx-highlight-text-fill: transparent;
-}
-
-.text-area:hover, .text-area:focused{
-    -fx-border-color: primary-color;
-}
-
-.text-area .content{
-    -fx-border-color: transparent;
-    -fx-background-color: transparent;
 }
 
 .error-text-field{
@@ -105,7 +109,7 @@
 .outline-text-field{
     -fx-background-color: transparent;
     -fx-border-radius: 4px;
-    -fx-border-color: rgba(0, 0, 0, 0.12);
+    -fx-border-color: surface-overlay;
  }
 
 .error-outline-text-field{
@@ -120,69 +124,89 @@
 }
 
  .assistive-text{
-     -fx-fill: rgba(0, 0, 0, 0.6);
+     -fx-fill: on-surface-med-color;
  }
 
 .h2{
     -fx-font-family: 'Roboto Light';
     -fx-font-size: 60px;
-}
+    -fx-text-fill: on-surface-color;
+    -fx-fill: on-surface-color;}
 
 .h3{
     -fx-font-family: 'Roboto Regular';
     -fx-font-size: 48px;
+    -fx-text-fill: on-surface-color;
+    -fx-fill: on-surface-color;
 }
 
 .h4{
     -fx-font-family: 'Roboto Regular';
     -fx-font-size: 32px;
+    -fx-text-fill: on-surface-color;
+    -fx-fill: on-surface-color;
 }
 
 .h6{
     -fx-font-family: 'Roboto Medium';
     -fx-font-size: 20px;
+    -fx-text-fill: on-surface-color;
+    -fx-fill: on-surface-color;
 }
 
 .subtitle1{
     -fx-font-family: 'Roboto Regular';
     -fx-font-size: 16px;
-    -fx-text-fill: rgba(0, 0, 0, 0.87);
+    -fx-text-fill: on-surface-text-med-color;
+    -fx-fill: on-surface-text-med-color;
 }
 
 .subtitle2{
     -fx-font-family: 'Roboto Medium';
     -fx-font-size: 14px;
-    -fx-text-fill: rgba(0, 0, 0, 0.87);
+    -fx-text-fill: on-surface-text-med-color;
+    -fx-fill: on-surface-text-med-color;
 }
 
 .body1{
     -fx-font-family: 'Roboto';
     -fx-font-size: 16px;
-    -fx-text-fill: rgba(0, 0, 0, 0.87);
+    -fx-text-fill: on-surface-text-med-color;
+    -fx-fill: on-surface-text-med-color;
+}
+
+.overline{
+    -fx-font-family: 'Roboto Medium';
+    -fx-font-size: 12px;
 }
 
 .secondary-text{
     -fx-font-size: 14px;
-    -fx-text-fill: #00000099;
+    -fx-text-fill: on-surface-text-med-color;
+    -fx-fill: on-surface-text-med-color;
 }
 
-.root{
+.root {
     -fx-font-family: 'Roboto Light';
-    -fx-background-color: app-background-color;
+    -fx-background-color: surface-color;
+}
+
+.label {
+    -fx-text-fill: on-surface-color;
 }
 
 .product-card{
-    -fx-background-radius: 5px;
-    -fx-border-width: 1px;
-    -fx-border-radius: 5px;
+    -fx-background-radius: 0 0 5 5;
+    -fx-border-width: 2px;
+    -fx-border-radius: 0 0 5 5;
     -fx-border-color: transparent;
-    -fx-background-color: app-background-color;
+    -fx-background-color: surface-color;
     -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.14), 2, 0.5, 0, 1);
 }
 
 .product-card:hover{
-    -fx-background-color: primary-overlay;
-    -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0), 2, 0.5, 0, 1);
+    -fx-background-color: surface-color, primary-overlay;
+    -fx-border-color: derive(surface-color, 40%);
 }
 
 .product-card:pressed{
@@ -200,19 +224,19 @@
 }
 
 .split-pane .scroll-pane{
-    -fx-background-color: app-background-color;
+    -fx-background-color: surface-color;
 }
 
 .list-item-btn{
     -fx-background-radius: 6px;
     -fx-font-size: 14px;
-    -fx-text-fill: #000000de;
+    -fx-text-fill: on-surface-color;
 }
 
 .list-item-btn:hover{
     -fx-background-color: surface-overlay;
-    -fx-text-fill: #000000;
-    -fx-fill: #000000;
+    -fx-text-fill: on-surface-color;
+    -fx-fill: on-surface-color;
 }
 
 .list-item-active-btn{
@@ -257,30 +281,10 @@
     -fx-background-color: transparent;
 }
 
-.menu-button{
-    -fx-background-color: transparent;
-    -fx-cursor: hand;
-    -fx-background-radius: 5px;
-}
-
-.menu-button > .label{
-    -fx-font-family: "Roboto Medium";
-    -fx-text-fill: primary-color;
-}
-
-.menu-button:hover{
-    -fx-background-color: primary-overlay;
-}
-
-.menu-button > .arrow-button > .arrow {
-    -fx-background-color: primary-color;
-    -fx-shape: "M7 10l5 5 5-5z";
-}
-
 .buy-button {
     -fx-background-color: primary-color;
     -fx-background-radius: 0;
-    -fx-text-fill: primary-text-color;
+    -fx-text-fill: on-primary-color;
 }
 .buy-text-field{
     -fx-text-fill: primary-color;
@@ -289,6 +293,8 @@
     -fx-border-radius: 0;
     -fx-border-width: 0;
     -fx-background-radius: 0;
+    -fx-highlight-text-fill: primary-color;
+    -fx-highlight-fill: transparent;
 }
 
 .buy-text-field:hover{}
@@ -296,7 +302,7 @@
 .review-card{
     -fx-border-width: 1px;
     -fx-border-color: transparent;
-    -fx-background-color: app-background-color;
+    -fx-background-color: derive(surface-color, 5%);
     -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.14), 2, 0.5, 0, 1);
 }
 
@@ -304,38 +310,22 @@
     -fx-padding: 0;
 }
 
-.list-view{
-    -fx-background-insets: 0;
-    -fx-padding: 1;
-}
-
-.list-cell:filled:selected:focused, .list-cell:filled:selected {
-    -fx-background-color: primary-overlay;
-}
-
-.list-cell:even, .list-cell:odd {
-    -fx-background-color: transparent;
-}
-
-.list-cell:filled:hover {
-    -fx-background-color: surface-overlay;
-    -fx-fill: on-surface-color;
-}
-
-.list-cell:selected {
-    -fx-text-fill: on-surface-color;
-}
-
 .list-item-btn{
     -fx-background-radius: 6px;
     -fx-font-size: 14px;
-    -fx-text-fill: #000000de;
+    -fx-text-fill: on-surface-color;
 }
 
 .list-item-btn:hover{
     -fx-background-color: surface-overlay;
-    -fx-text-fill: #000000;
-    -fx-fill: #000000;
+    -fx-text-fill: on-surface-color;
+    -fx-fill: on-surface-color;
+}
+
+.list-item-btn:focused{
+    -fx-background-color: primary-overlay;
+    -fx-text-fill: primary-color;
+    -fx-fill: primary-color;
 }
 
 .list-item-active-btn{
@@ -347,4 +337,22 @@
     -fx-background-color: primary-overlay;
     -fx-text-fill: primary-dark-color;
     -fx-fill: primary-dark-color;
+}
+
+.ship-btn{
+    -fx-text-fill: primary-color;
+    -fx-fill: primary-color;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-background-color: primary-overlay;
+    -fx-padding: 8;
+}
+
+.ship-btn:hover{
+    -fx-text-fill: primary-dark-color;
+    -fx-background-color: primary-overlay-hover;
+}
+
+.ship-btn .svg-path{
+    -fx-fill: primary-color;
 }

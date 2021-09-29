@@ -12,6 +12,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ku.cs.models.*;
+import ku.cs.models.components.SmallProductCard;
+import ku.cs.models.components.SmallReviewCard;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -121,12 +123,11 @@ public class ReportingViewController {
     private void buildCard(){
         Product product = dataSource.getProducts().getSelectedProduct();
         Review review = dataSource.getReviews().getCurrReview();
-        ComponentBuilder builder = new ComponentBuilder();
         reportItemHBox.getStyleClass().add("review-card");
         if (product != null)
-            reportItemHBox.getChildren().add(builder.smallProductCard(product));
+            reportItemHBox.getChildren().add(new SmallProductCard(product));
         else
-            reportItemHBox.getChildren().add(builder.smallReviewCard(review));
+            reportItemHBox.getChildren().add(new SmallReviewCard(review));
     }
 
     private void clearText(KeyEvent e){

@@ -34,30 +34,17 @@ public class CreateStoreController {
     }
 
     @FXML
-    public void handleTF(ActionEvent event){
-        String nameStore = nameStoreTF.getText();
-        TextField textField = (TextField) event.getSource();
-        textField.getStyleClass().removeAll("error-outline-text-field");
-        textField.getStyleClass().add("outline-text-field");
-
-        if(stores.isExit(nameStore)){
-
-        }
-
-
-    }
-
-    @FXML
     public void handleSubmit(ActionEvent event) throws IOException {
         String nameStore = nameStoreTF.getText();
-        Store newStore = new Store(nameStore, dataSource.getUserList().getCurrUser().getUsername());
-        newStore.toCsv();
         dataSource.getUserList().getCurrUser().createStore(nameStore);
         dataSource.saveAccount();
+        stores.addStore(dataSource.getUserList().getCurrUser().getStore());
+        dataSource.saveStore();
 
         try {
-            FXRouter.goTo("my_store",dataSource);
+            FXRouter.goTo("my_store", dataSource);
         } catch (IOException e) {
+            e.printStackTrace();
             System.err.println("ไปที่หน้า my_store ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
