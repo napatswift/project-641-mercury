@@ -364,7 +364,7 @@ public class DataSource {
     }
 
     public void saveOrder(){
-        save(orders.toCsv(), "order.csv");
+        save(orders.toCsv(), "orders.csv");
     }
 
     public void saveCategory(){
