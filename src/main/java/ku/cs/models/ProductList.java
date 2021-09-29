@@ -51,6 +51,15 @@ public class ProductList implements Iterable<Product>{
         return selectedProduct;
     }
 
+    public ArrayList<Product> getProductByNameStore(String name){
+        ArrayList<Product> productArrayList = new ArrayList<>();
+        for(Product product : products){
+            if(product.getStore().getName().equals(name)){
+                productArrayList.add(product);
+            }
+        }return productArrayList;
+    }
+
     public void setSelectedProduct(Product selectedProduct) {
         this.selectedProduct = selectedProduct;
     }

@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -49,8 +48,7 @@ public class AdminPageController {
             ,suspectedPersonStoreName
             ,detailText
             ,statusUserBan
-            ,reportType
-            ,countUserBanedLogin;
+            ,reportType;
     @FXML private ImageView imageView
             ,userImage
             ,suspectedPersonImage;
@@ -63,7 +61,6 @@ public class AdminPageController {
     @FXML private Button userButton, categoryButton, reportButton, resetPasswordButton, logOutButton, banAndUnbanBtn;
     @FXML private TextField addCategoryTF
             , addSubCategoryTF;
-    @FXML private HBox countUserBannedLoginHBox;
 
 
     @FXML
@@ -125,7 +122,6 @@ public class AdminPageController {
             userName.setText(user.getUsername());
             realNameUser.setText(user.getName());
             lastLogin.setText("last login " + user.getLoginDateTime().format(formatter));
-            countUserBanedLogin.setText(""+user.getLoginAttempt());
 
             if (user.getHasStore())
                 storeName.setText(user.getStoreName());
@@ -133,14 +129,12 @@ public class AdminPageController {
                 storeName.setText("This User Don't Have Store");
 
             if(user.isBanned()){
-                countUserBannedLoginHBox.setVisible(true);
                 banAndUnbanBtn.setText("Unban");
                 statusUserBan.setText("InActivate");
                 statusUserBan.setTextFill(Color.RED);
                 banAndUnbanBtn.setTextFill(Color.BLUE);
             }
             else{
-                countUserBannedLoginHBox.setVisible(false);
                 banAndUnbanBtn.setText("Ban");
                 statusUserBan.setText("Activate");
                 statusUserBan.setTextFill(Color.BLUE);

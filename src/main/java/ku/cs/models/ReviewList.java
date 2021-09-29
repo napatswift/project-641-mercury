@@ -18,7 +18,7 @@ public class ReviewList implements Iterable<Review> {
         title = title.trim();
         detail = detail.trim();
         if (title.equals("") || detail.equals("") ||
-                rating < 0 || rating > 5 ||
+                rating <= 0 || rating > 5 ||
                 user == null || product == null){
             return false;
         }
