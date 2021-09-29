@@ -240,7 +240,7 @@ public class DataSource {
                 String nameStore = entry[1];
                 int stockLower = Integer.parseInt(entry[2]);
                 owner.createStore(nameStore);
-                owner.getStore().setStockLower(stockLower);
+                owner.getStore().setStockLowerBound(stockLower);
                 stores.addStore(owner.getStore());
             }
         }catch (IOException | CsvValidationException e){

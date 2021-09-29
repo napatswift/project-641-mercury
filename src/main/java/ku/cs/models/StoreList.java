@@ -19,7 +19,7 @@ public class StoreList {
 
     public Store findStoreByName(String nameStore){
         for(Store store : storeList) {
-            if(store.getNameStore().equals(nameStore))
+            if(store.getName().equals(nameStore))
                 return store;
         }
         return null;
@@ -27,7 +27,7 @@ public class StoreList {
 
     public boolean isExit(String nameStore){
         for(Store store : storeList){
-            if(store.getNameStore().equals(nameStore)){
+            if(store.getName().equals(nameStore)){
                 return true;
             }
         }return false;
