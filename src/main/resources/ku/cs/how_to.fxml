@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <SplitPane dividerPositions="0.29797979797979796" prefHeight="768.0" prefWidth="1024.0" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.HowToController">
    <items>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -53,16 +52,20 @@
                                           <Insets top="50.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <HBox>
+                                    <HBox spacing="10.0">
                                        <children>
                                           <ImageView fx:id="image_home_page" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                              <effect>
                                                 <DropShadow />
                                              </effect>
                                           </ImageView>
+                                          <Label fx:id="firstPageLabel" text="Label">
+                                             <HBox.margin>
+                                                <Insets top="50.0" />
+                                             </HBox.margin></Label>
                                        </children>
                                     </HBox>
-                                    <HBox alignment="TOP_RIGHT">
+                                    <HBox spacing="10.0">
                                        <children>
                                           <ImageView fx:id="image_sign_up_page" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                              <effect>
@@ -72,15 +75,25 @@
                                                 <Insets />
                                              </HBox.margin>
                                           </ImageView>
+                                          <Label fx:id="signUpPageLabel" text="Label">
+                                             <HBox.margin>
+                                                <Insets top="20.0" />
+                                             </HBox.margin>
+                                          </Label>
                                        </children>
                                     </HBox>
-                                    <HBox>
+                                    <HBox spacing="10.0">
                                        <children>
                                           <ImageView fx:id="image_sign_up_page_2" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                              <effect>
                                                 <DropShadow />
                                              </effect>
                                           </ImageView>
+                                          <Label fx:id="signUpUploadLabel" text="Label">
+                                             <HBox.margin>
+                                                <Insets top="50.0" />
+                                             </HBox.margin>
+                                          </Label>
                                        </children>
                                     </HBox>
                                  </children>

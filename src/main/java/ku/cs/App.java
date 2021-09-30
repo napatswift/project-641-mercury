@@ -35,6 +35,7 @@ public class App extends Application {
         FXRouter.when("create_store", packageStr + "create_store.fxml");
         FXRouter.when("my_store", packageStr + "my_store.fxml");
         FXRouter.when("reporting", packageStr + "reporting.fxml");
+        FXRouter.when("my_account", packageStr + "my_account.fxml");
 
     }
 

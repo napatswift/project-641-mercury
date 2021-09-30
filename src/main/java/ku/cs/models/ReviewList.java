@@ -60,7 +60,7 @@ public class ReviewList implements Iterable<Review> {
     }
 
     public String toCsv(){
-        StringBuilder stringBuilder = new StringBuilder("id,productId,title,detail,rating,reviewerUsername");
+        StringBuilder stringBuilder = new StringBuilder("id,product_id,title,detail,rating,reviewer_username");
         stringBuilder.append("\n");
         for(Review review: reviews){
             stringBuilder.append(review.toCsv());

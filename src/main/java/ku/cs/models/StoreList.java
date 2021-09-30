@@ -35,7 +35,7 @@ public class StoreList {
 
     public String toCsv(){
         StringBuilder stringBuilder = new
-                StringBuilder("username,name_store,stock_lower");
+                StringBuilder("username,name_store,stock_lower_bound");
         stringBuilder.append("\n");
         for(Store store: storeList){
             stringBuilder.append(store.toCsv());
