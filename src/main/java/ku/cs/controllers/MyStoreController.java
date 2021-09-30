@@ -223,18 +223,48 @@ public class MyStoreController  {
                 e.printStackTrace();
             }
         }
+        dataSource.getProducts().sort();
         dataSource.saveProduct();
-        handleAddProductBtn();
+        showProductsListView();
+        clearSelectedProduct();
+        handleProductsListView();
+        myStoreTP.getSelectionModel().select(0);
     }
 
     public void handleEditBtn(){
         product.setName(nameProductLB.getText());
         product.setPrice(Double.parseDouble(priceLB.getText()));
         product.setStock(Integer.parseInt(stockLB.getText()));
-        dataSource.saveProduct();
+        image = new Image(product.getPicturePath());
+
+
+        String name = product.getName();
+        double price = product.getPrice();
+        int stock = product.getStock();
+        String detail = product.getDetails();
+
+        if(!name.equals("") && price > 0 && stock > 0 && !detail.equals("")) {
+            product.setName(name);
+            product.setPrice(price);
+            product.setStock(stock);
+            product.setDetails(detail);
+            product.setStore(dataSource.getUserList().getCurrUser().getStore());
+
+            myStoreTP.getSelectionModel().select(2);
+            nameProductLabel.setText(product.getName());
+            priceLabel.setText(String.format("%.2f", product.getPrice()));
+            stockLabel.setText(String.format("%d", product.getStock()));
+            descriptionLabel.setText(product.getDetails());
+            categoryLV.getItems().clear();
+            categoryLV.getItems().addAll(product.getCategories());
+            categoryLV.refresh();
+
+            productIV.setImage(image);
+        }
     }
 
     public void showProductsListView(){
+        productsListLV.getItems().clear();
         productsListLV.getItems().addAll(dataSource.getProducts().getProductByNameStore(dataSource.getUserList().getCurrUser().getStoreName()));
         productsListLV.setCellFactory(productListView -> new ProductListCell(productListView));
         productsListLV.refresh();

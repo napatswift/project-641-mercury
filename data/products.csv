@@ -1,4 +1,5 @@
 name,product_id,price,store,stock,description,rating,reviews,image,rollout_date,category_0,category_1,category_2,category_3,category_4,category_5,category_6,category_7,category_8,category_9,category_10,category_11,category_12,category_13,category_14,category_15,category_16,category_17,category_18,category_19
+"Test Edit Product4",addc5460-57cf-4c8a-8c3e-3b1d63021b3e,41.0,"Chang Shop",69,"a",0.0,0,PRODUCT_IMG2021-09-30_1632968114823.png,2021-09-30T09:15:08.599605400,shirt:size:M,,,,,,,,,,,,,,,,,,,
 "Test",79f80d51-5bbe-4ebc-a08e-ca7dce27de20,1.0,"Chang Shop",50,"Test",0.0,0,2021-09-26_1632635457269.png,2021-09-26T12:50:52.263501700,ram:drr:4,,,,,,,,,,,,,,,,,,,
 "Floklor",b7e88527-acee-44dd-b3e0-1ef5002b70b8,32.0,"Chang Shop",12,"some tionvaor vronba
 abonrb aomvr, oav.",2.0,1,2021-09-14_1631591460971.jpeg,2021-09-14T10:50:48.129798,car:wheels:name,car:color:oter,car:color:saonvr,,,,,,,,,,,,,,,,,

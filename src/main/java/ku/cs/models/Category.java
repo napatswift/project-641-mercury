@@ -31,10 +31,10 @@ public class Category implements Comparable<Category>{
 
     @Override
     public String toString() {
-        return new StringJoiner(", ")
-                .add("name='" + name + "'")
-                .add("subCategories=" + subCategories)
-                .toString();
+        String result = name + ", ";
+        for(SubCategory subCategory : subCategories){
+            result += subCategory;
+        }return result;
     }
 
     public List<String> toCSV(){
