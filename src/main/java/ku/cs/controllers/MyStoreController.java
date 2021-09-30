@@ -1,5 +1,7 @@
 package ku.cs.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -96,6 +98,33 @@ public class MyStoreController  {
         showOrderListView(orders);
 
         setGroup();
+        setNumberTextField();
+    }
+
+    private void setNumberTextField() {
+        priceLB.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d\\.*")) {
+                priceLB.setText(newValue.replaceAll("[^\\d\\.]", ""));
+            }
+        });
+
+        priceTF.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d\\.*")) {
+                priceTF.setText(newValue.replaceAll("[^\\d\\.]", ""));
+            }
+        });
+
+        stockLB.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                stockLB.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
+        stockTF.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                stockTF.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
     }
 
     private void setGroup(){
@@ -255,6 +284,7 @@ public class MyStoreController  {
 
     public void showSelectedProduct(Product product){
         selectedProduct = product;
+        productsListLV.refresh();
         stockWarningSelectedProductSVG.setVisible(currUser.getStore().stockIsLow(product));
         nameProductLB.setText(product.getName());
         priceLB.setText(String.format("%.2f",product.getPrice()));
@@ -361,6 +391,7 @@ public class MyStoreController  {
 
                 Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
                 selectedProduct.setPictureName(target.getFileName().toString());
+                dataSource.saveProduct();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -368,5 +399,6 @@ public class MyStoreController  {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        showSelectedProduct(selectedProduct);
     }
 }

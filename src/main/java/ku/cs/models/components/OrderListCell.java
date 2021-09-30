@@ -101,8 +101,15 @@ public class OrderListCell extends ListCell<Order> {
 
         setPadding(new Insets(0));
 
+        trackingNumberTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("a-zA-Z\\d*")) {
+                trackingNumberTextField.setText(newValue.replaceAll("[^a-zA-Z\\d]", ""));
+            }
+        });
+
         /* styling */
         topGridPane.setStyle("-fx-background-color: surface-overlay");
+        statusSVGPath.setStyle("-fx-fill: on-surface-color");
         productNameLabel.getStyleClass().add("subtitle1");
         amountLabel.getStyleClass().add("overline");
         totalCostLabel.getStyleClass().add("subtitle1");

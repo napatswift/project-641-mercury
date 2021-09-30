@@ -25,3 +25,7 @@
 .product-card{
     -fx-background-color: derive(secondary-color, -90%);
 }
+
+.drop-shadow-card {
+    -fx-background-color: derive(surface-color, 5%);
+}
