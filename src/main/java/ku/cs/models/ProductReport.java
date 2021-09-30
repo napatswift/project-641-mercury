@@ -15,13 +15,13 @@ public class ProductReport extends Report<Product>{
 
     @Override
     public User getSuspectedPerson() {
-        return null; // TODO get owner of store
+        return getReportItem().getStore().getOwner();
     }
 
     @Override
     public String toCSV() {
         return "" + getType() + ","
-                + ( null /* getSuspectedPerson().getUsername()*/ ) + "," // TODO get owner of store
+                + getSuspectedPerson().getUsername() + ","
                 + (getReportDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)) + ","
                 + null + ","
                 + (getReportItem().getId()) + ","

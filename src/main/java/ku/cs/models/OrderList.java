@@ -46,7 +46,7 @@ public class OrderList {
     }
 
     public String toCsv(){
-        String result = "id,product_id,amount,is_shipped,tracking_id,buyer,time\n";
+        String result = "id,product_id,amount,is_shipped,tracking_id,buyer,buy_at\n";
         for(Order order : orders){
             result += order.toCsv() + "\n";
         }return result;
