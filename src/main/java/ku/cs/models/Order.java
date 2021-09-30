@@ -12,11 +12,11 @@ public class Order {
     private LocalDateTime localDateTime;
     private String id;
 
-    public Order(Product product, int amount, String buyerName, User buyer, LocalDateTime localDateTime) {
+    public Order(Product product, int amount, User buyer) {
         this.product = product;
         this.amount = amount;
         this.buyer = buyer;
-        this.localDateTime = localDateTime;
+        this.localDateTime = LocalDateTime.now();
         isShipped = false;
         id = UUID.randomUUID().toString();
     }
