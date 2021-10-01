@@ -111,7 +111,7 @@ public class Product implements Comparable<Product> {
 
     public void addReview(Review review){
         int temp = reviews.size();
-        if (reviews.add(review)){
+        if (review.setProduct(this) && reviews.add(review)){
             rating = ((rating * temp) + review.getRating()) / reviews.size();
         }
     }
@@ -179,7 +179,7 @@ public class Product implements Comparable<Product> {
             }
         }
         for (int i = len; i < numCat; i++) {
-            stringJoiner.add("");
+            stringJoiner.add(null);
         }
 
         return "\"" + name.replace("\"", "\"\"") + "\"" + ","

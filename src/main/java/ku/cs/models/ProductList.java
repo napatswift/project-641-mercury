@@ -77,6 +77,18 @@ public class ProductList implements Iterable<Product>{
         }
     }
 
+    private int calcMaxSubCategory(){
+        int max = 0;
+        for (Product product: products){
+            int curr = 0;
+            for (Category category: product.getCategories()){
+                curr += category.getSubCategories().size();
+            }
+            if (max < curr) max = curr;
+        }
+        return max;
+    }
+
     public void sort(){
         sort(SortType.BY_ROLLOUT_DATE);
     }
@@ -85,7 +97,8 @@ public class ProductList implements Iterable<Product>{
         return products.size();
     }
 
-    public String toCsv(int numCategory){
+    public String toCsv(){
+        int numCategory = calcMaxSubCategory();
         StringBuilder stringBuilder =
                 new StringBuilder(
                         "name,product_id,price,store,stock,description,rating,reviews,image,rollout_date,");

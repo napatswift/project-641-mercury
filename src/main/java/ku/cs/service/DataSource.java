@@ -1,15 +1,24 @@
 package ku.cs.service;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
+import com.jrj.csv.CsvDocument;
+import com.jrj.csv.CsvReader;
 import ku.cs.models.*;
 
 import java.io.*;
+import java.lang.annotation.Documented;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DataSource {
+    private final String ACCOUNT_FILE_NAME = "accounts.csv";
+    private final String PRODUCT_FILE_NAME = "products.csv";
+    private final String ORDER_FILE_NAME = "orders.csv";
+    private final String REVIEW_FILE_NAME = "reviews.csv";
+    private final String STORE_FILE_NAME = "stores.csv";
+    private final String REPORT_FILE_NAME = "reports.csv";
+    private final String CATEGORY_FILE_NAME = "categories.csv";
+
     private UserList userList;
     private ProductList products;
     private ReviewList reviews;
@@ -40,57 +49,46 @@ public class DataSource {
         }
     }
 
-    public void parseAll() {
-        parseProduct();
-        parseAccount();
-        parseReview();
-        parseOrder();
-        parseStore();
-        parseReport();
-    }
-
     public void parseProduct() {
         products = new ProductList();
-        CSVReader reader;
-        if (userList == null)
-            parseAccount();
-        if (categories == null)
-            parseCategory();
-        if (reviews == null)
-            parseReview();
-        if (stores == null)
-            parseStore();
 
-        String FILE_NAME = "products.csv";
-        initFile(FILE_NAME);
+        if (userList == null) parseAccount();
+        if (categories == null) parseCategory();
+        if (reviews == null) parseReview();
+        if (stores == null) parseStore();
+
+        initFile(PRODUCT_FILE_NAME);
 
         try {
-            reader = new CSVReader(
-                    new FileReader(directoryPath + File.separator + FILE_NAME));
-            reader.readNext();
-            String [] nextLine;
-            while ((nextLine = reader.readNext()) != null) {
-                int entry_len = nextLine.length;
-
-                String name = nextLine[0];
-                String id = nextLine[1];
-                double price = Double.parseDouble(nextLine[2]);
-                Store store = stores.findStoreByName(nextLine[3]);
-                int stock = Integer.parseInt(nextLine[4]);
-                String details = nextLine[5];
-                String picturePath = nextLine[8];
-                LocalDateTime rolloutDate = nextLine[9].equals("null") ? null : LocalDateTime.parse(nextLine[9], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            InputStream inputStream = new FileInputStream(directoryPath + File.separator + PRODUCT_FILE_NAME);
+            CsvReader reader = new CsvReader(inputStream);
+            CsvDocument doc = reader.parse();
+            for (int i = 1; i < doc.size(); i++) {
+                List<String> nextLine = doc.getRow(i);
+                int entry_len = nextLine.size();
+                String name = nextLine.get(0);
+                String id = nextLine.get(1);
+                double price = Double.parseDouble(nextLine.get(2));
+                Store store = stores.findStoreByName(nextLine.get(3));
+                int stock = Integer.parseInt(nextLine.get(4));
+                String details = nextLine.get(5);
+                String picturePath = nextLine.get(8);
+                LocalDateTime rolloutDate = nextLine.get(9).equals("null") ? null : LocalDateTime.parse(nextLine.get(9), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
                 Product newProduct =
                         new Product(name, details, id, rolloutDate, store);
 
-                if (!newProduct.setPictureName(picturePath)
-                        || !newProduct.setPrice(price)
-                        || !newProduct.setStock(stock) || store == null)
-                    continue;
+                if (!newProduct.setPictureName(picturePath))
+                    throw new NullPointerException("no picture found " + picturePath);
+                if (!newProduct.setPrice(price))
+                    throw new NumberFormatException("price number " + price);
+                if (!newProduct.setStock(stock))
+                    throw new NumberFormatException("stock number");
+                if (store == null)
+                    throw new NullPointerException("no store found");
 
                 for (int idx = 10; idx < entry_len; idx++) {
-                    String[] col = nextLine[idx].split(":");
+                    String[] col = nextLine.get(idx).split(":");
                     if (col.length == 3) {
                         newProduct.addSubCategory(col[0], col[1], col[2]);
                         addCategory(col);
@@ -101,11 +99,14 @@ public class DataSource {
                 while (iterator.hasNext()){
                     newProduct.addReview(iterator.next());
                 }
+
                 products.addProduct(newProduct);
             }
-        } catch (CsvValidationException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
+        saveProduct();
     }
 
     private void addCategory(String[] entry) {
@@ -122,21 +123,19 @@ public class DataSource {
 
     public void parseReview() {
         reviews = new ReviewList();
-        String FILE_NAME = "reviews.csv";
-        initFile(FILE_NAME);
+        initFile(REVIEW_FILE_NAME);
 
         try {
-            CSVReader reader = new CSVReader(
-                    new FileReader(directoryPath + File.separator + FILE_NAME));
-            reader.readNext();
-            String [] entry;
-            while ((entry = reader.readNext()) != null) {
-                String id = entry[0];
-                String productId = entry[1];
-                String title = entry[2];
-                String detail = entry[3];
-                int rating = Integer.parseInt(entry[4]);
-                String reviewerUsername = entry[5];
+            CsvReader reader = new CsvReader(directoryPath + File.separator + REVIEW_FILE_NAME);
+            CsvDocument doc = reader.parse();
+            for (int i = 1; i < doc.size(); i++) {
+                List<String> nextLine = doc.getRow(i);
+                String id = nextLine.get(0);
+                String productId = nextLine.get(1);
+                String title = nextLine.get(2);
+                String detail = nextLine.get(3);
+                int rating = Integer.parseInt(nextLine.get(4));
+                String reviewerUsername = nextLine.get(5);
                 User reviewerUser = userList.getUser(reviewerUsername);
 
                 Review review = new Review(id ,title, detail, reviewerUser, productId);
@@ -144,106 +143,102 @@ public class DataSource {
                 if (review.setRating(rating))
                     reviews.addReview(review);
             }
-        } catch (IOException | CsvValidationException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void parseAccount() {
         userList = new UserList();
-
-        String FILE_NAME = "accounts.csv";
-        initFile(FILE_NAME);
+        initFile(ACCOUNT_FILE_NAME);
 
         try {
-            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + FILE_NAME));
-            reader.readNext();
-            String [] entry;
-            while ((entry = reader.readNext()) != null) {
-                String username = entry[0];
-                User.Role role = entry[1].toUpperCase(Locale.ROOT).equals("USER") ? User.Role.USER : User.Role.ADMIN;
-                String name = entry[2];
-                String password = entry[3];
-                String pictureName = entry[4].equals("null") ? null : entry[4];
+            CsvReader reader = new CsvReader(directoryPath + File.separator + ACCOUNT_FILE_NAME);
+            CsvDocument doc = reader.parse();
+            for (int i = 1; i < doc.size(); i++) {
+                List<String> entry = doc.getRow(i);
+                String username = entry.get(0);
+                User.Role role = entry.get(1).equalsIgnoreCase("USER") ? User.Role.USER : User.Role.ADMIN;
+                String name = entry.get(2);
+                String password = entry.get(3);
+                String pictureName = entry.get(4).equals("null") ? null : entry.get(4);
 
                 LocalDateTime localDateTime =
-                        entry[5].equals("null") ? null : LocalDateTime.parse(entry[5], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                        entry.get(5).equals("null") ? null : LocalDateTime.parse(entry.get(5), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-                boolean isBanned = entry[6].toLowerCase(Locale.ROOT).equals("true");
-                int loginAttempt = Integer.parseInt(entry[7]);
+                boolean isBanned = entry.get(6).toLowerCase(Locale.ROOT).equals("true");
+                int loginAttempt = Integer.parseInt(entry.get(7));
 
-                User newUser = null;
+                User newUser;
                 if(User.Role.USER == role)
                     newUser = new User(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt);
                 else
                     newUser = new Admin(username, role, name, password, pictureName, localDateTime, isBanned, loginAttempt);
                 userList.addUser(newUser);
             }
-        } catch (IOException | CsvValidationException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void parseReport() {
-        if(userList.toList() == null) parseAccount();
-
-        if(products == null) parseProduct();
-
-        if(reviews == null) parseReview();
-
         reports = new ReportList();
 
-        String FILE_NAME = "reports.csv";
-        initFile(FILE_NAME);
+        initFile(REPORT_FILE_NAME);
 
         try {
-            CSVReader reader = new CSVReader(
-                    new FileReader(directoryPath + File.separator + FILE_NAME));
-            reader.readNext();
+            CsvReader reader = new CsvReader(directoryPath + File.separator + REVIEW_FILE_NAME);
+            CsvDocument doc = reader.parse();
             String [] entry;
-            while ((entry = reader.readNext()) != null) {
-                String reportType = entry[0].toLowerCase().equals("null") ? null : entry[0];
-                User suspectedPerson = userList.getUser(entry[1]);
-                User reporter = userList.getUser(entry[2]);
+            for (int i = 1; i<doc.size(); i++){
+                entry = doc.getRow(i).toArray(new String[0]);
+                String reportType = entry[0].equalsIgnoreCase("null") ? null : entry[0];
                 LocalDateTime localDateTime =
                         entry[2].equalsIgnoreCase("null") ? null :
                                 LocalDateTime.parse(entry[2], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
                 Review review = entry[3].equalsIgnoreCase("null") ? null : reviews.getReviewByID(entry[3]);
                 Product product = entry[4].equalsIgnoreCase("null") ? null : products.getProduct(entry[4]);
+
                 String detail = entry[5];
+
                 if (review != null){
                     reports.addReport(new ReviewReport(reportType, review, localDateTime, detail));
                 } else if (product != null){
                     reports.addReport(new ProductReport(reportType, product, localDateTime, detail));
-                }
+                } else
+                    throw new NullPointerException("Both review and report are null");
             }
-        } catch (IOException | CsvValidationException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
               
     public void parseStore(){
-        if (userList == null) parseAccount();
-
         stores = new StoreList();
 
-        String FILE_NAME = "store.csv";
-        initFile(FILE_NAME);
+        if (userList == null) parseAccount();
+
+        initFile(STORE_FILE_NAME);
 
         try{
-            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + FILE_NAME));
-            reader.readNext();
+            CsvReader reader = new CsvReader(directoryPath + File.separator + STORE_FILE_NAME);
+            CsvDocument doc = reader.parse();
             String [] entry;
-            while ((entry = reader.readNext()) != null){
+            for (int i = 1; i<doc.size(); i++){
+                entry = doc.getRow(i).toArray(new String[0]);
                 User owner = userList.getUser(entry[0]);
+
+                if (owner == null)
+                    throw new NullPointerException("Store Owner not found");
+
                 String nameStore = entry[1];
                 int stockLower = Integer.parseInt(entry[2]);
                 owner.createStore(nameStore);
                 owner.getStore().setStockLowerBound(stockLower);
                 stores.addStore(owner.getStore());
             }
-        }catch (IOException | CsvValidationException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
@@ -251,17 +246,17 @@ public class DataSource {
     public void parseCategory() {
         categories = new HashMap<>();
 
-        String FILE_NAME = "categories.csv";
-        initFile(FILE_NAME);
+        initFile(CATEGORY_FILE_NAME);
 
         try {
-            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + FILE_NAME));
-            reader.readNext();
+            CsvReader reader = new CsvReader(directoryPath + File.separator + CATEGORY_FILE_NAME);
+            CsvDocument doc = reader.parse();
             String[] entry;
-            while ((entry = reader.readNext()) != null) {
+            for (int i = 1; i<doc.size(); i++){
+                entry = doc.getRow(i).toArray(new String[0]);
                 addCategory(entry);
             }
-        } catch (IOException | CsvValidationException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -269,14 +264,14 @@ public class DataSource {
     public void parseOrder(){
         orders = new OrderList();
 
-        String FILE_NAME = "orders.csv";
-        initFile(FILE_NAME);
+        initFile(ORDER_FILE_NAME);
 
         try {
-            CSVReader reader = new CSVReader(new FileReader(directoryPath + File.separator + FILE_NAME));
-            reader.readNext();
+            CsvReader reader = new CsvReader(directoryPath + File.separator + ORDER_FILE_NAME);
+            CsvDocument doc = reader.parse();
             String[] entry;
-            while((entry = reader.readNext()) != null){
+            for (int i = 1; i<doc.size(); i++){
+                entry = doc.getRow(i).toArray(new String[0]);
                 String id = entry[0];
                 Product product = products.getProduct(entry[1]);
                 int amount = Integer.parseInt(entry[2]);
@@ -292,43 +287,18 @@ public class DataSource {
         }
     }
 
-    public void setDirectoryPath(String directoryPath) {
-        this.directoryPath = directoryPath;
-    }
+    public void setDirectoryPath(String directoryPath) { this.directoryPath = directoryPath; }
 
-    public UserList getUserList() {
-        return userList;
-    }
-
-    public ProductList getProducts() {
-        return products;
-    }
-
-    public ReviewList getReviews() {
-        return reviews;
-    }
-
-    public Set<String> getCategories() {
-        return categories.keySet();
-    }
-
-    public OrderList getOrders(){return orders;}
-
-
-    public ArrayList<String> getSubCategory(String key) {return categories.get(key);}
-    public Map<String, ArrayList<String>> getMapCategories(){
-        return categories;
-    }
-
-    public ReportList getReports() {
-        return reports;
-    }
-
-    public StoreList getStores() { return stores; }
-
-    public String getDirectoryPath() {
-        return directoryPath;
-    }
+    public UserList getUserList()      { return userList; }
+    public ProductList getProducts()   { return products; }
+    public ReviewList getReviews()     { return reviews; }
+    public Set<String> getCategories() { return categories.keySet(); }
+    public OrderList getOrders()       { return orders; }
+    public ReportList getReports()     { return reports; }
+    public StoreList getStores()       { return stores; }
+    public String getDirectoryPath()   { return directoryPath; }
+    public ArrayList<String> getSubCategory(String key)      { return categories.get(key); }
+    public Map<String, ArrayList<String>> getMapCategories() { return categories; }
 
     public void save(String string, String fileName){
         File file = new File(
@@ -344,28 +314,12 @@ public class DataSource {
         }
     }
 
-    public void saveReport() {
-        save(reports.toCsv(), "reports.csv");
-    }
-
-    public void saveReview(){
-        save(reviews.toCsv(), "reviews.csv");
-    }
-
-    public void saveAccount(){
-        save(userList.toCsv(), "accounts.csv");
-    }
-
-    public void saveProduct(){
-        int numCategory = 0;
-        for(String key: categories.keySet())
-            numCategory += categories.get(key).size();
-        save(products.toCsv(numCategory), "products.csv");
-    }
-
-    public void saveOrder(){
-        save(orders.toCsv(), "orders.csv");
-    }
+    public void saveReport()  { save(reports.toCsv(), REPORT_FILE_NAME); }
+    public void saveReview()  { save(reviews.toCsv(), REVIEW_FILE_NAME); }
+    public void saveAccount() { save(userList.toCsv(), ACCOUNT_FILE_NAME); }
+    public void saveProduct() { save(products.toCsv(), PRODUCT_FILE_NAME); }
+    public void saveOrder()   { save(orders.toCsv(), ORDER_FILE_NAME); }
+    public void saveStore()   { save(stores.toCsv(), STORE_FILE_NAME); }
 
     public void saveCategory(){
         StringJoiner stringJoiner = new StringJoiner("\n");
@@ -373,11 +327,7 @@ public class DataSource {
         for(String key: categories.keySet())
             for(String val: categories.get(key))
                 stringJoiner.add(key + "," + val);
-        save(stringJoiner.toString(), "categories.csv");
-    }
-
-    public void  saveStore(){
-        save(stores.toCsv(),"store.csv");
+        save(stringJoiner + "\n", CATEGORY_FILE_NAME);
     }
 
 }

@@ -7,6 +7,7 @@ public class Review {
     private int rating;
     private final User author;
     private final String productId;
+    private Product product;
 
     public Review(String id, String title, String detail, User author, String productId) {
         this.title = title;
@@ -16,8 +17,14 @@ public class Review {
         this.id = id;
     }
 
-    public String getId() {
-        return id;
+    public String getId() { return id; }
+
+    public boolean setProduct(Product product) {
+        if (this.productId.equals(product.getId())) {
+            this.product = product;
+            return true;
+        }
+        return false;
     }
 
     public boolean setRating(int rating){
@@ -38,6 +45,10 @@ public class Review {
 
     public int getRating() {
         return rating;
+    }
+
+    public Product getProduct() {
+        return product;
     }
 
     public String getReviewerUsername() {
