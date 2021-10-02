@@ -3,33 +3,50 @@ package ku.cs.service;
 import com.jrj.csv.CsvDocument;
 import com.jrj.csv.CsvReader;
 import ku.cs.models.*;
+import ku.cs.models.Admin;
+import ku.cs.models.User;
+import ku.cs.models.UserList;
+import ku.cs.models.CategoryList;
+import ku.cs.models.ProductReport;
+import ku.cs.models.ReportList;
+import ku.cs.models.ReviewReport;
 
 import java.io.*;
-import java.lang.annotation.Documented;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DataSource {
-    private final String ACCOUNT_FILE_NAME = "accounts.csv";
-    private final String PRODUCT_FILE_NAME = "products.csv";
-    private final String ORDER_FILE_NAME = "orders.csv";
-    private final String REVIEW_FILE_NAME = "reviews.csv";
-    private final String STORE_FILE_NAME = "stores.csv";
-    private final String REPORT_FILE_NAME = "reports.csv";
+    private final String ACCOUNT_FILE_NAME  = "accounts.csv";
+    private final String PRODUCT_FILE_NAME  = "products.csv";
+    private final String ORDER_FILE_NAME    = "orders.csv";
+    private final String REVIEW_FILE_NAME   = "reviews.csv";
+    private final String STORE_FILE_NAME    = "stores.csv";
+    private final String REPORT_FILE_NAME   = "reports.csv";
     private final String CATEGORY_FILE_NAME = "categories.csv";
 
-    private UserList userList;
-    private ProductList products;
-    private ReviewList reviews;
-    private ReportList reports;
+    private final UserList userList;
+    private final ProductList products;
+    private final ReviewList reviews;
+    private final ReportList reports;
     private String directoryPath;
-    private Map<String, ArrayList<String>> categories;
-    private StoreList stores;
-    private OrderList orders;
+    private final CategoryList categories;
+    private final StoreList stores;
+    private final OrderList orders;
+
+    public DataSource() {
+        this("data");
+    }
 
     public DataSource(String directoryPath){
         this.directoryPath = directoryPath;
+        userList = new UserList();
+        products = new ProductList();
+        reviews = new ReviewList();
+        reports = new ReportList();
+        categories = new CategoryList();
+        stores = new StoreList();
+        orders = new OrderList();
     }
 
     private void initFile(String filename) {
@@ -50,12 +67,10 @@ public class DataSource {
     }
 
     public void parseProduct() {
-        products = new ProductList();
-
-        if (userList == null) parseAccount();
-        if (categories == null) parseCategory();
-        if (reviews == null) parseReview();
-        if (stores == null) parseStore();
+        parseAccount();
+        parseCategory();
+        parseReview();
+        parseStore();
 
         initFile(PRODUCT_FILE_NAME);
 
@@ -68,6 +83,7 @@ public class DataSource {
                 int entry_len = nextLine.size();
                 String name = nextLine.get(0);
                 String id = nextLine.get(1);
+                if (products.containsId(id)) continue;
                 double price = Double.parseDouble(nextLine.get(2));
                 Store store = stores.findStoreByName(nextLine.get(3));
                 int stock = Integer.parseInt(nextLine.get(4));
@@ -111,7 +127,7 @@ public class DataSource {
 
     private void addCategory(String[] entry) {
         if (categories.containsKey(entry[0])) {
-            ArrayList<String> list = categories.get(entry[0]);
+            ArrayList<String> list = categories.getSubcategoryOf(entry[0]);
             if (!list.contains(entry[1]))
                 list.add(entry[1]);
         } else{
@@ -122,7 +138,6 @@ public class DataSource {
     }
 
     public void parseReview() {
-        reviews = new ReviewList();
         initFile(REVIEW_FILE_NAME);
 
         try {
@@ -149,7 +164,6 @@ public class DataSource {
     }
 
     public void parseAccount() {
-        userList = new UserList();
         initFile(ACCOUNT_FILE_NAME);
 
         try {
@@ -182,30 +196,30 @@ public class DataSource {
     }
 
     public void parseReport() {
-        reports = new ReportList();
-
+        parseProduct();
+        parseReview();
         initFile(REPORT_FILE_NAME);
 
         try {
-            CsvReader reader = new CsvReader(directoryPath + File.separator + REVIEW_FILE_NAME);
+            CsvReader reader = new CsvReader(directoryPath + File.separator + REPORT_FILE_NAME);
             CsvDocument doc = reader.parse();
-            String [] entry;
-            for (int i = 1; i<doc.size(); i++){
-                entry = doc.getRow(i).toArray(new String[0]);
-                String reportType = entry[0].equalsIgnoreCase("null") ? null : entry[0];
-                LocalDateTime localDateTime =
-                        entry[2].equalsIgnoreCase("null") ? null :
-                                LocalDateTime.parse(entry[2], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            for (int i = 1; i < doc.size(); i++){
+                doc.getRow(i).forEach(System.out::println);
+                List<String> entry = doc.getRow(i);
+                String id = entry.get(0);
+                String reportType = entry.get(1).equalsIgnoreCase("null") ? null : entry.get(1);
+                LocalDateTime localDateTime = entry.get(3).equalsIgnoreCase("null") ? null :
+                                LocalDateTime.parse(entry.get(3), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-                Review review = entry[3].equalsIgnoreCase("null") ? null : reviews.getReviewByID(entry[3]);
-                Product product = entry[4].equalsIgnoreCase("null") ? null : products.getProduct(entry[4]);
+                Review review = entry.get(4).equalsIgnoreCase("null") ? null : reviews.getReviewByID(entry.get(4));
+                Product product = entry.get(5).equalsIgnoreCase("null") ? null : products.getProduct(entry.get(5));
 
-                String detail = entry[5];
+                String detail = entry.get(6);
 
                 if (review != null){
-                    reports.addReport(new ReviewReport(reportType, review, localDateTime, detail));
+                    reports.addReport(new ReviewReport(id, reportType, review, localDateTime, detail));
                 } else if (product != null){
-                    reports.addReport(new ProductReport(reportType, product, localDateTime, detail));
+                    reports.addReport(new ProductReport(id, reportType, product, localDateTime, detail));
                 } else
                     throw new NullPointerException("Both review and report are null");
             }
@@ -215,17 +229,13 @@ public class DataSource {
     }
               
     public void parseStore(){
-        stores = new StoreList();
-
-        if (userList == null) parseAccount();
-
         initFile(STORE_FILE_NAME);
 
         try{
             CsvReader reader = new CsvReader(directoryPath + File.separator + STORE_FILE_NAME);
             CsvDocument doc = reader.parse();
             String [] entry;
-            for (int i = 1; i<doc.size(); i++){
+            for (int i = 1; i < doc.size(); i++){
                 entry = doc.getRow(i).toArray(new String[0]);
                 User owner = userList.getUser(entry[0]);
 
@@ -244,8 +254,6 @@ public class DataSource {
     }
 
     public void parseCategory() {
-        categories = new HashMap<>();
-
         initFile(CATEGORY_FILE_NAME);
 
         try {
@@ -262,8 +270,6 @@ public class DataSource {
     }
 
     public void parseOrder(){
-        orders = new OrderList();
-
         initFile(ORDER_FILE_NAME);
 
         try {
@@ -289,16 +295,14 @@ public class DataSource {
 
     public void setDirectoryPath(String directoryPath) { this.directoryPath = directoryPath; }
 
-    public UserList getUserList()      { return userList; }
-    public ProductList getProducts()   { return products; }
-    public ReviewList getReviews()     { return reviews; }
-    public Set<String> getCategories() { return categories.keySet(); }
-    public OrderList getOrders()       { return orders; }
-    public ReportList getReports()     { return reports; }
-    public StoreList getStores()       { return stores; }
-    public String getDirectoryPath()   { return directoryPath; }
-    public ArrayList<String> getSubCategory(String key)      { return categories.get(key); }
-    public Map<String, ArrayList<String>> getMapCategories() { return categories; }
+    public UserList getUserList()       { return userList; }
+    public ProductList getProducts()    { return products; }
+    public ReviewList getReviews()      { return reviews; }
+    public CategoryList getCategories() { return categories; }
+    public OrderList getOrders()        { return orders; }
+    public ReportList getReports()      { return reports; }
+    public StoreList getStores()        { return stores; }
+    public String getDirectoryPath()    { return directoryPath; }
 
     public void save(String string, String fileName){
         File file = new File(
@@ -314,20 +318,12 @@ public class DataSource {
         }
     }
 
-    public void saveReport()  { save(reports.toCsv(), REPORT_FILE_NAME); }
-    public void saveReview()  { save(reviews.toCsv(), REVIEW_FILE_NAME); }
-    public void saveAccount() { save(userList.toCsv(), ACCOUNT_FILE_NAME); }
-    public void saveProduct() { save(products.toCsv(), PRODUCT_FILE_NAME); }
-    public void saveOrder()   { save(orders.toCsv(), ORDER_FILE_NAME); }
-    public void saveStore()   { save(stores.toCsv(), STORE_FILE_NAME); }
-
-    public void saveCategory(){
-        StringJoiner stringJoiner = new StringJoiner("\n");
-        stringJoiner.add("category,subcategory");
-        for(String key: categories.keySet())
-            for(String val: categories.get(key))
-                stringJoiner.add(key + "," + val);
-        save(stringJoiner + "\n", CATEGORY_FILE_NAME);
-    }
+    public void saveReport()   { save(reports.toCsv(), REPORT_FILE_NAME); }
+    public void saveReview()   { save(reviews.toCsv(), REVIEW_FILE_NAME); }
+    public void saveAccount()  { save(userList.toCsv(), ACCOUNT_FILE_NAME); }
+    public void saveProduct()  { save(products.toCsv(), PRODUCT_FILE_NAME); }
+    public void saveOrder()    { save(orders.toCsv(), ORDER_FILE_NAME); }
+    public void saveStore()    { save(stores.toCsv(), STORE_FILE_NAME); }
+    public void saveCategory() { save(categories.toCsv(), CATEGORY_FILE_NAME); }
 
 }

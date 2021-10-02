@@ -3,15 +3,14 @@ package ku.cs.models;
 import java.util.*;
 
 public class ReviewList implements Iterable<Review> {
-    private final ArrayList<Review> reviews;
-    private Review currReview;
+    private final Collection<Review> reviews;
 
     public ReviewList() {
-        reviews = new ArrayList<>();
+        reviews = new TreeSet<>();
     }
 
-    public void addReview(Review review){
-        reviews.add(review);
+    public boolean addReview(Review review){
+        return reviews.add(review);
     }
 
     public boolean addReview(String title, String detail, int rating, User user, Product product){
@@ -31,23 +30,6 @@ public class ReviewList implements Iterable<Review> {
         product.addReview(newReview);
         addReview(newReview);
         return true;
-    }
-
-    public void setCurrReview(Review currReview) {
-        this.currReview = currReview;
-    }
-
-    public ArrayList<Review> getProductReviewList(String idProduct) {
-        ArrayList<Review> gettingReviews = new ArrayList<>();
-        for (Review review: reviews){
-            if(review.getProductId().equals(idProduct))
-                gettingReviews.add(review);
-        }
-        return gettingReviews;
-    }
-
-    public Review getCurrReview() {
-        return currReview;
     }
 
     public Review getReviewByID(String id){

@@ -1,6 +1,6 @@
 package ku.cs.models;
 
-public class Review {
+public class Review implements Comparable<Review>{
     private final String title;
     private final String id;
     private final String detail;
@@ -71,5 +71,10 @@ public class Review {
                 + "\"" + detail.replace("\"", "\"\"") + "\"" + ","
                 + rating + ","
                 + author.getUsername();
+    }
+
+    @Override
+    public int compareTo(Review o) {
+        return this.id.compareTo(o.id);
     }
 }

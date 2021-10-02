@@ -22,15 +22,7 @@ public class User implements Comparable<User>{
 
     @Override
     public int compareTo(User other) {
-        if (other.username.equals(this.username)) {
-            return 0;
-        }
-        int compare = this.loginDateTime.compareTo(other.getLoginDateTime());
-        if (compare == 0){
-            return this.username.compareTo(other.username);
-        } else {
-            return compare;
-        }
+        return this.username.compareTo(other.username);
     }
 
     public User(String username, String name){

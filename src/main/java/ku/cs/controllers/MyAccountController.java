@@ -8,13 +8,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import ku.cs.models.User;
-import ku.cs.models.UserList;
 import ku.cs.models.components.dialogs.PictureConfirmDialog;
 import ku.cs.service.DataSource;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;

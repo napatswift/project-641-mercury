@@ -1,29 +1,30 @@
 package ku.cs.controllers;
 
 import com.github.saacsos.FXRouter;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import ku.cs.models.*;
+import ku.cs.models.Admin;
+import ku.cs.models.User;
+import ku.cs.models.UserList;
+import ku.cs.models.CategoryList;
 import ku.cs.models.components.CategoryListCell;
 import ku.cs.models.components.ReportListCell;
 import ku.cs.models.components.SubCategoryListCell;
 import ku.cs.models.components.UserListCell;
+import ku.cs.models.Report;
+import ku.cs.models.ReportList;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Map;
 
 public class AdminPageController {
 
@@ -34,7 +35,7 @@ public class AdminPageController {
     private User selectUser;
     private Admin adminUser;
     private String selectCategory;
-    private Map<String, ArrayList<String>> categories;
+    private CategoryList categories;
 
     @FXML private Label nameAdmin
             ,role
@@ -77,7 +78,7 @@ public class AdminPageController {
         reportList = dataSource.getReports();
 
         dataSource.parseCategory();
-        categories = dataSource.getMapCategories();
+        categories = dataSource.getCategories();
 
         showAdmin(adminUser);
         showUserListView();
@@ -207,7 +208,7 @@ public class AdminPageController {
 
     // Category Page
     private void showCategoryListView() {
-        categoryListView.getItems().addAll(categories.keySet());
+        categoryListView.getItems().addAll(categories.categorySet());
         categoryListView.setCellFactory(categoryListView -> new CategoryListCell());
         categoryListView.refresh();
     }
@@ -223,7 +224,7 @@ public class AdminPageController {
         subCategoryListView.getItems().clear();
         selectCategory = category;
         if(categories.containsKey(category))
-            subCategoryListView.getItems().addAll(categories.get(selectCategory));
+            subCategoryListView.getItems().addAll(categories.getSubcategoryOf(selectCategory));
         subCategoryListView.setCellFactory(subCategoryListView -> new SubCategoryListCell());
         subCategoryListView.refresh();
     }
@@ -288,7 +289,7 @@ public class AdminPageController {
     }
 
     public void handleAddSubCategoryButton(ActionEvent actionEvent) {
-        ArrayList<String> newList = categories.get(selectCategory);
+        ArrayList<String> newList = categories.getSubcategoryOf(selectCategory);
         if(addSubCategoryTF.getText() != null
                 && !newList.contains(addSubCategoryTF.getText())
                 && !addSubCategoryTF.getText().equals("")){

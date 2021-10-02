@@ -16,7 +16,6 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import ku.cs.models.Order;
 import ku.cs.models.Product;
-import ku.cs.models.User;
 import ku.cs.service.DataSource;
 
 import java.time.format.DateTimeFormatter;

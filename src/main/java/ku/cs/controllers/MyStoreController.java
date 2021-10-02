@@ -1,7 +1,5 @@
 package ku.cs.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +16,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
 import ku.cs.models.*;
+import ku.cs.models.User;
+import ku.cs.models.Category;
+import ku.cs.models.CategoryList;
 import ku.cs.models.components.*;
 import ku.cs.models.components.dialogs.ConfirmEditProductDialog;
 import ku.cs.models.components.dialogs.PictureConfirmDialog;
@@ -166,7 +167,7 @@ public class MyStoreController  {
 
 
     public void loadCategory(){
-        ObservableList<String> list = FXCollections.observableArrayList(dataSource.getCategories());
+        ObservableList<String> list = FXCollections.observableArrayList(dataSource.getCategories().categorySet());
         categoryCB.setItems(list);
 
         categoryCB.getSelectionModel().selectedIndexProperty().addListener(
@@ -174,7 +175,8 @@ public class MyStoreController  {
     }
 
     public void loadSubCategory(String category){
-        ObservableList<String> list = FXCollections.observableArrayList(dataSource.getSubCategory(category));
+        CategoryList categories = dataSource.getCategories();
+        ObservableList<String> list = FXCollections.observableArrayList(categories.getSubcategoryOf(category));
         subCategoryCB.setItems(list);
     }
 

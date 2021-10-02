@@ -11,6 +11,8 @@ import javafx.scene.layout.VBox;
 import ku.cs.models.*;
 import ku.cs.models.components.SmallProductCard;
 import ku.cs.models.components.SmallReviewCard;
+import ku.cs.models.ProductReport;
+import ku.cs.models.ReviewReport;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -80,7 +82,6 @@ public class ReportingViewController {
         }
 
         dataSource.getProducts().setSelectedProduct(null);
-        dataSource.getReviews().setCurrReview(null);
 
         dataSource.saveReport();
         goBack.handle(event);

@@ -15,9 +15,6 @@ import ku.cs.models.Product;
 import ku.cs.models.ProductList;
 import ku.cs.models.User;
 import ku.cs.service.DataSource;
-import com.github.saacsos.FXRouter;
-
-import java.io.IOException;
 
 public class OrderSummaryController {
     private DataSource dataSource;

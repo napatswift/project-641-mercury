@@ -1,20 +1,23 @@
 package ku.cs.models;
 
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.layout.VBox;
-
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
-abstract public class Report<T> {
+abstract public class Report<T> implements Comparable<Report>{
 
+    protected String id;
     private String type;
     private LocalDateTime reportDateTime;
     private T reportItem;
     private String detail;
 
-    public Report(String type, T reportItem, LocalDateTime reportDateTime, String detail) {
+    @Override
+    public int compareTo(Report o) {
+        return this.id.compareTo(o.id);
+    }
+
+    public Report(String id, String type, T reportItem, LocalDateTime reportDateTime, String detail) {
+        this.id = id;
         this.type = type;
         this.reportItem = reportItem;
         this.reportDateTime = reportDateTime;
@@ -22,11 +25,11 @@ abstract public class Report<T> {
     }
 
     public Report(String type, T reportItem, String detail) {
+        this.id = UUID.randomUUID().toString();
         this.type = type;
         this.reportItem = reportItem;
         this.reportDateTime = LocalDateTime.now();
         this.detail = detail;
-
     }
 
     public String getDetail() {
