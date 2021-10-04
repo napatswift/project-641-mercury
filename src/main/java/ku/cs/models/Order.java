@@ -3,14 +3,14 @@ package ku.cs.models;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Order {
-    private Product product;
+public class Order implements Comparable<Order> {
+    private final Product product;
     private final int amount;
     private boolean isShipped;
     private String tracking;
     private final User buyer;
-    private LocalDateTime localDateTime;
-    private String id;
+    private final LocalDateTime localDateTime;
+    private final String id;
 
     public Order(Product product, int amount, User buyer) {
         this.product = product;
@@ -77,5 +77,10 @@ public class Order {
                 + tracking + ","
                 + buyer.getUsername() + ","
                 + localDateTime.toString();
+    }
+
+    @Override
+    public int compareTo(Order o) {
+        return this.id.compareTo(o.id);
     }
 }

@@ -1,6 +1,6 @@
 package ku.cs.models;
 
-public class Store {
+public class Store implements Comparable<Store> {
     private final User owner;
     private final String nameStore;
     private int stockLowerBound;
@@ -41,4 +41,8 @@ public class Store {
                + stockLowerBound;
     }
 
+    @Override
+    public int compareTo(Store o) {
+        return this.nameStore.compareTo(o.nameStore);
+    }
 }

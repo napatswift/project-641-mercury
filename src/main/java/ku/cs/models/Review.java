@@ -1,12 +1,13 @@
 package ku.cs.models;
 
-public class Review {
+public class Review implements Comparable<Review>{
     private final String title;
     private final String id;
     private final String detail;
     private int rating;
     private final User author;
     private final String productId;
+    private Product product;
 
     public Review(String id, String title, String detail, User author, String productId) {
         this.title = title;
@@ -16,8 +17,14 @@ public class Review {
         this.id = id;
     }
 
-    public String getId() {
-        return id;
+    public String getId() { return id; }
+
+    public boolean setProduct(Product product) {
+        if (this.productId.equals(product.getId())) {
+            this.product = product;
+            return true;
+        }
+        return false;
     }
 
     public boolean setRating(int rating){
@@ -40,6 +47,10 @@ public class Review {
         return rating;
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
     public String getReviewerUsername() {
         return author.getUsername();
     }
@@ -60,5 +71,10 @@ public class Review {
                 + "\"" + detail.replace("\"", "\"\"") + "\"" + ","
                 + rating + ","
                 + author.getUsername();
+    }
+
+    @Override
+    public int compareTo(Review o) {
+        return this.id.compareTo(o.id);
     }
 }

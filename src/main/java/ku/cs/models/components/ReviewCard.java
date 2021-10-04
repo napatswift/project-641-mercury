@@ -11,7 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import ku.cs.models.Review;
-import ku.cs.models.User;
 
 public class ReviewCard extends VBox {
     private Review review;

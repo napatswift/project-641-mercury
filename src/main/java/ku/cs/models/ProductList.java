@@ -3,7 +3,8 @@ package ku.cs.models;
 import java.util.*;
 
 public class ProductList implements Iterable<Product>{
-    private final List<Product> products;
+    private final ArrayList<Product> products;
+    private final Set<String> idSet;
     private Product selectedProduct;
     public enum SortType {BY_ROLLOUT_DATE, BY_LOWEST, BY_HIGHEST}
 
@@ -23,20 +24,19 @@ public class ProductList implements Iterable<Product>{
 
     public ProductList(){
         products = new ArrayList<>();
-    }
-
-    public void addProduct(Product product){
-        products.add(product);
-    }
-
-    public void removeProductById(String id){
-        products.removeIf(product -> product.getId().equals(id));
+        idSet = new TreeSet<>();
     }
 
     public boolean containsId(String id){
-        for(Product product: products)
-            if(product.getId().equals(id))
-                return true;
+        return idSet.contains(id);
+    }
+
+    public boolean addProduct(Product product){
+        if (!idSet.contains(product.getId())) {
+            products.add(product);
+            idSet.add(product.getId());
+            return true;
+        }
         return false;
     }
 
@@ -68,13 +68,24 @@ public class ProductList implements Iterable<Product>{
         if (sortType.equals(SortType.BY_ROLLOUT_DATE)) {
             products.sort(Comparator.comparing(Product::getId));
             products.sort(Comparator.comparing(Product::getRolloutDate));
-            Collections.reverse(products);
         } else if (sortType.equals(SortType.BY_LOWEST)){
             products.sort(Comparator.comparingDouble(Product::getPrice));
         } else if (sortType.equals(SortType.BY_HIGHEST)){
             products.sort(Comparator.comparingDouble(Product::getPrice));
             Collections.reverse(products);
         }
+    }
+
+    private int calcMaxSubCategory(){
+        int max = 0;
+        for (Product product: products){
+            int curr = 0;
+            for (Category category: product.getCategories()){
+                curr += category.getSubCategories().size();
+            }
+            if (max < curr) max = curr;
+        }
+        return max;
     }
 
     public void sort(){
@@ -85,7 +96,8 @@ public class ProductList implements Iterable<Product>{
         return products.size();
     }
 
-    public String toCsv(int numCategory){
+    public String toCsv(){
+        int numCategory = calcMaxSubCategory();
         StringBuilder stringBuilder =
                 new StringBuilder(
                         "name,product_id,price,store,stock,description,rating,reviews,image,rollout_date,");
