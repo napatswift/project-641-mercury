@@ -1,12 +1,14 @@
 package ku.cs.models;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.TreeSet;
 
 public class StoreList {
-    private ArrayList<Store> storeList;
+    private Collection<Store> storeList;
 
     public StoreList(){
-        this.storeList = new ArrayList<>();
+        this.storeList = new TreeSet<>();
     }
 
     public void addStore(Store store){
@@ -25,12 +27,12 @@ public class StoreList {
         return null;
     }
 
-    public boolean isExit(String nameStore){
-        for(Store store : storeList){
-            if(store.getName().equals(nameStore)){
-                return true;
-            }
-        }return false;
+    public boolean isExit(Store store){
+        return storeList.contains(store);
+    }
+
+    public int size(){
+        return storeList.size();
     }
 
     public String toCsv(){

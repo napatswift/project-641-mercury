@@ -5,8 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 public class ReviewReport extends Report<Review>{
 
-    public ReviewReport(String type, Review reportItem, LocalDateTime reportDateTime, String detail) {
-        super(type, reportItem, reportDateTime, detail);
+    public ReviewReport(String id, String type, Review reportItem, LocalDateTime reportDateTime, String detail) {
+        super(id, type, reportItem, reportDateTime, detail);
     }
 
     public ReviewReport(String type, Review reportItem, String detail) {
@@ -20,7 +20,8 @@ public class ReviewReport extends Report<Review>{
 
     @Override
     public String toCSV() {
-        return getType() + ","
+        return  id + ","
+                + getType() + ","
                 + getSuspectedPerson().getUsername() + ","
                 + getReportDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + ","
                 + getReportItem().getId() + ","

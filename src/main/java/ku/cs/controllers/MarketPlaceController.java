@@ -2,8 +2,6 @@ package ku.cs.controllers;
 
 import com.github.saacsos.FXRouter;
 import javafx.animation.TranslateTransition;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +20,9 @@ import javafx.scene.shape.SVGPath;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import ku.cs.models.*;
+import ku.cs.models.User;
+import ku.cs.models.Category;
+import ku.cs.models.CategoryList;
 import ku.cs.models.components.*;
 import ku.cs.models.components.theme.ThemeMenu;
 import ku.cs.service.DataSource;
@@ -29,8 +30,6 @@ import ku.cs.service.DataSource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.concurrent.Flow;
 
 public class MarketPlaceController {
     @FXML
@@ -532,11 +531,11 @@ public class MarketPlaceController {
         }
     }
 
-    private void populateCategory(Set<String> categories){
+    private void populateCategory(CategoryList categories){
         int i = 0;
         VBox box = new VBox();
         box.setSpacing(3);
-        for(String category: categories){
+        for(String category: categories.categorySet()){
             if (i != 0 && i % 4 == 0){
                 categoriesMenuHBox.getChildren().add(box);
                 box = new VBox();
