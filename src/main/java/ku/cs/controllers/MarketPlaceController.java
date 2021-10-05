@@ -578,6 +578,14 @@ public class MarketPlaceController {
                     storeProductPageTab.setContent(null);
                     productTP.getTabs().remove(storeProductPageTab);
                 }
+                if (reportingTab != null ) {
+                    reportingTab.setContent(null);
+                    productTP.getTabs().remove(reportingTab);
+                }
+                if (orderSummaryTab != null ) {
+                    orderSummaryTab.setContent(null);
+                    productTP.getTabs().remove(orderSummaryTab);
+                }
             }
         });
     }
