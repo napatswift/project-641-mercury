@@ -339,6 +339,12 @@
     -fx-fill: primary-dark-color;
 }
 
+.border-card {
+    -fx-border-color: surface-overlay;
+    -fx-border-width: 0.115em;
+    -fx-border-radius: 11;
+}
+
 .ship-btn{
     -fx-text-fill: primary-color;
     -fx-fill: primary-color;

@@ -1,16 +1,18 @@
 package ku.cs.models;
 
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class OrderList {
-    private ArrayList<Order> orders;
+    private Set<Order> orders;
 
     public OrderList() {
-        orders = new ArrayList<>();
+        orders = new TreeSet<>();
     }
 
-    public void addOrder(Order order){
-        orders.add(order);
+    public boolean addOrder(Order order){
+        return orders.add(order);
     }
 
     public ArrayList<Order> getOrdersByStore(String name){
@@ -21,10 +23,6 @@ public class OrderList {
             }
         }
         return orderReturn;
-    }
-
-    public ArrayList<Order> getAllOrder(){
-        return orders;
     }
 
     public static ArrayList<Order> getToShipOrder(ArrayList<Order> orders){
@@ -46,9 +44,9 @@ public class OrderList {
     }
 
     public String toCsv(){
-        String result = "id,product_id,amount,is_shipped,tracking_id,buyer,buy_at\n";
-        for(Order order : orders){
-            result += order.toCsv() + "\n";
-        }return result;
+        StringBuilder result = new StringBuilder("id,product_id,amount,is_shipped,tracking_id,buyer,buy_at\n");
+        for(Order order : orders)
+            result.append(order.toCsv()).append("\n");
+        return result.toString();
     }
 }
