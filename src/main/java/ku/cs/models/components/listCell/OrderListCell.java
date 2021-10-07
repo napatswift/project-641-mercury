@@ -1,4 +1,4 @@
-package ku.cs.models.components;
+package ku.cs.models.components.listCell;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
@@ -16,6 +16,8 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import ku.cs.models.Order;
 import ku.cs.models.Product;
+import ku.cs.models.components.UserInfoCard;
+import ku.cs.models.utils.DateTime;
 import ku.cs.service.DataSource;
 
 import java.time.format.DateTimeFormatter;
@@ -164,10 +166,7 @@ public class OrderListCell extends ListCell<Order> {
     }
 
     private void updateTime(){
-        String pattern = "HH:mm - dMMM";
-        DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern(pattern);
-        String timeString = simpleDateFormat.format(order.getTime());
-        timeLabel.setText(timeString.toUpperCase());
+        timeLabel.setText(DateTime.toReadableDateTime(order.getTime()));
     }
 
     private void submitTrackingNumberButtonHandler(ActionEvent event){

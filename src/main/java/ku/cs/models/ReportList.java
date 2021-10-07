@@ -1,6 +1,6 @@
 package ku.cs.models;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,8 +19,8 @@ public class ReportList {
         reports.removeIf(report1 -> report1 == report);
     }
 
-    public Collection<Report> toList() {
-        return reports;
+    public ArrayList<Report> toList() {
+        return new ArrayList<>(this.reports);
     }
 
     public String toCsv(){

@@ -1,19 +1,20 @@
-package ku.cs.models.components;
+package ku.cs.models.components.listCell;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.VBox;
-import ku.cs.models.Report;
+import ku.cs.models.User;
+import ku.cs.models.utils.DateTime;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class ReportListCell extends ListCell<Report> {
+public class UserListCell extends ListCell<User> {
     private final VBox content;
     private final Label topLabel;
     private final Label label;
 
-    public ReportListCell() {
+    public UserListCell() {
         topLabel = new Label();
         label = new Label();
         topLabel.getStyleClass().add("body2");
@@ -24,20 +25,14 @@ public class ReportListCell extends ListCell<Report> {
         content.setSpacing(3);
     }
 
-    private String getTimeString(LocalDateTime time){
-        String pattern = "HH:mm - d MMM";
-        DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern(pattern);
-        return simpleDateFormat.format(time);
-    }
-
     @Override
-    protected void updateItem(Report item, boolean empty) {
+    protected void updateItem(User item, boolean empty) {
         super.updateItem(item, empty);
         if (item != null && !empty) {
-            topLabel.setText(getTimeString(item.getReportDateTime()));
-            label.setText("Report - #ID");
-            setStyle("-fx-border-width: 0 0 2 0; -fx-border-color: surface-overlay");
+            topLabel.setText(DateTime.toReadableDateTime(item.getLoginDateTime()));
+            label.setText(item.getUsername());
             setGraphic(content);
+            setStyle("-fx-border-width: 0 0 2 0; -fx-border-color: surface-overlay");
         } else {
             setGraphic(null);
             setStyle(null);

@@ -13,13 +13,14 @@ import ku.cs.models.Admin;
 import ku.cs.models.User;
 import ku.cs.models.UserList;
 import ku.cs.models.CategoryList;
-import ku.cs.models.components.CategoryListCell;
-import ku.cs.models.components.ReportListCell;
-import ku.cs.models.components.SubCategoryListCell;
-import ku.cs.models.components.UserListCell;
+import ku.cs.models.components.listCell.CategoryListCell;
+import ku.cs.models.components.listCell.ReportListCell;
+import ku.cs.models.components.listCell.SubCategoryListCell;
+import ku.cs.models.components.listCell.UserListCell;
 import ku.cs.models.Report;
 import ku.cs.models.ReportList;
 import ku.cs.service.DataSource;
+import ku.cs.strategy.MostRecentReportComparator;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -153,7 +154,9 @@ public class AdminPageController {
 
     // Report Page
     private void showReportListView() {
-        reportListView.getItems().addAll(reportList.toList());
+        ArrayList<Report> reports = reportList.toList();
+        reports.sort(new MostRecentReportComparator());
+        reportListView.getItems().addAll(reports);
         reportListView.setCellFactory(reportListView -> new ReportListCell());
         reportListView.refresh();
     }

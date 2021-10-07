@@ -1,5 +1,7 @@
 package ku.cs.models;
 
+import ku.cs.strategy.MostRecentLoginUserComparator;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -55,17 +57,13 @@ public class UserList {
         return currUser;
     }
 
-    public Collection<User> toList() {
-        return users;
-    }
-
     public Collection<User> toListOnlyRoleUser(){
         ArrayList<User> newList = new ArrayList<>(users);
         for(User temp : users){
             if(temp.role == User.Role.ADMIN)
                 newList.remove(temp);
         }
-        Collections.reverse(newList);
+        newList.sort(new MostRecentLoginUserComparator());
         return newList;
     }
 

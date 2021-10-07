@@ -1,20 +1,21 @@
-package ku.cs.models.components;
+package ku.cs.models.components.listCell;
+
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.VBox;
 
-public class SubCategoryListCell extends ListCell<String> {
+public class CategoryListCell extends ListCell<String> {
     private final VBox content;
     private final Label label;
 
-    public SubCategoryListCell() {
+    public CategoryListCell() {
         label = new Label();
         label.getStyleClass().add("body1");
         label.setStyle("-fx-text-fill: on-surface-color");
         content = new VBox(label);
-        content.setSpacing(20);
+        content.setSpacing(3);
         content.setPadding(new Insets(10, 0, 10, 0));
     }
 

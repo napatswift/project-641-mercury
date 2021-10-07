@@ -22,6 +22,8 @@ import ku.cs.models.CategoryList;
 import ku.cs.models.components.*;
 import ku.cs.models.components.dialogs.ConfirmEditProductDialog;
 import ku.cs.models.components.dialogs.PictureConfirmDialog;
+import ku.cs.models.components.listCell.OrderListCell;
+import ku.cs.models.components.listCell.ProductListCell;
 import ku.cs.service.DataSource;
 
 
