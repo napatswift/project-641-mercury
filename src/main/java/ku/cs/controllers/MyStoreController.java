@@ -56,7 +56,7 @@ public class MyStoreController  {
     @FXML TextArea descriptionTF;
     @FXML ImageView pictureViewIV;
     @FXML Label nameProductLabel, priceLabel, stockLabel, descriptionLabel;
-    @FXML ListView<Category> categoryLV;
+    @FXML HBox newProductCategoryHBox;
     @FXML ImageView productIV;
     @FXML ListView<Product> productsListLV;
     @FXML ListView<Order> orderLV;
@@ -71,6 +71,7 @@ public class MyStoreController  {
 
     ResizeableImageView selectedProductResizeableImageView;
     Product selectedProduct;
+    CategoryListPane newProductCategoryListPane;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
@@ -87,6 +88,8 @@ public class MyStoreController  {
         handleListProductBtn();
 
         productsRightPane.setVisible(false);
+        newProductCategoryListPane = new CategoryListPane();
+        newProductCategoryHBox.getChildren().add(newProductCategoryListPane);
 
         showProductsListView();
         clearSelectedProduct();
@@ -202,8 +205,7 @@ public class MyStoreController  {
             stockLabel.setText(String.format("%d", product.getStock()));
             descriptionLabel.setText(product.getDetails());
 
-            categoryLV.getItems().addAll(product.getCategories());
-            categoryLV.refresh();
+            newProductCategoryListPane.setCategoryList(product.getCategories());
 
             productIV.setImage(image);
         }
@@ -256,7 +258,7 @@ public class MyStoreController  {
             }
         }
         dataSource.saveProduct();
-        handleAddProductBtn();
+        myStoreTP.getSelectionModel().select(0);
     }
 
     public void handleEditBtn(){

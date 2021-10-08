@@ -58,7 +58,7 @@ public class ResetPasswordController {
     }
 
 
-    public void showUser(User user){
+    private void showUser(User user){
         userName.setText(user.getUsername());
         name.setText(user.getName());
         userImageView.setImage(new Image(user.getPicturePath()));
@@ -93,6 +93,5 @@ public class ResetPasswordController {
                 System.err.println("ให้ตรวจสอบการกำหนด route");
             }
         }
-        return;
     }
 }

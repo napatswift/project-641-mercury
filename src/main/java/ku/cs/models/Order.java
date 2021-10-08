@@ -68,8 +68,6 @@ public class Order implements Comparable<Order> {
         return tracking;
     }
 
-
-
     public String toCsv(){
         return  id + ","
                 + product.getId() + ","

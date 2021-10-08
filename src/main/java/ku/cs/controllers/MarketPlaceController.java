@@ -139,8 +139,9 @@ public class MarketPlaceController {
     private TextField upperBoundTF;
 
     Tab storeProductPageTab;
-
-    Tab orderSummaryTab, reportingTab;
+    Tab orderSummaryTab;
+    Tab reportingTab;
+    CategoryListPane categoryListPane;
 
     private boolean bodyToggle = false;
     private int productIndex = -1;
@@ -213,23 +214,23 @@ public class MarketPlaceController {
 
     /* product page builder */
     private void buildProductPage(){
+        Product product = productList.getSelectedProduct();
         resetStar();
         /* reset amount to 1 */
         amountTF.setText("1");
         /* clear boxes */
-        categoriesVBox.getChildren().clear();
         productListSP.setVvalue(0);
 
         populateReview();
 
         /* set product information */
-        productNameLabel.setText(productList.getSelectedProduct().getName());
-        productPriceLabel.setText("$"+productList.getSelectedProduct().getPrice());
-        productDetailLabel.setText(productList.getSelectedProduct().getDetails());
-        selectedProductIV.setImage(new Image(productList.getSelectedProduct().getPicturePath()));
+        productNameLabel.setText(product.getName());
+        productPriceLabel.setText("$"+product.getPrice());
+        productDetailLabel.setText(product.getDetails());
+        selectedProductIV.setImage(new Image(product.getPicturePath()));
 
         /* set store name */
-        Store store = productList.getSelectedProduct().getStore();
+        Store store = product.getStore();
         User owner = store.getOwner();
         selectedProductStoreHBox.setUserData(store);
         selectedProductStoreHBox.setOnMouseReleased(this::handleSelectedProductStoreBtn);
@@ -239,18 +240,17 @@ public class MarketPlaceController {
         /* set bread crumbs info */
         categoryBreadcrumbsLabel.setText(productList.getSelectedProduct().getCategory().getName());
         categoryBreadcrumbsLabel.setOnMouseReleased(this::handleCategoryBreadcrumbsLabel);
-        productNameBreadcrumbsLabel.setText(productList.getSelectedProduct().getName());
+        productNameBreadcrumbsLabel.setText(product.getName());
 
         /* handling in stock label and icon */
-        amountInStockLabel.setText("" + productList.getSelectedProduct().getStock() + " in stock");
-        if (productList.getSelectedProduct().getStock() < 10){
+        amountInStockLabel.setText("" + product.getStock() + " in stock");
+        if (product.getStock() < 10){
             inStockStatusSvg.setContent("M13,10h-2V8h2V10z M13,6h-2V1h2V6z M7,18c-1.1,0-1.99,0.9-1.99,2S5.9,22,7,22s2-0.9,2-2S8.1,18,7,18z M17,18 c-1.1,0-1.99,0.9-1.99,2s0.89,2,1.99,2s2-0.9,2-2S18.1,18,17,18z M8.1,13h7.45c0.75,0,1.41-0.41,1.75-1.03L21,4.96L19.25,4l-3.7,7 H8.53L4.27,2H1v2h2l3.6,7.59l-1.35,2.44C4.52,15.37,5.48,17,7,17h12v-2H7L8.1,13z");
         } else {
             inStockStatusSvg.setContent("M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z");
         }
         /* handling category */
-        for(Category category: productList.getSelectedProduct().getCategories())
-            categoriesVBox.getChildren().add(new CategoryPane(category));
+        categoryListPane.setCategoryList(product.getCategories());
     }
 
     private void handleCategoryBreadcrumbsLabel(MouseEvent event){
@@ -659,6 +659,9 @@ public class MarketPlaceController {
         populateProduct(15);
         seeMoreBtn.setOnAction(this::handleSeeMoreBtn);
 
+        categoryListPane = new CategoryListPane();
+        categoriesVBox.getChildren().add(categoryListPane);
+
         addThemeMenu();
 
         setTextField();
@@ -693,7 +696,7 @@ public class MarketPlaceController {
         int amountBuy = Integer.parseInt(amountTF.getText());
         if(productList.getSelectedProduct().isInStock(amountBuy)){
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/order-summary.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/order_summary.fxml"));
                 Node node = loader.load();
                 orderSummaryTab.setContent(node);
                 productTP.getTabs().add(orderSummaryTab);
