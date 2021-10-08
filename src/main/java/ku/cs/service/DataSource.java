@@ -69,7 +69,6 @@ public class DataSource {
     public void parseProduct() {
         parseAccount();
         parseCategory();
-        parseReview();
         parseStore();
 
         initFile(PRODUCT_FILE_NAME);
@@ -83,7 +82,9 @@ public class DataSource {
                 int entry_len = nextLine.size();
                 String name = nextLine.get(0);
                 String id = nextLine.get(1);
+
                 if (products.containsId(id)) continue;
+
                 double price = Double.parseDouble(nextLine.get(2));
                 Store store = stores.findStoreByName(nextLine.get(3));
                 int stock = Integer.parseInt(nextLine.get(4));
@@ -111,12 +112,8 @@ public class DataSource {
                     }
                 }
 
-                Iterator<Review> iterator = reviews.iterator(id);
-                while (iterator.hasNext()){
-                    newProduct.addReview(iterator.next());
-                }
-
                 products.addProduct(newProduct);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -127,17 +124,14 @@ public class DataSource {
 
     private void addCategory(String[] entry) {
         if (categories.containsKey(entry[0])) {
-            ArrayList<String> list = categories.getSubcategoryOf(entry[0]);
-            if (!list.contains(entry[1]))
-                list.add(entry[1]);
-        } else{
-            ArrayList<String> list = new ArrayList<>();
-            list.add(entry[1]);
-            categories.put(entry[0], list);
+            categories.addSubCategory(entry[0], entry[1]);
+        } else {
+            categories.addCategory(entry[0]);
         }
     }
 
     public void parseReview() {
+        parseProduct();
         initFile(REVIEW_FILE_NAME);
 
         try {
@@ -153,10 +147,18 @@ public class DataSource {
                 String reviewerUsername = nextLine.get(5);
                 User reviewerUser = userList.getUser(reviewerUsername);
 
-                Review review = new Review(id ,title, detail, reviewerUser, productId);
+                Product product = products.getProduct(productId);
 
-                if (review.setRating(rating))
-                    reviews.addReview(review);
+                if (product == null)
+                    throw new NullPointerException("Product " + productId + " is null");
+
+                Review review = new Review(id ,title, detail, reviewerUser);
+
+                if (!review.setRating(rating))
+                    continue;
+
+                product.addReview(review);
+                reviews.addReview(review);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -204,7 +206,6 @@ public class DataSource {
             CsvReader reader = new CsvReader(directoryPath + File.separator + REPORT_FILE_NAME);
             CsvDocument doc = reader.parse();
             for (int i = 1; i < doc.size(); i++){
-                doc.getRow(i).forEach(System.out::println);
                 List<String> entry = doc.getRow(i);
                 String id = entry.get(0);
                 String reportType = entry.get(1).equalsIgnoreCase("null") ? null : entry.get(1);
@@ -260,7 +261,7 @@ public class DataSource {
             CsvReader reader = new CsvReader(directoryPath + File.separator + CATEGORY_FILE_NAME);
             CsvDocument doc = reader.parse();
             String[] entry;
-            for (int i = 1; i<doc.size(); i++){
+            for (int i = 1; i < doc.size(); i++){
                 entry = doc.getRow(i).toArray(new String[0]);
                 addCategory(entry);
             }

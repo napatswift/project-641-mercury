@@ -20,8 +20,6 @@ import ku.cs.models.components.UserInfoCard;
 import ku.cs.models.utils.DateTime;
 import ku.cs.service.DataSource;
 
-import java.time.format.DateTimeFormatter;
-
 public class OrderListCell extends ListCell<Order> {
     private final VBox content;
     private final UserInfoCard userInfoCard;
@@ -138,8 +136,8 @@ public class OrderListCell extends ListCell<Order> {
                 (int) image.getHeight());
         productImage.setImage(croppedImage);
         productNameLabel.setText(product.getName());
-        amountLabel.setText("x" + order.getAmount());
-        totalCostLabel.setText(String.format("$%.2f", product.getPrice() * order.getAmount()));
+        amountLabel.setText("x" + order.getQuantity());
+        totalCostLabel.setText(String.format("$%.2f", product.getPrice() * order.getQuantity()));
     }
 
     private void updateStatus(){

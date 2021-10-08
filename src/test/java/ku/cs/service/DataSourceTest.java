@@ -16,4 +16,15 @@ class DataSourceTest {
         dataSource.saveCategory();
     }
 
+    @Test
+    void testParsingReview(){
+        DataSource dataSource = new DataSource("data");
+        dataSource.parseReview();
+        ProductList products = dataSource.getProducts();
+        assertEquals(8, products.size());
+        dataSource.saveCategory();
+        dataSource.saveProduct();
+        dataSource.saveReview();
+    }
+
 }

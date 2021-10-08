@@ -44,9 +44,7 @@ public class UserInfoCard extends HBox {
         usernameLabel.setText("@" + user.getUsername());
     }
 
-    public User getUser() {
-        return user;
-    }
+    public User getUser() { return user; }
 
     public void setUser(User user) {
         this.user = user;

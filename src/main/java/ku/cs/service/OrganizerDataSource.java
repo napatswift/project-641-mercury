@@ -13,34 +13,10 @@ public class OrganizerDataSource {
     }
 
     public void readData() {
-        Organizer chang = new Organizer();
-        Organizer bank = new Organizer();
-        Organizer feel = new Organizer();
-        Organizer mek = new Organizer();
-
-        chang.setName("ณัฐพงศ์ พิมพิสาร");
-        chang.setNickname("ช้าง");
-        chang.setStudentId("6310401327");
-        chang.setGithubId("changatKU");
-        chang.setImagePath("/ku/cs/image/chang.jpg");
-
-        bank.setName("ณัฐดนัย ตันวาณิชกุล");
-        bank.setNickname("แบงค์");
-        bank.setStudentId("6310403974");
-        bank.setGithubId("Natdadai");
-        bank.setImagePath("/ku/cs/image/media-cup-holder.png");
-
-        feel.setName("ณภัทร ดลภาวิจิต");
-        feel.setNickname("ฟีล");
-        feel.setStudentId("6310400967");
-        feel.setGithubId("napatswift");
-        feel.setImagePath("/ku/cs/image/media-cup-holder.png");
-
-        mek.setName("พีรพัฒน์ ตันตระกูล");
-        mek.setNickname("เมฆ");
-        mek.setStudentId("6310401084");
-        mek.setGithubId("Mekpearaphat");
-        mek.setImagePath("/ku/cs/image/mek.jpg");
+        Organizer chang = new Organizer("ณัฐพงศ์ พิมพิสาร", "ช้าง", "6310401327", "changatKU", "/ku/cs/image/chang.jpg");
+        Organizer bank  = new Organizer("ณัฐดนัย ตันวาณิชกุล", "แบงค์", "6310403974", "Natdadai", "/ku/cs/image/media-cup-holder.png");
+        Organizer feel  = new Organizer("ณภัทร ดลภาวิจิต", "ฟีล", "6310400967", "napatswift", "/ku/cs/image/media-cup-holder.png");
+        Organizer mek   = new Organizer("พีรพัฒน์ ตันตระกูล", "เมฆ", "6310401084", "Mekpearaphat", "/ku/cs/image/mek.jpg");
 
         list.add(chang);
         list.add(bank);

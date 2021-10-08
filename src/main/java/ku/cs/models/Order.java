@@ -5,25 +5,25 @@ import java.util.UUID;
 
 public class Order implements Comparable<Order> {
     private final Product product;
-    private final int amount;
+    private final int quantity;
     private boolean isShipped;
     private String tracking;
     private final User buyer;
     private final LocalDateTime localDateTime;
     private final String id;
 
-    public Order(Product product, int amount, User buyer) {
+    public Order(Product product, int quantity, User buyer) {
         this.product = product;
-        this.amount = amount;
+        this.quantity = quantity;
         this.buyer = buyer;
         this.localDateTime = LocalDateTime.now();
         isShipped = false;
         id = UUID.randomUUID().toString();
     }
 
-    public Order(String id, Product product, int amount, boolean isShipped, String tracking, User buyer, LocalDateTime localDateTime) {
+    public Order(String id, Product product, int quantity, boolean isShipped, String tracking, User buyer, LocalDateTime localDateTime) {
         this.product = product;
-        this.amount = amount;
+        this.quantity = quantity;
         this.isShipped = isShipped;
         this.buyer = buyer;
         this.tracking = tracking;
@@ -47,6 +47,7 @@ public class Order implements Comparable<Order> {
     public LocalDateTime getTime() {
         return localDateTime;
     }
+
     public String getStoreName(){
         return product.getStore().getName();
     }
@@ -59,8 +60,8 @@ public class Order implements Comparable<Order> {
         return buyer;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getQuantity() {
+        return quantity;
     }
 
     public String getTracking() {
@@ -72,7 +73,7 @@ public class Order implements Comparable<Order> {
     public String toCsv(){
         return  id + ","
                 + product.getId() + ","
-                + amount + ","
+                + quantity + ","
                 + isShipped + ","
                 + tracking + ","
                 + buyer.getUsername() + ","

@@ -4,11 +4,10 @@ import ku.cs.strategy.MostRecentLoginUserComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.TreeSet;
 
 public class UserList {
-    private Collection<User> users;
+    private final Collection<User> users;
 
     private User currUser;
 
@@ -18,10 +17,6 @@ public class UserList {
 
     public boolean addUser(User user){
         return users.add(user);
-    }
-
-    public void removeUser(String name){
-        users.removeIf(userAccount -> userAccount.getName().equals(name));
     }
 
     public boolean isExist(String username){

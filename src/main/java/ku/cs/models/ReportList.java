@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class ReportList {
-    private Set<Report> reports;
+    private final Set<Report> reports;
 
     public ReportList() {
        reports = new TreeSet<>();

@@ -57,7 +57,5 @@ public class ProductCard extends VBox {
         getChildren().addAll(image, hBox);
     }
 
-    public Product getProduct() {
-        return product;
-    }
+    public Product getProduct() { return product; }
 }

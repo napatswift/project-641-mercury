@@ -37,10 +37,6 @@ public class Product implements Comparable<Product> {
         this(name, details, UUID.randomUUID().toString(), LocalDateTime.now(), store);
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getPicturePath() {
         return new File(System.getProperty("user.dir")
                 + File.separator
@@ -49,49 +45,20 @@ public class Product implements Comparable<Product> {
                 + pictureName).toURI().toString();
     }
 
-    public ArrayList<Category> getCategories() {
-        return categories;
-    }
+    public ArrayList<Category> getCategories() { return categories; }
 
-    public Category getCategory(int index) {
-        return categories.get(index);
-    }
-
-    public Category getCategory() {
-        return getCategory(0);
-    }
-
-    public LocalDateTime getRolloutDate() {
-        return rolloutDate;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public double getRating(){
-        return rating;
-    }
-
-    public int getReview() {
-        return reviews.size();
-    }
-
-    public String getId(){
-        return id;
-    }
-
-    public Store getStore() {
-        return store;
-    }
+    public Category getCategory(int index) { return categories.get(index); }
+    public String getId()                  { return id; }
+    public String getName()                { return name; }
+    public Category getCategory()          { return getCategory(0); }
+    public LocalDateTime getRolloutDate()  { return rolloutDate; }
+    public String getDetails()             { return details; }
+    public double getPrice()               { return price; }
+    public int getStock()                  { return stock; }
+    public double getRating()              { return rating; }
+    public int getReview()                 { return reviews.size(); }
+    public ArrayList<Review> getReviews()  { return reviews; }
+    public Store getStore()                { return store; }
 
     public boolean setPrice(double price) {
         if (price >= 0) {
@@ -123,26 +90,13 @@ public class Product implements Comparable<Product> {
         this.pictureName = pictureName;
         return file.exists();
     }
+    public void setName(String name)     { this.name = name; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setStore(Store store)    { this.store = store; }
+    public boolean isInStock()           { return this.stock > 0; }
+    public boolean stockIsLow()          { return store.stockIsLow(this); }
 
-    public void setStore(Store store) {
-        this.store = store;
-    }
-
-    public boolean isInStock(){
-        return this.stock > 0;
-    }
-
-    public boolean isInStock(int amount){
-        return this.stock > 0 && amount <= this.stock;
-    }
-
-    public ArrayList<Review> getReviews() {
-        return reviews;
-    }
+    public boolean isInStock(int amount) { return this.stock > 0 && amount <= this.stock; }
 
     public boolean sell(int amount){
         if (stock >= amount){
@@ -151,10 +105,6 @@ public class Product implements Comparable<Product> {
         }else{
             return false;
         }
-    }
-
-    public boolean stockIsLow(){
-        return store.stockIsLow(this);
     }
 
     public boolean containsCategory(String category){

@@ -1,5 +1,7 @@
 package ku.cs.models;
 
+import ku.cs.strategy.MostRecentOrderComparator;
+
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
@@ -16,31 +18,36 @@ public class OrderList {
     }
 
     public ArrayList<Order> getOrdersByStore(String name){
-        ArrayList<Order> orderReturn = new ArrayList<>();
+        ArrayList<Order> list = new ArrayList<>();
         for(Order order : orders){
             if(order.getStoreName().equals(name)){
-                orderReturn.add(order);
+                list.add(order);
             }
         }
-        return orderReturn;
+        list.sort(new MostRecentOrderComparator());
+        return list;
     }
 
     public static ArrayList<Order> getToShipOrder(ArrayList<Order> orders){
-        ArrayList<Order> orderArrayList = new ArrayList<>();
+        ArrayList<Order> list = new ArrayList<>();
         for(Order order : orders){
             if(!order.isShipped()){
-                orderArrayList.add(order);
+                list.add(order);
             }
-        }return orderArrayList;
+        }
+        list.sort(new MostRecentOrderComparator());
+        return list;
     }
 
     public static ArrayList<Order> getShipedOrder(ArrayList<Order> orders){
-        ArrayList<Order> orderArrayList = new ArrayList<>();
+        ArrayList<Order> list = new ArrayList<>();
         for(Order order : orders){
             if(order.isShipped()){
-                orderArrayList.add(order);
+                list.add(order);
             }
-        }return orderArrayList;
+        }
+        list.sort(new MostRecentOrderComparator());
+        return list;
     }
 
     public String toCsv(){

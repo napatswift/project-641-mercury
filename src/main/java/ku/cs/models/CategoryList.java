@@ -3,7 +3,7 @@ package ku.cs.models;
 import java.util.*;
 
 public class CategoryList {
-    private Map<String, ArrayList<String>> categories;
+    private final Map<String, Set<String>> categories;
 
     public CategoryList() {
         categories = new HashMap<>();
@@ -13,12 +13,25 @@ public class CategoryList {
         return categories.containsKey(category);
     }
 
-    public ArrayList<String> getSubcategoryOf(String key){
+    public Set<String> getSubcategoryOf(String key){
         return categories.get(key);
     }
 
-    public ArrayList<String> put(String key, ArrayList<String> val){
-        return categories.put(key, val);
+    public boolean addSubCategory(String key, String subCat){
+        if (containsKey(key))
+            return categories.get(key).add(subCat);
+        return false;
+    }
+
+    public boolean addCategory(String key){
+        if (categories.containsKey(key))
+            return false;
+        categories.put(key, new TreeSet<>());
+        return true;
+    }
+
+    public void put(String key, Set<String> val){
+        categories.put(key, val);
     }
 
     public Set<String> categorySet(){

@@ -33,43 +33,110 @@ import java.util.Iterator;
 
 public class MarketPlaceController {
     @FXML
-    AnchorPane bodyAP;
+    private Label amountInStockLabel;
+
     @FXML
-    ScrollPane productListSP;
+    private TextField amountTF;
+
     @FXML
-    TabPane productTP;
+    private AnchorPane bodyAP;
+
     @FXML
-    Label productNameLabel, productPriceLabel,
-            productDetailLabel,
-            categoryBreadcrumbsLabel, productNameBreadcrumbsLabel,
-            amountInStockLabel,
-            storeNameLabel,
-            ratingSubmissionLabel;
+    private HBox categoriesMenuHBox;
+
     @FXML
-    SVGPath inStockStatusSvg,
-            star1, star2, star3, star4, star5;
+    private VBox categoriesVBox;
+
     @FXML
-    ImageView storeImageIV, selectedProductIV;
+    private Label categoryBreadcrumbsLabel;
+
     @FXML
-    FlowPane productFlowPane;
+    private TextArea detailReviewTA;
+
     @FXML
-    Button seeMoreBtn,
-            starBtn1, starBtn2, starBtn3, starBtn4, starBtn5;
+    private HBox filerHBox;
+
     @FXML
-    MenuButton sortingMB;
+    private SVGPath inStockStatusSvg;
+
+
     @FXML
-    TextField upperBoundTF, lowerBoundTF, amountTF,
-            reviewTitleTF;
+    private TextField lowerBoundTF;
+
     @FXML
-    TextArea detailReviewTA;
+    private Label productDetailLabel;
+
     @FXML
-    HBox starsHBox, filerHBox,
-        reviewRatingPanelStarHBox, categoriesMenuHBox,
-        selectedProductStoreHBox;
+    private FlowPane productFlowPane;
+
     @FXML
-    VBox reviewVBox, categoriesVBox;
+    private ScrollPane productListSP;
+
     @FXML
-    ToolBar topBarTB;
+    private Label productNameBreadcrumbsLabel;
+
+    @FXML
+    private Label productNameLabel;
+
+    @FXML
+    private Label productPriceLabel;
+
+    @FXML
+    private TabPane productTP;
+
+    @FXML
+    private Label ratingSubmissionLabel;
+
+    @FXML
+    private HBox reviewRatingPanelStarHBox;
+
+    @FXML
+    private TextField reviewTitleTF;
+
+    @FXML
+    private VBox reviewVBox;
+
+    @FXML
+    private Button seeMoreBtn;
+
+    @FXML
+    private ImageView selectedProductIV;
+
+    @FXML
+    private HBox selectedProductStoreHBox;
+
+    @FXML
+    private MenuButton sortingMB;
+
+    @FXML
+    private SVGPath star1;
+
+    @FXML
+    private SVGPath star2;
+
+    @FXML
+    private SVGPath star3;
+
+    @FXML
+    private SVGPath star4;
+
+    @FXML
+    private SVGPath star5;
+
+    @FXML
+    private HBox starsHBox;
+
+    @FXML
+    private ImageView storeImageIV;
+
+    @FXML
+    private Label storeNameLabel;
+
+    @FXML
+    private ToolBar topBarTB;
+
+    @FXML
+    private TextField upperBoundTF;
 
     Tab storeProductPageTab;
 
@@ -112,7 +179,7 @@ public class MarketPlaceController {
             try {
                 lowerBoundParsed = Double.parseDouble(lowerBoundTF.getText());
             } catch (NumberFormatException e) {
-                System.err.println(e);
+                e.printStackTrace();
             }
         }
         if (upperBoundTF.getText().equals("")) {
@@ -121,7 +188,7 @@ public class MarketPlaceController {
             try {
                 upperBoundParsed = Double.parseDouble(upperBoundTF.getText());
             } catch (NumberFormatException e){
-                System.err.println(e);
+                e.printStackTrace();
             }
         }
     }
@@ -155,6 +222,7 @@ public class MarketPlaceController {
         amountTF.setText("1");
         /* clear boxes */
         categoriesVBox.getChildren().clear();
+        productListSP.setVvalue(0);
 
         populateReview();
 
@@ -345,13 +413,13 @@ public class MarketPlaceController {
     }
 
     @FXML
-    private void handleMargetPlaceBtn(MouseEvent e){
+    private void handleMargetPlaceBtn(){
         setBodyToggle();
         productTP.getSelectionModel().select(0);
     }
 
     @FXML
-    private void handleSubmitReviewBtn(ActionEvent e){
+    private void handleSubmitReviewBtn(){
         setBodyToggle();
         for(Review review: dataSource.getProducts().getSelectedProduct().getReviews())
             if (review.getAuthor().getUsername().equals(currUser.getUsername())) {
@@ -383,7 +451,7 @@ public class MarketPlaceController {
     }
 
     @FXML
-    private void handleCategoryBtn(ActionEvent e){
+    private void handleCategoryBtn(){
         TranslateTransition translateTransition = new TranslateTransition();
         translateTransition.setDuration(Duration.millis(200));
         translateTransition.setNode(bodyAP);
@@ -405,7 +473,7 @@ public class MarketPlaceController {
     }
 
     @FXML
-    public void handleMyStore(ActionEvent event) {
+    public void handleMyStore() {
         setBodyToggle();
         if (!dataSource.getUserList().getCurrUser().getHasStore()) {
             try {
@@ -551,7 +619,7 @@ public class MarketPlaceController {
         categoriesMenuHBox.getChildren().add(box);
     }
 
-    public void handleLogOutBtn(ActionEvent e) {
+    public void handleLogOutBtn() {
         try {
             com.github.saacsos.FXRouter.goTo("login");
         } catch (IOException exception) {
@@ -619,7 +687,7 @@ public class MarketPlaceController {
     }
 
     @FXML
-    public void handleBuyBtn(ActionEvent actionEvent) {
+    public void handleBuyBtn() {
         int amountBuy = Integer.parseInt(amountTF.getText());
         if(productList.getSelectedProduct().isInStock(amountBuy)){
             try {
