@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 abstract public class Report<T> implements Comparable<Report>{
-
     protected String id;
     private final String type;
     private final LocalDateTime reportDateTime;

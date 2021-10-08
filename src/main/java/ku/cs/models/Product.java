@@ -15,8 +15,8 @@ public class Product implements Comparable<Product> {
 
     private double rating;
     private final LocalDateTime rolloutDate;
-    private ArrayList<Category> categories;
-    private ArrayList<Review> reviews;
+    private final ArrayList<Category> categories;
+    private final ArrayList<Review> reviews;
 
     @Override
     public int compareTo(Product other) {

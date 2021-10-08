@@ -21,6 +21,7 @@ public class ProductList implements Iterable<Product>{
         return products.stream()
                 .filter(p -> p.getPrice() >= lowerBound
                         && p.getPrice() <= upperBound
+                        && p.getStock() > 0
                         && (category == null || p.containsCategory(category)))
                 .iterator();
 

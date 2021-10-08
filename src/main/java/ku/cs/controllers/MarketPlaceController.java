@@ -173,23 +173,19 @@ public class MarketPlaceController {
     }
 
     private void filterProduct(){
-        if (lowerBoundTF.getText().equals("")) {
+        String lower = lowerBoundTF.getText();
+        String upper = upperBoundTF.getText();
+
+        if (lower.equals("")) {
             lowerBoundParsed = 0;
-        } else{
-            try {
-                lowerBoundParsed = Double.parseDouble(lowerBoundTF.getText());
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
+        } else if (lower.matches("\\d\\.*")) {
+                lowerBoundParsed = Double.parseDouble(lower);
         }
-        if (upperBoundTF.getText().equals("")) {
+
+        if (upper.equals("")) {
             upperBoundParsed = Double.MAX_VALUE;
-        } else{
-            try {
-                upperBoundParsed = Double.parseDouble(upperBoundTF.getText());
-            } catch (NumberFormatException e){
-                e.printStackTrace();
-            }
+        } else if (upper.matches("\\d\\.*")) {
+                upperBoundParsed = Double.parseDouble(upper);
         }
     }
 
@@ -247,19 +243,10 @@ public class MarketPlaceController {
 
         /* handling in stock label and icon */
         amountInStockLabel.setText("" + productList.getSelectedProduct().getStock() + " in stock");
-        if (productList.getSelectedProduct().getStock() < 5){
-            inStockStatusSvg.setContent(
-                    "M12,4.6L15,9h-2.6l8.6,8.6l2-7.3l0-0.3c0-0.5-0.5-1-1-1h-4.8l-4.4-6.6C12.6," +
-                            "2.2,12.3,2,12,2s-0.6,0.1-0.8,0.4L9,5.6L10.4,7L12,4.6z M9.9,9L9.9," +
-                            "9L9.4,8.5l0,0L8,7.1l0,0L3.4,2.5L2.6,1.8L1.9,1L0.6,2.3L5,6.7l2,2L6.8," +
-                            "9H2c-0.5,0-1,0.5-1,1c0,0.1,0,0.2,0,0.3l2.5,9.3c0.2,0.8,1,1.5,1.9," +
-                            "1.5h13c0.2,0,0.5,0,0.7-0.1l2.9,2.9l1.3-1.3l-2.9-2.9c0,0,0,0,0,0L9.9,9z");
+        if (productList.getSelectedProduct().getStock() < 10){
+            inStockStatusSvg.setContent("M13,10h-2V8h2V10z M13,6h-2V1h2V6z M7,18c-1.1,0-1.99,0.9-1.99,2S5.9,22,7,22s2-0.9,2-2S8.1,18,7,18z M17,18 c-1.1,0-1.99,0.9-1.99,2s0.89,2,1.99,2s2-0.9,2-2S18.1,18,17,18z M8.1,13h7.45c0.75,0,1.41-0.41,1.75-1.03L21,4.96L19.25,4l-3.7,7 H8.53L4.27,2H1v2h2l3.6,7.59l-1.35,2.44C4.52,15.37,5.48,17,7,17h12v-2H7L8.1,13z");
         } else {
-            inStockStatusSvg.setContent("" +
-                    "M22,9H17.21L12.83,2.44A1,1,0,0,0,12,2a1,1,0,0,0-.83.43L6.79," +
-                    "9H2a1,1,0,0,0-1,1,.84.84,0,0,0,0,.27l2.54,9.27A2,2,0,0,0,5.5," +
-                    "21h13a2,2,0,0,0,1.93-1.46L23,10.27,23,10A1,1,0,0,0,22,9ZM12,4.6," +
-                    "15,9H9Zm-.21,13.9L8.19,15l1.4-1.4,2.2,2.1L16,11.5l1.4,1.4Z");
+            inStockStatusSvg.setContent("M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z");
         }
         /* handling category */
         for(Category category: productList.getSelectedProduct().getCategories())
@@ -392,6 +379,7 @@ public class MarketPlaceController {
         int stock = productList.getSelectedProduct().getStock();
         String amountStr = amountTF.getText();
         int amount;
+        String btnId = button.getId();
 
         try {
             amount = Integer.parseInt(amountStr);
@@ -399,11 +387,10 @@ public class MarketPlaceController {
             amount = 1;
         }
 
-        if (button.getId().equals("increase")){
-            if(stock > amount)
-                amount++;
-        } else if (button.getId().equals("decrease")){
-            if(amount > 1) amount--;
+        if (btnId.equals("increase")){
+            if (stock > amount) amount++;
+        } else if (btnId.equals("decrease")){
+            if (amount > 1) amount--;
         }
 
         if (amount > stock) amount = stock;
@@ -674,9 +661,24 @@ public class MarketPlaceController {
 
         addThemeMenu();
 
+        setTextField();
         setProductTPModel();
         orderSummaryTab = new Tab("order_summary");
         reportingTab = new Tab("reporting");
+    }
+
+    private void setTextField(){
+        amountTF.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d\\.*")) {
+                amountTF.setText(newValue.replaceAll("[^\\d\\.]", ""));
+            }
+            if (!amountTF.getText().isBlank() || !amountTF.getText().isEmpty()) {
+                int quantity = Integer.parseInt(amountTF.getText());
+                int productQuantity = dataSource.getProducts().getSelectedProduct().getStock();
+                if (quantity > productQuantity)
+                    amountTF.setText(productQuantity + "");
+            }
+        });
     }
 
     private void handleCancelBtn(ActionEvent event){

@@ -61,20 +61,13 @@ public class MyStoreController  {
     @FXML ListView<Product> productsListLV;
     @FXML ListView<Order> orderLV;
     @FXML Label rateLB, detailsLB,numberLowerLabel;
-    @FXML
-    TextField nameProductLB, priceLB, stockLB;
-    @FXML
-    VBox rightProductVB, ImageViewVBox;
-    @FXML
-    SplitPane productSP;
-    @FXML
-    HBox ratingStarsSelectedProduct;
-    @FXML
-    SVGPath stockWarningSelectedProductSVG;
-    @FXML
-    AnchorPane productsRightPane;
-    @FXML
-    ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
+    @FXML TextField nameProductLB, priceLB, stockLB;
+    @FXML VBox rightProductVB, ImageViewVBox;
+    @FXML SplitPane productSP;
+    @FXML HBox ratingStarsSelectedProduct;
+    @FXML SVGPath stockWarningSelectedProductSVG;
+    @FXML AnchorPane productsRightPane;
+    @FXML ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
 
     ResizeableImageView selectedProductResizeableImageView;
     Product selectedProduct;
