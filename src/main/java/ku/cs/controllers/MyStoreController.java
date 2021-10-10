@@ -1,15 +1,20 @@
 package ku.cs.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import com.github.saacsos.FXRouter;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -37,6 +42,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Optional;
 
 public class MyStoreController  {
@@ -69,6 +75,8 @@ public class MyStoreController  {
     @FXML AnchorPane productsRightPane;
     @FXML ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
 
+    private Tab myStoreTab, myAccountTab;
+
     ResizeableImageView selectedProductResizeableImageView;
     Product selectedProduct;
     CategoryListPane newProductCategoryListPane;
@@ -78,12 +86,7 @@ public class MyStoreController  {
         currUser = dataSource.getUserList().getCurrUser();
         dataSource.parseOrder();
         orders = dataSource.getOrders().getOrdersByStore(dataSource.getUserList().getCurrUser().getStoreName());
-        usernameLabel.setText("@" + currUser.getUsername());
-        nameStoreLabel.setText(currUser.getStoreName());
-        nameLabel.setText(currUser.getName());
-        numberLowerLabel.setText("" + currUser.getStore().getStockLowerBound());
-        userImage.setImage(new Image(currUser.getPicturePath()));
-        userImage.setClip(new Circle(25, 25, 25));
+        setupUserInfo();
         loadCategory();
         handleListProductBtn();
 
@@ -92,12 +95,37 @@ public class MyStoreController  {
         newProductCategoryHBox.getChildren().add(newProductCategoryListPane);
 
         showProductsListView();
-        clearSelectedProduct();
         handleProductsListView();
+        setupTabPaneListener();
         showOrderListView(orders);
 
         setGroup();
         setNumberTextField();
+    }
+
+    private void setupUserInfo(){
+        usernameLabel.setText("@" + currUser.getUsername());
+        nameStoreLabel.setText(currUser.getStoreName());
+        nameLabel.setText(currUser.getName());
+        numberLowerLabel.setText("" + currUser.getStore().getStockLowerBound());
+        userImage.setImage(new Image(currUser.getPicturePath()));
+        userImage.setClip(new Circle(25, 25, 25));
+    }
+
+    private void setupTabPaneListener(){
+        myStoreTP.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
+            @Override
+            public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
+                if (newValue != myAccountTab) {
+                    myStoreTP.getTabs().remove(myAccountTab);
+                    myAccountTab = null;
+                }
+                if (newValue != myStoreTab) {
+                    myStoreTP.getTabs().remove(myStoreTab);
+                    myStoreTab = null;
+                }
+            }
+        });
     }
 
     private void setNumberTextField() {
@@ -134,6 +162,7 @@ public class MyStoreController  {
             if (nt != null)
                 ((ToggleButton) nt).getStyleClass().add("list-item-active-btn");
         });
+
         myAccountMenuBtn.setToggleGroup(group);
         myStoreMenuBtn.setToggleGroup(group);
         productsMenuBtn.setToggleGroup(group);
@@ -143,7 +172,7 @@ public class MyStoreController  {
     }
 
     @FXML
-    public void handleBackBtn(ActionEvent event){
+    public void handleBackBtn(){
         try {
             FXRouter.goTo("marketplace",dataSource);
         } catch (IOException e) {
@@ -151,18 +180,72 @@ public class MyStoreController  {
         }
     }
 
+    @FXML
+    public void handleMyAccountMenuBtn(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/my_account.fxml"));
+        try {
+            Node node = loader.load();
+            myAccountTab = new Tab("my_account", node);
+            if (!myStoreTP.getTabs().contains(myAccountTab))
+                myStoreTP.getTabs().add(myAccountTab);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        myStoreTP.getSelectionModel().select(myAccountTab);
+        MyAccountController controller = loader.getController();
+        controller.showUser(dataSource.getUserList().getCurrUser());
+    }
+
+    @FXML
+    public void handleMyStoreMenuBtn(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/store_product_page.fxml"));
+        try {
+            Node node = loader.load();
+            myStoreTab = new Tab("my_store", node);
+            if (!myStoreTP.getTabs().contains(myStoreTab))
+                myStoreTP.getTabs().add(myStoreTab);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        myStoreTP.getSelectionModel().select(myStoreTab);
+
+        Store store = currUser.getStore();
+        StoreProductPageController controller = loader.getController();
+        controller.setStore(store);
+
+        FlowPane flowPane = controller.getProductFlowPane();
+        ArrayList<Product> products = dataSource.getProducts().getProductByNameStore(store.getName());
+        for (Product p: products) {
+            ProductCard card = new ProductCard(p);
+            card.setOnMouseReleased(this::handleProductCardStoreProductPage);
+            flowPane.getChildren().add(card);
+        }
+    }
+
+    private void handleProductCardStoreProductPage(MouseEvent event){
+        ProductCard productCard = (ProductCard) event.getSource();
+        if (productsListLV.getItems().contains(productCard.getProduct())) {
+            productsListLV.getSelectionModel().select(productCard.getProduct());
+            productsMenuBtn.fire();
+        }
+    }
+
+    @FXML
     public void handleListProductBtn(){
         myStoreTP.getSelectionModel().select(0);
     }
 
+    @FXML
     public void handleAddProductBtn(){
         product = new Product("", "", dataSource.getUserList().getCurrUser().getStore());
         myStoreTP.getSelectionModel().select(1);
     }
+
+    @FXML
     public void handleOrdersBtn(){
         myStoreTP.getSelectionModel().select(4);
     }
-
 
     public void loadCategory(){
         ObservableList<String> list = FXCollections.observableArrayList(dataSource.getCategories().categorySet());
@@ -211,7 +294,8 @@ public class MyStoreController  {
         }
     }
 
-    public void handleSelectProductPicture(MouseEvent event) {
+    @FXML
+    public void handleSelectProductPicture() {
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
@@ -332,15 +416,7 @@ public class MyStoreController  {
         showOrderListView(OrderList.getShipedOrder(orders));
     }
 
-    public void clearSelectedProduct(){
-        nameProductLB.setText("");
-        priceLB.setText("");
-        stockLB.setText("");
-        rateLB.setText("");
-        detailsLB.setText("");
-    }
-
-    public void handleChangeNumberLower(ActionEvent actionEvent) {
+    public void handleChangeStockLowerBoundWarning() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setGraphic(null);
         dialog.setHeaderText(null);

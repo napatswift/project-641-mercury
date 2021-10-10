@@ -65,12 +65,12 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0">
                      <children>
-                        <ToggleButton fx:id="myAccountMenuBtn" mnemonicParsing="false" prefWidth="999.0" styleClass="list-item-btn" text="My Account">
+                        <ToggleButton fx:id="myAccountMenuBtn" mnemonicParsing="false" onAction="#handleMyAccountMenuBtn" prefWidth="999.0" styleClass="list-item-btn" text="My Account">
                            <padding>
                               <Insets bottom="10.0" top="10.0" />
                            </padding>
                         </ToggleButton>
-                        <ToggleButton fx:id="myStoreMenuBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefWidth="999.0" styleClass="list-item-btn" text="My store">
+                        <ToggleButton fx:id="myStoreMenuBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleMyStoreMenuBtn" prefWidth="999.0" styleClass="list-item-btn" text="My store">
                            <padding>
                               <Insets bottom="10.0" top="10.0" />
                            </padding>
@@ -118,7 +118,7 @@
                                              <children>
                                                 <Label prefHeight="18.0" prefWidth="116.0" text="Bottom Edge" />
                                                 <Label fx:id="numberLowerLabel" prefHeight="18.0" prefWidth="116.0" text="numberLower" />
-                                                <Button fx:id="changeNumberLower" mnemonicParsing="false" onAction="#handleChangeNumberLower" style="-fx-padding: 5 30 5 30;" styleClass="outline-btn" text="EDIT" />
+                                                <Button fx:id="changeStockLowerBoundWarning" mnemonicParsing="false" onAction="#handleChangeStockLowerBoundWarning" style="-fx-padding: 5 30 5 30;" styleClass="outline-btn" text="EDIT" />
                                              </children>
                                              <padding>
                                                 <Insets left="10.0" top="10.0" />

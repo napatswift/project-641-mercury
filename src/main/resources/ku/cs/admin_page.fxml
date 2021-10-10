@@ -16,6 +16,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.ToggleButton?>
 <SplitPane dividerPositions="0.25" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.AdminPageController">
    <items>
       <VBox prefHeight="814.0" prefWidth="475.0" spacing="5.0" style="-fx-background-color: surface-color;">
@@ -33,11 +34,11 @@
                   <Insets bottom="25.0" left="10.0" />
                </VBox.margin>
             </VBox>
-            <Button fx:id="userButton" mnemonicParsing="false" onAction="#handleUserButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-active-btn" text="User" />
-            <Button fx:id="categoryButton" mnemonicParsing="false" onAction="#handleCategoryButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Category" />
-            <Button fx:id="reportButton" mnemonicParsing="false" onAction="#handleReportButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Report" />
-            <Button fx:id="resetPasswordButton" mnemonicParsing="false" onAction="#handleResetPasswordButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Reset Password" />
-            <Button fx:id="logOutButton" mnemonicParsing="false" onAction="#handleLogOutButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Log-Out" />
+            <ToggleButton fx:id="userButton" mnemonicParsing="false" onAction="#handleUserButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="User" />
+            <ToggleButton fx:id="categoryButton" mnemonicParsing="false" onAction="#handleCategoryButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Category" />
+            <ToggleButton fx:id="reportButton" mnemonicParsing="false" onAction="#handleReportButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Report" />
+            <ToggleButton fx:id="resetPasswordButton" mnemonicParsing="false" onAction="#handleResetPasswordButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Reset Password" />
+            <ToggleButton fx:id="logOutButton" mnemonicParsing="false" onAction="#handleLogOutButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Log-Out" />
          </children>
          <padding>
             <Insets left="5.0" right="5.0" top="70.0" />
