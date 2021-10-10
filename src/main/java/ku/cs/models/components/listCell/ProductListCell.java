@@ -1,4 +1,4 @@
-package ku.cs.models.components;
+package ku.cs.models.components.listCell;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import ku.cs.models.Product;
+import ku.cs.models.utils.DateTime;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -64,9 +65,7 @@ public class ProductListCell extends ListCell<Product> {
     }
 
     private void setTime(LocalDateTime time){
-        String pattern = "HH:mm - d MMM yy";
-        DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern(pattern);
-        topLabel.setText(simpleDateFormat.format(time));
+        topLabel.setText(DateTime.toReadableDateTime(time));
     }
 
     private void setImage(String imagePath){

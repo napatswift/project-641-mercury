@@ -22,6 +22,8 @@ import ku.cs.models.CategoryList;
 import ku.cs.models.components.*;
 import ku.cs.models.components.dialogs.ConfirmEditProductDialog;
 import ku.cs.models.components.dialogs.PictureConfirmDialog;
+import ku.cs.models.components.listCell.OrderListCell;
+import ku.cs.models.components.listCell.ProductListCell;
 import ku.cs.service.DataSource;
 
 
@@ -54,28 +56,22 @@ public class MyStoreController  {
     @FXML TextArea descriptionTF;
     @FXML ImageView pictureViewIV;
     @FXML Label nameProductLabel, priceLabel, stockLabel, descriptionLabel;
-    @FXML ListView<Category> categoryLV;
+    @FXML HBox newProductCategoryHBox;
     @FXML ImageView productIV;
     @FXML ListView<Product> productsListLV;
     @FXML ListView<Order> orderLV;
     @FXML Label rateLB, detailsLB,numberLowerLabel;
-    @FXML
-    TextField nameProductLB, priceLB, stockLB;
-    @FXML
-    VBox rightProductVB, ImageViewVBox;
-    @FXML
-    SplitPane productSP;
-    @FXML
-    HBox ratingStarsSelectedProduct;
-    @FXML
-    SVGPath stockWarningSelectedProductSVG;
-    @FXML
-    AnchorPane productsRightPane;
-    @FXML
-    ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
+    @FXML TextField nameProductLB, priceLB, stockLB;
+    @FXML VBox rightProductVB, ImageViewVBox;
+    @FXML SplitPane productSP;
+    @FXML HBox ratingStarsSelectedProduct;
+    @FXML SVGPath stockWarningSelectedProductSVG;
+    @FXML AnchorPane productsRightPane;
+    @FXML ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
 
     ResizeableImageView selectedProductResizeableImageView;
     Product selectedProduct;
+    CategoryListPane newProductCategoryListPane;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
@@ -92,6 +88,8 @@ public class MyStoreController  {
         handleListProductBtn();
 
         productsRightPane.setVisible(false);
+        newProductCategoryListPane = new CategoryListPane();
+        newProductCategoryHBox.getChildren().add(newProductCategoryListPane);
 
         showProductsListView();
         clearSelectedProduct();
@@ -207,8 +205,7 @@ public class MyStoreController  {
             stockLabel.setText(String.format("%d", product.getStock()));
             descriptionLabel.setText(product.getDetails());
 
-            categoryLV.getItems().addAll(product.getCategories());
-            categoryLV.refresh();
+            newProductCategoryListPane.setCategoryList(product.getCategories());
 
             productIV.setImage(image);
         }
@@ -261,7 +258,7 @@ public class MyStoreController  {
             }
         }
         dataSource.saveProduct();
-        handleAddProductBtn();
+        myStoreTP.getSelectionModel().select(0);
     }
 
     public void handleEditBtn(){

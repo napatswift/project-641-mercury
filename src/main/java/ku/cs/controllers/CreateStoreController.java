@@ -24,7 +24,7 @@ public class CreateStoreController {
     }
 
     @FXML
-    public void handleBack(ActionEvent event) {
+    public void handleBack() {
         try {
             FXRouter.goTo("marketplace");
         } catch (IOException e) {
@@ -34,7 +34,7 @@ public class CreateStoreController {
     }
 
     @FXML
-    public void handleSubmit(ActionEvent event) throws IOException {
+    public void handleSubmit() {
         String nameStore = nameStoreTF.getText();
         dataSource.getUserList().getCurrUser().createStore(nameStore);
         dataSource.saveAccount();

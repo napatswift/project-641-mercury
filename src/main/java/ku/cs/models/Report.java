@@ -4,12 +4,11 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 abstract public class Report<T> implements Comparable<Report>{
-
     protected String id;
-    private String type;
-    private LocalDateTime reportDateTime;
-    private T reportItem;
-    private String detail;
+    private final String type;
+    private final LocalDateTime reportDateTime;
+    private final T reportItem;
+    private final String detail;
 
     @Override
     public int compareTo(Report o) {
@@ -32,23 +31,10 @@ abstract public class Report<T> implements Comparable<Report>{
         this.detail = detail;
     }
 
-    public String getDetail() {
-        return detail;
-    }
-
+    public String getDetail()                { return detail; }
+    public T getReportItem()                 { return reportItem; }
+    public String getType()                  { return type; }
+    public LocalDateTime getReportDateTime() { return reportDateTime; }
     abstract public User getSuspectedPerson();
-
-    public LocalDateTime getReportDateTime() {
-        return reportDateTime;
-    }
-
-    public T getReportItem() {
-        return reportItem;
-    }
-
-    public String getType() {
-        return type;
-    }
-
     abstract public String toCSV();
 }

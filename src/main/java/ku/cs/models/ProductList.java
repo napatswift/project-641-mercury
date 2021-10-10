@@ -1,5 +1,9 @@
 package ku.cs.models;
 
+import ku.cs.strategy.FromHighestPriceComparator;
+import ku.cs.strategy.FromLowestPriceComparator;
+import ku.cs.strategy.MostRecentProductComparator;
+
 import java.util.*;
 
 public class ProductList implements Iterable<Product>{
@@ -17,6 +21,7 @@ public class ProductList implements Iterable<Product>{
         return products.stream()
                 .filter(p -> p.getPrice() >= lowerBound
                         && p.getPrice() <= upperBound
+                        && p.getStock() > 0
                         && (category == null || p.containsCategory(category)))
                 .iterator();
 
@@ -66,13 +71,11 @@ public class ProductList implements Iterable<Product>{
 
     public void sort(SortType sortType) {
         if (sortType.equals(SortType.BY_ROLLOUT_DATE)) {
-            products.sort(Comparator.comparing(Product::getId));
-            products.sort(Comparator.comparing(Product::getRolloutDate));
+            products.sort(new MostRecentProductComparator());
         } else if (sortType.equals(SortType.BY_LOWEST)){
-            products.sort(Comparator.comparingDouble(Product::getPrice));
+            products.sort(new FromLowestPriceComparator());
         } else if (sortType.equals(SortType.BY_HIGHEST)){
-            products.sort(Comparator.comparingDouble(Product::getPrice));
-            Collections.reverse(products);
+            products.sort(new FromHighestPriceComparator());
         }
     }
 

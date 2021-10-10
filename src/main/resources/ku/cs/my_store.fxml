@@ -26,7 +26,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.25" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768" prefWidth="1024" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.MyStoreController">
+<SplitPane dividerPositions="0.25" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768" prefWidth="1024" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.MyStoreController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="768.0" prefWidth="150.0">
          <children>
@@ -374,7 +374,7 @@
                                           <HBox prefHeight="100.0" prefWidth="200.0">
                                              <children>
                                                 <Label text="Category : " />
-                                                <ListView fx:id="categoryLV" prefHeight="200.0" prefWidth="200.0" />
+                                                <HBox fx:id="newProductCategoryHBox" />
                                              </children>
                                           </HBox>
                                        </children>

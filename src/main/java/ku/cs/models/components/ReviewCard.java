@@ -66,11 +66,6 @@ public class ReviewCard extends VBox {
         getStyleClass().add("review-card");
     }
 
-    public HBox getFlagArea() {
-        return flagArea;
-    }
-
-    public Review getReview() {
-        return review;
-    }
+    public HBox getFlagArea() { return flagArea; }
+    public Review getReview() { return review; }
 }

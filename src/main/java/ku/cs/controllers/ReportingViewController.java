@@ -76,9 +76,6 @@ public class ReportingViewController {
         } else if (review != null) {
             ReviewReport report = new ReviewReport(type, review, details);
             dataSource.getReports().addReport(report);
-        } else {
-            System.err.println("product and review are null");
-            return;
         }
 
         dataSource.getProducts().setSelectedProduct(null);

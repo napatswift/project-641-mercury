@@ -13,13 +13,14 @@ import ku.cs.models.Admin;
 import ku.cs.models.User;
 import ku.cs.models.UserList;
 import ku.cs.models.CategoryList;
-import ku.cs.models.components.CategoryListCell;
-import ku.cs.models.components.ReportListCell;
-import ku.cs.models.components.SubCategoryListCell;
-import ku.cs.models.components.UserListCell;
+import ku.cs.models.components.listCell.CategoryListCell;
+import ku.cs.models.components.listCell.ReportListCell;
+import ku.cs.models.components.listCell.SubCategoryListCell;
+import ku.cs.models.components.listCell.UserListCell;
 import ku.cs.models.Report;
 import ku.cs.models.ReportList;
 import ku.cs.service.DataSource;
+import ku.cs.strategy.MostRecentReportComparator;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -153,7 +154,9 @@ public class AdminPageController {
 
     // Report Page
     private void showReportListView() {
-        reportListView.getItems().addAll(reportList.toList());
+        ArrayList<Report> reports = reportList.toList();
+        reports.sort(new MostRecentReportComparator());
+        reportListView.getItems().addAll(reports);
         reportListView.setCellFactory(reportListView -> new ReportListCell());
         reportListView.refresh();
     }
@@ -238,10 +241,11 @@ public class AdminPageController {
     }
 
     @FXML
-    private void handleLogOutButton(ActionEvent actionEvent){
+    private void handleLogOutButton(){
         try {
             FXRouter.goTo("login");
         } catch (IOException e) {
+            e.printStackTrace();
             System.err.println("ไปที่หน้า login ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
@@ -266,20 +270,21 @@ public class AdminPageController {
     }
 
     @FXML
-    public void handleResetPasswordButton(ActionEvent actionEvent) {
+    public void handleResetPasswordButton() {
         try {
             FXRouter.goTo("reset_password", dataSource);
         } catch (IOException e) {
+            e.printStackTrace();
             System.err.println("ไปที่หน้า reset_password ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
     }
 
-    public void handleAddCategoryButton(ActionEvent actionEvent) throws IOException {
+    public void handleAddCategoryButton() {
         if(addCategoryTF.getText() != null
                 && !categories.containsKey(addCategoryTF.getText())
                 && !addCategoryTF.getText().equals("")) {
-            categories.put(addCategoryTF.getText().toLowerCase(Locale.ROOT), new ArrayList<>());
+            categories.addCategory(addCategoryTF.getText().toLowerCase(Locale.ROOT));
             dataSource.saveCategory();
             categoryListView.getItems().clear();
             showCategoryListView();
@@ -288,25 +293,23 @@ public class AdminPageController {
 
     }
 
-    public void handleAddSubCategoryButton(ActionEvent actionEvent) {
-        ArrayList<String> newList = categories.getSubcategoryOf(selectCategory);
+    public void handleAddSubCategoryButton() {
         if(addSubCategoryTF.getText() != null
-                && !newList.contains(addSubCategoryTF.getText())
                 && !addSubCategoryTF.getText().equals("")){
-            newList.add(addSubCategoryTF.getText().toLowerCase(Locale.ROOT));
-            categories.put(selectCategory,newList);
+            String subCat = addSubCategoryTF.getText().toLowerCase(Locale.ROOT);
+            categories.addSubCategory(selectCategory, subCat);
             dataSource.saveCategory();
             showSelectedCategory(selectCategory);
         }
         addSubCategoryTF.clear();
     }
 
-    public void handleDismissBtn(ActionEvent actionEvent) throws IOException {
+    public void handleDismissBtn() {
         removeReportFormReportListView(selectReport);
         reportLeftVBox.setVisible(false);
     }
 
-    public void handleBanBtn(ActionEvent actionEvent) throws IOException {
+    public void handleBanBtn() {
         if(selectReport != null && adminUser.bans(selectUser)) {
             removeReportFormReportListView(selectReport);
             dataSource.saveAccount();
@@ -314,7 +317,7 @@ public class AdminPageController {
         }
     }
 
-    public void handleBanAndUnbanBtn(ActionEvent actionEvent) {
+    public void handleBanAndUnbanBtn() {
         if(!selectUser.isBanned()){
             adminUser.bans(selectUser);
         }

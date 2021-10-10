@@ -25,9 +25,7 @@ public class RatingStars extends HBox {
         updateRating();
     }
 
-    public double getRating() {
-        return rating;
-    }
+    public double getRating() { return rating; }
 
     private void updateRating(){
         int i = 0;

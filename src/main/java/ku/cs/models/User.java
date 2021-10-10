@@ -1,10 +1,9 @@
 package ku.cs.models;
 
 import java.io.File;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class User implements Comparable<User>{
 
@@ -13,7 +12,7 @@ public class User implements Comparable<User>{
     private final String username;
     private String password;
     private final String name;
-    private String picturePath;
+    private String pictureName;
     private LocalDateTime loginDateTime;
     protected boolean isBanned;
     private int loginAttempt;
@@ -39,12 +38,12 @@ public class User implements Comparable<User>{
         this.setPassword(password);
     }
 
-    public User(String username, Role role, String name, String password, String picturePath, LocalDateTime loginDateTime, boolean isBanned, int loginAttempt) {
+    public User(String username, Role role, String name, String password, String pictureName, LocalDateTime loginDateTime, boolean isBanned, int loginAttempt) {
         this.role = role;
         this.username = username;
         this.password = password;
         this.name = name;
-        this.picturePath = picturePath;
+        this.pictureName = pictureName;
         this.loginDateTime = loginDateTime;
         this.isBanned = isBanned;
         this.loginAttempt = loginAttempt;
@@ -83,15 +82,11 @@ public class User implements Comparable<User>{
     }
 
     public static boolean isUsername(String username){
-        Pattern passwordPattern = Pattern.compile("^[A-Za-z0-9_]{3,}$");
-        Matcher matcher = passwordPattern.matcher(username);
-        return matcher.find();
+        return username.matches("^[A-Za-z0-9_]{3,}$");
     }
 
     public static boolean isPassword(String password){
-        Pattern passwordPattern = Pattern.compile("^[A-Za-z0-9@$!%*#?&:+~{}<>_-]{6,25}$");
-        Matcher matcher = passwordPattern.matcher(password);
-        return matcher.find();
+        return password.matches("^[A-Za-z0-9@$!%*#?&:+~{}<>_-]{6,25}$");
     }
 
     public Role getRole() {
@@ -109,14 +104,13 @@ public class User implements Comparable<User>{
     }
 
     public String getPicturePath() {
-        String picturePath = this.picturePath;
-        if (this.picturePath == null || this.picturePath.equals("null"))
-            return getClass().getResource("/ku/cs/image/media-cup-holder.png").toString();
+        String picturePath = this.pictureName;
+        if (this.pictureName == null || this.pictureName.equals("null")) {
+            URL path = getClass().getResource("/ku/cs/image/media-cup-holder.png");
+            if (path != null)
+                return path.toExternalForm();
+        }
         return (new File(System.getProperty("user.dir") + File.separator + "/images" + File.separator + picturePath)).toURI().toString();
-    }
-
-    public String getPictureName(){
-        return picturePath;
     }
 
     public LocalDateTime getLoginDateTime(){
@@ -131,7 +125,7 @@ public class User implements Comparable<User>{
 
     //setter
     public void setPicturePath(String picturePath) {
-        this.picturePath = picturePath;
+        this.pictureName = picturePath;
     }
 
     public boolean setPassword(String password) {
@@ -152,12 +146,12 @@ public class User implements Comparable<User>{
 
 
     public String toCsv(){
-        //username,role,name,password,picturePath,last_login,isBanned,loginAttempt,hasStore,store
+        //username,role,name,password,picture,last_login,isBanned,loginAttempt,hasStore,store
         return username + ","
                 + role + ","
                 + "\"" + name + "\"" + ","
                 + password + ","
-                + picturePath + ","
+                + pictureName + ","
                 + (loginDateTime == null ? null : loginDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)) + ","
                 + isBanned + ","
                 + loginAttempt + ","
@@ -165,4 +159,3 @@ public class User implements Comparable<User>{
                 + (store == null ? null : store.getName());
     }
 }
-

@@ -71,9 +71,9 @@
                                                          <children>
                                                             <MenuButton fx:id="sortingMB" graphicTextGap="10.0" mnemonicParsing="false" stylesheets="@style/menu-button.css" text="SORT BY : MOST RECENT">
                                                               <items>
-                                                                <MenuItem fx:id="lowestPrice" mnemonicParsing="false" onAction="#sortProductBy" text="lowest price" />
-                                                                <MenuItem fx:id="highestPrice" mnemonicParsing="false" onAction="#sortProductBy" text="highest price" />
-                                                                  <MenuItem fx:id="highestPrice1" mnemonicParsing="false" onAction="#sortProductBy" text="most recent" />
+                                                                <MenuItem mnemonicParsing="false" onAction="#sortProductBy" text="lowest price" />
+                                                                <MenuItem mnemonicParsing="false" onAction="#sortProductBy" text="highest price" />
+                                                                  <MenuItem mnemonicParsing="false" onAction="#sortProductBy" text="most recent" />
                                                               </items>
                                                                <padding>
                                                                   <Insets bottom="2.0" left="3.0" right="3.0" top="2.0" />
@@ -212,7 +212,7 @@
                                                             <Insets bottom="6.0" top="15.0" />
                                                          </VBox.margin>
                                                       </HBox>
-                                                      <HBox fx:id="inStockLabel" alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="75.0" prefHeight="20.0" prefWidth="200.0" spacing="10.0">
+                                                      <HBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="75.0" prefHeight="20.0" prefWidth="200.0" spacing="10.0">
                                                          <VBox.margin>
                                                             <Insets bottom="3.0" />
                                                          </VBox.margin>
@@ -270,27 +270,27 @@
                                              <children>
                                                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                                                    <children>
-                                                      <Button fx:id="starBtn1" mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
+                                                      <Button mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
                                                          <graphic>
                                                             <SVGPath fx:id="star1" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                                          </graphic>
                                                       </Button>
-                                                      <Button fx:id="starBtn2" mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
+                                                      <Button mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
                                                          <graphic>
                                                             <SVGPath fx:id="star2" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                                          </graphic>
                                                       </Button>
-                                                      <Button fx:id="starBtn3" mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
+                                                      <Button mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
                                                          <graphic>
                                                             <SVGPath fx:id="star3" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                                          </graphic>
                                                       </Button>
-                                                      <Button fx:id="starBtn4" mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
+                                                      <Button mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
                                                          <graphic>
                                                             <SVGPath fx:id="star4" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                                          </graphic>
                                                       </Button>
-                                                      <Button fx:id="starBtn5" mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
+                                                      <Button mnemonicParsing="false" onAction="#selectRatingStar" style="-fx-padding: 0;">
                                                          <graphic>
                                                             <SVGPath fx:id="star5" content="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                                          </graphic>

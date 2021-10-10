@@ -41,7 +41,7 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="logInBtn1" onAction="#handleLogin" styleClass="contained-btn" text="LOGIN">
+      <Button fx:id="logInBtn" onAction="#handleLogin" styleClass="contained-btn" text="LOGIN">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

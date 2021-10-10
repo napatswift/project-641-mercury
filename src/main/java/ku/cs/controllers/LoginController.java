@@ -32,7 +32,6 @@ public class LoginController {
     @FXML
     VBox bottomButtonVB;
 
-    @FXML
     public void handlePassword(KeyEvent event){
         if (event.getCode() == KeyCode.ENTER){
             logInBtn.fire();
@@ -45,6 +44,7 @@ public class LoginController {
         userList = dataSource.getUserList();
 
         addThemeMenu();
+        passwordTF.setOnKeyReleased(this::handlePassword);
     }
 
     public void addThemeMenu(){
@@ -62,7 +62,7 @@ public class LoginController {
         textField.getStyleClass().add("error-text-field");
     }
 
-    public void handleLogin(ActionEvent event){
+    public void handleLogin(){
         String username = usernameTF.getText();
         String password = passwordTF.getText();
         User currAcc = userList.getUser(username);
@@ -108,32 +108,36 @@ public class LoginController {
         }
     }
 
-    public void handleSignUp(ActionEvent event) throws IOException {
+    public void handleSignUp() {
         if(this.userList == null) {
             signUpBtn.setText("CANNOT SIGN-UP");
             return;
         }
 
-        FXRouter.goTo("sign_up", dataSource);
-    }
-
-    public void handleHowTo(ActionEvent event){
         try {
-            FXRouter.goTo("how_to");
+            FXRouter.goTo("sign_up", dataSource);
         } catch (IOException e) {
-            System.err.println("ไปที่หน้า How To ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
             e.printStackTrace();
         }
     }
 
-    public void handleAboutUs(ActionEvent event){
+    public void handleHowTo(){
+        try {
+            FXRouter.goTo("how_to");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("ไปที่หน้า How To ไม่ได้");
+            System.err.println("ให้ตรวจสอบการกำหนด route");
+        }
+    }
+
+    public void handleAboutUs(){
         try {
         FXRouter.goTo("about_us");
         } catch (IOException e) {
+            e.printStackTrace();
             System.err.println("ไปที่หน้า About Us ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
-            e.printStackTrace();
         }
     }
 }

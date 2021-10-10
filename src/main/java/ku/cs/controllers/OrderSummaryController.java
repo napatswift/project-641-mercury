@@ -26,11 +26,13 @@ public class OrderSummaryController {
             unitPriceText,
             unitText,
             allPaymentText;
+
     @FXML
     private ImageView selectedProductImageView;
 
     @FXML
     private Button cancelBtn;
+
     private Product product;
 
     public void setDataSource(DataSource dataSource) {
