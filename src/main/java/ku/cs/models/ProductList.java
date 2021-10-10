@@ -1,15 +1,19 @@
 package ku.cs.models;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import ku.cs.strategy.FromHighestPriceComparator;
 import ku.cs.strategy.FromLowestPriceComparator;
 import ku.cs.strategy.MostRecentProductComparator;
 
 import java.util.*;
 
-public class ProductList implements Iterable<Product>{
+public class ProductList implements Iterable<Product> {
     private final ArrayList<Product> products;
     private final Set<String> idSet;
     private Product selectedProduct;
+
     public enum SortType {BY_ROLLOUT_DATE, BY_LOWEST, BY_HIGHEST}
 
     @Override

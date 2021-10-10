@@ -195,7 +195,6 @@ public class MyStoreController  {
         myStoreTP.getSelectionModel().select(myAccountTab);
         MyAccountController controller = loader.getController();
         controller.showUser(dataSource.getUserList().getCurrUser());
-        controller.getBackBtnHBox().getChildren().clear();
     }
 
     @FXML
