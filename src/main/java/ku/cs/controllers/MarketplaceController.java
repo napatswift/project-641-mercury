@@ -94,13 +94,13 @@ public class MarketplaceController {
         String lower = lowerBoundTF.getText();
         String upper = upperBoundTF.getText();
 
-        if (lower.equals("")) {
+        if (lower.isEmpty() || lower.isBlank()) {
             lowerBoundParsed = 0;
         } else if (lower.matches("[\\d\\.]*")) {
                 lowerBoundParsed = Double.parseDouble(lower);
         }
 
-        if (upper.equals("")) {
+        if (upper.isEmpty() || upper.isBlank()) {
             upperBoundParsed = Double.MAX_VALUE;
         } else if (upper.matches("[\\d\\.]*")) {
                 upperBoundParsed = Double.parseDouble(upper);

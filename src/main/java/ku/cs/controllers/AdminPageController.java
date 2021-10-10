@@ -3,6 +3,8 @@ package ku.cs.controllers;
 import com.github.saacsos.FXRouter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -60,9 +62,11 @@ public class AdminPageController {
     @FXML private ListView<String> subCategoryListView;
     @FXML private TabPane adminTP;
     @FXML private VBox userLeftVBox, reportLeftVBox;
-    @FXML private Button userButton, categoryButton, reportButton, resetPasswordButton, logOutButton, banAndUnbanBtn;
+    @FXML private ToggleButton userButton, categoryButton, reportButton, resetPasswordButton, logOutButton;
+    @FXML private Button banAndUnbanBtn;
     @FXML private TextField addCategoryTF
             , addSubCategoryTF;
+    private Tab resetPasswordTab;
 
 
     @FXML
@@ -92,7 +96,8 @@ public class AdminPageController {
 
         showCategoryListView();
         handleSelectedCategoryListView();
-
+        resetPasswordTab = new Tab("reset_password");
+        resetToggleGroupToButton();
     }
 
     public void showAdmin(User user) {
@@ -233,11 +238,24 @@ public class AdminPageController {
     }
 
     // Button
-    private void resetBtn(Button btn){
-        Button [] buttons = {userButton, categoryButton, reportButton};
-        int idx = adminTP.getSelectionModel().getSelectedIndex();
-        buttons[idx].getStyleClass().removeAll("list-item-active-btn");
-        btn.getStyleClass().add("list-item-active-btn");
+    private void resetToggleGroupToButton(){
+        ToggleGroup group = new ToggleGroup();
+
+        userButton.setToggleGroup(group);
+        categoryButton.setToggleGroup(group);
+        reportButton.setToggleGroup(group);
+        resetPasswordButton.setToggleGroup(group);
+
+        group.selectedToggleProperty().addListener((observableValue, ot, nt) -> {
+            if (ot != null) {
+                ((ToggleButton) ot).getStyleClass().remove("list-item-active-btn");
+            }
+            if (nt != null) {
+                ((ToggleButton) nt).getStyleClass().add("list-item-active-btn");
+            }
+        });
+
+        userButton.fire();
     }
 
     @FXML
@@ -253,31 +271,38 @@ public class AdminPageController {
 
     @FXML
     public void handleCategoryButton(ActionEvent actionEvent) {
-        resetBtn((Button) actionEvent.getSource());
         adminTP.getSelectionModel().select(1);
     }
 
     @FXML
     public void handleUserButton(ActionEvent actionEvent) {
-        resetBtn((Button) actionEvent.getSource());
         adminTP.getSelectionModel().select(0);
     }
 
     @FXML
     public void handleReportButton(ActionEvent actionEvent) {
-        resetBtn((Button) actionEvent.getSource());
         adminTP.getSelectionModel().select(2);
     }
 
     @FXML
     public void handleResetPasswordButton() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/reset_password.fxml"));
         try {
-            FXRouter.goTo("reset_password", dataSource);
+            Node node = loader.load();
+            resetPasswordTab.setContent(node);
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("ไปที่หน้า reset_password ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
         }
+        if(!adminTP.getTabs().contains(resetPasswordTab))
+            adminTP.getTabs().add(resetPasswordTab);
+        adminTP.getSelectionModel().select(resetPasswordTab);
+        ResetPasswordController controller = loader.getController();
+        controller.setHandleBackButton(this::handleResetPasswordBack);
+    }
+
+    public void handleResetPasswordBack(ActionEvent event){
+        userButton.fire();
+        adminTP.getTabs().remove(resetPasswordTab);
     }
 
     public void handleAddCategoryButton() {

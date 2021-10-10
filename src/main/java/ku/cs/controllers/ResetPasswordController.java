@@ -48,8 +48,6 @@ public class ResetPasswordController {
     @FXML
     private Label userName;
 
-    private String prevView;
-
     @FXML
     public void initialize() throws IOException {
         dataSource = (DataSource) FXRouter.getData();
@@ -59,10 +57,6 @@ public class ResetPasswordController {
 
     public void setHandleBackButton(EventHandler<ActionEvent> handler) {
         holdBackButton.setOnAction(handler);
-    }
-
-    public void setPrevView(String prevView) {
-        this.prevView = prevView;
     }
 
     public boolean resetPassword(){
