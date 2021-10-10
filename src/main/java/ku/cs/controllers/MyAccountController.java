@@ -1,11 +1,11 @@
 package ku.cs.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import com.github.saacsos.FXRouter;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import ku.cs.models.User;
 import ku.cs.models.components.dialogs.PictureConfirmDialog;
@@ -22,8 +22,11 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class MyAccountController {
-    DataSource dataSource;
+    private DataSource dataSource;
     private User user;
+
+    @FXML
+    private HBox backBtnHBox;
 
     @FXML
     private ImageView imageIIV;
@@ -32,15 +35,19 @@ public class MyAccountController {
     private Label nameLabel;
 
     @FXML
-    private Label usernameLabel;
+    private Label storeNameLabel;
 
     @FXML
-    private Label storeNameLabel;
+    private Label usernameLabel;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
         user = dataSource.getUserList().getCurrUser();
         showUser(user);
+    }
+
+    public HBox getBackBtnHBox() {
+        return backBtnHBox;
     }
 
     public void showUser(User user){
@@ -60,7 +67,7 @@ public class MyAccountController {
         }
     }
 
-    public void handleBackBtn(ActionEvent event) {
+    public void handleBackBtn() {
         try {
             FXRouter.goTo("marketplace", dataSource);
         } catch (Exception e) {
