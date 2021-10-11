@@ -6,13 +6,13 @@ import javafx.scene.shape.SVGPath;
 
 public class RatingStars extends HBox {
     private double rating;
-    private String starPoints = "M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z";
+    private final String STAR_POINT = "M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z";
 
     public RatingStars(double rating) {
         this.rating = rating;
         for(int i = 0; i < 5; i++){
             SVGPath star = new SVGPath();
-            star.setContent(starPoints);
+            star.setContent(STAR_POINT);
             star.setScaleX(.7); star.setScaleY(.7);
             getChildren().add(star);
         }

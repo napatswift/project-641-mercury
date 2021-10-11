@@ -13,8 +13,8 @@ import javafx.scene.shape.SVGPath;
 import ku.cs.models.Review;
 
 public class ReviewCard extends VBox {
-    private Review review;
-    private HBox flagArea;
+    private final Review review;
+    private final HBox flagArea;
 
     public ReviewCard(Review review) {
         this.review = review;

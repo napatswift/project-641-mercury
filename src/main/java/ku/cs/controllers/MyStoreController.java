@@ -54,32 +54,32 @@ public class MyStoreController  {
     private Path target;
     private ArrayList<Order> orders;
 
-    @FXML Label usernameLabel, nameLabel, nameStoreLabel;
-    @FXML TabPane myStoreTP;
-    @FXML ImageView userImage;
-    @FXML ChoiceBox<String> categoryCB, subCategoryCB;
-    @FXML TextField valueTF, nameProductTF, priceTF, stockTF;
-    @FXML TextArea descriptionTF;
-    @FXML ImageView pictureViewIV;
-    @FXML Label nameProductLabel, priceLabel, stockLabel, descriptionLabel;
-    @FXML HBox newProductCategoryHBox;
-    @FXML ImageView productIV;
-    @FXML ListView<Product> productsListLV;
-    @FXML ListView<Order> orderLV;
-    @FXML Label rateLB, detailsLB,numberLowerLabel;
-    @FXML TextField nameProductLB, priceLB, stockLB;
-    @FXML VBox rightProductVB, ImageViewVBox;
-    @FXML SplitPane productSP;
-    @FXML HBox ratingStarsSelectedProduct;
-    @FXML SVGPath stockWarningSelectedProductSVG;
-    @FXML AnchorPane productsRightPane;
-    @FXML ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
+    @FXML private Label usernameLabel, nameLabel, nameStoreLabel;
+    @FXML private TabPane myStoreTP;
+    @FXML private ImageView userImage;
+    @FXML private ChoiceBox<String> categoryCB, subCategoryCB;
+    @FXML private TextField valueTF, nameProductTF, priceTF, stockTF;
+    @FXML private TextArea descriptionTF;
+    @FXML private ImageView pictureViewIV;
+    @FXML private Label nameProductLabel, priceLabel, stockLabel, descriptionLabel;
+    @FXML private HBox newProductCategoryHBox;
+    @FXML private ImageView productIV;
+    @FXML private ListView<Product> productsListLV;
+    @FXML private ListView<Order> orderLV;
+    @FXML private Label rateLB, detailsLB,numberLowerLabel;
+    @FXML private TextField nameProductLB, priceLB, stockLB;
+    @FXML private VBox rightProductVB, ImageViewVBox;
+    @FXML private SplitPane productSP;
+    @FXML private HBox ratingStarsSelectedProduct;
+    @FXML private SVGPath stockWarningSelectedProductSVG;
+    @FXML private AnchorPane productsRightPane;
+    @FXML private ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
 
     private Tab myStoreTab, myAccountTab;
 
-    ResizeableImageView selectedProductResizeableImageView;
-    Product selectedProduct;
-    CategoryListPane newProductCategoryListPane;
+    private ResizeableImageView selectedProductResizeableImageView;
+    private Product selectedProduct;
+    private CategoryListPane newProductCategoryListPane;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
