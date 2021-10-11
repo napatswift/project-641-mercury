@@ -10,7 +10,9 @@ public class ReviewList implements Iterable<Review> {
     }
 
     public boolean addReview(Review review){
-        return reviews.add(review);
+        if (review.getProduct() != null)
+            return reviews.add(review);
+        else throw new NullPointerException("Cannot add review, product is null");
     }
 
     public boolean addReview(String title, String detail, int rating, User user, Product product){
@@ -22,7 +24,8 @@ public class ReviewList implements Iterable<Review> {
             return false;
         }
         String id = UUID.randomUUID().toString();
-        Review newReview = new Review(id, title, detail, user, product.getId());
+        Review newReview = new Review(id, title, detail, user);
+        newReview.setProduct(product);
 
         if (!newReview.setRating(rating))
             return false;

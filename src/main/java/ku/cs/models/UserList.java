@@ -1,12 +1,13 @@
 package ku.cs.models;
 
+import ku.cs.strategy.MostRecentLoginUserComparator;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.TreeSet;
 
 public class UserList {
-    private Collection<User> users;
+    private final Collection<User> users;
 
     private User currUser;
 
@@ -16,10 +17,6 @@ public class UserList {
 
     public boolean addUser(User user){
         return users.add(user);
-    }
-
-    public void removeUser(String name){
-        users.removeIf(userAccount -> userAccount.getName().equals(name));
     }
 
     public boolean isExist(String username){
@@ -55,17 +52,13 @@ public class UserList {
         return currUser;
     }
 
-    public Collection<User> toList() {
-        return users;
-    }
-
     public Collection<User> toListOnlyRoleUser(){
         ArrayList<User> newList = new ArrayList<>(users);
         for(User temp : users){
             if(temp.role == User.Role.ADMIN)
                 newList.remove(temp);
         }
-        Collections.reverse(newList);
+        newList.sort(new MostRecentLoginUserComparator());
         return newList;
     }
 

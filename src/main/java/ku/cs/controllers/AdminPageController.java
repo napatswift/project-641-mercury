@@ -3,6 +3,8 @@ package ku.cs.controllers;
 import com.github.saacsos.FXRouter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,13 +15,14 @@ import ku.cs.models.Admin;
 import ku.cs.models.User;
 import ku.cs.models.UserList;
 import ku.cs.models.CategoryList;
-import ku.cs.models.components.CategoryListCell;
-import ku.cs.models.components.ReportListCell;
-import ku.cs.models.components.SubCategoryListCell;
-import ku.cs.models.components.UserListCell;
+import ku.cs.models.components.listCell.CategoryListCell;
+import ku.cs.models.components.listCell.ReportListCell;
+import ku.cs.models.components.listCell.SubCategoryListCell;
+import ku.cs.models.components.listCell.UserListCell;
 import ku.cs.models.Report;
 import ku.cs.models.ReportList;
 import ku.cs.service.DataSource;
+import ku.cs.strategy.MostRecentReportComparator;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -59,9 +62,11 @@ public class AdminPageController {
     @FXML private ListView<String> subCategoryListView;
     @FXML private TabPane adminTP;
     @FXML private VBox userLeftVBox, reportLeftVBox;
-    @FXML private Button userButton, categoryButton, reportButton, resetPasswordButton, logOutButton, banAndUnbanBtn;
+    @FXML private ToggleButton userButton, categoryButton, reportButton, resetPasswordButton, logOutButton;
+    @FXML private Button banAndUnbanBtn;
     @FXML private TextField addCategoryTF
             , addSubCategoryTF;
+    private Tab resetPasswordTab;
 
 
     @FXML
@@ -91,7 +96,8 @@ public class AdminPageController {
 
         showCategoryListView();
         handleSelectedCategoryListView();
-
+        resetPasswordTab = new Tab("reset_password");
+        resetToggleGroupToButton();
     }
 
     public void showAdmin(User user) {
@@ -153,7 +159,9 @@ public class AdminPageController {
 
     // Report Page
     private void showReportListView() {
-        reportListView.getItems().addAll(reportList.toList());
+        ArrayList<Report> reports = reportList.toList();
+        reports.sort(new MostRecentReportComparator());
+        reportListView.getItems().addAll(reports);
         reportListView.setCellFactory(reportListView -> new ReportListCell());
         reportListView.refresh();
     }
@@ -230,18 +238,32 @@ public class AdminPageController {
     }
 
     // Button
-    private void resetBtn(Button btn){
-        Button [] buttons = {userButton, categoryButton, reportButton};
-        int idx = adminTP.getSelectionModel().getSelectedIndex();
-        buttons[idx].getStyleClass().removeAll("list-item-active-btn");
-        btn.getStyleClass().add("list-item-active-btn");
+    private void resetToggleGroupToButton(){
+        ToggleGroup group = new ToggleGroup();
+
+        userButton.setToggleGroup(group);
+        categoryButton.setToggleGroup(group);
+        reportButton.setToggleGroup(group);
+        resetPasswordButton.setToggleGroup(group);
+
+        group.selectedToggleProperty().addListener((observableValue, ot, nt) -> {
+            if (ot != null) {
+                ((ToggleButton) ot).getStyleClass().remove("list-item-active-btn");
+            }
+            if (nt != null) {
+                ((ToggleButton) nt).getStyleClass().add("list-item-active-btn");
+            }
+        });
+
+        userButton.fire();
     }
 
     @FXML
-    private void handleLogOutButton(ActionEvent actionEvent){
+    private void handleLogOutButton(){
         try {
             FXRouter.goTo("login");
         } catch (IOException e) {
+            e.printStackTrace();
             System.err.println("ไปที่หน้า login ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
@@ -249,37 +271,45 @@ public class AdminPageController {
 
     @FXML
     public void handleCategoryButton(ActionEvent actionEvent) {
-        resetBtn((Button) actionEvent.getSource());
         adminTP.getSelectionModel().select(1);
     }
 
     @FXML
     public void handleUserButton(ActionEvent actionEvent) {
-        resetBtn((Button) actionEvent.getSource());
         adminTP.getSelectionModel().select(0);
     }
 
     @FXML
     public void handleReportButton(ActionEvent actionEvent) {
-        resetBtn((Button) actionEvent.getSource());
         adminTP.getSelectionModel().select(2);
     }
 
     @FXML
-    public void handleResetPasswordButton(ActionEvent actionEvent) {
+    public void handleResetPasswordButton() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/reset_password.fxml"));
         try {
-            FXRouter.goTo("reset_password", dataSource);
+            Node node = loader.load();
+            resetPasswordTab.setContent(node);
         } catch (IOException e) {
-            System.err.println("ไปที่หน้า reset_password ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
+            e.printStackTrace();
         }
+        if(!adminTP.getTabs().contains(resetPasswordTab))
+            adminTP.getTabs().add(resetPasswordTab);
+        adminTP.getSelectionModel().select(resetPasswordTab);
+        ResetPasswordController controller = loader.getController();
+        controller.setHandleBackButton(this::handleResetPasswordBack);
     }
 
-    public void handleAddCategoryButton(ActionEvent actionEvent) throws IOException {
+    public void handleResetPasswordBack(ActionEvent event){
+        userButton.fire();
+        adminTP.getTabs().remove(resetPasswordTab);
+    }
+
+    public void handleAddCategoryButton() {
         if(addCategoryTF.getText() != null
                 && !categories.containsKey(addCategoryTF.getText())
                 && !addCategoryTF.getText().equals("")) {
-            categories.put(addCategoryTF.getText().toLowerCase(Locale.ROOT), new ArrayList<>());
+            categories.addCategory(addCategoryTF.getText().toLowerCase(Locale.ROOT));
             dataSource.saveCategory();
             categoryListView.getItems().clear();
             showCategoryListView();
@@ -288,25 +318,23 @@ public class AdminPageController {
 
     }
 
-    public void handleAddSubCategoryButton(ActionEvent actionEvent) {
-        ArrayList<String> newList = categories.getSubcategoryOf(selectCategory);
+    public void handleAddSubCategoryButton() {
         if(addSubCategoryTF.getText() != null
-                && !newList.contains(addSubCategoryTF.getText())
                 && !addSubCategoryTF.getText().equals("")){
-            newList.add(addSubCategoryTF.getText().toLowerCase(Locale.ROOT));
-            categories.put(selectCategory,newList);
+            String subCat = addSubCategoryTF.getText().toLowerCase(Locale.ROOT);
+            categories.addSubCategory(selectCategory, subCat);
             dataSource.saveCategory();
             showSelectedCategory(selectCategory);
         }
         addSubCategoryTF.clear();
     }
 
-    public void handleDismissBtn(ActionEvent actionEvent) throws IOException {
+    public void handleDismissBtn() {
         removeReportFormReportListView(selectReport);
         reportLeftVBox.setVisible(false);
     }
 
-    public void handleBanBtn(ActionEvent actionEvent) throws IOException {
+    public void handleBanBtn() {
         if(selectReport != null && adminUser.bans(selectUser)) {
             removeReportFormReportListView(selectReport);
             dataSource.saveAccount();
@@ -314,7 +342,7 @@ public class AdminPageController {
         }
     }
 
-    public void handleBanAndUnbanBtn(ActionEvent actionEvent) {
+    public void handleBanAndUnbanBtn() {
         if(!selectUser.isBanned()){
             adminUser.bans(selectUser);
         }

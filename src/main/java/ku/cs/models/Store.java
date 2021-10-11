@@ -28,7 +28,8 @@ public class Store implements Comparable<Store> {
     }
 
     public void setStockLowerBound(int stockLowerBound) {
-        this.stockLowerBound = stockLowerBound;
+        if (stockLowerBound > 0)
+            this.stockLowerBound = stockLowerBound;
     }
 
     public boolean stockIsLow(Product product){

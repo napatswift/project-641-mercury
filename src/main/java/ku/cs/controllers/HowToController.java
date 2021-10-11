@@ -21,27 +21,27 @@ public class HowToController {
     Label signUpUploadLabel;
 
     @FXML
-    public void handleRegisterBtn(ActionEvent event){
+    public void handleRegisterBtn(){
         howToTP.getSelectionModel().select(0);
     }
 
     @FXML
-    public void handleHowToUseBtn(ActionEvent event){
+    public void handleHowToUseBtn(){
         howToTP.getSelectionModel().select(1);
     }
 
     @FXML
-    public void handleMarketPlaceBtn(ActionEvent event){
+    public void handleMarketPlaceBtn(){
         howToTP.getSelectionModel().select(2);
     }
 
     @FXML
-    public void handleSellerBtn(ActionEvent event){
+    public void handleSellerBtn(){
         howToTP.getSelectionModel().select(3);
     }
 
     @FXML
-    public void handleBack(ActionEvent event) {
+    public void handleBack() {
         try {
             FXRouter.goTo("login");
         } catch (IOException e) {

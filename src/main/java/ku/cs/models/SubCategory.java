@@ -1,28 +1,15 @@
 package ku.cs.models;
 
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.layout.VBox;
-
 public class SubCategory {
-    private String name;
-    private String value;
+    private final String name;
+    private final String value;
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getValue() {
         return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 
     public SubCategory(String name, String value) {

@@ -1,7 +1,9 @@
 package ku.cs.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -16,25 +18,45 @@ import java.io.IOException;
 public class ResetPasswordController {
 
     private User user;
-    private UserList userList;
-    DataSource dataSource;
+    private DataSource dataSource;
 
-    @FXML private TextField oldPasswordTextField
-            ,newPasswordTextField
-            ,confirmNewPasswordTextField;
 
-    @FXML private Label userName
-            ,name
-            ,description;
+    @FXML
+    private TextField confirmNewPasswordTextField;
 
-    @FXML private ImageView userImageView;
+    @FXML
+    private Label description;
+
+    @FXML
+    private Button holdBackButton;
+
+    @FXML
+    private Button holdResetPasswordButton;
+
+    @FXML
+    private Label name;
+
+    @FXML
+    private TextField newPasswordTextField;
+
+    @FXML
+    private TextField oldPasswordTextField;
+
+    @FXML
+    private ImageView userImageView;
+
+    @FXML
+    private Label userName;
 
     @FXML
     public void initialize() throws IOException {
         dataSource = (DataSource) FXRouter.getData();
         user = dataSource.getUserList().getCurrUser();
-        userList = dataSource.getUserList();
         showUser(user);
+    }
+
+    public void setHandleBackButton(EventHandler<ActionEvent> handler) {
+        holdBackButton.setOnAction(handler);
     }
 
     public boolean resetPassword(){
@@ -57,30 +79,10 @@ public class ResetPasswordController {
         return false;
     }
 
-
-    public void showUser(User user){
+    private void showUser(User user){
         userName.setText(user.getUsername());
         name.setText(user.getName());
         userImageView.setImage(new Image(user.getPicturePath()));
-    }
-
-    public void holdBackButton(ActionEvent actionEvent) {
-        if (user.getRole() == User.Role.ADMIN) {
-            try {
-                com.github.saacsos.FXRouter.goTo("admin_page", dataSource);
-            } catch (IOException e) {
-                System.err.println("ไปที่หน้า admin_page_user ไม่ได้");
-                System.err.println("ให้ตรวจสอบการกำหนด route");
-            }
-        }
-        else{
-            try {
-                com.github.saacsos.FXRouter.goTo("my_account", dataSource);
-            } catch (IOException e) {
-                System.err.println("ไปที่หน้า my_account ไม่ได้");
-                System.err.println("ให้ตรวจสอบการกำหนด route");
-            }
-        }
     }
 
     public void holdResetPasswordButton(ActionEvent actionEvent) {
@@ -93,6 +95,5 @@ public class ResetPasswordController {
                 System.err.println("ให้ตรวจสอบการกำหนด route");
             }
         }
-        return;
     }
 }

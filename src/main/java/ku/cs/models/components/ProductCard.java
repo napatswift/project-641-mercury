@@ -15,15 +15,13 @@ import javafx.scene.shape.Rectangle;
 import ku.cs.models.Product;
 
 public class ProductCard extends VBox {
-    private Product product;
-    private ImageView image;
-    private HBox hBox;
+    private final Product product;
 
     public ProductCard(Product product) {
         this.product = product;
         int cardWidth = 250;
         int height = cardWidth * 80 / 100;
-        image = new ImageView();
+        ImageView image = new ImageView();
 
         image.setFitWidth(cardWidth);
         image.setPreserveRatio(true);
@@ -43,7 +41,7 @@ public class ProductCard extends VBox {
         productVbox.setAlignment(Pos.CENTER_LEFT);
         productVbox.setSpacing(3);
 
-        hBox = new HBox(productVbox);
+        HBox hBox = new HBox(productVbox);
         hBox.setSpacing(3);
         hBox.setPrefHeight(30);
         hBox.setPadding(new Insets(10, 10, 10, 10));
@@ -57,7 +55,5 @@ public class ProductCard extends VBox {
         getChildren().addAll(image, hBox);
     }
 
-    public Product getProduct() {
-        return product;
-    }
+    public Product getProduct() { return product; }
 }

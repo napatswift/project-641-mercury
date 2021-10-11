@@ -3,9 +3,13 @@ package ku.cs.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import com.github.saacsos.FXRouter;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import ku.cs.models.User;
 import ku.cs.models.components.dialogs.PictureConfirmDialog;
@@ -22,7 +26,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class MyAccountController {
-    DataSource dataSource;
+    private DataSource dataSource;
     private User user;
 
     @FXML
@@ -32,15 +36,21 @@ public class MyAccountController {
     private Label nameLabel;
 
     @FXML
+    private Label storeNameLabel;
+
+    @FXML
     private Label usernameLabel;
 
     @FXML
-    private Label storeNameLabel;
+    private VBox parentVBox;
+
+    private VBox infoVBox;
 
     public void initialize() {
         dataSource = (DataSource) FXRouter.getData();
         user = dataSource.getUserList().getCurrUser();
         showUser(user);
+        infoVBox = (VBox) parentVBox.getChildren().get(0);
     }
 
     public void showUser(User user){
@@ -51,21 +61,25 @@ public class MyAccountController {
         storeNameLabel.setText(storeName);
     }
 
-    public void handleResetPassword() {
+    @FXML
+    void handleResetPassword() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/reset_password.fxml"));
         try {
-            FXRouter.goTo("reset_password", dataSource);
-        } catch (Exception e) {
-            System.err.println("ไปที่หน้า reset_password ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
-        }
-    }
-
-    public void handleBackBtn(ActionEvent event) {
-        try {
-            FXRouter.goTo("marketplace", dataSource);
-        } catch (Exception e) {
+            Node node = loader.load();
+            parentVBox.getChildren().clear();
+            parentVBox.setAlignment(Pos.CENTER);
+            parentVBox.getChildren().add(node);
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        ResetPasswordController controller = loader.getController();
+        controller.setHandleBackButton(this::handleBack);
+    }
+
+    public void handleBack(ActionEvent event){
+        parentVBox.getChildren().clear();
+        parentVBox.setAlignment(Pos.TOP_CENTER);
+        parentVBox.getChildren().add(infoVBox);
     }
 
     public void handleSelectProfilePicture() {

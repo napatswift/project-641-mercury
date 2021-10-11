@@ -10,9 +10,9 @@ import ku.cs.models.User;
 
 public class UserInfoCard extends HBox {
     private User user;
-    private ImageView imageView;
-    private Label usernameLabel;
-    private Label nameLabel;
+    private final ImageView imageView;
+    private final Label usernameLabel;
+    private final Label nameLabel;
 
     public UserInfoCard() {
         imageView = new ImageView();
@@ -44,9 +44,7 @@ public class UserInfoCard extends HBox {
         usernameLabel.setText("@" + user.getUsername());
     }
 
-    public User getUser() {
-        return user;
-    }
+    public User getUser() { return user; }
 
     public void setUser(User user) {
         this.user = user;
