@@ -368,3 +368,26 @@
     -fx-background-color: surface-color;
     -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.14), 2, 0.5, 0, 1);
 }
+
+.promotion-ticket {
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.15), 1, 0.5, 0, 1);
+}
+.promotion-ticket .left-shape{
+    -fx-border-width: 0 .05em 0 0;
+    -fx-border-color: surface-overlay;
+    -fx-fill: surface-color;
+}
+.promotion-ticket .right-shape{
+    -fx-fill: surface-color;
+}
+
+.promotion-ticket .big-number{
+    -fx-font-family: 'Roboto Bold';
+    -fx-font-size: 32px;
+}
+
+.promotion-ticket .promotion-info{
+    -fx-font-family: 'Roboto Medium';
+    -fx-font-size: 16px;
+}

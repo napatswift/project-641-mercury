@@ -1,7 +1,6 @@
 package ku.cs.controllers;
 
 import com.github.saacsos.FXRouter;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
