@@ -30,7 +30,8 @@ public class ReportListCell extends ListCell<Report> {
         super.updateItem(item, empty);
         if (item != null && !empty) {
             topLabel.setText(DateTime.toReadableDateTime(item.getReportDateTime()));
-            label.setText("Report - #ID");
+            String id = item.getId().split("-")[0];
+            label.setText("Report - " + id);
             setStyle("-fx-border-width: 0 0 2 0; -fx-border-color: surface-overlay");
             setGraphic(content);
         } else {
