@@ -20,12 +20,14 @@ public class ImageUploader {
         this.window = window;
     }
 
-    public void show(String description){
+    public boolean show(String description){
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(description, "*.jpeg"));
 
         uploadedFile = chooser.showOpenDialog(this.window);
+        if (uploadedFile == null)
+            return false;
 
         String filename = LocalDate.now()
                 + "_" + System.currentTimeMillis()
@@ -35,6 +37,7 @@ public class ImageUploader {
 
         destinationFile = FileSystems.getDefault().getPath(
                 destDir.getAbsolutePath() + "/" + filename);
+        return true;
     }
 
     public void show(){

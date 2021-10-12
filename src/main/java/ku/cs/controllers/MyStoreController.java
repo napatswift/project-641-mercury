@@ -20,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import ku.cs.models.*;
 import ku.cs.models.User;
 import ku.cs.models.Category;
@@ -29,6 +30,7 @@ import ku.cs.models.components.dialogs.ConfirmEditProductDialog;
 import ku.cs.models.components.dialogs.PictureConfirmDialog;
 import ku.cs.models.components.listCell.OrderListCell;
 import ku.cs.models.components.listCell.ProductListCell;
+import ku.cs.models.utils.ImageUploader;
 import ku.cs.service.DataSource;
 
 
@@ -48,10 +50,8 @@ import java.util.Optional;
 public class MyStoreController  {
     private DataSource dataSource;
     private Product product;
-    private Image image;
     private User currUser;
-    private File file;
-    private Path target;
+    private ImageUploader imageUploader;
     private ArrayList<Order> orders;
 
     @FXML private Label usernameLabel, nameLabel, nameStoreLabel;
@@ -289,58 +289,32 @@ public class MyStoreController  {
             descriptionLabel.setText(product.getDetails());
 
             newProductCategoryListPane.setCategoryList(product.getCategories());
-
-            productIV.setImage(image);
         }
     }
 
     @FXML
-    public void handleSelectProductPicture() {
-        FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
+    public void handleSelectNewProductPicture() {
+        Window window = pictureViewIV.getScene().getWindow();
+        imageUploader = new ImageUploader(window, "images/product_images");
+        imageUploader.show("Upload product picture");
 
-        file = chooser.showOpenDialog(pictureViewIV.getScene().getWindow());
-
-        if (file != null){
-            File destDir = new File("images"+ File.separator + "product_images");
-            if (!destDir.exists()) {
-                destDir.mkdirs();
-            }
-
-            Image uploadedImage = null;
-
-            try {
-                uploadedImage = new Image(new FileInputStream(file.getPath()));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            String[] fileSplit = file.getName().split("\\.");
-            String filename = "PRODUCT_IMG" +LocalDate.now()
-                    + "_" + System.currentTimeMillis()
-                    + "." + fileSplit[fileSplit.length - 1];
-
-            target = FileSystems.getDefault().getPath(
-                    destDir.getAbsolutePath()
-                            + File.separator
-                            + filename);
-
+        try {
+            Image uploadedImage = new Image(
+                    new FileInputStream(imageUploader.getUploadedFile()));
             pictureViewIV.setImage(uploadedImage);
-            image = uploadedImage;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
     public void handleConfirmBtn(){
-        if (file != null) {
-            try {
-                Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
-                product.setPictureName(target.getFileName().toString());
-                dataSource.getProducts().addProduct(product);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            imageUploader.saveImageFile();
+            product.setPictureName(imageUploader.getDestinationFile().getFileName().toString());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        dataSource.getProducts().addProduct(product);
         dataSource.saveProduct();
         myStoreTP.getSelectionModel().select(0);
     }
@@ -432,40 +406,19 @@ public class MyStoreController  {
     }
 
     @FXML
-    private void handleUploadNewPictureForProduct() {
-        FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
-
-        File file = chooser.showOpenDialog(pictureViewIV.getScene().getWindow());
-        
-        if (file == null) return;
-
-        String[] fileSplit = file.getName().split("\\.");
-
-        File destDir = new File("images" + File.separator + "product_images");
-
-        if (!destDir.exists()) {
-            if (!destDir.mkdirs()) return;
-        }
+    private void handleUploadNewPictureForSelectedProduct() {
+        ImageUploader imageUploader = new ImageUploader(usernameLabel.getScene().getWindow(), "images/product_images");
+        if (!imageUploader.show("Upload new picture for " + selectedProduct.getName()))
+            return;
 
         try {
-            Image uploadedImage = new Image(new FileInputStream(file.getPath()));
+            Image uploadedImage = new Image(new FileInputStream(imageUploader.getUploadedFile()));
             PictureConfirmDialog dialog = new PictureConfirmDialog(uploadedImage);
             Optional<Boolean> result = dialog.showAndWait();
 
             if (result.isPresent() && result.get()) {
-                String filename = "PRODUCT_IMG" + LocalDate.now()
-                        + "_" + System.currentTimeMillis()
-                        + "." + fileSplit[fileSplit.length - 1];
-
-                Path target = FileSystems.getDefault().getPath(
-                        destDir.getAbsolutePath()
-                                + File.separator
-                                + filename);
-
-                Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
-                selectedProduct.setPictureName(target.getFileName().toString());
+                imageUploader.saveImageFile();
+                selectedProduct.setPictureName(imageUploader.getDestinationFile().getFileName().toString());
                 dataSource.saveProduct();
             }
         } catch (FileNotFoundException e) {

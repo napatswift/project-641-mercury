@@ -5,22 +5,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
 import ku.cs.models.User;
 import ku.cs.models.UserList;
 import com.github.saacsos.FXRouter;
 import ku.cs.models.utils.ImageUploader;
 import ku.cs.service.DataSource;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 
 public class SignUpProfilePictureController {
     private DataSource dataSource;
@@ -41,6 +34,7 @@ public class SignUpProfilePictureController {
         currUser = (User) data[0];
     }
 
+    @FXML
     public void handleConfirmBtn(ActionEvent event) {
         try {
             imageUploader.saveImageFile();
@@ -60,12 +54,14 @@ public class SignUpProfilePictureController {
         }
     }
 
+    @FXML
     public void handleSelectProfilePicture(ActionEvent event) throws FileNotFoundException {
-        imageUploader = new ImageUploader(selectProfilePictureBtn.getScene().getWindow(), "images");
+        imageUploader = new ImageUploader(pictureViewIV.getScene().getWindow(), "images");
         imageUploader.show();
         pictureViewIV.setImage(new Image(new FileInputStream(imageUploader.getUploadedFile())));
     }
 
+    @FXML
     public void handleBack(ActionEvent event) {
         try {
             FXRouter.goTo("login");
