@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import ku.cs.models.User;
 import ku.cs.models.components.dialogs.PictureConfirmDialog;
+import ku.cs.models.utils.ImageUploader;
 import ku.cs.service.DataSource;
 
 import java.io.File;
@@ -83,39 +84,17 @@ public class MyAccountController {
     }
 
     public void handleSelectProfilePicture() {
-        FileChooser chooser = new FileChooser();
-
-        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
-
-        File file = chooser.showOpenDialog(imageIIV.getScene().getWindow());
-
-        if (file == null) return;
-
-        String[] fileSplit = file.getName().split("\\.");
-
-        File destDir = new File("images");
-
-        if (!destDir.exists())
-            if (!destDir.mkdirs()) return;
+        ImageUploader uploader = new ImageUploader(parentVBox.getScene().getWindow(), "images");
+        uploader.show();
 
         try {
-            Image uploadedImage = new Image(new FileInputStream(file.getPath()));
+            Image uploadedImage = new Image(new FileInputStream(uploader.getUploadedFile()));
             PictureConfirmDialog dialog = new PictureConfirmDialog(uploadedImage);
             Optional<Boolean> result = dialog.showAndWait();
 
             if (result.isPresent() && result.get()) {
-                String filename = LocalDate.now()
-                        + "_" + System.currentTimeMillis()
-                        + "." + fileSplit[fileSplit.length - 1];
-
-                Path target = FileSystems.getDefault().getPath(
-                        destDir.getAbsolutePath()
-                                + File.separator
-                                + filename);
-
-                Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
-                user.setPicturePath(target.getFileName().toString());
+                uploader.saveImageFile();
+                user.setPicturePath(uploader.getDestinationFile().getFileName().toString());
                 imageIIV.setImage(new Image(user.getPicturePath()));
                 dataSource.saveAccount();
             }

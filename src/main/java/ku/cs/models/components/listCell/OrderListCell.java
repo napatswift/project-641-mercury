@@ -117,24 +117,26 @@ public class OrderListCell extends ListCell<Order> {
     }
 
     private void updateOrder(Order order) {
+        updateProductInfo(order);
         this.order = order;
         updateStatus();
         updateUser();
-        updateProductInfo();
         updateTime();
     }
 
     private void updateUser() { userInfoCard.setUser(order.getBuyer()); }
 
-    private void updateProductInfo(){
+    private void updateProductInfo(Order order){
         Product product = order.getProduct();
-        String picturePath = product.getPicturePath();
-        Image image = new Image(picturePath);
-        PixelReader pixelReader = image.getPixelReader();
-        WritableImage croppedImage = new WritableImage(pixelReader,
-                (int) image.getWidth(),
-                (int) image.getHeight());
-        productImage.setImage(croppedImage);
+        if (this.order == null || product.getPicturePath() != this.order.getProduct().getPicturePath()) {
+            String picturePath = product.getPicturePath();
+            Image image = new Image(picturePath);
+            PixelReader pixelReader = image.getPixelReader();
+            WritableImage croppedImage = new WritableImage(pixelReader,
+                    (int) image.getWidth(),
+                    (int) image.getHeight());
+            productImage.setImage(croppedImage);
+        }
         productNameLabel.setText(product.getName());
         amountLabel.setText("x" + order.getQuantity());
         totalCostLabel.setText(String.format("$%.2f", product.getPrice() * order.getQuantity()));
@@ -171,7 +173,7 @@ public class OrderListCell extends ListCell<Order> {
         order.setTracking(trackingNumberTextField.getText());
         updateStatus();
         updateUser();
-        updateProductInfo();
+        updateProductInfo(this.order);
         dataSource.saveOrder();
     }
 

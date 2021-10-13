@@ -8,9 +8,8 @@ import ku.cs.service.Theme;
 import java.io.IOException;
 
 public class ThemeMenuItem extends MenuItem {
-    Theme.ColorTheme colorTheme;
 
-    public ThemeMenuItem(Theme.ColorTheme colorTheme, String color) {
+    public ThemeMenuItem(final Theme.ColorTheme colorTheme, final String color, final ThemeMenu themeMenu) {
         super(colorTheme.toString());
 
         Circle colorCircle = new Circle(8);
@@ -18,11 +17,8 @@ public class ThemeMenuItem extends MenuItem {
         setGraphic(colorCircle);
 
         setOnAction(event -> {
-            try {
                 FXRouter.setTheme(colorTheme);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                themeMenu.getScene().getRoot().getStylesheets().set(1, FXRouter.getTheme().getThemePath());
         });
     }
 }
