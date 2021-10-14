@@ -102,7 +102,7 @@ public class OrderSummaryController {
             allPaymentText.setText("" + couponList.useCoupon(code,order));
         }
         else {
-            Alert alert = new Alert(Alert.AlertType.NONE, "Coupon เกิดข้อผิดพลาด.", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.NONE, "CouponType เกิดข้อผิดพลาด.", ButtonType.OK);
             alert.initStyle(StageStyle.UTILITY);
             alert.setHeaderText("ค่อยทำ");
             alert.showAndWait();;

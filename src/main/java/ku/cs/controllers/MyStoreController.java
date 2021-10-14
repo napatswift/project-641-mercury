@@ -19,34 +19,24 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
-import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import ku.cs.models.*;
 import ku.cs.models.User;
-import ku.cs.models.Category;
 import ku.cs.models.CategoryList;
 import ku.cs.models.components.*;
 import ku.cs.models.components.dialogs.ConfirmEditProductDialog;
 import ku.cs.models.components.dialogs.PictureConfirmDialog;
 import ku.cs.models.components.listCell.OrderListCell;
 import ku.cs.models.components.listCell.ProductListCell;
-import ku.cs.models.coupon.Coupon;
-import ku.cs.models.coupon.CouponList;
+import ku.cs.models.coupon.CouponType;
 import ku.cs.models.utils.ImageUploader;
 import ku.cs.service.DataSource;
 
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Optional;
 
 public class MyStoreController  {
@@ -55,7 +45,7 @@ public class MyStoreController  {
     private User currUser;
     private ImageUploader imageUploader;
     private ArrayList<Order> orders;
-    private ArrayList<Coupon> coupons;
+    private ArrayList<CouponType> couponTypes;
 
     @FXML private Label usernameLabel, nameLabel, nameStoreLabel;
     @FXML private TabPane myStoreTP;
@@ -69,7 +59,7 @@ public class MyStoreController  {
     @FXML private ImageView productIV;
     @FXML private ListView<Product> productsListLV;
     @FXML private ListView<Order> orderLV;
-    @FXML private ListView<Coupon> couponsLV;
+    @FXML private ListView<CouponType> couponsLV;
     @FXML private Label rateLB, detailsLB,numberLowerLabel;
     @FXML private TextField nameProductLB, priceLB, stockLB;
     @FXML private VBox rightProductVB, ImageViewVBox;
@@ -91,7 +81,7 @@ public class MyStoreController  {
         dataSource.parseOrder();
         dataSource.parseCoupon();
         orders = dataSource.getOrders().getOrdersByStore(currUser.getStoreName());
-        coupons = dataSource.getCoupons().toListCouponInStore(currUser.getStore());
+        couponTypes = dataSource.getCoupons().toListCouponInStore(currUser.getStore());
         setupUserInfo();
         loadCategory();
         handleListProductBtn();
@@ -103,7 +93,7 @@ public class MyStoreController  {
         showProductsListView();
         handleProductsListView();
         setupTabPaneListener();
-        showCouponListView(coupons);
+        showCouponListView(couponTypes);
         showOrderListView(orders);
 
         setGroup();
@@ -391,9 +381,9 @@ public class MyStoreController  {
         orderLV.refresh();
     }
 
-    public void showCouponListView(ArrayList<Coupon> couponArrayList){
+    public void showCouponListView(ArrayList<CouponType> couponTypeArrayList){
         couponsLV.getItems().clear();
-        couponsLV.getItems().addAll(couponArrayList);
+        couponsLV.getItems().addAll(couponTypeArrayList);
         couponsLV.refresh();
     }
 

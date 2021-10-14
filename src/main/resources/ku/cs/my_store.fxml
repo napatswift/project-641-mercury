@@ -481,7 +481,7 @@
                         </VBox>
                      </content>
                   </Tab>
-                  <Tab text="coupon">
+                  <Tab text="couponType">
                      <content>
                         <VBox spacing="15.0">
                            <children>

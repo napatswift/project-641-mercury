@@ -313,12 +313,13 @@ public class DataSource {
                 entry = doc.getRow(i).toArray(new String[0]);
                 String code = entry[0];
                 Store owner = stores.findStoreByName(entry[1]);
-                Double percentDiscount = entry[2].equals("null") ? null : Double.parseDouble(entry[2]);
-                Double discount = entry[3].equals("null") ? null : Double.parseDouble(entry[3]);
-                Integer minimumQuantity = entry[4].equals("null") ? null : Integer.parseInt(entry[4]);
-                Double minimumValue = entry[5].equals("null") ? null : Double.parseDouble(entry[5]);
+                boolean status = entry[2].equals("true");
+                Double percentDiscount = entry[3].equals("null") ? null : Double.parseDouble(entry[3]);
+                Double discount = entry[4].equals("null") ? null : Double.parseDouble(entry[4]);
+                Integer minimumQuantity = entry[5].equals("null") ? null : Integer.parseInt(entry[5]);
+                Double minimumValue = entry[6].equals("null") ? null : Double.parseDouble(entry[6]);
 
-                coupons.addCoupon(code,owner,minimumValue,minimumQuantity,discount,percentDiscount);
+                coupons.addCoupon(code,owner,status,minimumValue,minimumQuantity,discount,percentDiscount);
             }
         } catch (Exception e) {
             e.printStackTrace();

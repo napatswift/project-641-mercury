@@ -7,56 +7,66 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CouponList {
-    private final List<Coupon> coupons;
-    private Coupon coupon;
+    private final List<CouponType> couponTypes;
+    private CouponType couponType;
 
     public CouponList() {
-        this.coupons = new ArrayList<>();
+        this.couponTypes = new ArrayList<>();
     }
 
-    public void addCoupon(String code,Store owner,Double minimumValue,Integer minimumQuantity,Double discount,Double percentDiscount){
+    public void addCoupon(String code,Store owner,boolean status,Double minimumValue,Integer minimumQuantity,Double discount,Double percentDiscount){
         if(minimumQuantity == null){
             if(discount == null)
-                coupons.add(new MinimumValuePercentDiscount(code,owner,minimumValue,percentDiscount));
-            else coupons.add(new MinimumValueDiscount(code,owner,minimumValue,discount));
+                couponTypes.add(new MinimumValuePercentDiscount(code,owner,status,minimumValue,percentDiscount));
+            else couponTypes.add(new MinimumValueDiscount(code,owner,status,minimumValue,discount));
         }
         else {
             if(discount == null)
-                coupons.add(new MinimumQuantityPercentDiscount(code,owner,minimumQuantity,percentDiscount));
-            else coupons.add(new MinimumQuantityDiscount(code,owner,minimumQuantity,discount));
+                couponTypes.add(new MinimumQuantityPercentDiscount(code,owner,status,minimumQuantity,percentDiscount));
+            else couponTypes.add(new MinimumQuantityDiscount(code,owner,status,minimumQuantity,discount));
         }
     }
 
     public double useCoupon(String code, Order order){
-        for(Coupon coupon : coupons){
-            if(coupon.use(code,order) > 0)
-                return coupon.use(code,order);
+        for(CouponType couponType : couponTypes){
+            if(couponType.use(code,order) > 0)
+                return couponType.use(code,order);
         }
         return -1;
     }
 
     public boolean checkCouponCode(String code){
-        for(Coupon coupon : coupons){
-            if(coupon.checkCode(code))
+        for(CouponType couponType : couponTypes){
+            if(((Coupon) couponType).checkCode(code))
                 return true;
         }
         return false;
     }
 
-    public ArrayList<Coupon> toListCouponInStore(Store store){
-        ArrayList<Coupon> couponArrayList = new ArrayList<>();
-        for(Coupon coupon : coupons){
-            if(coupon.checkStore(store))
-                couponArrayList.add(coupon);
+    public void removeCoupon(CouponType couponType){
+        for(CouponType coupon : couponTypes){
+            if(coupon == couponType){
+                couponTypes.remove(coupon);
+                return;
+            }
         }
-        return couponArrayList;
+    }
+
+    public ArrayList<CouponType> toListCouponInStore(Store store){
+        ArrayList<CouponType> couponTypeArrayList = new ArrayList<>();
+        for(CouponType couponType : couponTypes){
+            if(((Coupon) couponType).checkStore(store))
+                couponTypeArrayList.add(couponType);
+        }
+
+        return couponTypeArrayList;
     }
 
     public String toCsv(){
-        StringBuilder stringBuilder = new StringBuilder("code,store,percent_discount,discount,minimum_quantity,minimum_value");
+        StringBuilder stringBuilder = new StringBuilder("code,store,status,percent_discount,discount,minimum_quantity,minimum_value");
         stringBuilder.append("\n");
-        for(Coupon coupon : coupons){
-            stringBuilder.append(coupon.toCsv());
+        for(CouponType couponType : couponTypes){
+            stringBuilder.append(couponType.toCsv());
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();

@@ -9,10 +9,7 @@ import javafx.scene.control.TextField;
 import ku.cs.models.Store;
 import com.github.saacsos.FXRouter;
 import ku.cs.models.components.dialogs.AlertDialog;
-import ku.cs.models.coupon.Coupon;
 import ku.cs.models.coupon.CouponList;
-import ku.cs.models.coupon.MinimumValueDiscount;
-import ku.cs.models.coupon.MinimumValuePercentDiscount;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -59,7 +56,7 @@ public class CreateCouponController {
             Double minimumValue = minimumStatusBox.getValue().equals("Minimum Cost") ? Double.parseDouble(minimumTF.getText()) : null;
             Integer minimumQuantity = minimumStatusBox.getValue().equals("Minimum Pieces") ? Integer.parseInt(minimumTF.getText()) : null;
 
-            coupons.addCoupon(code,owner,minimumValue,minimumQuantity,discount,percentDiscount);
+            coupons.addCoupon(code,owner,true,minimumValue,minimumQuantity,discount,percentDiscount);
             dataSource.saveCoupon();
 
             AlertDialog.alertDialog("จบแล้ว","THX");

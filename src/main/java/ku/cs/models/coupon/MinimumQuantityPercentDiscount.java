@@ -3,15 +3,12 @@ package ku.cs.models.coupon;
 import ku.cs.models.Order;
 import ku.cs.models.Store;
 
-public class MinimumQuantityPercentDiscount implements Coupon {
-    private final String code;
-    private final Store owner;
+public class MinimumQuantityPercentDiscount extends Coupon implements CouponType {
     private final int minimumQuantity;
     private final double percentDiscount;
 
-    public MinimumQuantityPercentDiscount(String code, Store owner, int minimumQuantity, double percentDiscount) {
-        this.code = code;
-        this.owner = owner;
+    public MinimumQuantityPercentDiscount(String code, Store owner, boolean status, int minimumQuantity, double percentDiscount) {
+        super(code, owner, status);
         this.minimumQuantity = minimumQuantity;
         this.percentDiscount = percentDiscount;
     }
@@ -20,17 +17,16 @@ public class MinimumQuantityPercentDiscount implements Coupon {
     public double use(String code, Order order) {
         if(minimumQuantity > order.getQuantity())
             return -1;
-        if(order.getProduct().getStore() != owner)
-            return -1;
-        if(!this.code.equals(code))
-            return -1;
+
+        if(super.checkCoupon(code, order) != 1)
+            return super.checkCoupon(code, order);
+
         return order.getTotal() - (order.getTotal() * percentDiscount);
     }
 
     @Override
     public String toCsv(){
-        return code + ","
-                + owner.getName() + ","
+        return super.toCsv() + ","
                 + String.format("%.4f", percentDiscount) + ","
                 + null + ","
                 + minimumQuantity + ","
@@ -38,22 +34,8 @@ public class MinimumQuantityPercentDiscount implements Coupon {
     }
 
     @Override
-    public boolean checkCode(String code) {
-        return this.code.equals(code);
-    }
-
-    @Override
-    public boolean checkStore(Store store) {
-        return this.owner == store;
-    }
-
-    @Override
     public String toString() {
-        return "MinimumQuantityPercentDiscount{" +
-                "code='" + code + '\'' +
-                ", owner=" + owner +
-                ", minimumQuantity=" + minimumQuantity +
-                ", percentDiscount=" + percentDiscount +
-                '}';
+        return this.toCsv();
     }
+
 }
