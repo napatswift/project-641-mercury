@@ -2,13 +2,12 @@ package ku.cs.models.components;
 
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -29,9 +28,9 @@ public class PromotionTicket extends HBox {
         getStyleClass().add("promotion-ticket");
         toggle = false;
         promotionInfoLabel = new Label("Min Spend $" + 333);
-        storeNameLabel = new Label("Store Name");
+        storeNameLabel = new Label("Click to copy code");
         bigNumber = new Label("$150");
-        promotionDesc = new Label("Up to");
+        promotionDesc = new Label("Get");
         percent = new Label("Off");
 
         Rectangle rectangle = new Rectangle(width * leftRatio, height);
@@ -65,8 +64,17 @@ public class PromotionTicket extends HBox {
         getChildren().addAll(leftStackPane, rightStackPane);
         setPrefWidth(-1);
         setPadding(new Insets(5, 10, 5, 10));
+
+        setOnMouseClicked(this::handlePutCode);
         setOnMouseEntered(this::toggleTicketAnimation);
         setOnMouseExited(this::toggleTicketAnimation);
+    }
+
+    private void handlePutCode(MouseEvent event){
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString("CODE");
+        clipboard.setContent(content);
     }
 
     private void toggleTicketAnimation(MouseEvent mouseEvent){
