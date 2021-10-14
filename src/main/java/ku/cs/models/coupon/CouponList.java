@@ -52,11 +52,11 @@ public class CouponList {
         }
     }
 
-    public ArrayList<CouponType> toListCouponInStore(Store store){
-        ArrayList<CouponType> couponTypeArrayList = new ArrayList<>();
+    public ArrayList<Coupon> toListCouponInStore(Store store){
+        ArrayList<Coupon> couponTypeArrayList = new ArrayList<>();
         for(CouponType couponType : couponTypes){
             if(((Coupon) couponType).checkStore(store))
-                couponTypeArrayList.add(couponType);
+                couponTypeArrayList.add((Coupon) couponType);
         }
 
         return couponTypeArrayList;

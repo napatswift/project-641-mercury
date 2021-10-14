@@ -25,6 +25,16 @@ public class MinimumValuePercentDiscount extends Coupon implements CouponType {
     }
 
     @Override
+    public String toDescriptiveString() {
+        return "Min. order of $" + minimumValue;
+    }
+
+    @Override
+    public String toNumberOffString() {
+        return (percentDiscount * 100) + "%";
+    }
+
+    @Override
     public String toCsv(){
         return super.toCsv() + ","
                 + String.format("%.4f", percentDiscount) + ","
@@ -35,7 +45,7 @@ public class MinimumValuePercentDiscount extends Coupon implements CouponType {
 
     @Override
     public String toString() {
-        return this.toCsv();
+        return (percentDiscount * 100) + "% off on items with minimum order of $" + minimumValue;
     }
 
 }

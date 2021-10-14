@@ -13,8 +13,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
+import ku.cs.models.coupon.Coupon;
 
 public class PromotionTicket extends HBox {
+    private Coupon coupon;
     private final Label promotionInfoLabel;
     private final Label storeNameLabel;
     private final Label bigNumber;
@@ -24,14 +26,15 @@ public class PromotionTicket extends HBox {
     private final StackPane rightStackPane;
     private boolean toggle;
 
-    public PromotionTicket(double width, double height, double radius, double leftRatio) {
+    public PromotionTicket(Coupon coupon, double width, double height, double radius, double leftRatio) {
+        setMinHeight(height);
         getStyleClass().add("promotion-ticket");
         toggle = false;
-        promotionInfoLabel = new Label("Min Spend $" + 333);
-        storeNameLabel = new Label("Click to copy code");
-        bigNumber = new Label("$150");
-        promotionDesc = new Label("Get");
-        percent = new Label("Off");
+        promotionInfoLabel = new Label();
+        storeNameLabel = new Label();
+        bigNumber = new Label();
+        promotionDesc = new Label("get");
+        percent = new Label("off");
 
         Rectangle rectangle = new Rectangle(width * leftRatio, height);
         Circle circle = new Circle(width * leftRatio, 0, height * radius);
@@ -65,6 +68,7 @@ public class PromotionTicket extends HBox {
         setPrefWidth(-1);
         setPadding(new Insets(5, 10, 5, 10));
 
+        setCoupon(coupon);
         setOnMouseClicked(this::handlePutCode);
         setOnMouseEntered(this::toggleTicketAnimation);
         setOnMouseExited(this::toggleTicketAnimation);
@@ -73,7 +77,7 @@ public class PromotionTicket extends HBox {
     private void handlePutCode(MouseEvent event){
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
-        content.putString("CODE");
+        content.putString(coupon.getCode());
         clipboard.setContent(content);
     }
 
@@ -104,16 +108,18 @@ public class PromotionTicket extends HBox {
         toggle = !toggle;
     }
 
-    public PromotionTicket() {
-        this(300, 100, 0.05, 0.65);
+    public PromotionTicket(Coupon coupon) {
+        this(coupon, 300, 100, 0.05, 0.65);
     }
 
-    public void updatePromotion(){
-        promotionInfoLabel.setText("Min Spend $" + 333);
-        storeNameLabel.setText("Store Name");
+    public void setCoupon(Coupon coupon) {
+        this.coupon = coupon;
+        updateInfo();
+    }
 
-        promotionDesc.setText("Up to");
-        bigNumber.setText("50");
-        percent.setText("%");
+    public void updateInfo(){
+        promotionInfoLabel.setText(coupon.toDescriptiveString());
+        storeNameLabel.setText(coupon.getCode());
+        bigNumber.setText(coupon.toNumberOffString());
     }
 }
