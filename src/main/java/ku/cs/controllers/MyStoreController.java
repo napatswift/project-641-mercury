@@ -30,6 +30,8 @@ import ku.cs.models.components.dialogs.ConfirmEditProductDialog;
 import ku.cs.models.components.dialogs.PictureConfirmDialog;
 import ku.cs.models.components.listCell.OrderListCell;
 import ku.cs.models.components.listCell.ProductListCell;
+import ku.cs.models.coupon.Coupon;
+import ku.cs.models.coupon.CouponList;
 import ku.cs.models.utils.ImageUploader;
 import ku.cs.service.DataSource;
 
@@ -53,6 +55,7 @@ public class MyStoreController  {
     private User currUser;
     private ImageUploader imageUploader;
     private ArrayList<Order> orders;
+    private ArrayList<Coupon> coupons;
 
     @FXML private Label usernameLabel, nameLabel, nameStoreLabel;
     @FXML private TabPane myStoreTP;
@@ -66,6 +69,7 @@ public class MyStoreController  {
     @FXML private ImageView productIV;
     @FXML private ListView<Product> productsListLV;
     @FXML private ListView<Order> orderLV;
+    @FXML private ListView<Coupon> couponsLV;
     @FXML private Label rateLB, detailsLB,numberLowerLabel;
     @FXML private TextField nameProductLB, priceLB, stockLB;
     @FXML private VBox rightProductVB, ImageViewVBox;
@@ -73,7 +77,7 @@ public class MyStoreController  {
     @FXML private HBox ratingStarsSelectedProduct;
     @FXML private SVGPath stockWarningSelectedProductSVG;
     @FXML private AnchorPane productsRightPane;
-    @FXML private ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn;
+    @FXML private ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn, couponMenuBtn;
 
     private Tab myStoreTab, myAccountTab;
 
@@ -85,7 +89,9 @@ public class MyStoreController  {
         dataSource = (DataSource) FXRouter.getData();
         currUser = dataSource.getUserList().getCurrUser();
         dataSource.parseOrder();
-        orders = dataSource.getOrders().getOrdersByStore(dataSource.getUserList().getCurrUser().getStoreName());
+        dataSource.parseCoupon();
+        orders = dataSource.getOrders().getOrdersByStore(currUser.getStoreName());
+        coupons = dataSource.getCoupons().toListCouponInStore(currUser.getStore());
         setupUserInfo();
         loadCategory();
         handleListProductBtn();
@@ -97,6 +103,7 @@ public class MyStoreController  {
         showProductsListView();
         handleProductsListView();
         setupTabPaneListener();
+        showCouponListView(coupons);
         showOrderListView(orders);
 
         setGroup();
@@ -167,6 +174,7 @@ public class MyStoreController  {
         myStoreMenuBtn.setToggleGroup(group);
         productsMenuBtn.setToggleGroup(group);
         ordersMenuBtn.setToggleGroup(group);
+        couponMenuBtn.setToggleGroup(group);
 
         productsMenuBtn.fire();
     }
@@ -245,6 +253,11 @@ public class MyStoreController  {
     @FXML
     public void handleOrdersBtn(){
         myStoreTP.getSelectionModel().select(4);
+    }
+
+    @FXML
+    public void handleCouponBtn(){
+        myStoreTP.getSelectionModel().select(5);
     }
 
     public void loadCategory(){
@@ -378,6 +391,12 @@ public class MyStoreController  {
         orderLV.refresh();
     }
 
+    public void showCouponListView(ArrayList<Coupon> couponArrayList){
+        couponsLV.getItems().clear();
+        couponsLV.getItems().addAll(couponArrayList);
+        couponsLV.refresh();
+    }
+
     public void handleAllBtn(){
         showOrderListView(orders);
     }
@@ -428,5 +447,13 @@ public class MyStoreController  {
             e.printStackTrace();
         }
         showSelectedProduct(selectedProduct);
+    }
+
+    public void handleCreateCouponBtn(ActionEvent actionEvent) {
+        try{
+            FXRouter.goTo("create_coupon",dataSource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
