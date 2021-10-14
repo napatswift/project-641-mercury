@@ -3,10 +3,7 @@ package ku.cs.controllers;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.StageStyle;
@@ -14,36 +11,53 @@ import ku.cs.models.Order;
 import ku.cs.models.Product;
 import ku.cs.models.ProductList;
 import ku.cs.models.User;
+import ku.cs.models.coupon.CouponList;
 import ku.cs.service.DataSource;
 
 public class OrderSummaryController {
     private DataSource dataSource;
     private ProductList productList;
+    private CouponList couponList;
+    private Order order;
+    private User buyer;
     private int amountBuy;
+    private double allPayment;
+    private double deCre;
 
     @FXML
     private Label nameProductText,
             unitPriceText,
             unitText,
-            allPaymentText;
-
+            allPaymentText,
+            discountText,
+            discountAmountText;
     @FXML
     private ImageView selectedProductImageView;
 
     @FXML
-    private Button cancelBtn;
+    private TextField couponCodeTF;
 
+    @FXML
+    private Button cancelBtn;
     private Product product;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
         dataSource.parseOrder();
+        dataSource.parseCoupon();
     }
 
     public void setAmountBuy(int amountBuy) {
-        this.amountBuy = amountBuy;
         productList = dataSource.getProducts();
+        this.amountBuy = amountBuy;
+        allPayment = amountBuy * productList.getSelectedProduct().getPrice();
         showProduct(productList.getSelectedProduct(), amountBuy);
+    }
+
+    public void setData(){
+        couponList = dataSource.getCoupons();
+        buyer = dataSource.getUserList().getCurrUser();
+        order = new Order(product, amountBuy, buyer);
     }
 
     public void showProduct(Product product, int amountBuy){
@@ -53,8 +67,11 @@ public class OrderSummaryController {
         unitPriceText.setText("$" + product.getPrice() + " per each");
         unitText.setText("x" + amountBuy);
 
-        allPaymentText.setText(String.format("$%.2f", amountBuy * product.getPrice()));
+        discountText.setVisible(false);
+        discountAmountText.setVisible(false);
+        allPaymentText.setText(String.format("$%.2f", allPayment - deCre));
         selectedProductImageView.setImage(new Image(product.getPicturePath()));
+        setData();
     }
 
     public void handleOrderBtn() {
@@ -63,8 +80,6 @@ public class OrderSummaryController {
             alert.initStyle(StageStyle.UTILITY);
             alert.setHeaderText("Thank you!");
             alert.showAndWait();
-            User buyer = dataSource.getUserList().getCurrUser();
-            Order order = new Order(product, amountBuy, buyer);
             dataSource.getOrders().addOrder(order);
             dataSource.saveOrder();
             dataSource.saveProduct();
@@ -74,5 +89,23 @@ public class OrderSummaryController {
 
     public void setOnActionCancelBtn(EventHandler<ActionEvent> eventEventHandler) {
         cancelBtn.setOnAction(eventEventHandler);
+    }
+
+    public void handleCouponBtn(ActionEvent actionEvent) {
+        String code = couponCodeTF.getText();
+        System.out.println(code +"  "+ couponList.useCoupon(code,order));
+        System.out.println(order.getTotal());
+        if(couponList.useCoupon(code,order) > 0){
+            discountText.setVisible(true);
+            discountAmountText.setVisible(true);
+            discountText.setText("" + (order.getTotal() - couponList.useCoupon(code,order)));
+            allPaymentText.setText("" + couponList.useCoupon(code,order));
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.NONE, "CouponType เกิดข้อผิดพลาด.", ButtonType.OK);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setHeaderText("ค่อยทำ");
+            alert.showAndWait();;
+        }
     }
 }

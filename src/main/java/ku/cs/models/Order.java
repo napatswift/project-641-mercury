@@ -60,6 +60,10 @@ public class Order implements Comparable<Order> {
         return buyer;
     }
 
+    public double getTotal() {
+        return quantity * product.getPrice();
+    }
+
     public int getQuantity() {
         return quantity;
     }
