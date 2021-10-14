@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class LoginController {
     private UserList userList;
-    DataSource dataSource;
+    private DataSource dataSource;
 
     @FXML
     private TextField usernameTF, passwordTF;
@@ -29,7 +29,7 @@ public class LoginController {
     private Button signUpBtn, logInBtn;
 
     @FXML
-    VBox bottomButtonVB;
+    private VBox bottomButtonVB;
 
     public void handlePassword(KeyEvent event){
         if (event.getCode() == KeyCode.ENTER){

@@ -10,7 +10,7 @@ public class ThemeMenu extends MenuButton {
 
         for (Theme.ColorTheme e: Theme.ColorTheme.values()) {
             String hexColor = (e == Theme.ColorTheme.DEFAULT ? "6200ee" : e.toString().split("_")[1]);
-            getItems().add(new ThemeMenuItem(e, hexColor));
+            getItems().add(new ThemeMenuItem(e, hexColor, this));
         }
     }
 }

@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import ku.cs.models.Product;
 
 public class SmallProductCard extends HBox {
-    private Product product;
+    private final Product product;
 
     public SmallProductCard(Product product) {
         this.product = product;
@@ -35,5 +35,9 @@ public class SmallProductCard extends HBox {
 
         VBox info = new VBox(title, detail);
         getChildren().addAll(imageView, info);
+    }
+
+    public Product getProduct() {
+        return product;
     }
 }

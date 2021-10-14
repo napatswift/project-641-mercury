@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 import ku.cs.models.Review;
 
 public class SmallReviewCard extends VBox {
-    private Review review;
+    private final Review review;
 
     public SmallReviewCard(Review review) {
         this.review = review;
@@ -23,5 +23,9 @@ public class SmallReviewCard extends VBox {
 
         setSpacing(5.);
         setPadding(new Insets(16, 20, 16, 20));
+    }
+
+    public Review getReview() {
+        return review;
     }
 }

@@ -18,7 +18,7 @@ import java.io.IOException;
 public class ResetPasswordController {
 
     private User user;
-    DataSource dataSource;
+    private DataSource dataSource;
 
 
     @FXML

@@ -26,6 +26,7 @@ public class ProductListCell extends ListCell<Product> {
     private final ImageView imageView;
     private final ColumnConstraints col2;
     private final ColumnConstraints col3;
+    private String imagePath;
 
     public ProductListCell(ListView<Product> listView) {
         gridPane = new GridPane();
@@ -69,6 +70,10 @@ public class ProductListCell extends ListCell<Product> {
     }
 
     private void setImage(String imagePath){
+        if (this.imagePath != null && this.imagePath.equals(imagePath)) {
+            return;
+        }
+        this.imagePath = imagePath;
         imageView.setImage(new Image(imagePath));
     }
 

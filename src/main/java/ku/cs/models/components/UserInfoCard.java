@@ -10,9 +10,9 @@ import ku.cs.models.User;
 
 public class UserInfoCard extends HBox {
     private User user;
-    private ImageView imageView;
-    private Label usernameLabel;
-    private Label nameLabel;
+    private final ImageView imageView;
+    private final Label usernameLabel;
+    private final Label nameLabel;
 
     public UserInfoCard() {
         imageView = new ImageView();
