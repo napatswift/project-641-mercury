@@ -10,6 +10,7 @@ import ku.cs.models.CategoryList;
 import ku.cs.models.ProductReport;
 import ku.cs.models.ReportList;
 import ku.cs.models.ReviewReport;
+import ku.cs.models.coupon.CouponList;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class DataSource {
     private final String STORE_FILE_NAME    = "stores.csv";
     private final String REPORT_FILE_NAME   = "reports.csv";
     private final String CATEGORY_FILE_NAME = "categories.csv";
+    private final String COUPON_FILE_NAME = "coupons.csv";
 
     private final UserList userList;
     private final ProductList products;
@@ -33,6 +35,7 @@ public class DataSource {
     private final CategoryList categories;
     private final StoreList stores;
     private final OrderList orders;
+    private CouponList coupons;
 
     public DataSource() {
         this("data");
@@ -47,6 +50,7 @@ public class DataSource {
         categories = new CategoryList();
         stores = new StoreList();
         orders = new OrderList();
+        coupons = new CouponList();
     }
 
     private void initFile(String filename) {
@@ -294,6 +298,34 @@ public class DataSource {
         }
     }
 
+    public void parseCoupon(){
+        initFile(COUPON_FILE_NAME);
+
+        if(stores == null) parseStore();
+
+        coupons = new CouponList();
+
+        try {
+            CsvReader reader = new CsvReader(directoryPath + File.separator + COUPON_FILE_NAME);
+            CsvDocument doc = reader.parse();
+            String[] entry;
+            for (int i = 1; i<doc.size(); i++){
+                entry = doc.getRow(i).toArray(new String[0]);
+                String code = entry[0];
+                Store owner = stores.findStoreByName(entry[1]);
+                boolean status = entry[2].equals("true");
+                Double percentDiscount = entry[3].equals("null") ? null : Double.parseDouble(entry[3]);
+                Double discount = entry[4].equals("null") ? null : Double.parseDouble(entry[4]);
+                Integer minimumQuantity = entry[5].equals("null") ? null : Integer.parseInt(entry[5]);
+                Double minimumValue = entry[6].equals("null") ? null : Double.parseDouble(entry[6]);
+
+                coupons.addCoupon(code,owner,status,minimumValue,minimumQuantity,discount,percentDiscount);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setDirectoryPath(String directoryPath) { this.directoryPath = directoryPath; }
 
     public UserList getUserList()       { return userList; }
@@ -303,6 +335,7 @@ public class DataSource {
     public OrderList getOrders()        { return orders; }
     public ReportList getReports()      { return reports; }
     public StoreList getStores()        { return stores; }
+    public CouponList getCoupons()      { return coupons; }
     public String getDirectoryPath()    { return directoryPath; }
 
     public void save(String string, String fileName){
@@ -326,5 +359,7 @@ public class DataSource {
     public void saveOrder()    { save(orders.toCsv(), ORDER_FILE_NAME); }
     public void saveStore()    { save(stores.toCsv(), STORE_FILE_NAME); }
     public void saveCategory() { save(categories.toCsv(), CATEGORY_FILE_NAME); }
+    public void saveCoupon()   { save(coupons.toCsv(), COUPON_FILE_NAME); }
+
 
 }

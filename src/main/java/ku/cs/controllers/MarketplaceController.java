@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
+import javafx.util.FXPermission;
 import ku.cs.models.*;
 import ku.cs.models.CategoryList;
 import ku.cs.models.components.*;
@@ -84,10 +85,7 @@ public class MarketplaceController {
             sortingMB.setText("SORT BY : MOST RECENT");
             productList.sort(ProductList.SortType.BY_ROLLOUT_DATE);
         }
-        productFlowPane.getChildren().clear();
-        int temp = productIndex;
-        productIndex = -1;
-        populateProduct(temp + 1);
+        updateProductCards();
     }
 
     private void filterProduct(){
@@ -125,10 +123,7 @@ public class MarketplaceController {
             double uTemp = upperBoundParsed;
             filterProduct();
             if (lTemp != lowerBoundParsed || uTemp != upperBoundParsed) {
-                productFlowPane.getChildren().clear();
-                int temp = productIndex;
-                productIndex = -1;
-                populateProduct(temp + 1);
+                updateProductCards();
             }
         }
     }
@@ -257,10 +252,7 @@ public class MarketplaceController {
 
         filterCategory = category;
 
-        productFlowPane.getChildren().clear();
-        int temp = productIndex;
-        productIndex = -1;
-        populateProduct(temp + 1);
+        updateProductCards();
     }
 
     private void unselectFilter(MouseEvent e){
@@ -268,10 +260,7 @@ public class MarketplaceController {
         filterCategory = null;
         filerHBox.getChildren().clear();
 
-        productFlowPane.getChildren().clear();
-        int temp = productIndex;
-        productIndex = -1;
-        populateProduct(temp + 1);
+        updateProductCards();
     }
 
     /* marketplace page */
@@ -290,6 +279,27 @@ public class MarketplaceController {
 
         productIndex += amount;
         seeMoreBtn.setDisable(productIndex >= productList.size());
+    }
+
+    private void updateProductCards(){
+        Iterator<Product> iterator =
+                productList.iterator(lowerBoundParsed, upperBoundParsed, filterCategory);
+
+        for(Node node: productFlowPane.getChildren()){
+            if (node instanceof ProductCard) {
+                ProductCard card = (ProductCard) node;
+                if (iterator.hasNext())
+                    card.setProduct(iterator.next());
+                else
+                    card.setProduct(null);
+            }
+        }
+
+        while(iterator.hasNext()){
+            ProductCard card = new ProductCard(iterator.next());
+            card.setOnMouseReleased(this::handleProductCard);
+            productFlowPane.getChildren().add(card);
+        }
     }
 
     private void populateCategory(CategoryList categories){
@@ -333,27 +343,11 @@ public class MarketplaceController {
 
     private void setProductTPModel(){
         productTP.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.getText().equals("marketplace")) {
-                if (storeProductPageTab != null ) {
-                    storeProductPageTab.setContent(null);
-                    productTP.getTabs().remove(storeProductPageTab);
-                }
-                if (reportingTab != null ) {
-                    reportingTab.setContent(null);
-                    productTP.getTabs().remove(reportingTab);
-                }
-                if (orderSummaryTab != null ) {
-                    orderSummaryTab.setContent(null);
-                    productTP.getTabs().remove(orderSummaryTab);
-                }
-                if (myAccountTab != null ) {
-                    myAccountTab.setContent(null);
-                    productTP.getTabs().remove(myAccountTab);
-                }
-                if (productDetailTab != null ) {
-                    productDetailTab.setContent(null);
-                    productTP.getTabs().remove(productDetailTab);
-                }
+            if (oldValue == productDetailTab && newValue == orderSummaryTab)
+                return;
+            if (!oldValue.getText().equals("marketplace")){
+                oldValue.setContent(null);
+                productTP.getTabs().remove(oldValue);
             }
         });
     }

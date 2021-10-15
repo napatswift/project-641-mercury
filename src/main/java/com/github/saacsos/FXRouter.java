@@ -69,9 +69,8 @@ public final class FXRouter {
 
     }
 
-    public static void setTheme(Theme.ColorTheme colorTheme) throws IOException {
-        if (theme.setCurrTheme(colorTheme))
-            loadNewRoute(currentRoute);
+    public static void setTheme(Theme.ColorTheme colorTheme) {
+        theme.setCurrTheme(colorTheme);
     }
 
     public static Theme getTheme() {

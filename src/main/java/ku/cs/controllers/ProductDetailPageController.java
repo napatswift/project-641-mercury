@@ -162,7 +162,7 @@ public class ProductDetailPageController {
                 OrderSummaryController controller = loader.getController();
                 controller.setDataSource(dataSource);
                 controller.setAmountBuy(amountBuy);
-                controller.setOnActionCancelBtn(this::handleCancelBtn);
+                controller.setOnActionCancelBtn(this::handleOrderSummaryCancelBtn);
                 productTP.getSelectionModel().select(orderSummaryTab);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -356,7 +356,8 @@ public class ProductDetailPageController {
     private void handleSelectedProductStoreBtn(MouseEvent e){
         HBox source = (HBox) e.getSource();
         Store store = (Store) source.getUserData();
-        if (storeProductPageTab == null) storeProductPageTab = new Tab("storeProductPage");
+        if (storeProductPageTab == null)
+            storeProductPageTab = new Tab("storeProductPage");
         productTP.getTabs().add(storeProductPageTab);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/store_product_page.fxml"));
@@ -366,6 +367,8 @@ public class ProductDetailPageController {
             storeProductPageTab.setContent(node);
             StoreProductPageController controller = loader.getController();
             controller.setStore(store);
+            dataSource.parseCoupon();
+            controller.setCouponList(dataSource.getCoupons());
             productTP.getSelectionModel().select(storeProductPageTab);
             FlowPane flowPane = controller.getProductFlowPane();
 
@@ -394,6 +397,14 @@ public class ProductDetailPageController {
         productTP.getTabs().remove(orderSummaryTab);
         productTP.getTabs().remove(reportingTab);
         productTP.getSelectionModel().select(0);
+    }
+
+    private void handleOrderSummaryCancelBtn(ActionEvent event){
+        productTP.getTabs().remove(orderSummaryTab);
+        if (productTP.getTabs().size() > 1)
+            productTP.getSelectionModel().select(1);
+        else
+            productTP.getSelectionModel().select(0);
     }
 
     private void resetReviewForm(){

@@ -31,6 +31,7 @@ abstract public class Report<T> implements Comparable<Report>{
         this.detail = detail;
     }
 
+    public String getId()                    { return id; }
     public String getDetail()                { return detail; }
     public T getReportItem()                 { return reportItem; }
     public String getType()                  { return type; }
