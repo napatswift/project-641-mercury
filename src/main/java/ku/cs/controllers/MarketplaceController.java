@@ -343,27 +343,11 @@ public class MarketplaceController {
 
     private void setProductTPModel(){
         productTP.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.getText().equals("marketplace")) {
-                if (storeProductPageTab != null ) {
-                    storeProductPageTab.setContent(null);
-                    productTP.getTabs().remove(storeProductPageTab);
-                }
-                if (reportingTab != null ) {
-                    reportingTab.setContent(null);
-                    productTP.getTabs().remove(reportingTab);
-                }
-                if (orderSummaryTab != null ) {
-                    orderSummaryTab.setContent(null);
-                    productTP.getTabs().remove(orderSummaryTab);
-                }
-                if (myAccountTab != null ) {
-                    myAccountTab.setContent(null);
-                    productTP.getTabs().remove(myAccountTab);
-                }
-                if (productDetailTab != null ) {
-                    productDetailTab.setContent(null);
-                    productTP.getTabs().remove(productDetailTab);
-                }
+            if (oldValue == productDetailTab && newValue == orderSummaryTab)
+                return;
+            if (!oldValue.getText().equals("marketplace")){
+                oldValue.setContent(null);
+                productTP.getTabs().remove(oldValue);
             }
         });
     }

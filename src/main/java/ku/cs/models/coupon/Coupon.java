@@ -3,7 +3,7 @@ package ku.cs.models.coupon;
 import ku.cs.models.Order;
 import ku.cs.models.Store;
 
-public class Coupon {
+abstract public class Coupon {
     private final String code;
     private final Store owner;
     private boolean status;
@@ -21,14 +21,14 @@ public class Coupon {
     public boolean checkStore(Store store) {
         return this.owner == store;
     }
-
     public boolean checkStatus(){
         return status;
     }
-
     public void setStatus(boolean status){
         this.status = status;
     }
+    public String getCode() { return code; }
+    public Store getOwner() { return owner; }
 
     public double checkCoupon(String code, Order order){
         if(order.getProduct().getStore() != owner)
@@ -40,10 +40,12 @@ public class Coupon {
         return 1;
     }
 
+    abstract public String toDescriptiveString();
+    abstract public String toNumberOffString();
+
     public String toCsv(){
         return    code   + ","
                 + owner.getName()  + ","
                 + status;
-
     }
 }

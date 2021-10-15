@@ -25,6 +25,16 @@ public class MinimumValueDiscount extends Coupon implements CouponType {
     }
 
     @Override
+    public String toDescriptiveString() {
+        return "Min. order of $" + minimumValue;
+    }
+
+    @Override
+    public String toNumberOffString() {
+        return "$"+ discount;
+    }
+
+    @Override
     public String toCsv(){
         return super.toCsv() + ","
                 + null + ","
@@ -35,7 +45,7 @@ public class MinimumValueDiscount extends Coupon implements CouponType {
 
     @Override
     public String toString() {
-        return this.toCsv();
+        return "$"+ discount +" off on items with minimum order of $" + minimumValue;
     }
 
 }

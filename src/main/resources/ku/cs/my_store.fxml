@@ -26,7 +26,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.25" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768" prefWidth="1024" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.MyStoreController">
+<SplitPane dividerPositions="0.25" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768" prefWidth="1024" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.MyStoreController">
    <items>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="768.0" prefWidth="150.0">
          <children>
@@ -490,12 +490,16 @@
                                     <VBox>
                                        <children>
                                           <Label styleClass="h3" text="Coupons" />
-                                          <Button mnemonicParsing="false" onAction="#handleCreateCouponBtn" text="Create Coupon" />
                                        </children>
                                        <padding>
                                           <Insets top="50.0" />
                                        </padding>
                                     </VBox>
+                                    <Button graphicTextGap="15.0" mnemonicParsing="false" onAction="#handleCreateCouponBtn" styleClass="ship-btn" text="ADD">
+                                       <graphic>
+                                          <SVGPath content="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" styleClass="icon-primary-color" />
+                                       </graphic>
+                                    </Button>
                                  </children>
                                  <padding>
                                     <Insets bottom="15.0" />

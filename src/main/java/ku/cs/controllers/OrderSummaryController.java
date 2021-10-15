@@ -3,6 +3,7 @@ package ku.cs.controllers;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,8 +30,8 @@ public class OrderSummaryController {
             unitPriceText,
             unitText,
             allPaymentText,
-            discountText,
-            discountAmountText;
+            discountText;
+
     @FXML
     private ImageView selectedProductImageView;
 
@@ -68,7 +69,6 @@ public class OrderSummaryController {
         unitText.setText("x" + amountBuy);
 
         discountText.setVisible(false);
-        discountAmountText.setVisible(false);
         allPaymentText.setText(String.format("$%.2f", allPayment - deCre));
         selectedProductImageView.setImage(new Image(product.getPicturePath()));
         setData();
@@ -91,17 +91,19 @@ public class OrderSummaryController {
         cancelBtn.setOnAction(eventEventHandler);
     }
 
-    public void handleCouponBtn(ActionEvent actionEvent) {
+    @FXML
+    public void handleCouponBtn() {
         String code = couponCodeTF.getText();
         System.out.println(code +"  "+ couponList.useCoupon(code,order));
         System.out.println(order.getTotal());
-        if(couponList.useCoupon(code,order) > 0){
+        if(couponList.useCoupon(code, order) > 0){
             discountText.setVisible(true);
-            discountAmountText.setVisible(true);
-            discountText.setText("" + (order.getTotal() - couponList.useCoupon(code,order)));
-            allPaymentText.setText("" + couponList.useCoupon(code,order));
+            allPaymentText.getStyleClass().add("discounted-label");
+            discountText.setText("" + couponList.useCoupon(code, order));
         }
         else {
+            discountText.setVisible(false);
+            allPaymentText.getStyleClass().remove("discounted-label");
             Alert alert = new Alert(Alert.AlertType.NONE, "CouponType เกิดข้อผิดพลาด.", ButtonType.OK);
             alert.initStyle(StageStyle.UTILITY);
             alert.setHeaderText("ค่อยทำ");

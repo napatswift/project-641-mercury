@@ -4,22 +4,58 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="375.0" prefWidth="522.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.CreateCouponController">
+
+<VBox alignment="CENTER" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.CreateCouponController">
    <children>
-      <ChoiceBox fx:id="minimumStatusBox" layoutX="65.0" layoutY="145.0" prefWidth="150.0" />
-      <ChoiceBox fx:id="discountStatusBox" layoutX="306.0" layoutY="145.0" prefWidth="150.0" />
-      <TextField fx:id="minimumTF" layoutX="66.0" layoutY="183.0" />
-      <TextField fx:id="discountTF" layoutX="306.0" layoutY="183.0" />
-      <Label layoutX="73.0" layoutY="60.0" text="Code">
-         <font>
-            <Font size="29.0" />
-         </font>
-      </Label>
-      <TextField fx:id="codeTF" layoutX="172.0" layoutY="68.0" prefHeight="26.0" prefWidth="268.0" />
-      <Button layoutX="36.0" layoutY="274.0" mnemonicParsing="false" onAction="#handleBackBtn" prefHeight="36.0" prefWidth="60.0" text="Back" />
-      <Button layoutX="426.0" layoutY="274.0" mnemonicParsing="false" onAction="#handleCreateCoupon" prefHeight="36.0" prefWidth="60.0" text="Create" />
+      <VBox alignment="CENTER" maxWidth="500.0" spacing="20.0" stylesheets="@style/style.css">
+         <children>
+            <HBox>
+               <children>
+                  <Label styleClass="h4" text="Create Coupon" />
+               </children>
+            </HBox>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <HBox spacing="10.0" GridPane.columnIndex="1">
+                     <children>
+                        <ChoiceBox fx:id="minimumStatusBox" prefWidth="150.0" />
+                        <TextField fx:id="minimumTF" promptText="min (number)" />
+                     </children>
+                  </HBox>
+                  <HBox spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <ChoiceBox fx:id="discountStatusBox" prefWidth="150.0" />
+                        <TextField fx:id="discountTF" promptText="discount (number)" />
+                     </children>
+                  </HBox>
+                  <TextField fx:id="codeTF" maxWidth="150.0" promptText="code" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="COUPON CODE" GridPane.rowIndex="2" />
+                  <Label text="DISCOUNT" GridPane.rowIndex="1" />
+                  <Label text="MINIMUM SPEND" />
+               </children>
+            </GridPane>
+            <HBox alignment="CENTER_RIGHT">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#handleBackBtn" text="Back" />
+                  <Button mnemonicParsing="false" onAction="#handleCreateCoupon" styleClass="contained-btn" text="Create" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
-</AnchorPane>
+</VBox>

@@ -13,9 +13,7 @@ public class MinimumQuantityDiscount extends Coupon implements CouponType {
         this.discount = discount;
     }
 
-
     public double use(String code, Order order) {
-
         if(minimumQuantity > order.getQuantity())
             return -1;
 
@@ -29,14 +27,23 @@ public class MinimumQuantityDiscount extends Coupon implements CouponType {
     public String toCsv(){
         return super.toCsv() + ","
                 + null + ","
-                + String.format("%.4f", discount) + ","
+                + discount + ","
                 + minimumQuantity + ","
                 + null;
     }
 
     @Override
-    public String toString() {
-        return this.toCsv();
+    public String toDescriptiveString() {
+        return "Min. buy " + minimumQuantity + " units";
     }
 
+    @Override
+    public String toNumberOffString() {
+        return "$" + discount;
+    }
+
+    @Override
+    public String toString() {
+        return "Buy " + minimumQuantity + " units get $" + discount +" off";
+    }
 }

@@ -28,6 +28,8 @@ import ku.cs.models.components.dialogs.ConfirmEditProductDialog;
 import ku.cs.models.components.dialogs.PictureConfirmDialog;
 import ku.cs.models.components.listCell.OrderListCell;
 import ku.cs.models.components.listCell.ProductListCell;
+import ku.cs.models.components.listCell.PromotionListCell;
+import ku.cs.models.coupon.Coupon;
 import ku.cs.models.coupon.CouponType;
 import ku.cs.models.utils.ImageUploader;
 import ku.cs.service.DataSource;
@@ -45,7 +47,7 @@ public class MyStoreController  {
     private User currUser;
     private ImageUploader imageUploader;
     private ArrayList<Order> orders;
-    private ArrayList<CouponType> couponTypes;
+    private ArrayList<Coupon> couponTypes;
 
     @FXML private Label usernameLabel, nameLabel, nameStoreLabel;
     @FXML private TabPane myStoreTP;
@@ -59,7 +61,7 @@ public class MyStoreController  {
     @FXML private ImageView productIV;
     @FXML private ListView<Product> productsListLV;
     @FXML private ListView<Order> orderLV;
-    @FXML private ListView<CouponType> couponsLV;
+    @FXML private ListView<Coupon> couponsLV;
     @FXML private Label rateLB, detailsLB,numberLowerLabel;
     @FXML private TextField nameProductLB, priceLB, stockLB;
     @FXML private VBox rightProductVB, ImageViewVBox;
@@ -381,7 +383,8 @@ public class MyStoreController  {
         orderLV.refresh();
     }
 
-    public void showCouponListView(ArrayList<CouponType> couponTypeArrayList){
+    public void showCouponListView(ArrayList<Coupon> couponTypeArrayList){
+        couponsLV.setCellFactory(couponsLV -> new PromotionListCell());
         couponsLV.getItems().clear();
         couponsLV.getItems().addAll(couponTypeArrayList);
         couponsLV.refresh();
