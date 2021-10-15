@@ -150,11 +150,13 @@ public class SignUpController {
                     addErrorStyleClass(passwordPF);
                     addErrorStyleClass(confirmPasswordPF);
                     confirmPasswordAssistiveText.setText("Password not match!");
+                    confirmPasswordAssistiveText.setStyle("-fx-fill: error-color;");
                 } else{
                     this.password = password;
                     passwordPF.getStyleClass().removeAll("error-outline-text-field");
                     passwordPF.getStyleClass().add("outline-text-field");
                     confirmPasswordAssistiveText.setText("Password matched!");
+                    confirmPasswordAssistiveText.setStyle("");
                 }
             }
         } else{
