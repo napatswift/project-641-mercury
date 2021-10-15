@@ -45,7 +45,7 @@ public class MinimumQuantityPercentDiscount extends Coupon implements CouponType
 
     @Override
     public String toString() {
-        return "Buy " + minimumQuantity + " units\nget " + (percentDiscount * 100) +"% off";
+        return "Buy " + minimumQuantity + " units get " + (percentDiscount * 100) +"% off";
     }
 
 }

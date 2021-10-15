@@ -390,3 +390,8 @@
 .promotion-list-cell{
     
 }
+
+.discounted-label .text{
+    -fx-fill: error-color;
+    -fx-strikethrough: true;
+}

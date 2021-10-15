@@ -45,7 +45,7 @@ public class MinimumValueDiscount extends Coupon implements CouponType {
 
     @Override
     public String toString() {
-        return "$"+ discount +" off on items\nwith minimum order of $" + minimumValue;
+        return "$"+ discount +" off on items with minimum order of $" + minimumValue;
     }
 
 }
