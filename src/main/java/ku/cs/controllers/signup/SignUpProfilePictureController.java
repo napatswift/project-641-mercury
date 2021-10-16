@@ -2,6 +2,7 @@ package ku.cs.controllers.signup;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,9 +38,9 @@ public class SignUpProfilePictureController {
     @FXML
     public void handleConfirmBtn(ActionEvent event) {
         try {
+            currUser.setPicturePath(imageUploader.getDestinationFile().getFileName().toString());
             imageUploader.saveImageFile();
         } catch (IOException e) {
-            e.printStackTrace();
             return;
         }
 
@@ -56,7 +57,7 @@ public class SignUpProfilePictureController {
 
     @FXML
     public void handleSelectProfilePicture(ActionEvent event) throws FileNotFoundException {
-        imageUploader = new ImageUploader(pictureViewIV.getScene().getWindow(), "images");
+        imageUploader = new ImageUploader(((Node) event.getSource()).getScene().getWindow(), "images");
         imageUploader.show();
         pictureViewIV.setImage(new Image(new FileInputStream(imageUploader.getUploadedFile())));
     }
