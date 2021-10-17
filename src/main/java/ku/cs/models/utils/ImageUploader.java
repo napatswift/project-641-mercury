@@ -23,7 +23,7 @@ public class ImageUploader {
     public boolean show(String description){
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(description, "*.jpeg"));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(description, "*.jpeg", "*.jpg"));
 
         uploadedFile = chooser.showOpenDialog(this.window);
         if (uploadedFile == null)

@@ -1,8 +1,2 @@
 code,store,status,percent_discount,discount,minimum_quantity,minimum_value
-Code1,Chang Shop,true,null,50.0000,2,null
-Code2,Chang Shop,true,0.1000,null,2,null
-Code3,Chang Shop,true,null,50.0000,null,100.0000
-Code4,Chang Shop,true,0.1000,null,null,100.0000
-Code5,Murasaki123,true,0.1000,null,null,100.0000
-EZ,Chang Shop,true,null,10.0000,null,100.0000
-loveYourSelf,Chang Shop,true,0.1000,null,10,null
+KU80DIS10PER,The Mercury,true,0.1000,null,null,10000.0000

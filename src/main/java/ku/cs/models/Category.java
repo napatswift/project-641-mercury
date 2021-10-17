@@ -44,7 +44,6 @@ public class Category implements Comparable<Category>{
             String sc = name + ":" + subCat.getName() + ":" + subCat.getValue();
             list.add(sc);
         }
-
         return list;
     }
 

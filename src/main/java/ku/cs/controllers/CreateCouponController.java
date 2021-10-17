@@ -62,6 +62,7 @@ public class CreateCouponController {
             AlertDialog.alertDialog("จบแล้ว","THX");
             FXRouter.goTo("my_store",dataSource);
         }catch (Exception a) {
+            a.printStackTrace();
             AlertDialog.alertDialog("เกิดข้อผิดพลาด","มีการใส่ข้อมููลไม่ถูกต้อง");
         }
     }
