@@ -23,7 +23,7 @@
             <HBox fx:id="categoriesMenuHBox" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="bodyAP" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: surface-color; -fx-background-radius: 30 30 0 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="49.0">
+      <AnchorPane fx:id="bodyAP" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: surface-color; -fx-background-radius: 30 30 0 0;" AnchorPane.bottomAnchor="-33.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="49.0">
          <children>
             <TabPane fx:id="productTP" prefHeight="200.0" prefWidth="200.0" side="BOTTOM" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <tabs>

@@ -10,10 +10,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox alignment="CENTER" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.CreateCouponController">
+<VBox alignment="CENTER" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: surface-color;" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.CreateCouponController">
    <children>
-      <VBox alignment="CENTER" maxWidth="500.0" spacing="20.0" stylesheets="@style/style.css">
+      <VBox alignment="CENTER" maxWidth="500.0" spacing="20.0">
          <children>
             <HBox>
                <children>
@@ -33,13 +32,13 @@
                <children>
                   <HBox spacing="10.0" GridPane.columnIndex="1">
                      <children>
-                        <ChoiceBox fx:id="minimumStatusBox" prefWidth="150.0" />
+                        <ChoiceBox fx:id="minimumStatusBox" prefWidth="150.0" stylesheets="@style/choice-box.css" />
                         <TextField fx:id="minimumTF" promptText="min (number)" />
                      </children>
                   </HBox>
                   <HBox spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <ChoiceBox fx:id="discountStatusBox" prefWidth="150.0" />
+                        <ChoiceBox fx:id="discountStatusBox" prefWidth="150.0" stylesheets="@style/choice-box.css" />
                         <TextField fx:id="discountTF" promptText="discount (number)" />
                      </children>
                   </HBox>

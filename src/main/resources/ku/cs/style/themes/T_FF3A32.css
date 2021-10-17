@@ -20,6 +20,7 @@
     primary-overlay : rgba(255, 58, 50, 0.16);
     primary-overlay-hover : rgba(255, 58, 50, 0.32);
     primary-med-overlay : rgba(255, 58, 50, 0.6);
+    drop-shadow-color: rgba(255, 255, 255, 0.12);
 }
 
 .product-card{

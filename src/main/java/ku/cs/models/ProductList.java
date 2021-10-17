@@ -107,14 +107,18 @@ public class ProductList implements Iterable<Product> {
         int numCategory = calcMaxSubCategory();
         StringBuilder stringBuilder =
                 new StringBuilder(
-                        "name,product_id,price,store,stock,description,rating,reviews,image,rollout_date,");
-        StringJoiner stringJoiner = new StringJoiner(",");
+                        "name,product_id,price,store,stock,description,rating,reviews,image,rollout_date");
+        if (numCategory > 0) {
+            stringBuilder.append(",");
+            StringJoiner stringJoiner = new StringJoiner(",");
 
-        for (int i = 0; i < numCategory; i++) {
-            stringJoiner.add("category_" + i);
+            for (int i = 0; i < numCategory; i++) {
+                stringJoiner.add("category_" + i);
+            }
+
+            stringBuilder.append(stringJoiner);
         }
 
-        stringBuilder.append(stringJoiner);
         stringBuilder.append("\n");
         for(Product product: products) {
             stringBuilder.append(product.toCsv(numCategory));

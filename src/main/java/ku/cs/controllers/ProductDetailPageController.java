@@ -237,8 +237,12 @@ public class ProductDetailPageController {
         storeImageIV.setImage(new Image(owner.getPicturePath()));
 
         /* set bread crumbs info */
-        categoryBreadcrumbsLabel.setText(selectedProduct.getCategory().getName());
-        categoryBreadcrumbsLabel.setOnMouseReleased(this::handleCategoryBreadcrumbsLabel);
+        if (selectedProduct.getCategories().size() > 0) {
+            categoryBreadcrumbsLabel.setText(selectedProduct.getCategory().getName());
+            categoryBreadcrumbsLabel.setOnMouseReleased(this::handleCategoryBreadcrumbsLabel);
+        } else {
+            categoryBreadcrumbsLabel.setText("Category");
+        }
         productNameBreadcrumbsLabel.setText(selectedProduct.getName());
 
         /* handling in stock label and icon */

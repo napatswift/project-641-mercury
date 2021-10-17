@@ -30,8 +30,8 @@ import ku.cs.models.components.listCell.OrderListCell;
 import ku.cs.models.components.listCell.ProductListCell;
 import ku.cs.models.components.listCell.PromotionListCell;
 import ku.cs.models.coupon.Coupon;
-import ku.cs.models.coupon.CouponType;
 import ku.cs.models.utils.ImageUploader;
+import ku.cs.models.utils.Observer;
 import ku.cs.service.DataSource;
 
 
@@ -41,13 +41,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class MyStoreController  {
+public class MyStoreController {
     private DataSource dataSource;
     private Product product;
     private User currUser;
     private ImageUploader imageUploader;
     private ArrayList<Order> orders;
     private ArrayList<Coupon> couponTypes;
+    private CouponObserver couponObserver;
 
     @FXML private Label usernameLabel, nameLabel, nameStoreLabel;
     @FXML private TabPane myStoreTP;
@@ -97,9 +98,19 @@ public class MyStoreController  {
         setupTabPaneListener();
         showCouponListView(couponTypes);
         showOrderListView(orders);
+        couponObserver = new CouponObserver();
+        dataSource.getCoupons().addObserver(couponObserver);
 
         setGroup();
         setNumberTextField();
+
+        myStoreTP.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.intValue() == 0) {
+                productsListLV.getItems().clear();
+                productsListLV.getItems().addAll(dataSource.getProducts().getProductByNameStore(dataSource.getUserList().getCurrUser().getStoreName()));
+                productsListLV.refresh();
+            }
+        });
     }
 
     private void setupUserInfo(){
@@ -226,8 +237,8 @@ public class MyStoreController  {
     private void handleProductCardStoreProductPage(MouseEvent event){
         ProductCard productCard = (ProductCard) event.getSource();
         if (productsListLV.getItems().contains(productCard.getProduct())) {
-            productsListLV.getSelectionModel().select(productCard.getProduct());
             productsMenuBtn.fire();
+            productsListLV.getSelectionModel().select(productCard.getProduct());
         }
     }
 
@@ -281,6 +292,11 @@ public class MyStoreController  {
         String detail = descriptionTF.getText();
 
         if(!name.equals("") && price > 0 && stock > 0 && !detail.equals("")) {
+            try {
+                productIV.setImage(new Image(new FileInputStream(imageUploader.getUploadedFile())));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
             product.setName(name);
             product.setPrice(price);
             product.setStock(stock);
@@ -346,11 +362,11 @@ public class MyStoreController  {
 
     public void showSelectedProduct(Product product){
         selectedProduct = product;
-        productsListLV.refresh();
-        stockWarningSelectedProductSVG.setVisible(currUser.getStore().stockIsLow(product));
+        stockWarningSelectedProductSVG.setVisible(product.stockIsLow());
         nameProductLB.setText(product.getName());
         priceLB.setText(String.format("%.2f",product.getPrice()));
         stockLB.setText(String.format("%d",product.getStock()));
+        ratingStarsSelectedProduct.getChildren().add(new RatingStars(product.getRating()));
         rateLB.setText(String.format("%.2f/5",product.getRating()));
         detailsLB.setText(product.getDetails());
 
@@ -361,17 +377,18 @@ public class MyStoreController  {
         }
 
         selectedProductResizeableImageView.setImage(new Image(product.getPicturePath()));
-        ratingStarsSelectedProduct.getChildren().add(new RatingStars(product.getRating()));
     }
 
     public void handleProductsListView(){
         productsListLV.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    ratingStarsSelectedProduct.getChildren().clear();
-                    showSelectedProduct(newValue);
-                    productSP.setDividerPositions(0.5, 0.5);
-                    productsRightPane.setVisible(newValue != null);
-                    product = newValue;
+                    if (newValue != null) {
+                        ratingStarsSelectedProduct.getChildren().clear();
+                        showSelectedProduct(newValue);
+                        productSP.setDividerPositions(0.5, 0.5);
+                        productsRightPane.setVisible(newValue != null);
+                        product = newValue;
+                    }
                 }
         );
     }
@@ -384,7 +401,7 @@ public class MyStoreController  {
     }
 
     public void showCouponListView(ArrayList<Coupon> couponTypeArrayList){
-        couponsLV.setCellFactory(couponsLV -> new PromotionListCell());
+        couponsLV.setCellFactory(couponsLV -> new PromotionListCell(dataSource.getCoupons()));
         couponsLV.getItems().clear();
         couponsLV.getItems().addAll(couponTypeArrayList);
         couponsLV.refresh();
@@ -447,6 +464,14 @@ public class MyStoreController  {
             FXRouter.goTo("create_coupon",dataSource);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private class CouponObserver implements Observer {
+        @Override
+        public void update() {
+            couponTypes = dataSource.getCoupons().toListCouponInStore(currUser.getStore());
+            showCouponListView(couponTypes);
         }
     }
 }

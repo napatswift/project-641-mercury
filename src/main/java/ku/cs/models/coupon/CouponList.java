@@ -2,29 +2,38 @@ package ku.cs.models.coupon;
 
 import ku.cs.models.Order;
 import ku.cs.models.Store;
+import ku.cs.models.utils.Observer;
+import ku.cs.models.utils.Subject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CouponList {
+public class CouponList extends Subject {
     private final List<CouponType> couponTypes;
-    private CouponType couponType;
+    private final Observer couponObserver;
 
     public CouponList() {
         this.couponTypes = new ArrayList<>();
+        this.couponObserver = this::notifyObservers;
     }
 
     public void addCoupon(String code,Store owner,boolean status,Double minimumValue,Integer minimumQuantity,Double discount,Double percentDiscount){
+        CouponType couponType;
         if(minimumQuantity == null){
             if(discount == null)
-                couponTypes.add(new MinimumValuePercentDiscount(code,owner,status,minimumValue,percentDiscount));
-            else couponTypes.add(new MinimumValueDiscount(code,owner,status,minimumValue,discount));
+                couponType = new MinimumValuePercentDiscount(code,owner,status,minimumValue,percentDiscount);
+            else
+                couponType = new MinimumValueDiscount(code,owner,status,minimumValue,discount);
         }
         else {
             if(discount == null)
-                couponTypes.add(new MinimumQuantityPercentDiscount(code,owner,status,minimumQuantity,percentDiscount));
-            else couponTypes.add(new MinimumQuantityDiscount(code,owner,status,minimumQuantity,discount));
+                couponType = new MinimumQuantityPercentDiscount(code,owner,status,minimumQuantity,percentDiscount);
+            else
+                couponType = new MinimumQuantityDiscount(code,owner,status,minimumQuantity, discount);
         }
+        ((Coupon) couponType).addObserver(couponObserver);
+        couponTypes.add(couponType);
+        notifyObservers();
     }
 
     public double useCoupon(String code, Order order){
@@ -47,6 +56,7 @@ public class CouponList {
         for(CouponType coupon : couponTypes){
             if(coupon == couponType){
                 couponTypes.remove(coupon);
+                notifyObservers();
                 return;
             }
         }

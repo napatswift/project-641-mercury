@@ -11,6 +11,7 @@ import ku.cs.models.ProductReport;
 import ku.cs.models.ReportList;
 import ku.cs.models.ReviewReport;
 import ku.cs.models.coupon.CouponList;
+import ku.cs.models.utils.Observer;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -35,7 +36,7 @@ public class DataSource {
     private final CategoryList categories;
     private final StoreList stores;
     private final OrderList orders;
-    private CouponList coupons;
+    private final CouponList coupons;
 
     public DataSource() {
         this("data");
@@ -51,6 +52,8 @@ public class DataSource {
         stores = new StoreList();
         orders = new OrderList();
         coupons = new CouponList();
+
+        coupons.addObserver(this::saveCoupon);
     }
 
     private void initFile(String filename) {
@@ -234,6 +237,7 @@ public class DataSource {
     }
               
     public void parseStore(){
+        parseAccount();
         initFile(STORE_FILE_NAME);
 
         try{
@@ -300,10 +304,7 @@ public class DataSource {
 
     public void parseCoupon(){
         initFile(COUPON_FILE_NAME);
-
-        if(stores == null) parseStore();
-
-        coupons = new CouponList();
+        parseStore();
 
         try {
             CsvReader reader = new CsvReader(directoryPath + File.separator + COUPON_FILE_NAME);
@@ -318,8 +319,8 @@ public class DataSource {
                 Double discount = entry[4].equals("null") ? null : Double.parseDouble(entry[4]);
                 Integer minimumQuantity = entry[5].equals("null") ? null : Integer.parseInt(entry[5]);
                 Double minimumValue = entry[6].equals("null") ? null : Double.parseDouble(entry[6]);
-
-                coupons.addCoupon(code,owner,status,minimumValue,minimumQuantity,discount,percentDiscount);
+                if (!coupons.checkCouponCode(code))
+                    coupons.addCoupon(code,owner,status,minimumValue,minimumQuantity,discount,percentDiscount);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -360,6 +361,4 @@ public class DataSource {
     public void saveStore()    { save(stores.toCsv(), STORE_FILE_NAME); }
     public void saveCategory() { save(categories.toCsv(), CATEGORY_FILE_NAME); }
     public void saveCoupon()   { save(coupons.toCsv(), COUPON_FILE_NAME); }
-
-
 }

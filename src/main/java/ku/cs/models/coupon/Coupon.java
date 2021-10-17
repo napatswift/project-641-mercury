@@ -2,8 +2,9 @@ package ku.cs.models.coupon;
 
 import ku.cs.models.Order;
 import ku.cs.models.Store;
+import ku.cs.models.utils.Subject;
 
-abstract public class Coupon {
+abstract public class Coupon extends Subject {
     private final String code;
     private final Store owner;
     private boolean status;
@@ -21,13 +22,17 @@ abstract public class Coupon {
     public boolean checkStore(Store store) {
         return this.owner == store;
     }
-    public boolean checkStatus(){
+
+    public boolean isActive(){
         return status;
     }
+
     public void setStatus(boolean status){
         this.status = status;
+        notifyObservers();
     }
     public String getCode() { return code; }
+
     public Store getOwner() { return owner; }
 
     public double checkCoupon(String code, Order order){
