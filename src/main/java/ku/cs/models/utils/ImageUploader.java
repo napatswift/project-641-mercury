@@ -5,6 +5,7 @@ import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystemException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -48,7 +49,7 @@ public class ImageUploader {
         File destDir = new File(this.destDir);
 
         if (!destDir.exists())
-            if (destDir.mkdirs()) return;
+            if (!destDir.mkdirs()) throw new IOException();
 
         ImageUtil.resizeImage(uploadedFile, destinationFile.toString());
     }
