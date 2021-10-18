@@ -101,15 +101,18 @@ public class DataSource {
 
                 Product newProduct =
                         new Product(name, details, id, rolloutDate, store);
-
-                if (!newProduct.setPictureName(picturePath))
-                    throw new NullPointerException("no picture found " + picturePath);
-                if (!newProduct.setPrice(price))
-                    throw new NumberFormatException("price number " + price);
-                if (!newProduct.setStock(stock))
-                    throw new NumberFormatException("stock number");
-                if (store == null)
-                    throw new NullPointerException("no store found");
+                try {
+                    if (!newProduct.setPictureName(picturePath))
+                        throw new NullPointerException("no picture found " + picturePath);
+                    if (!newProduct.setPrice(price))
+                        throw new NumberFormatException("price number " + price);
+                    if (!newProduct.setStock(stock))
+                        throw new NumberFormatException("stock number");
+                    if (store == null)
+                        throw new NullPointerException("no store found");
+                } catch (NullPointerException e) {
+                    continue;
+                }
 
                 for (int idx = 10; idx < entry_len; idx++) {
                     String[] col = nextLine.get(idx).split(":");
@@ -156,8 +159,10 @@ public class DataSource {
 
                 Product product = products.getProduct(productId);
 
-                if (product == null)
-                    throw new NullPointerException("Product " + productId + " is null");
+                if (product == null) {
+                    System.err.println("Product " + productId + " is null");
+                    continue;
+                }
 
                 Review review = new Review(id ,title, detail, reviewerUser);
 
@@ -228,8 +233,9 @@ public class DataSource {
                     reports.addReport(new ReviewReport(id, reportType, review, localDateTime, detail));
                 } else if (product != null){
                     reports.addReport(new ProductReport(id, reportType, product, localDateTime, detail));
-                } else
-                    throw new NullPointerException("Both review and report are null");
+                } else {
+                    System.err.println("Both review and report are null");
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -293,7 +299,10 @@ public class DataSource {
                 boolean status = Boolean.parseBoolean(entry[3]);
                 String tracking = entry[4];
                 User buyer = userList.getUser(entry[5]);
-                if(buyer == null || product == null) continue;
+
+                if(buyer == null || product == null)
+                    continue;
+
                 LocalDateTime localDateTime = LocalDateTime.parse(entry[6], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                 orders.addOrder(new Order(id, product, amount, status, tracking, buyer, localDateTime));
             }
@@ -313,9 +322,8 @@ public class DataSource {
             for (int i = 1; i<doc.size(); i++){
                 entry = doc.getRow(i).toArray(new String[0]);
                 String code = entry[0];
-                assert stores != null;
                 Store owner = stores.findStoreByName(entry[1]);
-                if (owner == null) throw new NullPointerException();
+                if (owner == null) continue;
                 boolean status = entry[2].equals("true");
                 Double percentDiscount = entry[3].equals("null") ? null : Double.parseDouble(entry[3]);
                 Double discount = entry[4].equals("null") ? null : Double.parseDouble(entry[4]);
