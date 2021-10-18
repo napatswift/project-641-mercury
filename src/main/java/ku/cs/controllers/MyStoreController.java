@@ -308,7 +308,7 @@ public class MyStoreController {
 
         if(!name.equals("") && price > 0 && stock > 0 && !detail.equals("")) {
             try {
-                productIV.setImage(new Image(new FileInputStream(imageUploader.getUploadedFile())));
+                confirmProductIV.setImage(new Image(new FileInputStream(imageUploader.getUploadedFile())));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
