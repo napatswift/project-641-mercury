@@ -370,6 +370,8 @@ public class MyStoreController {
             product.setPrice(Double.parseDouble(price));
             product.setStock(Integer.parseInt(stock));
             dataSource.saveProduct();
+            showProductsListView();
+            productsListLV.getSelectionModel().select(product);
         }
     }
 
@@ -428,15 +430,15 @@ public class MyStoreController {
     }
 
     public void handleAllBtn(){
-        showOrderListView(orders);
+        showOrderListView(dataSource.getOrders().getOrdersByStore(currUser.getStoreName()));
     }
 
     public void handleToShipBtn(){
-        showOrderListView(OrderList.getToShipOrder(orders));
+        showOrderListView(dataSource.getOrders().getToShipOrder());
     }
 
     public void handleShippedBtn(){
-        showOrderListView(OrderList.getShipedOrder(orders));
+        showOrderListView(dataSource.getOrders().getShippedOrder());
     }
 
     public void handleChangeStockLowerBoundWarning() {
@@ -450,7 +452,8 @@ public class MyStoreController {
         newLower.ifPresent(s -> currUser.getStore().setStockLowerBound(Integer.parseInt(s)));
         newLower.ifPresent(s -> numberLowerLabel.setText(s));
         dataSource.saveStore();
-        productsListLV.refresh();
+        showProductsListView();
+        productsListLV.getSelectionModel().select(product);
     }
 
     @FXML

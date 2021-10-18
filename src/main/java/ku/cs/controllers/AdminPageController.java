@@ -189,6 +189,7 @@ public class AdminPageController {
         reportLeftVBox.setVisible(true);
         if(report != null) {
             selectReport = report;
+            selectUser = report.getSuspectedPerson();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             suspectedPersonImage.setImage(new Image(report.getSuspectedPerson().getPicturePath()));
             suspectedPersonImage.setClip(new Circle(37, 37, 37));

@@ -28,7 +28,7 @@ public class OrderList {
         return list;
     }
 
-    public static ArrayList<Order> getToShipOrder(ArrayList<Order> orders){
+    public ArrayList<Order> getToShipOrder(){
         ArrayList<Order> list = new ArrayList<>();
         for(Order order : orders){
             if(!order.isShipped()){
@@ -39,7 +39,7 @@ public class OrderList {
         return list;
     }
 
-    public static ArrayList<Order> getShipedOrder(ArrayList<Order> orders){
+    public ArrayList<Order> getShippedOrder(){
         ArrayList<Order> list = new ArrayList<>();
         for(Order order : orders){
             if(order.isShipped()){
