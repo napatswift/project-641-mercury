@@ -27,6 +27,7 @@ public class ImageUploader {
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(description, "*.jpg", "*.jpeg"));
 
         uploadedFile = chooser.showOpenDialog(this.window);
+
         if (uploadedFile == null)
             return false;
 
@@ -41,8 +42,8 @@ public class ImageUploader {
         return true;
     }
 
-    public void show(){
-        show(".jpg or .jpeg file");
+    public boolean show(){
+        return show(".jpg or .jpeg file");
     }
 
     public void saveImageFile() throws IOException{

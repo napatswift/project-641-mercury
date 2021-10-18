@@ -19,6 +19,8 @@ import ku.cs.models.components.CategoryListPane;
 import ku.cs.models.components.ProductCard;
 import ku.cs.models.components.RatingStars;
 import ku.cs.models.components.ReviewCard;
+import ku.cs.models.components.dialogs.AlertDialog;
+import ku.cs.models.components.dialogs.TextDialog;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -202,17 +204,35 @@ public class ProductDetailPageController {
         for(Review review: selectedProduct.getReviews())
             if (review.getAuthor().getUsername().equals(currUser.getUsername())) {
                 resetReviewForm();
+                TextDialog dialog = new TextDialog("Sorry", "You have already review this product");
+                dialog.show();
                 return;
             }
         String title = reviewTitleTF.getText();
         String detail = detailReviewTA.getText();
+
+        if (newReviewRating < 1){
+            TextDialog dialog = new TextDialog("Sorry", "Please rate this product. By clicking at the star.");
+            dialog.show();
+            return;
+        }
+        if (title.isBlank() || title.isEmpty()) {
+            TextDialog dialog = new TextDialog("Sorry", "Please enter title of the review.");
+            dialog.show();
+            return;
+        }
+        if (detail.isEmpty() || detail.isBlank()) {
+            TextDialog dialog = new TextDialog("Sorry", "Please enter detail of the review.");
+            dialog.show();
+            return;
+        }
+
         reviewList.addReview(title, detail, newReviewRating,
                 currUser, dataSource.getProducts().getSelectedProduct());
         populateReview();
         resetReviewForm();
         dataSource.saveReview();
         dataSource.saveProduct();
-        newReviewRating = -1;
     }
 
 
@@ -220,7 +240,6 @@ public class ProductDetailPageController {
         resetStar();
         /* reset amount to 1 */
         amountTF.setText("1");
-        /* clear boxes */
 
         /* set product information */
         productNameLabel.setText(selectedProduct.getName());

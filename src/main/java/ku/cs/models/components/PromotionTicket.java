@@ -4,6 +4,7 @@ import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -72,6 +73,7 @@ public class PromotionTicket extends HBox {
         setOnMouseClicked(this::handlePutCode);
         setOnMouseEntered(this::toggleTicketAnimation);
         setOnMouseExited(this::toggleTicketAnimation);
+        setCursor(Cursor.HAND);
     }
 
     private void handlePutCode(MouseEvent event){
@@ -79,6 +81,12 @@ public class PromotionTicket extends HBox {
         ClipboardContent content = new ClipboardContent();
         content.putString(coupon.getCode());
         clipboard.setContent(content);
+        TranslateTransition transition = new TranslateTransition(Duration.millis(100), storeNameLabel);
+        transition.setFromY(0);
+        transition.setToY(5);
+        transition.setCycleCount(2);
+        transition.setAutoReverse(true);
+        transition.play();
     }
 
     private void toggleTicketAnimation(MouseEvent mouseEvent){

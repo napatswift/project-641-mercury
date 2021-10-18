@@ -312,6 +312,7 @@ public class MyStoreController {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+
             product.setName(name);
             product.setPrice(price);
             product.setStock(stock);

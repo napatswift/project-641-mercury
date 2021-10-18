@@ -24,3 +24,7 @@
 .drop-shadow-card {
     -fx-background-color: derive(surface-color, 5%);
 }
+
+.promotion-ticket .left-shape,.promotion-ticket .right-shape{
+    -fx-fill: derive(secondary-color, -95%);
+}
