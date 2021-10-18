@@ -23,7 +23,7 @@ public class LoginController {
     private TextField usernameTF, passwordTF;
 
     @FXML
-    private Text loginText;
+    private Text loginText, appNameText;
 
     @FXML
     private Button signUpBtn, logInBtn;
@@ -41,6 +41,7 @@ public class LoginController {
         dataSource = new DataSource("data");
         dataSource.parseAccount();
         userList = dataSource.getUserList();
+        appNameText.setText("MERCURY");
 
         addThemeMenu();
         passwordTF.setOnKeyReleased(this::handlePassword);

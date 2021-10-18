@@ -47,4 +47,5 @@ public class CategoryList {
         }
         return stringJoiner + "\n";
     }
+
 }
