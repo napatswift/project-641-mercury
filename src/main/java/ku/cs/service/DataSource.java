@@ -313,7 +313,9 @@ public class DataSource {
             for (int i = 1; i<doc.size(); i++){
                 entry = doc.getRow(i).toArray(new String[0]);
                 String code = entry[0];
+                assert stores != null;
                 Store owner = stores.findStoreByName(entry[1]);
+                if (owner == null) throw new NullPointerException();
                 boolean status = entry[2].equals("true");
                 Double percentDiscount = entry[3].equals("null") ? null : Double.parseDouble(entry[3]);
                 Double discount = entry[4].equals("null") ? null : Double.parseDouble(entry[4]);

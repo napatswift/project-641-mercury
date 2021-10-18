@@ -49,6 +49,8 @@ public class MyStoreController {
     private ArrayList<Order> orders;
     private ArrayList<Coupon> couponTypes;
     private CouponObserver couponObserver;
+    private String categoryText = "";
+    private Image image;
 
     @FXML private Label usernameLabel, nameLabel, nameStoreLabel;
     @FXML private TabPane myStoreTP;
@@ -59,11 +61,11 @@ public class MyStoreController {
     @FXML private ImageView pictureViewIV;
     @FXML private Label nameProductLabel, priceLabel, stockLabel, descriptionLabel;
     @FXML private HBox newProductCategoryHBox;
-    @FXML private ImageView productIV;
+    @FXML private ImageView confirmProductIV;
     @FXML private ListView<Product> productsListLV;
     @FXML private ListView<Order> orderLV;
     @FXML private ListView<Coupon> couponsLV;
-    @FXML private Label rateLB, detailsLB,numberLowerLabel;
+    @FXML private Label rateLB, detailsLB,numberLowerLabel, categoryLB;
     @FXML private TextField nameProductLB, priceLB, stockLB;
     @FXML private VBox rightProductVB, ImageViewVBox;
     @FXML private SplitPane productSP;
@@ -71,6 +73,7 @@ public class MyStoreController {
     @FXML private SVGPath stockWarningSelectedProductSVG;
     @FXML private AnchorPane productsRightPane;
     @FXML private ToggleButton myAccountMenuBtn, myStoreMenuBtn, productsMenuBtn, ordersMenuBtn, couponMenuBtn;
+    @FXML Button clearBtn;
 
     private Tab myStoreTab, myAccountTab;
 
@@ -191,6 +194,7 @@ public class MyStoreController {
         }
     }
 
+
     @FXML
     public void handleMyAccountMenuBtn(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/my_account.fxml"));
@@ -244,13 +248,16 @@ public class MyStoreController {
 
     @FXML
     public void handleListProductBtn(){
+        showProductsListView();
         myStoreTP.getSelectionModel().select(0);
     }
 
     @FXML
     public void handleAddProductBtn(){
+        clearBtn.setVisible(false);
         product = new Product("", "", dataSource.getUserList().getCurrUser().getStore());
         myStoreTP.getSelectionModel().select(1);
+        categoryLB.setText(categoryText);
     }
 
     @FXML
@@ -278,11 +285,19 @@ public class MyStoreController {
     }
 
     @FXML public void handleAddBtn(){
+        clearBtn.setVisible(true);
         String value = valueTF.getText();
         valueTF.setText("");
         String category = categoryCB.getSelectionModel().getSelectedItem();
         String subCategory = subCategoryCB.getSelectionModel().getSelectedItem();
         product.addSubCategory(category,subCategory,value);
+        categoryLB.setText(product.getCategories().toString());
+    }
+
+    @FXML public void handleClearBtn(){
+        clearBtn.setVisible(false);
+        product.getCategories().clear();
+        categoryLB.setText("");
     }
 
     @FXML public void handleNextBtn(){
@@ -310,6 +325,7 @@ public class MyStoreController {
             descriptionLabel.setText(product.getDetails());
 
             newProductCategoryListPane.setCategoryList(product.getCategories());
+            confirmProductIV.setImage(image);
         }
     }
 
@@ -323,6 +339,7 @@ public class MyStoreController {
             Image uploadedImage = new Image(
                     new FileInputStream(imageUploader.getUploadedFile()));
             pictureViewIV.setImage(uploadedImage);
+            image = uploadedImage;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -338,6 +355,7 @@ public class MyStoreController {
         dataSource.getProducts().addProduct(product);
         dataSource.saveProduct();
         myStoreTP.getSelectionModel().select(0);
+        showProductsListView();
     }
 
     public void handleEditBtn(){
@@ -355,6 +373,7 @@ public class MyStoreController {
     }
 
     public void showProductsListView(){
+        productsListLV.getItems().clear();
         productsListLV.getItems().addAll(dataSource.getProducts().getProductByNameStore(dataSource.getUserList().getCurrUser().getStoreName()));
         productsListLV.setCellFactory(productListView -> new ProductListCell(productListView));
         productsListLV.refresh();
@@ -431,7 +450,6 @@ public class MyStoreController {
         newLower.ifPresent(s -> numberLowerLabel.setText(s));
         dataSource.saveStore();
         productsListLV.refresh();
-
     }
 
     @FXML

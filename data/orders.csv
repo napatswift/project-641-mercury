@@ -1,3 +1,1 @@
-id,product_id,amount,is_shipped,tracking_id,buyer,time
-abc123,79f80d51-5bbe-4ebc-a08e-ca7dce27de20,1,true,[pkbpowambo,nptswt,2020-04-13T15:06:18
-4245425bef,EF0450,1,true,THalihsd,nptswt,2020-04-13T15:06:18
+id,product_id,amount,is_shipped,tracking_id,buyer,buy_at
