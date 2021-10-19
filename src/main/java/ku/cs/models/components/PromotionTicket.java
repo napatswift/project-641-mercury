@@ -19,11 +19,8 @@ import ku.cs.models.coupon.Coupon;
 public class PromotionTicket extends HBox {
     private Coupon coupon;
     private final Label promotionInfoLabel;
-    private final Label storeNameLabel;
+    private final Label codeLabel;
     private final Label bigNumber;
-    private final Label promotionDesc;
-    private final Label percent;
-    private final StackPane leftStackPane;
     private final StackPane rightStackPane;
     private boolean toggle;
 
@@ -32,10 +29,10 @@ public class PromotionTicket extends HBox {
         getStyleClass().add("promotion-ticket");
         toggle = false;
         promotionInfoLabel = new Label();
-        storeNameLabel = new Label();
+        codeLabel = new Label();
         bigNumber = new Label();
-        promotionDesc = new Label("get");
-        percent = new Label("off");
+        Label promotionDesc = new Label("get");
+        Label percent = new Label("off");
 
         Rectangle rectangle = new Rectangle(width * leftRatio, height);
         Circle circle = new Circle(width * leftRatio, 0, height * radius);
@@ -55,7 +52,7 @@ public class PromotionTicket extends HBox {
         bigNumber.getStyleClass().add("big-number");
         promotionInfoLabel.getStyleClass().add("promotion-info");
 
-        VBox shopInfo = new VBox(promotionInfoLabel, storeNameLabel);
+        VBox shopInfo = new VBox(promotionInfoLabel, codeLabel);
         shopInfo.setPrefWidth(width * leftRatio);
         shopInfo.setPrefHeight(height);
         shopInfo.setAlignment(Pos.CENTER);
@@ -63,7 +60,7 @@ public class PromotionTicket extends HBox {
         promotionInfo.setPrefWidth(width * (1 - leftRatio));
         promotionInfo.setAlignment(Pos.CENTER);
         promotionInfo.setPrefHeight(height);
-        leftStackPane = new StackPane(leftShape, shopInfo);
+        StackPane leftStackPane = new StackPane(leftShape, shopInfo);
         rightStackPane = new StackPane(rightShape, promotionInfo);
         getChildren().addAll(leftStackPane, rightStackPane);
         setPrefWidth(-1);
@@ -81,7 +78,7 @@ public class PromotionTicket extends HBox {
         ClipboardContent content = new ClipboardContent();
         content.putString(coupon.getCode());
         clipboard.setContent(content);
-        TranslateTransition transition = new TranslateTransition(Duration.millis(100), storeNameLabel);
+        TranslateTransition transition = new TranslateTransition(Duration.millis(100), codeLabel);
         transition.setFromY(0);
         transition.setToY(5);
         transition.setCycleCount(2);
@@ -127,7 +124,7 @@ public class PromotionTicket extends HBox {
 
     public void updateInfo(){
         promotionInfoLabel.setText(coupon.toDescriptiveString());
-        storeNameLabel.setText(coupon.getCode());
+        codeLabel.setText("CODE: " + coupon.getCode());
         bigNumber.setText(coupon.toNumberOffString());
     }
 }
