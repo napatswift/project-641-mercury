@@ -1,9 +1,11 @@
 package ku.cs.models;
 
+import ku.cs.models.io.CSVFile;
+
 import java.util.Collection;
 import java.util.TreeSet;
 
-public class StoreList {
+public class StoreList implements CSVFile {
     private final Collection<Store> storeList;
 
     public StoreList(){
@@ -28,12 +30,13 @@ public class StoreList {
         return storeList.size();
     }
 
-    public String toCsv(){
+    @Override
+    public String toCSV(){
         StringBuilder stringBuilder = new
                 StringBuilder("username,name_store,stock_lower_bound");
         stringBuilder.append("\n");
         for(Store store: storeList){
-            stringBuilder.append(store.toCsv());
+            stringBuilder.append(store.toCSV());
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();

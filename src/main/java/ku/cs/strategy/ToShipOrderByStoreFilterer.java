@@ -3,7 +3,7 @@ package ku.cs.strategy;
 import ku.cs.models.Order;
 
 public class ToShipOrderByStoreFilterer implements OrderFilterer{
-    private String name;
+    private final String name;
 
     public ToShipOrderByStoreFilterer(String name) {
         this.name = name;
@@ -11,7 +11,6 @@ public class ToShipOrderByStoreFilterer implements OrderFilterer{
 
     @Override
     public boolean mach(Order order) {
-        if(!order.isShipped() && order.getStoreName().equals(name)) return true;
-        return false;
+        return !order.isShipped() && order.getStoreName().equals(name);
     }
 }

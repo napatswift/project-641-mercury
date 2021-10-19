@@ -1,8 +1,10 @@
 package ku.cs.models;
 
+import ku.cs.models.io.CSVFile;
+
 import java.util.*;
 
-public class ReviewList implements Iterable<Review> {
+public class ReviewList implements Iterable<Review>, CSVFile {
     private final Collection<Review> reviews;
 
     public ReviewList() {
@@ -44,11 +46,12 @@ public class ReviewList implements Iterable<Review> {
         return null;
     }
 
-    public String toCsv(){
+    @Override
+    public String toCSV(){
         StringBuilder stringBuilder = new StringBuilder("id,product_id,title,detail,rating,reviewer_username");
         stringBuilder.append("\n");
         for(Review review: reviews){
-            stringBuilder.append(review.toCsv());
+            stringBuilder.append(review.toCSV());
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();

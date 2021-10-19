@@ -1,18 +1,20 @@
 package ku.cs.models;
 
+import ku.cs.models.io.CSVFile;
+
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class ReportList {
+public class ReportList implements CSVFile {
     private final Set<Report> reports;
 
     public ReportList() {
        reports = new TreeSet<>();
     }
 
-    public boolean addReport(Report report) {
-        return reports.add(report);
+    public void addReport(Report report) {
+        reports.add(report);
     }
 
     public void removeReport(Report report){
@@ -23,7 +25,8 @@ public class ReportList {
         return new ArrayList<>(this.reports);
     }
 
-    public String toCsv(){
+    @Override
+    public String toCSV(){
         StringBuilder stringBuilder = new StringBuilder("id,type_report,suspected_person,report_time,id_review,id_product,detail");
         stringBuilder.append("\n");
         for(Report report : reports){

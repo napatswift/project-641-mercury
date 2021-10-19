@@ -287,7 +287,12 @@
                                                 <Font size="19.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="priceTF" maxWidth="120.0" promptText="Price" styleClass="text-field-underline" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                             <children>
+                                                <TextField fx:id="priceTF" maxWidth="120.0" promptText="Price" styleClass="text-field-underline" />
+                                                <Label text="USD" />
+                                             </children>
+                                          </HBox>
                                           <Label styleClass="subtitle2" text="STOCK" GridPane.rowIndex="3">
                                              <font>
                                                 <Font size="19.0" />

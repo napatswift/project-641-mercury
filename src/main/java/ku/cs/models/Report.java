@@ -1,9 +1,11 @@
 package ku.cs.models;
 
+import ku.cs.models.io.CSVFile;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-abstract public class Report<T> implements Comparable<Report>{
+abstract public class Report<T> implements Comparable<Report>, CSVFile {
     protected String id;
     private final String type;
     private final LocalDateTime reportDateTime;
@@ -37,5 +39,4 @@ abstract public class Report<T> implements Comparable<Report>{
     public String getType()                  { return type; }
     public LocalDateTime getReportDateTime() { return reportDateTime; }
     abstract public User getSuspectedPerson();
-    abstract public String toCSV();
 }

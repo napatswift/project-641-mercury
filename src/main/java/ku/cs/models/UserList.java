@@ -1,12 +1,13 @@
 package ku.cs.models;
 
-import ku.cs.strategy.MostRecentLoginUserComparator;
+import ku.cs.models.io.CSVFile;
+import ku.cs.strategy.FromMostRecentLoginUserComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeSet;
 
-public class UserList {
+public class UserList implements CSVFile {
     private final Collection<User> users;
 
     private User currUser;
@@ -58,17 +59,18 @@ public class UserList {
             if(temp.role == User.Role.ADMIN)
                 newList.remove(temp);
         }
-        newList.sort(new MostRecentLoginUserComparator());
+        newList.sort(new FromMostRecentLoginUserComparator());
         return newList;
     }
 
-    public String toCsv(){
+    @Override
+    public String toCSV(){
         StringBuilder stringBuilder = new
                 StringBuilder("username,role,name,password,picture_path," +
                 "last_login,is_banned,login_attempt,has_store,store");
         stringBuilder.append("\n");
         for(User acc: users){
-            stringBuilder.append(acc.toCsv());
+            stringBuilder.append(acc.toCSV());
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();

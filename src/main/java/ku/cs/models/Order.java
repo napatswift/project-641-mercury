@@ -1,9 +1,11 @@
 package ku.cs.models;
 
+import ku.cs.models.io.CSVFile;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Order implements Comparable<Order> {
+public class Order implements Comparable<Order>, CSVFile {
     private final Product product;
     private final int quantity;
     private boolean isShipped;
@@ -72,7 +74,8 @@ public class Order implements Comparable<Order> {
         return tracking;
     }
 
-    public String toCsv(){
+    @Override
+    public String toCSV(){
         return  id + ","
                 + product.getId() + ","
                 + quantity + ","

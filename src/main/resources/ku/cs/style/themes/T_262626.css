@@ -18,8 +18,13 @@
     primary-overlay : rgba(156, 112, 222, 0.16);
     primary-overlay-hover : rgba(169, 148, 232, 0.32);
     primary-med-overlay : rgba(156, 112, 222, 0.6);
+    drop-shadow-color: rgba(255, 255, 255, 0.12);
 }
 
 .drop-shadow-card {
     -fx-background-color: derive(surface-color, 5%);
+}
+
+.promotion-ticket .left-shape,.promotion-ticket .right-shape{
+    -fx-fill: derive(secondary-color, -95%);
 }

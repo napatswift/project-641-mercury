@@ -21,6 +21,7 @@ public class SignUpProfilePictureController {
     private User currUser;
     private UserList userList;
     private ImageUploader imageUploader;
+    private boolean isUploaded;
 
     @FXML
     Button selectProfilePictureBtn;
@@ -37,11 +38,13 @@ public class SignUpProfilePictureController {
 
     @FXML
     public void handleConfirmBtn(ActionEvent event) {
-        try {
-            currUser.setPicturePath(imageUploader.getDestinationFile().getFileName().toString());
-            imageUploader.saveImageFile();
-        } catch (IOException e) {
-            return;
+        if (isUploaded) {
+            try {
+                currUser.setPicturePath(imageUploader.getDestinationFile().getFileName().toString());
+                imageUploader.saveImageFile();
+            } catch (IOException | NullPointerException e) {
+                return;
+            }
         }
 
         if (userList.addUser(currUser)){
@@ -58,7 +61,7 @@ public class SignUpProfilePictureController {
     @FXML
     public void handleSelectProfilePicture(ActionEvent event) throws FileNotFoundException {
         imageUploader = new ImageUploader(((Node) event.getSource()).getScene().getWindow(), "images");
-        imageUploader.show();
+        isUploaded = imageUploader.show();
         pictureViewIV.setImage(new Image(new FileInputStream(imageUploader.getUploadedFile())));
     }
 

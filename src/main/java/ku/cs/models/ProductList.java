@@ -1,15 +1,13 @@
 package ku.cs.models;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.collections.ObservableList;
+import ku.cs.models.io.CSVFile;
 import ku.cs.strategy.FromHighestPriceComparator;
 import ku.cs.strategy.FromLowestPriceComparator;
-import ku.cs.strategy.MostRecentProductComparator;
+import ku.cs.strategy.FromMostRecentProductComparator;
 
 import java.util.*;
 
-public class ProductList implements Iterable<Product> {
+public class ProductList implements Iterable<Product>, CSVFile {
     private final ArrayList<Product> products;
     private final Set<String> idSet;
     private Product selectedProduct;
@@ -75,7 +73,7 @@ public class ProductList implements Iterable<Product> {
 
     public void sort(SortType sortType) {
         if (sortType.equals(SortType.BY_ROLLOUT_DATE)) {
-            products.sort(new MostRecentProductComparator());
+            products.sort(new FromMostRecentProductComparator());
         } else if (sortType.equals(SortType.BY_LOWEST)){
             products.sort(new FromLowestPriceComparator());
         } else if (sortType.equals(SortType.BY_HIGHEST)){
@@ -103,21 +101,27 @@ public class ProductList implements Iterable<Product> {
         return products.size();
     }
 
-    public String toCsv(){
+    @Override
+    public String toCSV(){
         int numCategory = calcMaxSubCategory();
         StringBuilder stringBuilder =
                 new StringBuilder(
-                        "name,product_id,price,store,stock,description,rating,reviews,image,rollout_date,");
-        StringJoiner stringJoiner = new StringJoiner(",");
+                        "name,product_id,price,store,stock,description,rating,reviews,image,rollout_date");
+        if (numCategory > 0) {
+            stringBuilder.append(",");
+            StringJoiner stringJoiner = new StringJoiner(",");
 
-        for (int i = 0; i < numCategory; i++) {
-            stringJoiner.add("category_" + i);
+            for (int i = 0; i < numCategory; i++) {
+                stringJoiner.add("category_" + i);
+            }
+
+            stringBuilder.append(stringJoiner);
         }
 
-        stringBuilder.append(stringJoiner);
         stringBuilder.append("\n");
         for(Product product: products) {
-            stringBuilder.append(product.toCsv(numCategory));
+            product.setNumCat(numCategory);
+            stringBuilder.append(product.toCSV());
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();

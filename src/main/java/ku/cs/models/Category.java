@@ -1,10 +1,12 @@
 package ku.cs.models;
 
+import ku.cs.models.io.CSVFile;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
-public class Category implements Comparable<Category>{
+public class Category implements Comparable<Category> {
     private String name;
     private final List<SubCategory> subCategories;
 
