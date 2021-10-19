@@ -30,9 +30,11 @@ import ku.cs.models.components.listCell.OrderListCell;
 import ku.cs.models.components.listCell.ProductListCell;
 import ku.cs.models.components.listCell.PromotionListCell;
 import ku.cs.models.coupon.Coupon;
-import ku.cs.models.coupon.CouponType;
 import ku.cs.models.utils.ImageUploader;
 import ku.cs.service.DataSource;
+import ku.cs.strategy.OrderByStoreFilterer;
+import ku.cs.strategy.ShippedOrderByStoreFilterer;
+import ku.cs.strategy.ToShipOrderByStoreFilterer;
 
 
 import java.io.FileInputStream;
@@ -85,7 +87,7 @@ public class MyStoreController  {
         currUser = dataSource.getUserList().getCurrUser();
         dataSource.parseOrder();
         dataSource.parseCoupon();
-        orders = dataSource.getOrders().getOrdersByStore(currUser.getStoreName());
+        orders = dataSource.getOrders().getOrderList(new OrderByStoreFilterer(currUser.getStoreName()));
         couponTypes = dataSource.getCoupons().toListCouponInStore(currUser.getStore());
         setupUserInfo();
         loadCategory();
@@ -251,12 +253,12 @@ public class MyStoreController  {
 
     @FXML
     public void handleOrdersBtn(){
-        myStoreTP.getSelectionModel().select(4);
+        myStoreTP.getSelectionModel().select(3);
     }
 
     @FXML
     public void handleCouponBtn(){
-        myStoreTP.getSelectionModel().select(5);
+        myStoreTP.getSelectionModel().select(4);
     }
 
     public void loadCategory(){
@@ -410,15 +412,15 @@ public class MyStoreController  {
     }
 
     public void handleAllBtn(){
-        showOrderListView(orders);
+        showOrderListView(dataSource.getOrders().getOrderList(new OrderByStoreFilterer(currUser.getStoreName())));
     }
 
     public void handleToShipBtn(){
-        showOrderListView(OrderList.getToShipOrder(orders));
+        showOrderListView(dataSource.getOrders().getOrderList(new ToShipOrderByStoreFilterer(currUser.getStoreName())));
     }
 
     public void handleShippedBtn(){
-        showOrderListView(OrderList.getShipedOrder(orders));
+        showOrderListView(dataSource.getOrders().getOrderList(new ShippedOrderByStoreFilterer(currUser.getStoreName())));
     }
 
     public void handleChangeStockLowerBoundWarning() {
