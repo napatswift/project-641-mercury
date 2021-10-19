@@ -1,7 +1,7 @@
 package ku.cs.models;
 
 import ku.cs.strategy.MostRecentOrderComparator;
-import ku.cs.strategy.OrderGetter;
+import ku.cs.strategy.OrderFilterer;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -18,8 +18,14 @@ public class OrderList{
         return orders.add(order);
     }
 
-    public ArrayList<Order> getOrderList(OrderGetter orderGetter){
-        return orderGetter.getOrders(orders);
+    public ArrayList<Order> getOrderList(OrderFilterer orderFilter){
+        ArrayList<Order> orderList = new ArrayList<>();
+        for(Order order : orders){
+            if(orderFilter.mach(order))
+                orderList.add(order);
+        }
+        orderList.sort(new MostRecentOrderComparator());
+        return orderList;
     }
 
     public String toCsv(){
