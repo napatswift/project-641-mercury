@@ -251,12 +251,12 @@ public class MyStoreController  {
 
     @FXML
     public void handleOrdersBtn(){
-        myStoreTP.getSelectionModel().select(4);
+        myStoreTP.getSelectionModel().select(3);
     }
 
     @FXML
     public void handleCouponBtn(){
-        myStoreTP.getSelectionModel().select(5);
+        myStoreTP.getSelectionModel().select(4);
     }
 
     public void loadCategory(){
