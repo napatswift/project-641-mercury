@@ -1,10 +1,12 @@
 package ku.cs.models;
 
+import ku.cs.models.io.CSVFile;
+
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class Product implements Comparable<Product> {
+public class Product implements Comparable<Product>, CSVFile {
     private String name;
     private String pictureName;
     private String details;
@@ -115,7 +117,14 @@ public class Product implements Comparable<Product> {
         return false;
     }
 
-    public String toCsv(int numCat){
+    /*
+     * product toCSV method need maximum num category
+     */
+    private int numCat = -1;
+    public void setNumCat(int numCat) { this.numCat = numCat; }
+
+    @Override
+    public String toCSV(){
         StringJoiner stringJoiner = new StringJoiner(",");
         if (numCat > 0) {
             int len = 0;
@@ -125,7 +134,6 @@ public class Product implements Comparable<Product> {
                     len++;
                 }
             }
-
             for (int i = len; i < numCat; i++) {
                 stringJoiner.add(null);
             }

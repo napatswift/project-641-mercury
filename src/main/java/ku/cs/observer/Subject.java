@@ -1,4 +1,4 @@
-package ku.cs.models.utils;
+package ku.cs.observer;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -35,8 +35,8 @@ public class MinimumValueDiscount extends Coupon implements CouponType {
     }
 
     @Override
-    public String toCsv(){
-        return super.toCsv() + ","
+    public String toCSV(){
+        return super.toCSV() + ","
                 + null + ","
                 + String.format("%.4f", discount) + ","
                 + null + ","

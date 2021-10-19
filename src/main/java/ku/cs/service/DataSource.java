@@ -11,7 +11,6 @@ import ku.cs.models.ProductReport;
 import ku.cs.models.ReportList;
 import ku.cs.models.ReviewReport;
 import ku.cs.models.coupon.CouponList;
-import ku.cs.models.utils.Observer;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -26,7 +25,7 @@ public class DataSource {
     private final String STORE_FILE_NAME    = "stores.csv";
     private final String REPORT_FILE_NAME   = "reports.csv";
     private final String CATEGORY_FILE_NAME = "categories.csv";
-    private final String COUPON_FILE_NAME = "coupons.csv";
+    private final String COUPON_FILE_NAME   = "coupons.csv";
 
     private final UserList userList;
     private final ProductList products;
@@ -363,12 +362,12 @@ public class DataSource {
         }
     }
 
-    public void saveReport()   { save(reports.toCsv(), REPORT_FILE_NAME); }
-    public void saveReview()   { save(reviews.toCsv(), REVIEW_FILE_NAME); }
-    public void saveAccount()  { save(userList.toCsv(), ACCOUNT_FILE_NAME); }
-    public void saveProduct()  { save(products.toCsv(), PRODUCT_FILE_NAME); }
-    public void saveOrder()    { save(orders.toCsv(), ORDER_FILE_NAME); }
-    public void saveStore()    { save(stores.toCsv(), STORE_FILE_NAME); }
-    public void saveCategory() { save(categories.toCsv(), CATEGORY_FILE_NAME); }
-    public void saveCoupon()   { save(coupons.toCsv(), COUPON_FILE_NAME); }
+    public void saveReport()   { save(reports.toCSV(), REPORT_FILE_NAME); }
+    public void saveReview()   { save(reviews.toCSV(), REVIEW_FILE_NAME); }
+    public void saveAccount()  { save(userList.toCSV(), ACCOUNT_FILE_NAME); }
+    public void saveProduct()  { save(products.toCSV(), PRODUCT_FILE_NAME); }
+    public void saveOrder()    { save(orders.toCSV(), ORDER_FILE_NAME); }
+    public void saveStore()    { save(stores.toCSV(), STORE_FILE_NAME); }
+    public void saveCategory() { save(categories.toCSV(), CATEGORY_FILE_NAME); }
+    public void saveCoupon()   { save(coupons.toCSV(), COUPON_FILE_NAME); }
 }

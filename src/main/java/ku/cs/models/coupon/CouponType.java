@@ -5,5 +5,4 @@ import ku.cs.models.Store;
 
 public interface CouponType {
     double use(String code,Order order);
-    String toCsv();
 }

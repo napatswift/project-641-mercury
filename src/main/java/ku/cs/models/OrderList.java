@@ -1,13 +1,14 @@
 package ku.cs.models;
 
-import ku.cs.strategy.MostRecentOrderComparator;
+import ku.cs.models.io.CSVFile;
+import ku.cs.strategy.FromMostRecentOrderComparator;
 import ku.cs.strategy.OrderFilterer;
 
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class OrderList{
+public class OrderList implements CSVFile {
     private Set<Order> orders;
 
     public OrderList() {
@@ -24,14 +25,15 @@ public class OrderList{
             if(orderFilter.mach(order))
                 orderList.add(order);
         }
-        orderList.sort(new MostRecentOrderComparator());
+        orderList.sort(new FromMostRecentOrderComparator());
         return orderList;
     }
 
-    public String toCsv(){
+    @Override
+    public String toCSV(){
         StringBuilder result = new StringBuilder("id,product_id,amount,is_shipped,tracking_id,buyer,buy_at\n");
         for(Order order : orders)
-            result.append(order.toCsv()).append("\n");
+            result.append(order.toCSV()).append("\n");
         return result.toString();
     }
 

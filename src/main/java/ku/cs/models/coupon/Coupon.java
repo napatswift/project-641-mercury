@@ -2,9 +2,10 @@ package ku.cs.models.coupon;
 
 import ku.cs.models.Order;
 import ku.cs.models.Store;
-import ku.cs.models.utils.Subject;
+import ku.cs.models.io.CSVFile;
+import ku.cs.observer.Subject;
 
-abstract public class Coupon extends Subject {
+abstract public class Coupon extends Subject implements CSVFile {
     private final String code;
     private final Store owner;
     private boolean status;
@@ -48,8 +49,9 @@ abstract public class Coupon extends Subject {
     abstract public String toDescriptiveString();
     abstract public String toNumberOffString();
 
-    public String toCsv(){
-        return    code   + ","
+    @Override
+    public String toCSV(){
+        return  code   + ","
                 + owner.getName()  + ","
                 + status;
     }

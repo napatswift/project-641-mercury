@@ -15,6 +15,7 @@ import ku.cs.models.Admin;
 import ku.cs.models.User;
 import ku.cs.models.UserList;
 import ku.cs.models.CategoryList;
+import ku.cs.models.components.dialogs.TextDialog;
 import ku.cs.models.components.listCell.CategoryListCell;
 import ku.cs.models.components.listCell.ReportListCell;
 import ku.cs.models.components.listCell.SubCategoryListCell;
@@ -22,7 +23,7 @@ import ku.cs.models.components.listCell.UserListCell;
 import ku.cs.models.Report;
 import ku.cs.models.ReportList;
 import ku.cs.service.DataSource;
-import ku.cs.strategy.MostRecentReportComparator;
+import ku.cs.strategy.FromMostRecentReportComparator;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -160,7 +161,7 @@ public class AdminPageController {
     // Report Page
     private void showReportListView() {
         ArrayList<Report> reports = reportList.toList();
-        reports.sort(new MostRecentReportComparator());
+        reports.sort(new FromMostRecentReportComparator());
         reportListView.getItems().addAll(reports);
         reportListView.setCellFactory(reportListView -> new ReportListCell());
         reportListView.refresh();
@@ -265,23 +266,21 @@ public class AdminPageController {
             FXRouter.goTo("login");
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("ไปที่หน้า login ไม่ได้");
-            System.err.println("ให้ตรวจสอบการกำหนด route");
         }
     }
 
     @FXML
-    public void handleCategoryButton(ActionEvent actionEvent) {
+    public void handleCategoryButton() {
         adminTP.getSelectionModel().select(1);
     }
 
     @FXML
-    public void handleUserButton(ActionEvent actionEvent) {
+    public void handleUserButton() {
         adminTP.getSelectionModel().select(0);
     }
 
     @FXML
-    public void handleReportButton(ActionEvent actionEvent) {
+    public void handleReportButton() {
         adminTP.getSelectionModel().select(2);
     }
 
@@ -307,25 +306,35 @@ public class AdminPageController {
     }
 
     public void handleAddCategoryButton() {
+        String categoryString = addCategoryTF.getText();
         if(addCategoryTF.getText() != null
-                && !categories.containsKey(addCategoryTF.getText())
-                && !addCategoryTF.getText().equals("")) {
-            categories.addCategory(addCategoryTF.getText().toLowerCase(Locale.ROOT));
-            dataSource.saveCategory();
-            categoryListView.getItems().clear();
-            showCategoryListView();
+                && !categoryString.isEmpty() && !categoryString.isBlank()) {
+            categoryString = categoryString.toLowerCase(Locale.ROOT);
+            if (categories.addCategory(categoryString)) {
+                dataSource.saveCategory();
+                categoryListView.getItems().clear();
+                showCategoryListView();
+            } else {
+                TextDialog dialog = new TextDialog("Sorry...", selectCategory + " is already contained.");
+                dialog.showAndWait();
+            }
         }
         addCategoryTF.clear();
 
     }
 
     public void handleAddSubCategoryButton() {
+        String subcategoryString = addSubCategoryTF.getText();
         if(addSubCategoryTF.getText() != null
-                && !addSubCategoryTF.getText().equals("")){
+                && !subcategoryString.isBlank() && !subcategoryString.isEmpty()){
             String subCat = addSubCategoryTF.getText().toLowerCase(Locale.ROOT);
-            categories.addSubCategory(selectCategory, subCat);
-            dataSource.saveCategory();
-            showSelectedCategory(selectCategory);
+            if (categories.addSubCategory(selectCategory, subCat)) {
+                dataSource.saveCategory();
+                showSelectedCategory(selectCategory);
+            } else {
+                TextDialog dialog = new TextDialog("Sorry...", selectCategory + " already contains " + subcategoryString + ".");
+                dialog.showAndWait();
+            }
         }
         addSubCategoryTF.clear();
     }

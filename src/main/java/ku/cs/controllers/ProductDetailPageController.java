@@ -381,7 +381,8 @@ public class ProductDetailPageController {
         Store store = (Store) source.getUserData();
         if (storeProductPageTab == null)
             storeProductPageTab = new Tab("storeProductPage");
-        productTP.getTabs().add(storeProductPageTab);
+        if (!productTP.getTabs().contains(storeProductPageTab))
+            productTP.getTabs().add(storeProductPageTab);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/store_product_page.fxml"));
 

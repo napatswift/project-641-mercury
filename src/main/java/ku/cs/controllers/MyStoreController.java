@@ -1,10 +1,7 @@
 package ku.cs.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import com.github.saacsos.FXRouter;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +28,7 @@ import ku.cs.models.components.listCell.ProductListCell;
 import ku.cs.models.components.listCell.PromotionListCell;
 import ku.cs.models.coupon.Coupon;
 import ku.cs.models.utils.ImageUploader;
-import ku.cs.models.utils.Observer;
+import ku.cs.observer.Observer;
 import ku.cs.service.DataSource;
 import ku.cs.strategy.OrderByStoreFilterer;
 import ku.cs.strategy.ShippedOrderByStoreFilterer;
@@ -49,10 +46,7 @@ public class MyStoreController {
     private Product product;
     private User currUser;
     private ImageUploader imageUploader;
-    private ArrayList<Order> orders;
     private ArrayList<Coupon> couponTypes;
-    private CouponObserver couponObserver;
-    private String categoryText = "";
     private Image image;
 
     @FXML private Label usernameLabel, nameLabel, nameStoreLabel;
@@ -89,7 +83,6 @@ public class MyStoreController {
         currUser = dataSource.getUserList().getCurrUser();
         dataSource.parseOrder();
         dataSource.parseCoupon();
-        orders = dataSource.getOrders().getOrderList(new OrderByStoreFilterer(currUser.getStoreName()));
         couponTypes = dataSource.getCoupons().toListCouponInStore(currUser.getStore());
         setupUserInfo();
         loadCategory();
@@ -103,8 +96,8 @@ public class MyStoreController {
         handleProductsListView();
         setupTabPaneListener();
         showCouponListView(couponTypes);
-        showOrderListView(orders);
-        couponObserver = new CouponObserver();
+        showOrderListView(dataSource.getOrders().getOrderList(new OrderByStoreFilterer(currUser.getStoreName())));
+        CouponObserver couponObserver = new CouponObserver();
         dataSource.getCoupons().addObserver(couponObserver);
 
         setGroup();
@@ -129,17 +122,14 @@ public class MyStoreController {
     }
 
     private void setupTabPaneListener(){
-        myStoreTP.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
-            @Override
-            public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
-                if (newValue != myAccountTab) {
-                    myStoreTP.getTabs().remove(myAccountTab);
-                    myAccountTab = null;
-                }
-                if (newValue != myStoreTab) {
-                    myStoreTP.getTabs().remove(myStoreTab);
-                    myStoreTab = null;
-                }
+        myStoreTP.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != myAccountTab) {
+                myStoreTP.getTabs().remove(myAccountTab);
+                myAccountTab = null;
+            }
+            if (newValue != myStoreTab) {
+                myStoreTP.getTabs().remove(myStoreTab);
+                myStoreTab = null;
             }
         });
     }
@@ -260,7 +250,7 @@ public class MyStoreController {
         clearBtn.setVisible(false);
         product = new Product("", "", dataSource.getUserList().getCurrUser().getStore());
         myStoreTP.getSelectionModel().select(1);
-        categoryLB.setText(categoryText);
+        categoryLB.setText("");
     }
 
     @FXML
@@ -387,6 +377,7 @@ public class MyStoreController {
 
     public void showSelectedProduct(Product product){
         selectedProduct = product;
+        productsRightPane.setVisible(false);
         stockWarningSelectedProductSVG.setVisible(product.stockIsLow());
         nameProductLB.setText(product.getName());
         priceLB.setText(String.format("%.2f",product.getPrice()));
@@ -411,7 +402,7 @@ public class MyStoreController {
                         ratingStarsSelectedProduct.getChildren().clear();
                         showSelectedProduct(newValue);
                         productSP.setDividerPositions(0.5, 0.5);
-                        productsRightPane.setVisible(newValue != null);
+                        productsRightPane.setVisible(true);
                         product = newValue;
                     }
                 }
@@ -484,7 +475,7 @@ public class MyStoreController {
         showSelectedProduct(selectedProduct);
     }
 
-    public void handleCreateCouponBtn(ActionEvent actionEvent) {
+    public void handleCreateCouponBtn() {
         try{
             FXRouter.goTo("create_coupon",dataSource);
         } catch (IOException e) {

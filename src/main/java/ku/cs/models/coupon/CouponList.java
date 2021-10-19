@@ -2,13 +2,14 @@ package ku.cs.models.coupon;
 
 import ku.cs.models.Order;
 import ku.cs.models.Store;
-import ku.cs.models.utils.Observer;
-import ku.cs.models.utils.Subject;
+import ku.cs.models.io.CSVFile;
+import ku.cs.observer.Observer;
+import ku.cs.observer.Subject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CouponList extends Subject {
+public class CouponList extends Subject implements CSVFile {
     private final List<CouponType> couponTypes;
     private final Observer couponObserver;
 
@@ -72,11 +73,13 @@ public class CouponList extends Subject {
         return couponTypeArrayList;
     }
 
-    public String toCsv(){
-        StringBuilder stringBuilder = new StringBuilder("code,store,status,percent_discount,discount,minimum_quantity,minimum_value");
+    @Override
+    public String toCSV(){
+        StringBuilder stringBuilder
+                = new StringBuilder("code,store,status,percent_discount,discount,minimum_quantity,minimum_value");
         stringBuilder.append("\n");
         for(CouponType couponType : couponTypes){
-            stringBuilder.append(couponType.toCsv());
+            stringBuilder.append(((Coupon) couponType).toCSV());
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();
