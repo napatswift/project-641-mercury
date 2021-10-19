@@ -1,7 +1,7 @@
 name,product_id,price,store,stock,description,rating,reviews,image,rollout_date,category_0,category_1
-"ipad mini",af5b4cc1-f635-4787-9021-b4c1238de683,12999.0,"The Mercury",32,"-",0.0,0,2021-10-17_1634458662073.jpeg,2021-10-17T15:17:37.296665400,tablet:color:green,tablet:color:blue
+"ipad mini",af5b4cc1-f635-4787-9021-b4c1238de683,12999.0,"The Mercury",34,"-",0.0,0,2021-10-17_1634458662073.jpeg,2021-10-17T15:17:37.296665400,tablet:color:green,tablet:color:blue
 "Jacket Uniqlo",fa794149-f670-43f4-8136-d1ea6d96255e,129.0,"The Mercury",13,"-",0.0,0,PRODUCT_IMG2021-10-12_1634036055555.png,2021-10-12T17:53:39.287783,jackets:size:L,null
 "GQ Shirt",08c78616-8cf3-4214-8cbd-e74facc28c7a,199.0,"The Mercury",29,"-",0.0,0,PRODUCT_IMG2021-10-12_1634035879703.jpg,2021-10-12T17:51:14.982872500,shirt:size:L,shirt:size:M
 "Nike Air Force 1",4851b57e-9449-4c29-bab4-f6b64a3be651,399.0,"The Mercury",45,"-",0.0,0,PRODUCT_IMG2021-10-12_1634033072543.png,2021-10-12T17:04:26.285383600,shoes:sex:men,shoes:size:42
-"Iphone 12",67ece5c4-fcdd-4dd3-8965-e926500b925f,13599.0,"The Mercury",10,"Ram : 6 G",5.0,2,PRODUCT_IMG2021-10-12_1634031977146.jpg,2021-10-12T16:45:32.657773400,phone:brand:Apple,null
+"Iphone 12",67ece5c4-fcdd-4dd3-8965-e926500b925f,13599.0,"The Mercury",10,"Ram : 6 G",0.0,0,PRODUCT_IMG2021-10-12_1634031977146.jpg,2021-10-12T16:45:32.657773400,phone:brand:Apple,null
 "Huawei Nova 7i",45683c57-ef04-4d7e-9857-aac175a6612b,7999.0,"The Mercury",23,"Ram: 8 G",0.0,0,PRODUCT_IMG2021-10-12_1634031788161.jpg,2021-10-12T16:44:01.190339700,phone:brand:Huawei,null

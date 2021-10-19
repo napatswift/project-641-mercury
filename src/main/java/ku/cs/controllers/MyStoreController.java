@@ -33,6 +33,9 @@ import ku.cs.models.coupon.Coupon;
 import ku.cs.models.utils.ImageUploader;
 import ku.cs.models.utils.Observer;
 import ku.cs.service.DataSource;
+import ku.cs.strategy.OrderByStoreFilterer;
+import ku.cs.strategy.ShippedOrderByStoreFilterer;
+import ku.cs.strategy.ToShipOrderByStoreFilterer;
 
 
 import java.io.FileInputStream;
@@ -86,7 +89,7 @@ public class MyStoreController {
         currUser = dataSource.getUserList().getCurrUser();
         dataSource.parseOrder();
         dataSource.parseCoupon();
-        orders = dataSource.getOrders().getOrdersByStore(currUser.getStoreName());
+        orders = dataSource.getOrders().getOrderList(new OrderByStoreFilterer(currUser.getStoreName()));
         couponTypes = dataSource.getCoupons().toListCouponInStore(currUser.getStore());
         setupUserInfo();
         loadCategory();
@@ -430,15 +433,15 @@ public class MyStoreController {
     }
 
     public void handleAllBtn(){
-        showOrderListView(dataSource.getOrders().getOrdersByStore(currUser.getStoreName()));
+        showOrderListView(dataSource.getOrders().getOrderList(new OrderByStoreFilterer(currUser.getStoreName())));
     }
 
     public void handleToShipBtn(){
-        showOrderListView(dataSource.getOrders().getToShipOrder());
+        showOrderListView(dataSource.getOrders().getOrderList(new ToShipOrderByStoreFilterer(currUser.getStoreName())));
     }
 
     public void handleShippedBtn(){
-        showOrderListView(dataSource.getOrders().getShippedOrder());
+        showOrderListView(dataSource.getOrders().getOrderList(new ShippedOrderByStoreFilterer(currUser.getStoreName())));
     }
 
     public void handleChangeStockLowerBoundWarning() {
