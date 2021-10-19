@@ -33,6 +33,9 @@ import ku.cs.models.coupon.Coupon;
 import ku.cs.models.coupon.CouponType;
 import ku.cs.models.utils.ImageUploader;
 import ku.cs.service.DataSource;
+import ku.cs.strategy.OrderByStoreGetter;
+import ku.cs.strategy.ShippedOrderByStoreGetter;
+import ku.cs.strategy.ToShipOrderByStoreGetter;
 
 
 import java.io.FileInputStream;
@@ -85,7 +88,7 @@ public class MyStoreController  {
         currUser = dataSource.getUserList().getCurrUser();
         dataSource.parseOrder();
         dataSource.parseCoupon();
-        orders = dataSource.getOrders().getOrdersByStore(currUser.getStoreName());
+        orders = dataSource.getOrders().getOrderList(new OrderByStoreGetter(currUser.getStoreName()));
         couponTypes = dataSource.getCoupons().toListCouponInStore(currUser.getStore());
         setupUserInfo();
         loadCategory();
@@ -410,15 +413,15 @@ public class MyStoreController  {
     }
 
     public void handleAllBtn(){
-        showOrderListView(orders);
+        showOrderListView(dataSource.getOrders().getOrderList(new OrderByStoreGetter(currUser.getStoreName())));
     }
 
     public void handleToShipBtn(){
-        showOrderListView(OrderList.getToShipOrder(orders));
+        showOrderListView(dataSource.getOrders().getOrderList(new ToShipOrderByStoreGetter(currUser.getStoreName())));
     }
 
     public void handleShippedBtn(){
-        showOrderListView(OrderList.getShipedOrder(orders));
+        showOrderListView(dataSource.getOrders().getOrderList(new ShippedOrderByStoreGetter(currUser.getStoreName())));
     }
 
     public void handleChangeStockLowerBoundWarning() {
