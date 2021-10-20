@@ -15,7 +15,7 @@ public class MinimumValuePercentDiscount extends Coupon implements CouponType {
 
     @Override
     public double use(String code, Order order) {
-        if(super.checkCoupon(code, order) < 1)
+        if(super.checkCoupon(code, order) < 0)
             return super.checkCoupon(code, order);
 
         if(minimumValue > order.getTotal())
