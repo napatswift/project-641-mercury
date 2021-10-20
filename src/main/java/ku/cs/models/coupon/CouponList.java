@@ -39,10 +39,10 @@ public class CouponList extends Subject implements CSVFile {
 
     public double useCoupon(String code, Order order){
         for(CouponType couponType : couponTypes){
-            if(couponType.use(code,order) > 0)
+            if(((Coupon) couponType).checkCode(code))
                 return couponType.use(code,order);
         }
-        return -1;
+        return -5;
     }
 
     public boolean checkCouponCode(String code){

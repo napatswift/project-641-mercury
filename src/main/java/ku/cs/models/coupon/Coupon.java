@@ -38,8 +38,6 @@ abstract public class Coupon extends Subject implements CSVFile {
 
     public double checkCoupon(String code, Order order){
         if(order.getProduct().getStore() != owner)
-            return -2;
-        if(!this.code.equals(code))
             return -3;
         if(!status)
             return -4;

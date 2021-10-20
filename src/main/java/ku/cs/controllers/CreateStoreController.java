@@ -6,6 +6,7 @@ import com.github.saacsos.FXRouter;
 import javafx.scene.control.TextField;
 import ku.cs.models.Store;
 import ku.cs.models.StoreList;
+import ku.cs.models.components.dialogs.AlertDialog;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -36,6 +37,10 @@ public class CreateStoreController {
     @FXML
     public void handleSubmit() {
         String nameStore = nameStoreTF.getText();
+        if(stores.findStoreByName(nameStore) != null) {
+            AlertDialog.alertDialog("Unable to create a store.", "This name is already in use.");
+            return;
+        }
         dataSource.getUserList().getCurrUser().createStore(nameStore);
         dataSource.saveAccount();
         stores.addStore(dataSource.getUserList().getCurrUser().getStore());

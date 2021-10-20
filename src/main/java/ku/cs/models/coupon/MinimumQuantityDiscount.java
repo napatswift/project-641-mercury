@@ -14,11 +14,11 @@ public class MinimumQuantityDiscount extends Coupon implements CouponType {
     }
 
     public double use(String code, Order order) {
-        if(minimumQuantity > order.getQuantity())
-            return -1;
-
-        if(super.checkCoupon(code, order) != 1)
+        if(super.checkCoupon(code, order) < 0)
             return super.checkCoupon(code, order);
+
+        if(minimumQuantity > order.getQuantity())
+            return -2;
 
         return order.getTotal() - discount;
     }
