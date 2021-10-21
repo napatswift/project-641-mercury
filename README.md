@@ -8,8 +8,8 @@
 
 
 ## วิธีการติดตั้งหรือรันโปรแกรม
-ระบุวิธีการติดตั้งระบบ เช่น งานโปรเจคที่สำเร็จอยู่ที่ directory ใด ต้องใช้ command เพื่อเปิดหน้าโปรแกรมอย่างไร
 
+ให้ [กดดาวโหลด](https://drive.google.com/drive/folders/1gE6iwR3MOJ-FiloXg5_QRr5LlXTDTsBx?usp=sharing) ไฟล์โปรแกรม
 
 ## การวางโครงสร้างไฟล์
 
@@ -83,9 +83,25 @@ src
 
 ## ตัวอย่างข้อมูลผู้ใช้ระบบ
 
-|Role|username|password|
-|---|----|---|
-|Admin|admin|admin|
+username|role|name|password|picture_path|last_login|is_banned|login_attempt|has_store|store
+---|---|---|---|---|---|---|---|---|---
+admin|ADMIN|Admin|admin|null|2021-10-21T20:15:13.099523|false|0|false|null
+adoughilla6|USER|Aubrette Doughill|lwvOJkG|null|2021-10-21T19:11:27.078738|false|0|false|null
+anethercott3|USER|Abeu Nethercott|M687uDhVlw|null|2021-10-21T19:58:12.222065|false|0|true|Schulist, Collier and Christiansen
+bshapterct|USER|Bud Shapter|cFz8r7FL6th|null|2020-12-22T23:44:33|false|0|false|null
+ctoffulbq|USER|Charo Tofful|8dopPtEbzu|null|2020-12-17T06:26:48|true|24|false|null
+fcardillo2|USER|Frederik Cardillo|gOY5sbrdwn18|null|2021-01-14T20:09:32|false|0|false|null
+gbratch2q|USER|Gilbertine Bratch|g4ZzgQcIu|null|2021-03-02T14:21:29|true|80|false|null
+kbrabenderbn|USER|Kamillah Brabender|fryL5McNwuMe|null|2021-09-18T15:00:43|false|0|false|null
+kskelington54|USER|Kitti Skelington|m6MjBLPGEy|null|2021-01-25T17:47:45|false|0|false|null
+lrensd9|USER|Leopold Rens|5y78Ht|null|2020-11-25T01:37:22|true|8|false|null
+mgorinib4|USER|Malinda Gorini|ygI1TvG|null|2021-10-08T02:35:35|false|0|false|null
+msolway4|USER|Melina Solway|ty5o6nD9|null|2021-05-10T23:22:49|true|52|true|Collier, Ankunding and Kunde
+sgrimstead0|USER|Silvanus Grimstead|ewE8lxpfq|null|2021-10-06T13:21:43|false|0|false|null
+tbuttress9r|USER|Tally Buttress|xH7VdFgD|null|2021-10-07T00:40:21|false|0|false|null
+tzylbermann1|USER|Tony Zylbermann|mgqk6SyPxB|null|2021-04-21T13:34:23|true|66|true|Durgan-Graham
+wcleyburn5w|USER|Warden Cleyburn|5FILBR8Ebt|null|2021-02-22T12:32:33|true|30|false|null
+
 
 ## สรุปสิ่งที่พัฒนาแต่ละครั้งที่นำเสนอความก้าวหน้าของระบบ
 
