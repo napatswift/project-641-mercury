@@ -149,7 +149,6 @@ public class User implements Comparable<User>, CSVFile {
 
     @Override
     public String toCSV(){
-        //username,role,name,password,picture,last_login,isBanned,loginAttempt,hasStore,store
         return username + ","
                 + role + ","
                 + "\"" + name + "\"" + ","
@@ -159,6 +158,6 @@ public class User implements Comparable<User>, CSVFile {
                 + isBanned + ","
                 + loginAttempt + ","
                 + hasStore + ","
-                + (store == null ? null : store.getName());
+                + (store == null ? null : "\"" + store.getName().replace("\"", "\"\"") + "\"");
     }
 }
