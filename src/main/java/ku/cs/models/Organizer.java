@@ -7,6 +7,7 @@ public class Organizer {
     private final String githubId;
     private final String imagePath;
 
+
     public Organizer(String name, String nickname, String studentId, String githubId, String imagePath) {
         this.name = name;
         this.nickname = nickname;
@@ -34,4 +35,6 @@ public class Organizer {
     public String getImagePath() {
         return imagePath;
     }
+
+
 }
