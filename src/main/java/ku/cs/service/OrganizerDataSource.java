@@ -13,6 +13,7 @@ public class OrganizerDataSource {
     }
 
     public void readData() {
+
         Organizer chang = new Organizer();
         Organizer bank = new Organizer();
         Organizer feel = new Organizer();
@@ -41,6 +42,7 @@ public class OrganizerDataSource {
         mek.setStudentId("6310401084");
         mek.setGithubId("Mekpearaphat");
         mek.setImagePath("/ku/cs/image/mek.jpeg");
+
 
         list.add(chang);
         list.add(bank);

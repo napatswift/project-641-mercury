@@ -1,17 +1,12 @@
 package ku.cs.models;
 
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.layout.VBox;
+import ku.cs.models.io.CSVFile;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
-public class Category implements Comparable<Category>{
+public class Category implements Comparable<Category> {
     private String name;
     private final List<SubCategory> subCategories;
 
@@ -38,10 +33,10 @@ public class Category implements Comparable<Category>{
 
     @Override
     public String toString() {
-        return new StringJoiner(", ")
-                .add("name='" + name + "'")
-                .add("subCategories=" + subCategories)
-                .toString();
+        String result = name + ", ";
+        for(SubCategory subCategory : subCategories){
+            result += subCategory;
+        }return result;
     }
 
     public List<String> toCSV(){
@@ -51,35 +46,7 @@ public class Category implements Comparable<Category>{
             String sc = name + ":" + subCat.getName() + ":" + subCat.getValue();
             list.add(sc);
         }
-
         return list;
-    }
-
-    public static class CategoryListCell extends ListCell<String> {
-        private final VBox content;
-        private final Label label;
-
-        public CategoryListCell() {
-            label = new Label();
-            label.getStyleClass().add("body1");
-            label.setStyle("-fx-text-fill: on-surface-color");
-            content = new VBox(label);
-            content.setSpacing(3);
-            content.setPadding(new Insets(10, 0, 10, 0));
-        }
-
-        @Override
-        protected void updateItem(String item, boolean empty) {
-            super.updateItem(item, empty);
-            if (item != null && !empty) {
-                label.setText(item);
-                setGraphic(content);
-                setStyle("-fx-border-width: 0 0 2 0; -fx-border-color: surface-overlay");
-            } else {
-                setGraphic(null);
-                setStyle(null);
-            }
-        }
     }
 
     @Override

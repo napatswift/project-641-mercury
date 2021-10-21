@@ -16,9 +16,10 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.25" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.AdminPageController">
+<?import javafx.scene.control.ToggleButton?>
+<SplitPane dividerPositions="0.25" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ku.cs.controllers.AdminPageController">
    <items>
-      <VBox prefHeight="814.0" prefWidth="475.0" spacing="5.0">
+      <VBox prefHeight="814.0" prefWidth="475.0" spacing="5.0" style="-fx-background-color: surface-color;">
          <children>
             <VBox prefHeight="94.0" prefWidth="119.0">
                <children>
@@ -26,22 +27,18 @@
                      <VBox.margin>
                         <Insets bottom="20.0" />
                      </VBox.margin></ImageView>
-                  <Label fx:id="nameAdmin" text="nameAdmin">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="role" text="role" textFill="#5b6161" />
+                  <Label fx:id="nameAdmin" styleClass="body1" text="nameAdmin" />
+                  <Label fx:id="role" styleClass="subtitle1" text="role" />
                </children>
                <VBox.margin>
                   <Insets bottom="25.0" left="10.0" />
                </VBox.margin>
             </VBox>
-            <Button fx:id="userButton" mnemonicParsing="false" onAction="#handleUserButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-active-btn" text="User" />
-            <Button fx:id="categoryButton" mnemonicParsing="false" onAction="#handleCategoryButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Category" />
-            <Button fx:id="reportButton" mnemonicParsing="false" onAction="#handleReportButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Report" />
-            <Button fx:id="resetPasswordButton" mnemonicParsing="false" onAction="#handleResetPasswordButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Reset Password" />
-            <Button fx:id="logOutButton" mnemonicParsing="false" onAction="#handleLogOutButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Log-Out" />
+            <ToggleButton fx:id="userButton" mnemonicParsing="false" onAction="#handleUserButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="User" />
+            <ToggleButton fx:id="categoryButton" mnemonicParsing="false" onAction="#handleCategoryButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Category" />
+            <ToggleButton fx:id="reportButton" mnemonicParsing="false" onAction="#handleReportButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Report" />
+            <ToggleButton fx:id="resetPasswordButton" mnemonicParsing="false" onAction="#handleResetPasswordButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Reset Password" />
+            <ToggleButton fx:id="logOutButton" mnemonicParsing="false" onAction="#handleLogOutButton" prefHeight="34.0" prefWidth="500.0" styleClass="list-item-btn" text="Log-Out" />
          </children>
          <padding>
             <Insets left="5.0" right="5.0" top="70.0" />
@@ -69,7 +66,7 @@
                                           <Insets left="15.0" right="15.0" />
                                        </padding>
                                     </HBox>
-                                    <ListView fx:id="userListView" prefHeight="900.0" />
+                                    <ListView fx:id="userListView" prefHeight="900.0" stylesheets="@style/list-style.css" />
                                  </children>
                                  <padding>
                                     <Insets top="50.0" />
@@ -88,7 +85,7 @@
                                        <children>
                                           <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
                                              <children>
-                                                <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                                <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" style="-fx-fill: on-surface-color;" />
                                                 <Label fx:id="realNameUser" styleClass="subtitle2" text="realNameUser">
                                                    <font>
                                                       <Font size="16.0" />
@@ -104,7 +101,7 @@
                                           </HBox>
                                           <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
                                              <children>
-                                                <SVGPath content="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z" />
+                                                <SVGPath content="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z" style="-fx-fill: on-surface-color;" />
                                                 <Label fx:id="storeName" styleClass="subtitle2" text="storeName">
                                                    <font>
                                                       <Font size="16.0" />
@@ -122,7 +119,7 @@
                                     </VBox>
                                     <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
                                        <children>
-                                          <SVGPath content="M21 21.78L4.22 5 3 6.22l2.04 2.04C4.42 8.6 4 9.25 4 10v10c0 1.1.9 2 2 2h12c.23 0 .45-.05.66-.12L19.78 23 21 21.78zM8.9 6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2H9.66L20 18.34V10c0-1.1-.9-2-2-2h-1V6c0-2.76-2.24-5-5-5-2.56 0-4.64 1.93-4.94 4.4L8.9 7.24V6z" />
+                                          <SVGPath content="M21 21.78L4.22 5 3 6.22l2.04 2.04C4.42 8.6 4 9.25 4 10v10c0 1.1.9 2 2 2h12c.23 0 .45-.05.66-.12L19.78 23 21 21.78zM8.9 6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2H9.66L20 18.34V10c0-1.1-.9-2-2-2h-1V6c0-2.76-2.24-5-5-5-2.56 0-4.64 1.93-4.94 4.4L8.9 7.24V6z" style="-fx-fill: on-surface-color;" />
                                           <Label fx:id="statusUserBan" styleClass="subtitle2" text="statusUserBan">
                                              <font>
                                                 <Font size="16.0" />
@@ -168,7 +165,7 @@
                                                 <Button fx:id="handleAddCategoryButton" minWidth="100.0" mnemonicParsing="false" onAction="#handleAddCategoryButton" prefWidth="100.0" styleClass="outline-btn" text="ADD" />
                                              </children>
                                           </HBox>
-                                          <ListView fx:id="categoryListView" prefHeight="900.0" prefWidth="389.0">
+                                          <ListView fx:id="categoryListView" prefHeight="900.0" prefWidth="389.0" stylesheets="@style/list-style.css">
                                              <VBox.margin>
                                                 <Insets top="5.0" />
                                              </VBox.margin>
@@ -201,7 +198,7 @@
                                                 <Button fx:id="handleAddSubCategoryButton" minWidth="100.0" mnemonicParsing="false" onAction="#handleAddSubCategoryButton" prefHeight="34.0" prefWidth="100.0" styleClass="outline-btn" text="ADD" />
                                              </children>
                                           </HBox>
-                                          <ListView fx:id="subCategoryListView" prefHeight="900.0" prefWidth="222.0">
+                                          <ListView fx:id="subCategoryListView" prefHeight="900.0" prefWidth="222.0" stylesheets="@style/list-style.css">
                                              <VBox.margin>
                                                 <Insets top="5.0" />
                                              </VBox.margin>
@@ -235,7 +232,7 @@
                                           <Insets left="15.0" right="15.0" />
                                        </VBox.margin>
                                     </HBox>
-                                    <ListView fx:id="reportListView" prefHeight="900.0" prefWidth="389.0" />
+                                    <ListView fx:id="reportListView" prefHeight="900.0" prefWidth="389.0" stylesheets="@style/list-style.css" />
                                  </children>
                                  <padding>
                                     <Insets top="50.0" />
@@ -249,12 +246,12 @@
                                              <VBox.margin>
                                                 <Insets bottom="20.0" />
                                              </VBox.margin></ImageView>
-                                          <Label fx:id="suspectedPersonUserName" text="suspectedPersonUserName">
+                                          <Label fx:id="suspectedPersonUserName" styleClass="h6" text="suspectedPersonUserName">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
                                           </Label>
-                                          <Label fx:id="reportTime" text="reportTime" />
+                                          <Label fx:id="reportTime" styleClass="subtitle2" text="reportTime" />
                                        </children>
                                        <padding>
                                           <Insets left="15.0" right="10.0" />
@@ -264,8 +261,8 @@
                                        <children>
                                           <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
                                              <children>
-                                                <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                                                <Label fx:id="suspectedPersonRealName" text="suspectedPersonRealName">
+                                                <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" style="-fx-fill: on-surface-color;" />
+                                                <Label fx:id="suspectedPersonRealName" styleClass="body1" text="suspectedPersonRealName">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
@@ -277,8 +274,8 @@
                                           </HBox>
                                           <HBox layoutX="10.0" layoutY="56.0" prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
                                              <children>
-                                                <SVGPath content="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z" />
-                                                <Label fx:id="suspectedPersonStoreName" text="suspectedPersonStoreName">
+                                                <SVGPath content="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z" style="-fx-fill: on-surface-color;" />
+                                                <Label fx:id="suspectedPersonStoreName" styleClass="body1" text="suspectedPersonStoreName">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
@@ -290,8 +287,8 @@
                                           </HBox>
                                           <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: surface-overlay; -fx-border-width: 0 0 1 0;">
                                              <children>
-                                                <SVGPath content="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
-                                                <Label text="ReportType">
+                                                <SVGPath content="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" style="-fx-fill: on-surface-color;" />
+                                                <Label fx:id="reportType" styleClass="body1" text="reportType">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
@@ -310,7 +307,7 @@
                                           <Insets bottom="20.0" left="15.0" top="20.0" />
                                        </VBox.margin>
                                     </VBox>
-                                    <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="65.0" prefWidth="261.0" style="-fx-background-color: #FFFFFF;">
+                                    <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="65.0" prefWidth="261.0" style="-fx-background-color: surface-color;">
                                       <items>
                                           <Button mnemonicParsing="false" onAction="#handleBanBtn" style="-fx-background-color: error-color;" styleClass="contained-btn" text="BAN" />
                                         <Button mnemonicParsing="false" onAction="#handleDismissBtn" style="-fx-text-fill: primary-color;" text="DISMISS" />

@@ -1,43 +1,40 @@
 package ku.cs.models;
 
+import ku.cs.models.io.CSVFile;
+
 import java.util.*;
 
-public class ReviewList implements Iterable<Review> {
-    private final ArrayList<Review> reviews;
-    private final Collection<String> ids;
-    private Review reportingReview;
+public class ReviewList implements Iterable<Review>, CSVFile {
+    private final Collection<Review> reviews;
 
-    public ReviewList(){
-        reviews = new ArrayList<>();
-        ids = new TreeSet<>();
+    public ReviewList() {
+        reviews = new TreeSet<>();
     }
 
-    public void addReview(Review review){
-        reviews.add(review);
-        ids.add(review.getId());
+    public boolean addReview(Review review){
+        if (review.getProduct() != null)
+            return reviews.add(review);
+        else throw new NullPointerException("Cannot add review, product is null");
     }
 
-    public boolean addReview(String title, String detail,
-                          int rating, User user, Product product){
+    public boolean addReview(String title, String detail, int rating, User user, Product product){
         title = title.trim();
         detail = detail.trim();
         if (title.equals("") || detail.equals("") ||
-                rating < 0 || rating > 5 ||
+                rating <= 0 || rating > 5 ||
                 user == null || product == null){
             return false;
         }
         String id = UUID.randomUUID().toString();
-        addReview(new Review(id, title, detail, rating, user, product));
-        return true;
-    }
+        Review newReview = new Review(id, title, detail, user);
+        newReview.setProduct(product);
 
-    public ArrayList<Review> getProductReviewList(String idProduct) {
-        ArrayList<Review> gettingReviews = new ArrayList<>();
-        for (Review review: reviews){
-            if(review.getProductId().equals(idProduct))
-                gettingReviews.add(review);
-        }
-        return gettingReviews;
+        if (!newReview.setRating(rating))
+            return false;
+
+        product.addReview(newReview);
+        addReview(newReview);
+        return true;
     }
 
     public Review getReviewByID(String id){
@@ -49,20 +46,12 @@ public class ReviewList implements Iterable<Review> {
         return null;
     }
 
-    public void setReportingReview(Review reportingReview) {
-        if (reportingReview != null)
-            this.reportingReview = reportingReview;
-    }
-
-    public void resetReportingReview(){
-        this.reportingReview = null;
-    }
-
-    public String toCsv(){
-        StringBuilder stringBuilder = new StringBuilder("id,productId,title,detail,rating,reviewerUsername");
+    @Override
+    public String toCSV(){
+        StringBuilder stringBuilder = new StringBuilder("id,product_id,title,detail,rating,reviewer_username");
         stringBuilder.append("\n");
         for(Review review: reviews){
-            stringBuilder.append(review.toCsv());
+            stringBuilder.append(review.toCSV());
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();
@@ -75,5 +64,9 @@ public class ReviewList implements Iterable<Review> {
     @Override
     public Iterator<Review> iterator() {
         return reviews.iterator();
+    }
+
+    public Iterator<Review> iterator(String productId){
+        return reviews.stream().filter(r -> r.getProductId().equals(productId)).iterator();
     }
 }

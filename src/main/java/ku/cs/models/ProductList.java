@@ -1,36 +1,49 @@
 package ku.cs.models;
 
+import ku.cs.models.io.CSVFile;
+import ku.cs.strategy.FromHighestPriceComparator;
+import ku.cs.strategy.FromLowestPriceComparator;
+import ku.cs.strategy.FromMostRecentProductComparator;
+
 import java.util.*;
 
-public class ProductList implements Iterable<Product>{
-    private final List<Product> products;
+public class ProductList implements Iterable<Product>, CSVFile {
+    private final ArrayList<Product> products;
+    private final Set<String> idSet;
     private Product selectedProduct;
+
+    public enum SortType {BY_ROLLOUT_DATE, BY_LOWEST, BY_HIGHEST}
 
     @Override
     public Iterator<Product> iterator() {
-        // TODO implement iterator by condition if any
         return products.iterator();
     }
 
-    public enum SortType {BY_ROLLOUT_DATE, BY_LOWEST, BY_HIGHEST}
-    public SortType sortType;
+    public Iterator<Product> iterator(double lowerBound, double upperBound, String category){
+        return products.stream()
+                .filter(p -> p.getPrice() >= lowerBound
+                        && p.getPrice() <= upperBound
+                        && p.getStock() > 0
+                        && (category == null || p.containsCategory(category)))
+                .iterator();
+
+    }
 
     public ProductList(){
         products = new ArrayList<>();
+        idSet = new TreeSet<>();
     }
 
-    public void addProduct(Product product){
-        products.add(product);
+    public boolean containsId(String id){
+        return idSet.contains(id);
     }
 
-    public void removeProductById(String id){
-        products.removeIf(product -> product.getId().equals(id));
-    }
-
-    public boolean contains(String id){
-        for(Product product: products)
-            if(product.getId().equals(id))
-                return true;
+    public boolean addProduct(Product product){
+        if (!idSet.contains(product.getId())) {
+            products.add(product);
+            idSet.add(product.getId());
+            return true;
+        }
         return false;
     }
 
@@ -45,48 +58,70 @@ public class ProductList implements Iterable<Product>{
         return selectedProduct;
     }
 
+    public ArrayList<Product> getProductByNameStore(String name){
+        ArrayList<Product> productArrayList = new ArrayList<>();
+        for(Product product : products){
+            if(product.getStore().getName().equals(name)){
+                productArrayList.add(product);
+            }
+        }return productArrayList;
+    }
+
     public void setSelectedProduct(Product selectedProduct) {
         this.selectedProduct = selectedProduct;
     }
 
-    public void setSelectedProduct(String id) {
-        this.selectedProduct = getProduct(id);
-    }
-
     public void sort(SortType sortType) {
         if (sortType.equals(SortType.BY_ROLLOUT_DATE)) {
-            products.sort(Comparator.comparing(Product::getId));
-            products.sort(Comparator.comparing(Product::getRolloutDate));
+            products.sort(new FromMostRecentProductComparator());
         } else if (sortType.equals(SortType.BY_LOWEST)){
-            products.sort(Comparator.comparingDouble(Product::getPrice));
+            products.sort(new FromLowestPriceComparator());
         } else if (sortType.equals(SortType.BY_HIGHEST)){
-            products.sort(Comparator.comparingDouble(Product::getPrice));
-            Collections.reverse(products);
+            products.sort(new FromHighestPriceComparator());
         }
+    }
+
+    private int calcMaxSubCategory(){
+        int max = 0;
+        for (Product product: products){
+            int curr = 0;
+            for (Category category: product.getCategories()){
+                curr += category.getSubCategories().size();
+            }
+            if (max < curr) max = curr;
+        }
+        return max;
     }
 
     public void sort(){
         sort(SortType.BY_ROLLOUT_DATE);
     }
 
-    public void addFilter(double lowerBound, double upperBound){
-        // TODO implement filtering
+    public int size(){
+        return products.size();
     }
 
-
-    public String toCsv(int numCategory){
+    @Override
+    public String toCSV(){
+        int numCategory = calcMaxSubCategory();
         StringBuilder stringBuilder =
-                new StringBuilder("name,product_id,price,store,stock,description,rating,reviews,image,rollout_date,");
-        StringJoiner stringJoiner = new StringJoiner(",");
+                new StringBuilder(
+                        "name,product_id,price,store,stock,description,rating,reviews,image,rollout_date");
+        if (numCategory > 0) {
+            stringBuilder.append(",");
+            StringJoiner stringJoiner = new StringJoiner(",");
 
-        for (int i = 0; i < numCategory; i++) {
-            stringJoiner.add("category_" + i);
+            for (int i = 0; i < numCategory; i++) {
+                stringJoiner.add("category_" + i);
+            }
+
+            stringBuilder.append(stringJoiner);
         }
 
-        stringBuilder.append(stringJoiner);
         stringBuilder.append("\n");
         for(Product product: products) {
-            stringBuilder.append(product.toCsv(numCategory));
+            product.setNumCat(numCategory);
+            stringBuilder.append(product.toCSV());
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();

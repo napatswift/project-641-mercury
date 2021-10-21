@@ -1,62 +1,58 @@
 package ku.cs.models;
 
-public class Review {
-    private String title;
-    private String id;
-    private String detail;
-    private int rating;
-    private User author;
-    private String productId;
+import ku.cs.models.io.CSVFile;
 
-    public Review(String id, String title, String detail, int rating, User user, Product product) {
+public class Review implements Comparable<Review>, CSVFile {
+    private final String title;
+    private final String id;
+    private final String detail;
+    private int rating;
+    private final User author;
+    private Product product;
+
+    public Review(String id, String title, String detail, User author) {
         this.title = title;
         this.detail = detail;
-        setRating(rating);
-        this.author = user;
-        this.productId = product.getId();
+        this.author = author;
         this.id = id;
     }
 
-    public String getId() {
-        return id;
+    public boolean setProduct(Product product) {
+        if (product != null) {
+            this.product = product;
+            return true;
+        }
+        return false;
     }
 
-    public void setRating(int rating){
-        if (rating >= 0 && rating <= 5)
+    public boolean setRating(int rating){
+        if (rating >= 0 && rating <= 5) {
             this.rating = rating;
+            return true;
+        }
+        return false;
     }
 
-    public String getTitle() {
-        return title;
-    }
+    public String getId()        { return id; }
+    public String getTitle()     { return title; }
+    public String getDetail()    { return detail; }
+    public int getRating()       { return rating; }
+    public Product getProduct()  { return product; }
+    public User getAuthor()      { return author; }
+    public String getProductId() { return product.getId(); }
 
-    public String getDetail() {
-        return detail;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public String getReviewerUsername() {
-        return author.getUsername();
-    }
-    
-    public User getAuthor(){
-        return author;
-    }
-
-    public String getProductId() {
-        return productId;
-    }
-
-    // id,productId,title,detail,rating,reviewerUsername
-    public String toCsv(){
+    @Override
+    public String toCSV(){
         return id + ","
-                + productId + ","
+                + product.getId() + ","
                 + "\"" + title.replace("\"", "\"\"") + "\"" + ","
                 + "\"" + detail.replace("\"", "\"\"") + "\"" + ","
                 + rating + ","
                 + author.getUsername();
+    }
+
+    @Override
+    public int compareTo(Review o) {
+        return this.id.compareTo(o.id);
     }
 }

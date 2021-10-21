@@ -1,47 +1,35 @@
 package ku.cs.models;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import ku.cs.models.io.CSVFile;
 
-public class ReportList {
-    private ArrayList<Report> reportArrayList;
-    private Report currReport;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class ReportList implements CSVFile {
+    private final Set<Report> reports;
 
     public ReportList() {
-       reportArrayList = new ArrayList<>();
+       reports = new TreeSet<>();
     }
 
     public void addReport(Report report) {
-        reportArrayList.add(report);
+        reports.add(report);
     }
 
     public void removeReport(Report report){
-        int i = 0;
-        for(Report reportTemp : reportArrayList){
-            if(reportTemp.checkReport(report)){
-                reportArrayList.remove(i);
-                return;
-            }
-            ++i;
-        }
+        reports.removeIf(report1 -> report1 == report);
     }
 
-    public Report getCurrReport() {
-        return currReport;
+    public ArrayList<Report> toList() {
+        return new ArrayList<>(this.reports);
     }
 
-    public void setCurrReport(Report currReport) {
-        this.currReport = currReport;
-    }
-
-    public Collection<Report> toList() {
-        return reportArrayList;
-    }
-
-    public String toCsv(){
-        StringBuilder stringBuilder = new StringBuilder("type_report,suspected_person,reporter,report_time,id_review,id_product,detail");
+    @Override
+    public String toCSV(){
+        StringBuilder stringBuilder = new StringBuilder("id,type_report,suspected_person,report_time,id_review,id_product,detail");
         stringBuilder.append("\n");
-        for(Report report : reportArrayList){
+        for(Report report : reports){
             stringBuilder.append(report.toCSV());
             stringBuilder.append("\n");
         }

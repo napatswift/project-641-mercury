@@ -1,33 +1,37 @@
 package ku.cs.controllers;
 
 import com.github.saacsos.FXRouter;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import ku.cs.App;
 import ku.cs.models.User;
 import ku.cs.models.UserList;
+import ku.cs.models.components.theme.ThemeMenu;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
 
 public class LoginController {
     private UserList userList;
-    DataSource dataSource;
+    private DataSource dataSource;
 
     @FXML
     private TextField usernameTF, passwordTF;
 
     @FXML
-    private Text loginText;
+    private Text loginText, appNameText;
 
     @FXML
     private Button signUpBtn, logInBtn;
 
     @FXML
+    private VBox bottomButtonVB;
+
     public void handlePassword(KeyEvent event){
         if (event.getCode() == KeyCode.ENTER){
             logInBtn.fire();
@@ -37,7 +41,17 @@ public class LoginController {
     public void initialize(){
         dataSource = new DataSource("data");
         dataSource.parseAccount();
-        userList = dataSource.getAccounts();
+        userList = dataSource.getUserList();
+        appNameText.setText(App.appName);
+
+        addThemeMenu();
+        passwordTF.setOnKeyReleased(this::handlePassword);
+    }
+
+    public void addThemeMenu(){
+        ThemeMenu themeMenu = new ThemeMenu();
+        themeMenu.getStyleClass().add("primary-color-menu-button");
+        bottomButtonVB.getChildren().add(themeMenu);
     }
 
     public void removeErrorStyleClass(KeyEvent event){
@@ -49,7 +63,7 @@ public class LoginController {
         textField.getStyleClass().add("error-text-field");
     }
 
-    public void handleLogin(ActionEvent event){
+    public void handleLogin(){
         String username = usernameTF.getText();
         String password = passwordTF.getText();
         User currAcc = userList.getUser(username);
@@ -95,31 +109,36 @@ public class LoginController {
         }
     }
 
-    public void handleSignUp(ActionEvent event) throws IOException {
+    public void handleSignUp() {
         if(this.userList == null) {
             signUpBtn.setText("CANNOT SIGN-UP");
             return;
         }
 
-        FXRouter.goTo("sign_up", dataSource);
+        try {
+            FXRouter.goTo("sign_up", dataSource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void handleHowTo(ActionEvent event){
+    public void handleHowTo(){
         try {
             FXRouter.goTo("how_to");
         } catch (IOException e) {
+            e.printStackTrace();
             System.err.println("ไปที่หน้า How To ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
         }
     }
 
-    public void handleAboutUs(ActionEvent event){
+    public void handleAboutUs(){
         try {
         FXRouter.goTo("about_us");
         } catch (IOException e) {
+            e.printStackTrace();
             System.err.println("ไปที่หน้า About Us ไม่ได้");
             System.err.println("ให้ตรวจสอบการกำหนด route");
-            e.printStackTrace();
         }
     }
 }

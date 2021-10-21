@@ -1,7 +1,9 @@
 package ku.cs.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -16,81 +18,76 @@ import java.io.IOException;
 public class ResetPasswordController {
 
     private User user;
-    private UserList userList;
-    DataSource dataSource;
+    private DataSource dataSource;
 
-    @FXML private TextField oldPasswordTextField
-            ,newPasswordTextField
-            ,confirmNewPasswordTextField;
 
-    @FXML private Label userName
-            ,name
-            ,description;
+    @FXML
+    private TextField confirmNewPasswordTextField;
 
-    @FXML private ImageView userImageView;
+    @FXML
+    private Label description;
+
+    @FXML
+    private Button holdBackButton;
+
+    @FXML
+    private Button holdResetPasswordButton;
+
+    @FXML
+    private Label name;
+
+    @FXML
+    private TextField newPasswordTextField;
+
+    @FXML
+    private TextField oldPasswordTextField;
+
+    @FXML
+    private ImageView userImageView;
+
+    @FXML
+    private Label userName;
 
     @FXML
     public void initialize() throws IOException {
         dataSource = (DataSource) FXRouter.getData();
-        user = dataSource.getAccounts().getCurrUser();
-        userList = dataSource.getAccounts();
+        user = dataSource.getUserList().getCurrUser();
         showUser(user);
     }
 
-    public int resetPassword(){
+    public void setHandleBackButton(EventHandler<ActionEvent> handler) {
+        holdBackButton.setOnAction(handler);
+    }
+
+    public boolean resetPassword(){
         String oldPassword = oldPasswordTextField.getText();
         String newPassword = newPasswordTextField.getText();
         String confirmNewPassword = confirmNewPasswordTextField.getText();
-        if(user.login(oldPassword) == 2){
+        if (user.login(oldPassword, false) == 2) {
             if(newPassword.equals(confirmNewPassword) && User.isPassword(newPassword)){
                 user.setPassword(newPassword);
                 dataSource.saveAccount();
-                return 1;
-            }
-            else if(!User.isPassword(newPassword)){
+                return true;
+            } else if (!User.isPassword(newPassword)){
                 description.setText("Your new password invalid password format");
-                return 0;
-            }
-            else {
+            } else {
                 description.setText("Your new password not match.");
-                return 0;
             }
-        }
-        else{
+        } else{
             description.setText("Your old password is wrong.");
-            return 0;
         }
+        return false;
     }
 
-
-    public void showUser(User user){
+    private void showUser(User user){
         userName.setText(user.getUsername());
         name.setText(user.getName());
         userImageView.setImage(new Image(user.getPicturePath()));
     }
 
-    public void holdBackButton(ActionEvent actionEvent) {
-        if(user.getRole() == User.Role.ADMIN) {
-            try {
-                com.github.saacsos.FXRouter.goTo("admin_page", dataSource);
-            } catch (IOException e) {
-                System.err.println("ไปที่หน้า admin_page_user ไม่ได้");
-                System.err.println("ให้ตรวจสอบการกำหนด route");
-            }
-        }
-        else{
-            try {
-                com.github.saacsos.FXRouter.goTo("marketplace", dataSource);
-            } catch (IOException e) {
-                System.err.println("ไปที่หน้า marketplace ไม่ได้");
-                System.err.println("ให้ตรวจสอบการกำหนด route");
-            }
-        }
-    }
-
     public void holdResetPasswordButton(ActionEvent actionEvent) {
-        int check = resetPassword();
-        if(check == 1){
+        boolean check = resetPassword();
+        if (check) {
             try {
                 com.github.saacsos.FXRouter.goTo("login");
             } catch (IOException e) {
@@ -98,7 +95,5 @@ public class ResetPasswordController {
                 System.err.println("ให้ตรวจสอบการกำหนด route");
             }
         }
-        else
-            return;
     }
 }

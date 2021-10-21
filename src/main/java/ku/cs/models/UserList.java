@@ -1,12 +1,14 @@
 package ku.cs.models;
 
+import ku.cs.models.io.CSVFile;
+import ku.cs.strategy.FromMostRecentLoginUserComparator;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.TreeSet;
 
-public class UserList {
-    private Collection<User> users;
+public class UserList implements CSVFile {
+    private final Collection<User> users;
 
     private User currUser;
 
@@ -16,10 +18,6 @@ public class UserList {
 
     public boolean addUser(User user){
         return users.add(user);
-    }
-
-    public void removeUser(String name){
-        users.removeIf(userAccount -> userAccount.getName().equals(name));
     }
 
     public boolean isExist(String username){
@@ -51,32 +49,28 @@ public class UserList {
         return null;
     }
 
-    public boolean checkUser(String username, String password){
-        //TODO: implement this method or delete it
-        return true;
-    }
-
     public User getCurrUser() {
         return currUser;
     }
 
-    public Collection<User> toList() {
-        return users;
-    }
-
-    public Collection<User> toListReverse() {
+    public Collection<User> toListOnlyRoleUser(){
         ArrayList<User> newList = new ArrayList<>(users);
-        Collections.reverse(newList);
+        for(User temp : users){
+            if(temp.role == User.Role.ADMIN)
+                newList.remove(temp);
+        }
+        newList.sort(new FromMostRecentLoginUserComparator());
         return newList;
     }
 
-    public String toCsv(){
+    @Override
+    public String toCSV(){
         StringBuilder stringBuilder = new
-                StringBuilder("username,role,name,password,picturePath," +
-                "last_login,isBanned,loginAttempt,hasStore,store");
+                StringBuilder("username,role,name,password,picture_path," +
+                "last_login,is_banned,login_attempt,has_store,store");
         stringBuilder.append("\n");
         for(User acc: users){
-            stringBuilder.append(acc.toCsv());
+            stringBuilder.append(acc.toCSV());
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();

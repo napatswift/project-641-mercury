@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class AboutUsController {
-    OrganizerDataSource list = new OrganizerDataSource();
-    ArrayList<Organizer> dataSource = list.getList();
+    private final OrganizerDataSource list = new OrganizerDataSource();
+    private final ArrayList<Organizer> dataSource = list.getList();
 
     @FXML Label nameLabel, nameLabel1, nameLabel2, nameLabel3;
     @FXML Label nicknameLabel, nicknameLabel1, nicknameLabel2, nicknameLabel3;

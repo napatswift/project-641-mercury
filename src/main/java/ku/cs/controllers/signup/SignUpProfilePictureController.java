@@ -2,32 +2,26 @@ package ku.cs.controllers.signup;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
 import ku.cs.models.User;
 import ku.cs.models.UserList;
 import com.github.saacsos.FXRouter;
+import ku.cs.models.utils.ImageUploader;
 import ku.cs.service.DataSource;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 
 public class SignUpProfilePictureController {
     private DataSource dataSource;
     private User currUser;
     private UserList userList;
-    private File file;
-    private Path target;
-    private String prevView;
+    private ImageUploader imageUploader;
+    private boolean isUploaded;
 
     @FXML
     Button selectProfilePictureBtn;
@@ -38,56 +32,40 @@ public class SignUpProfilePictureController {
     public void initialize() {
         Object[] data = (Object[]) FXRouter.getData();
         dataSource = (DataSource) data[1];
-        userList = dataSource.getAccounts();
+        userList = dataSource.getUserList();
         currUser = (User) data[0];
     }
 
-    public void handleConfirmBtn(ActionEvent event) throws IOException{
-        if (file != null) {
+    @FXML
+    public void handleConfirmBtn(ActionEvent event) {
+        if (isUploaded) {
             try {
-                Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
-                currUser.setPicturePath(target.getFileName().toString());
-            } catch (IOException e) {
-                e.printStackTrace();
+                currUser.setPicturePath(imageUploader.getDestinationFile().getFileName().toString());
+                imageUploader.saveImageFile();
+            } catch (IOException | NullPointerException e) {
+                return;
             }
         }
 
         if (userList.addUser(currUser)){
             dataSource.saveAccount();
-            if (this.userList == null) {
-                return;
+            if (this.userList == null) return;
+
+            try {
+                FXRouter.goTo("login");
+            } catch (IOException ignore) {
             }
-            FXRouter.goTo("login");
         }
     }
 
+    @FXML
     public void handleSelectProfilePicture(ActionEvent event) throws FileNotFoundException {
-
-        FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.png", "*.jpg", "*.jpeg"));
-
-        file = chooser.showOpenDialog(selectProfilePictureBtn.getScene().getWindow());
-
-        if (file != null){
-            File destDir = new File("images");
-            destDir.mkdirs();
-
-            Image uploadedImage = new Image(new FileInputStream(file.getPath()));
-            String[] fileSplit = file.getName().split("\\.");
-            String filename = LocalDate.now()
-                    + "_" + System.currentTimeMillis()
-                    + "." + fileSplit[fileSplit.length - 1];
-
-            target = FileSystems.getDefault().getPath(
-                    destDir.getAbsolutePath()
-                            + System.getProperty("file.separator")
-                            + filename);
-
-            pictureViewIV.setImage(uploadedImage);
-        }
+        imageUploader = new ImageUploader(((Node) event.getSource()).getScene().getWindow(), "images");
+        isUploaded = imageUploader.show();
+        pictureViewIV.setImage(new Image(new FileInputStream(imageUploader.getUploadedFile())));
     }
 
+    @FXML
     public void handleBack(ActionEvent event) {
         try {
             FXRouter.goTo("login");
