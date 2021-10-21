@@ -41,6 +41,7 @@ public class LoginController {
     public void initialize(){
         dataSource = new DataSource("data");
         dataSource.parseAccount();
+        dataSource.parseStore();
         userList = dataSource.getUserList();
         appNameText.setText(App.appName);
 

@@ -323,11 +323,11 @@ public class DataSource {
                 String code = entry[0];
                 Store owner = stores.findStoreByName(entry[1]);
                 if (owner == null) continue;
-                boolean status = entry[2].equals("true");
-                Double percentDiscount = entry[3].equals("null") ? null : Double.parseDouble(entry[3]);
-                Double discount = entry[4].equals("null") ? null : Double.parseDouble(entry[4]);
-                Integer minimumQuantity = entry[5].equals("null") ? null : Integer.parseInt(entry[5]);
-                Double minimumValue = entry[6].equals("null") ? null : Double.parseDouble(entry[6]);
+                boolean status = entry[2].equalsIgnoreCase("true");
+                Double percentDiscount = entry[3].equalsIgnoreCase("null") ? null : Double.parseDouble(entry[3]);
+                Double discount = entry[4].equalsIgnoreCase("null") ? null : Double.parseDouble(entry[4]);
+                Integer minimumQuantity = entry[5].equalsIgnoreCase("null") ? null : Integer.parseInt(entry[5]);
+                Double minimumValue = entry[6].equalsIgnoreCase("null") ? null : Double.parseDouble(entry[6]);
                 if (!coupons.checkCouponCode(code))
                     coupons.addCoupon(code,owner,status,minimumValue,minimumQuantity,discount,percentDiscount);
             }
