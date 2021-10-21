@@ -13,11 +13,11 @@ public class OrganizerDataSource {
     }
 
     public void readData() {
-        Organizer chang = new Organizer("ณัฐพงศ์ พิมพิสาร", "ช้าง", "6310401327", "changatKU", "/ku/cs/image/chang.jpg");
-        Organizer bank  = new Organizer("ณัฐดนัย ตันวาณิชกุล", "แบงค์", "6310403974", "Natdadai", "/ku/cs/image/media-cup-holder.png");
-        Organizer feel  = new Organizer("ณภัทร ดลภาวิจิต", "ฟีล", "6310400967", "napatswift", "/ku/cs/image/media-cup-holder.png");
-        Organizer mek   = new Organizer("พีรพัฒน์ ตันตระกูล", "เมฆ", "6310401084", "Mekpearaphat", "/ku/cs/image/mek.jpg");
 
+        Organizer chang = new Organizer("ณัฐพงศ์ พิมพิสาร","ช้าง","6310401327","changatKU","/ku/cs/image/changnoi.jpg");
+        Organizer bank = new Organizer("ณัฐดนัย ตันวาณิชกุล","แบงค์","6310403974","Natdadai","/ku/cs/image/bank.jpg");
+        Organizer feel = new Organizer("ณภัทร ดลภาวิจิต","ฟีล","6310400967","napatswift","/ku/cs/image/feen.png");
+        Organizer mek = new Organizer("พีรพัฒน์ ตันตระกูล","เมฆ","6310401084","Mekpearaphat","/ku/cs/image/mek.jpeg");
         list.add(chang);
         list.add(bank);
         list.add(feel);
