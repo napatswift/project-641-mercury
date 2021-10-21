@@ -75,7 +75,7 @@ public class CreateCouponController {
         }
     }
 
-    public boolean checkCreateCoupon(Double discount,Double percentDiscount,Double minimumValue,Integer minimumQuantity){
+    private boolean checkCreateCoupon(Double discount,Double percentDiscount,Double minimumValue,Integer minimumQuantity){
         if(percentDiscount != null)
             if(percentDiscount > 100 || percentDiscount <= 0) {
                 AlertDialog.alertDialog("This coupon cannot be created.", "Please enter a number between 1 - 100.");
