@@ -50,7 +50,7 @@ abstract public class Coupon extends Subject implements CSVFile {
     @Override
     public String toCSV(){
         return  code   + ","
-                + owner.getName()  + ","
+                + "\"" + owner.getName().replace("\"", "\"\"")  + "\","
                 + status;
     }
 }

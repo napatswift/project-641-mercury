@@ -304,7 +304,7 @@
                                                 <Font size="19.0" />
                                              </font>
                                           </Label>
-                                          <TextArea fx:id="descriptionTF" promptText="Description" style="-fx-background-color: surface-overlay;" stylesheets="@style/text-area-underline.css" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <TextArea fx:id="descriptionTF" promptText="Description" style="-fx-background-color: surface-overlay;" stylesheets="@style/text-area-underline.css" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                        </children>
                                     </GridPane>
                                     <GridPane hgap="8.0" prefHeight="65.0" prefWidth="609.0" vgap="8.0">

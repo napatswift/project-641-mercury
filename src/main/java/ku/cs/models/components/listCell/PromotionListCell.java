@@ -27,6 +27,7 @@ public class PromotionListCell extends ListCell<Coupon> {
         codeLabel = new Label();
         Label codeTextLabel = new Label("code");
         descriptionLabel = new Label();
+        descriptionLabel.setWrapText(true);
         statusToggleBtnSvgPath = new SVGPath();
         Button activeStatusToggleButton = new Button();
         activeStatusToggleButton.setGraphic(statusToggleBtnSvgPath);
@@ -48,6 +49,7 @@ public class PromotionListCell extends ListCell<Coupon> {
         gridPane = new GridPane();
         ColumnConstraints tCol1 = new ColumnConstraints(); tCol1.setPercentWidth(25);
         ColumnConstraints tCol2 = new ColumnConstraints(); tCol2.setPercentWidth(60);
+        tCol2.setMaxWidth(0);
         ColumnConstraints tCol3 = new ColumnConstraints(); tCol3.setPercentWidth(15);
         gridPane.getColumnConstraints().addAll(tCol1, tCol2, tCol3);
         VBox codeVBox = new VBox(codeTextLabel, codeLabel);
