@@ -42,7 +42,7 @@
                     <content>
                         <ScrollPane fitToWidth="true">
                            <content>
-                              <VBox alignment="TOP_CENTER" spacing="10.0">
+                              <VBox alignment="TOP_CENTER" spacing="50.0">
                                  <children>
                                     <Label styleClass="text-btn" stylesheets="@style/style.css" text="How To Register">
                                        <font>
@@ -52,50 +52,48 @@
                                           <Insets top="50.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <HBox spacing="10.0">
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
                                        <children>
-                                          <ImageView fx:id="image_home_page" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="image_home_page" fitHeight="400.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
                                              <effect>
                                                 <DropShadow />
                                              </effect>
                                           </ImageView>
                                           <Label fx:id="firstPageLabel" text="Label">
-                                             <HBox.margin>
-                                                <Insets top="50.0" />
-                                             </HBox.margin></Label>
+                                             <VBox.margin>
+                                                <Insets top="20.0" />
+                                             </VBox.margin>
+                                          </Label>
                                        </children>
-                                    </HBox>
-                                    <HBox spacing="10.0">
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
                                        <children>
-                                          <ImageView fx:id="image_sign_up_page" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="image_sign_up_page" fitHeight="400.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
                                              <effect>
                                                 <DropShadow />
                                              </effect>
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin>
                                           </ImageView>
                                           <Label fx:id="signUpPageLabel" text="Label">
-                                             <HBox.margin>
+                                             <VBox.margin>
                                                 <Insets top="20.0" />
-                                             </HBox.margin>
+                                             </VBox.margin>
                                           </Label>
                                        </children>
-                                    </HBox>
-                                    <HBox spacing="10.0">
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
                                        <children>
-                                          <ImageView fx:id="image_sign_up_page_2" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="image_sign_up_page_2" fitHeight="400.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
                                              <effect>
                                                 <DropShadow />
                                              </effect>
                                           </ImageView>
                                           <Label fx:id="signUpUploadLabel" text="Label">
-                                             <HBox.margin>
-                                                <Insets top="50.0" />
-                                             </HBox.margin>
+                                             <VBox.margin>
+                                                <Insets top="20.0" />
+                                             </VBox.margin>
                                           </Label>
                                        </children>
-                                    </HBox>
+                                    </VBox>
                                  </children>
                                  <padding>
                                     <Insets bottom="50.0" left="15.0" right="15.0" />
@@ -107,41 +105,250 @@
                   </Tab>
                   <Tab text="How To Use">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <Label layoutX="262.0" layoutY="61.0" styleClass="text-btn" text="How To Use">
-                                 <font>
-                                    <Font size="36.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
+                        <ScrollPane>
+                           <content>
+                              <VBox alignment="TOP_CENTER" prefWidth="717.0" spacing="50.0">
+                                 <children>
+                                    <Label styleClass="text-btn" text="How To Use">
+                                       <font>
+                                          <Font size="36.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="50.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="image_my_account_page" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect></ImageView>
+                                          <Label fx:id="myAccountLabel" text="Label" />
+                                          <ImageView fx:id="image_my_account_reset" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect>
+                                          </ImageView>
+                                          <Label fx:id="myAccountResetPasswordLabel" text="Label" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="image_buy_product" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect></ImageView>
+                                          <Label fx:id="buyProductLabel" text="Label" />
+                                          <ImageView fx:id="image_buy_product_confirm" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect>
+                                          </ImageView>
+                                          <Label fx:id="buyProductConfirmLabel" text="Label" />
+                                          <ImageView fx:id="image_name_shop" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect>
+                                          </ImageView>
+                                          <Label fx:id="nameShopLabel" text="Label" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="image_review_product" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect></ImageView>
+                                          <Label fx:id="reviewProductLabel" text="Label" />
+                                          <ImageView fx:id="image_report_page" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect>
+                                          </ImageView>
+                                          <Label fx:id="reportPageLabel" text="Label" />
+                                          <HBox alignment="TOP_CENTER" spacing="10.0">
+                                             <children>
+                                                <ImageView fx:id="image_report_product" fitHeight="400.0" fitWidth="350.0" pickOnBounds="true" preserveRatio="true">
+                                                   <effect>
+                                                      <DropShadow />
+                                                   </effect>
+                                                </ImageView>
+                                                <ImageView fx:id="image_report_review" fitHeight="400.0" fitWidth="350.0" pickOnBounds="true" preserveRatio="true">
+                                                   <effect>
+                                                      <DropShadow />
+                                                   </effect>
+                                                </ImageView>
+                                             </children>
+                                          </HBox>
+                                          <Label fx:id="reportPageLabel1" text="Label" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="50.0" left="15.0" right="15.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
                     </content>
                   </Tab>
                   <Tab text="Marketplace">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <Label layoutX="260.0" layoutY="47.0" styleClass="text-btn" text="Marketplace">
-                                 <font>
-                                    <Font size="36.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
+                        <ScrollPane fitToWidth="true">
+                           <content>
+                              <VBox alignment="TOP_CENTER" spacing="50.0">
+                                 <children>
+                                    <Label styleClass="text-btn" text="Marketplace">
+                                       <font>
+                                          <Font size="36.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="50.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="image_marketplace_page" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect></ImageView>
+                                          <Label fx:id="marketplaceLabel" text="Label" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="image_category" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect></ImageView>
+                                          <Label fx:id="categoryLabel" text="Label" />
+                                          <ImageView fx:id="image_category_filter" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect>
+                                          </ImageView>
+                                          <Label fx:id="categoryFilterLabel" text="Label" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="image_sort_by" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect></ImageView>
+                                          <Label fx:id="sortByLabel" text="Label" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="50.0" left="15.0" right="15.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
                     </content>
                   </Tab>
                   <Tab text="Seller">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <Label layoutX="248.0" layoutY="45.0" styleClass="text-btn" text="How To Seller">
-                                 <font>
-                                    <Font size="36.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
+                        <ScrollPane>
+                          <content>
+                              <VBox alignment="TOP_CENTER" prefWidth="720.0" spacing="50.0">
+                                 <children>
+                                    <Label styleClass="text-btn" text="How To Seller">
+                                       <font>
+                                          <Font size="36.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="50.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="image_my_store_page_I" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect></ImageView>
+                                          <Label fx:id="myStoreILabel" text="Label" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="image_my_store_page_II" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect></ImageView>
+                                          <Label fx:id="myStoreIILabel" text="Label" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="image_add_product_page" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect>
+                                          </ImageView>
+                                          <Label fx:id="addProductLabel" text="Label" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="image_add_product_confirm_page" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect>
+                                          </ImageView>
+                                          <Label fx:id="addProductConfirmLabel" text="Label" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="image_edit_product" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect>
+                                          </ImageView>
+                                          <Label fx:id="editProductLabel" text="Label" />
+                                          <ImageView fx:id="image_edit_product_confirm" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect>
+                                          </ImageView>
+                                          <Label fx:id="editProductConfirmLabel" text="Label" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="image_order_page" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect>
+                                          </ImageView>
+                                          <Label fx:id="orderPageLabel" text="Label" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="image_coupon_page" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect>
+                                          </ImageView>
+                                          <Label fx:id="couponPage" text="Label" />
+                                          <ImageView fx:id="image_create_coupon" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                             <effect>
+                                                <DropShadow />
+                                             </effect>
+                                          </ImageView>
+                                          <Label fx:id="couponPage1" text="Label" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="50.0" left="15.0" right="15.0" />
+                                 </padding>
+                              </VBox>
+                          </content>
+                        </ScrollPane>
                     </content>
                   </Tab>
               </tabs>
