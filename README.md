@@ -11,6 +11,22 @@
 
 ให้ [กดดาวโหลด](https://drive.google.com/drive/folders/1gE6iwR3MOJ-FiloXg5_QRr5LlXTDTsBx?usp=sharing) ไฟล์โปรแกรม
 
+### windowsOS
+
+หากผู้ใช้ใช้ windows OS ให้กด double-click *Mercury-windowsOS.jar* หรือ
+
+```
+java -jar Mercury-windowsOS.jar 
+```
+
+### macOS
+
+หากผู้ใช้ใช้ macOS ให้กด double-click *Mercury-macOS.jar* หรือ
+
+```
+java -jar Mercury-macOS.jar
+```
+
 ## การวางโครงสร้างไฟล์
 
 ภาพรวม
