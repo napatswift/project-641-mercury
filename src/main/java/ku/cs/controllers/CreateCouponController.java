@@ -43,8 +43,13 @@ public class CreateCouponController {
     }
 
     public void handleCreateCoupon(ActionEvent actionEvent) {
+        if(codeTF.getText().isEmpty()){
+            AlertDialog.alertDialog("This coupon cannot be created.", "Please enter code");
+            return;
+        }
+
         if(coupons.checkCouponCode(codeTF.getText())) {
-            AlertDialog.alertDialog("เตือนอิอิอิ", "ชื่อ code นี้ได้มีการใช้งานแล้ว");
+            AlertDialog.alertDialog("This coupon cannot be created.", "This coupon code has already been used.");
             return;
         }
 
@@ -56,15 +61,42 @@ public class CreateCouponController {
             Double minimumValue = minimumStatusBox.getValue().equals("Minimum Cost") ? Double.parseDouble(minimumTF.getText()) : null;
             Integer minimumQuantity = minimumStatusBox.getValue().equals("Minimum Pieces") ? Integer.parseInt(minimumTF.getText()) : null;
 
+            if(!checkCreateCoupon(discount,percentDiscount,minimumValue,minimumQuantity))
+                return;
+
             coupons.addCoupon(code,owner,true,minimumValue,minimumQuantity,discount,percentDiscount);
             dataSource.saveCoupon();
 
-            AlertDialog.alertDialog("จบแล้ว","THX");
+            AlertDialog.alertDialog("The system is finished.","Coupon creation is complete.");
             FXRouter.goTo("my_store",dataSource);
         }catch (Exception a) {
             a.printStackTrace();
-            AlertDialog.alertDialog("เกิดข้อผิดพลาด","มีการใส่ข้อมููลไม่ถูกต้อง");
+            AlertDialog.alertDialog("This coupon cannot be created.","Please enter numeric information.");
         }
+    }
+
+    private boolean checkCreateCoupon(Double discount,Double percentDiscount,Double minimumValue,Integer minimumQuantity){
+        if(percentDiscount != null)
+            if(percentDiscount > 100 || percentDiscount <= 0) {
+                AlertDialog.alertDialog("This coupon cannot be created.", "Please enter a number between 1 - 100.");
+                return false;
+            }
+        if(discount != null)
+            if(discount <= 0) {
+                AlertDialog.alertDialog("This coupon cannot be created.", "Please enter a number greater than 0.");
+                return false;
+            }
+        if(minimumQuantity != null)
+            if(minimumQuantity <= 0){
+                AlertDialog.alertDialog("This coupon cannot be created.", "Please enter a number greater than 0.");
+                return false;
+            }
+        if(minimumValue != null)
+            if(minimumValue <= 0){
+                AlertDialog.alertDialog("This coupon cannot be created.", "Please enter a number greater than 0.");
+                return false;
+            }
+        return true;
     }
 
     public void handleBackBtn(ActionEvent actionEvent) throws IOException {

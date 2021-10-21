@@ -12,6 +12,7 @@ import ku.cs.models.Order;
 import ku.cs.models.Product;
 import ku.cs.models.ProductList;
 import ku.cs.models.User;
+import ku.cs.models.components.dialogs.AlertDialog;
 import ku.cs.models.coupon.CouponList;
 import ku.cs.service.DataSource;
 
@@ -95,19 +96,34 @@ public class OrderSummaryController {
     public void handleCouponBtn() {
         String code = couponCodeTF.getText();
         System.out.println(code +"  "+ couponList.useCoupon(code,order));
-        System.out.println(order.getTotal());
+        System.out.println(couponList);
         if(couponList.useCoupon(code, order) > 0){
             discountText.setVisible(true);
             allPaymentText.getStyleClass().add("discounted-label");
             discountText.setText("" + couponList.useCoupon(code, order));
         }
         else {
+            int errorNum = (int) couponList.useCoupon(code, order);
             discountText.setVisible(false);
             allPaymentText.getStyleClass().remove("discounted-label");
-            Alert alert = new Alert(Alert.AlertType.NONE, "CouponType เกิดข้อผิดพลาด.", ButtonType.OK);
-            alert.initStyle(StageStyle.UTILITY);
-            alert.setHeaderText("ค่อยทำ");
-            alert.showAndWait();;
+            switch (errorNum){
+                case -1:
+                    AlertDialog.alertDialog("Coupon cannot be used.","The total price does not reach the specified minimum.");
+                    break;
+                case -2:
+                    AlertDialog.alertDialog("Coupon cannot be used.","The quantity of products does not reach the specified minimum.");
+                    break;
+                case -3:
+                    AlertDialog.alertDialog("Coupon cannot be used.","This coupon cannot be used in this store.");
+                    break;
+                case -4:
+                    AlertDialog.alertDialog("Coupon cannot be used.","This coupon is not active at this time.");
+                    break;
+                case -5:
+                    AlertDialog.alertDialog("Coupon cannot be used.","This coupon was not found in the system.");
+                    break;
+            }
+
         }
     }
 }
