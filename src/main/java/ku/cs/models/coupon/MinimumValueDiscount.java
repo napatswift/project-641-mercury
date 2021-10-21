@@ -15,11 +15,11 @@ public class MinimumValueDiscount extends Coupon implements CouponType {
 
     @Override
     public double use(String code, Order order) {
+        if(super.checkCoupon(code, order) < 0)
+            return super.checkCoupon(code, order);
+
         if(minimumValue > order.getTotal())
             return -1;
-
-        if(super.checkCoupon(code, order) != 1)
-            return super.checkCoupon(code, order);
 
         return order.getTotal() - discount;
     }
@@ -35,8 +35,8 @@ public class MinimumValueDiscount extends Coupon implements CouponType {
     }
 
     @Override
-    public String toCsv(){
-        return super.toCsv() + ","
+    public String toCSV(){
+        return super.toCSV() + ","
                 + null + ","
                 + String.format("%.4f", discount) + ","
                 + null + ","

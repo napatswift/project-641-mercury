@@ -1,10 +1,12 @@
 package ku.cs.models;
 
+import ku.cs.models.io.CSVFile;
+
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class Product implements Comparable<Product> {
+public class Product implements Comparable<Product>, CSVFile {
     private String name;
     private String pictureName;
     private String details;
@@ -115,21 +117,26 @@ public class Product implements Comparable<Product> {
         return false;
     }
 
-    public String toCsv(int numCat){
-        /*
-         * "name,picture_path_1,details,price,stock,sub_category1," +
-         * "sub_category2,sub_category3,sub_category4,sub_category5,sub_category6,store"
-         */
+    /*
+     * product toCSV method need maximum num category
+     */
+    private int numCat = -1;
+    public void setNumCat(int numCat) { this.numCat = numCat; }
+
+    @Override
+    public String toCSV(){
         StringJoiner stringJoiner = new StringJoiner(",");
-        int len = 0;
-        for(Category cat: categories){
-            for(String str: cat.toCSV()) {
-                stringJoiner.add(str);
-                len++;
+        if (numCat > 0) {
+            int len = 0;
+            for (Category cat : categories) {
+                for (String str : cat.toCSV()) {
+                    stringJoiner.add(str);
+                    len++;
+                }
             }
-        }
-        for (int i = len; i < numCat; i++) {
-            stringJoiner.add(null);
+            for (int i = len; i < numCat; i++) {
+                stringJoiner.add(null);
+            }
         }
 
         return "\"" + name.replace("\"", "\"\"") + "\"" + ","
@@ -141,8 +148,7 @@ public class Product implements Comparable<Product> {
                 + rating + ","
                 + getReview() + ","
                 + pictureName + ","
-                + rolloutDate.toString() + ","
-                + stringJoiner;
+                + rolloutDate.toString() + (numCat > 0 ? "," + stringJoiner : "");
     }
 
     public void addSubCategory(String categoryName, String subCategoryName, String value){

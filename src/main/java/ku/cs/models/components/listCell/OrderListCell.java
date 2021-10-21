@@ -157,7 +157,8 @@ public class OrderListCell extends ListCell<Order> {
             trackingNumberLabel.setText(trackingNumber.toUpperCase());
             trackingNumberVBox.getChildren().add(trackingNumberLabel);
         } else {
-            statusVBox.getChildren().add(submitTrackingNumberBtn);
+            if (!statusVBox.getChildren().contains(submitTrackingNumberBtn))
+                statusVBox.getChildren().add(submitTrackingNumberBtn);
             submitTrackingNumberBtn.setGraphic(statusSVGPath);
             statusSVGPath.setContent("M11.59 7.41L15.17 11H1v2h14.17l-3.59 3.59L13 18l6-6-6-6-1.41 1.41zM20 6v12h2V6h-2z");
             trackingNumberVBox.getChildren().add(trackingNumberTextField);

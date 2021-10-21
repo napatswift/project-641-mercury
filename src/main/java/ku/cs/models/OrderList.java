@@ -1,12 +1,14 @@
 package ku.cs.models;
 
-import ku.cs.strategy.MostRecentOrderComparator;
+import ku.cs.models.io.CSVFile;
+import ku.cs.strategy.FromMostRecentOrderComparator;
+import ku.cs.strategy.OrderFilterer;
 
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class OrderList {
+public class OrderList implements CSVFile {
     private Set<Order> orders;
 
     public OrderList() {
@@ -17,43 +19,23 @@ public class OrderList {
         return orders.add(order);
     }
 
-    public ArrayList<Order> getOrdersByStore(String name){
-        ArrayList<Order> list = new ArrayList<>();
+    public ArrayList<Order> getOrderList(OrderFilterer orderFilter){
+        ArrayList<Order> orderList = new ArrayList<>();
         for(Order order : orders){
-            if(order.getStoreName().equals(name)){
-                list.add(order);
-            }
+            if(orderFilter.mach(order))
+                orderList.add(order);
         }
-        list.sort(new MostRecentOrderComparator());
-        return list;
+        orderList.sort(new FromMostRecentOrderComparator());
+        return orderList;
     }
 
-    public static ArrayList<Order> getToShipOrder(ArrayList<Order> orders){
-        ArrayList<Order> list = new ArrayList<>();
-        for(Order order : orders){
-            if(!order.isShipped()){
-                list.add(order);
-            }
-        }
-        list.sort(new MostRecentOrderComparator());
-        return list;
-    }
-
-    public static ArrayList<Order> getShipedOrder(ArrayList<Order> orders){
-        ArrayList<Order> list = new ArrayList<>();
-        for(Order order : orders){
-            if(order.isShipped()){
-                list.add(order);
-            }
-        }
-        list.sort(new MostRecentOrderComparator());
-        return list;
-    }
-
-    public String toCsv(){
+    @Override
+    public String toCSV(){
         StringBuilder result = new StringBuilder("id,product_id,amount,is_shipped,tracking_id,buyer,buy_at\n");
         for(Order order : orders)
-            result.append(order.toCsv()).append("\n");
+            result.append(order.toCSV()).append("\n");
         return result.toString();
     }
+
+
 }

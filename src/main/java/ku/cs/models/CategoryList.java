@@ -1,8 +1,10 @@
 package ku.cs.models;
 
+import ku.cs.models.io.CSVFile;
+
 import java.util.*;
 
-public class CategoryList {
+public class CategoryList implements CSVFile {
     private final Map<String, Set<String>> categories;
 
     public CategoryList() {
@@ -30,15 +32,12 @@ public class CategoryList {
         return true;
     }
 
-    public void put(String key, Set<String> val){
-        categories.put(key, val);
-    }
-
     public Set<String> categorySet(){
         return categories.keySet();
     }
 
-    public String toCsv(){
+    @Override
+    public String toCSV(){
         StringJoiner stringJoiner = new StringJoiner("\n");
         stringJoiner.add("category,subcategory");
         for(String key: categories.keySet()) {

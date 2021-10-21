@@ -1,10 +1,7 @@
 package ku.cs.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import com.github.saacsos.FXRouter;
 import javafx.fxml.FXMLLoader;
@@ -30,9 +27,12 @@ import ku.cs.models.components.listCell.OrderListCell;
 import ku.cs.models.components.listCell.ProductListCell;
 import ku.cs.models.components.listCell.PromotionListCell;
 import ku.cs.models.coupon.Coupon;
-import ku.cs.models.coupon.CouponType;
 import ku.cs.models.utils.ImageUploader;
+import ku.cs.observer.Observer;
 import ku.cs.service.DataSource;
+import ku.cs.strategy.OrderByStoreFilterer;
+import ku.cs.strategy.ShippedOrderByStoreFilterer;
+import ku.cs.strategy.ToShipOrderByStoreFilterer;
 
 
 import java.io.FileInputStream;
@@ -41,14 +41,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class MyStoreController  {
+public class MyStoreController {
     private DataSource dataSource;
     private Product product;
     private User currUser;
     private ImageUploader imageUploader;
-    private ArrayList<Order> orders;
     private ArrayList<Coupon> couponTypes;
-    private String categoryText = "";
     private Image image;
 
     @FXML private Label usernameLabel, nameLabel, nameStoreLabel;
@@ -85,7 +83,6 @@ public class MyStoreController  {
         currUser = dataSource.getUserList().getCurrUser();
         dataSource.parseOrder();
         dataSource.parseCoupon();
-        orders = dataSource.getOrders().getOrdersByStore(currUser.getStoreName());
         couponTypes = dataSource.getCoupons().toListCouponInStore(currUser.getStore());
         setupUserInfo();
         loadCategory();
@@ -99,10 +96,20 @@ public class MyStoreController  {
         handleProductsListView();
         setupTabPaneListener();
         showCouponListView(couponTypes);
-        showOrderListView(orders);
+        showOrderListView(dataSource.getOrders().getOrderList(new OrderByStoreFilterer(currUser.getStoreName())));
+        CouponObserver couponObserver = new CouponObserver();
+        dataSource.getCoupons().addObserver(couponObserver);
 
         setGroup();
         setNumberTextField();
+
+        myStoreTP.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.intValue() == 0) {
+                productsListLV.getItems().clear();
+                productsListLV.getItems().addAll(dataSource.getProducts().getProductByNameStore(dataSource.getUserList().getCurrUser().getStoreName()));
+                productsListLV.refresh();
+            }
+        });
     }
 
     private void setupUserInfo(){
@@ -115,17 +122,14 @@ public class MyStoreController  {
     }
 
     private void setupTabPaneListener(){
-        myStoreTP.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
-            @Override
-            public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
-                if (newValue != myAccountTab) {
-                    myStoreTP.getTabs().remove(myAccountTab);
-                    myAccountTab = null;
-                }
-                if (newValue != myStoreTab) {
-                    myStoreTP.getTabs().remove(myStoreTab);
-                    myStoreTab = null;
-                }
+        myStoreTP.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != myAccountTab) {
+                myStoreTP.getTabs().remove(myAccountTab);
+                myAccountTab = null;
+            }
+            if (newValue != myStoreTab) {
+                myStoreTP.getTabs().remove(myStoreTab);
+                myStoreTab = null;
             }
         });
     }
@@ -230,8 +234,8 @@ public class MyStoreController  {
     private void handleProductCardStoreProductPage(MouseEvent event){
         ProductCard productCard = (ProductCard) event.getSource();
         if (productsListLV.getItems().contains(productCard.getProduct())) {
-            productsListLV.getSelectionModel().select(productCard.getProduct());
             productsMenuBtn.fire();
+            productsListLV.getSelectionModel().select(productCard.getProduct());
         }
     }
 
@@ -246,17 +250,17 @@ public class MyStoreController  {
         clearBtn.setVisible(false);
         product = new Product("", "", dataSource.getUserList().getCurrUser().getStore());
         myStoreTP.getSelectionModel().select(1);
-        categoryLB.setText(categoryText);
+        categoryLB.setText("");
     }
 
     @FXML
     public void handleOrdersBtn(){
-        myStoreTP.getSelectionModel().select(4);
+        myStoreTP.getSelectionModel().select(3);
     }
 
     @FXML
     public void handleCouponBtn(){
-        myStoreTP.getSelectionModel().select(5);
+        myStoreTP.getSelectionModel().select(4);
     }
 
     public void loadCategory(){
@@ -296,6 +300,12 @@ public class MyStoreController  {
         String detail = descriptionTF.getText();
 
         if(!name.equals("") && price > 0 && stock > 0 && !detail.equals("")) {
+            try {
+                confirmProductIV.setImage(new Image(new FileInputStream(imageUploader.getUploadedFile())));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
             product.setName(name);
             product.setPrice(price);
             product.setStock(stock);
@@ -353,6 +363,8 @@ public class MyStoreController  {
             product.setPrice(Double.parseDouble(price));
             product.setStock(Integer.parseInt(stock));
             dataSource.saveProduct();
+            showProductsListView();
+            productsListLV.getSelectionModel().select(product);
         }
     }
 
@@ -365,11 +377,12 @@ public class MyStoreController  {
 
     public void showSelectedProduct(Product product){
         selectedProduct = product;
-        productsListLV.refresh();
-        stockWarningSelectedProductSVG.setVisible(currUser.getStore().stockIsLow(product));
+        productsRightPane.setVisible(false);
+        stockWarningSelectedProductSVG.setVisible(product.stockIsLow());
         nameProductLB.setText(product.getName());
         priceLB.setText(String.format("%.2f",product.getPrice()));
         stockLB.setText(String.format("%d",product.getStock()));
+        ratingStarsSelectedProduct.getChildren().add(new RatingStars(product.getRating()));
         rateLB.setText(String.format("%.2f/5",product.getRating()));
         detailsLB.setText(product.getDetails());
 
@@ -380,17 +393,18 @@ public class MyStoreController  {
         }
 
         selectedProductResizeableImageView.setImage(new Image(product.getPicturePath()));
-        ratingStarsSelectedProduct.getChildren().add(new RatingStars(product.getRating()));
     }
 
     public void handleProductsListView(){
         productsListLV.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    ratingStarsSelectedProduct.getChildren().clear();
-                    showSelectedProduct(newValue);
-                    productSP.setDividerPositions(0.5, 0.5);
-                    productsRightPane.setVisible(newValue != null);
-                    product = newValue;
+                    if (newValue != null) {
+                        ratingStarsSelectedProduct.getChildren().clear();
+                        showSelectedProduct(newValue);
+                        productSP.setDividerPositions(0.5, 0.5);
+                        productsRightPane.setVisible(true);
+                        product = newValue;
+                    }
                 }
         );
     }
@@ -403,22 +417,22 @@ public class MyStoreController  {
     }
 
     public void showCouponListView(ArrayList<Coupon> couponTypeArrayList){
-        couponsLV.setCellFactory(couponsLV -> new PromotionListCell());
+        couponsLV.setCellFactory(couponsLV -> new PromotionListCell(dataSource.getCoupons()));
         couponsLV.getItems().clear();
         couponsLV.getItems().addAll(couponTypeArrayList);
         couponsLV.refresh();
     }
 
     public void handleAllBtn(){
-        showOrderListView(orders);
+        showOrderListView(dataSource.getOrders().getOrderList(new OrderByStoreFilterer(currUser.getStoreName())));
     }
 
     public void handleToShipBtn(){
-        showOrderListView(OrderList.getToShipOrder(orders));
+        showOrderListView(dataSource.getOrders().getOrderList(new ToShipOrderByStoreFilterer(currUser.getStoreName())));
     }
 
     public void handleShippedBtn(){
-        showOrderListView(OrderList.getShipedOrder(orders));
+        showOrderListView(dataSource.getOrders().getOrderList(new ShippedOrderByStoreFilterer(currUser.getStoreName())));
     }
 
     public void handleChangeStockLowerBoundWarning() {
@@ -432,7 +446,8 @@ public class MyStoreController  {
         newLower.ifPresent(s -> currUser.getStore().setStockLowerBound(Integer.parseInt(s)));
         newLower.ifPresent(s -> numberLowerLabel.setText(s));
         dataSource.saveStore();
-        productsListLV.refresh();
+        showProductsListView();
+        productsListLV.getSelectionModel().select(product);
     }
 
     @FXML
@@ -460,11 +475,19 @@ public class MyStoreController  {
         showSelectedProduct(selectedProduct);
     }
 
-    public void handleCreateCouponBtn(ActionEvent actionEvent) {
+    public void handleCreateCouponBtn() {
         try{
             FXRouter.goTo("create_coupon",dataSource);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private class CouponObserver implements Observer {
+        @Override
+        public void update() {
+            couponTypes = dataSource.getCoupons().toListCouponInStore(currUser.getStore());
+            showCouponListView(couponTypes);
         }
     }
 }

@@ -1,11 +1,13 @@
 package ku.cs.models;
 
+import ku.cs.models.io.CSVFile;
+
 import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class User implements Comparable<User>{
+public class User implements Comparable<User>, CSVFile {
 
     public enum Role {ADMIN, USER}
     public Role role;
@@ -145,7 +147,8 @@ public class User implements Comparable<User>{
     }
 
 
-    public String toCsv(){
+    @Override
+    public String toCSV(){
         //username,role,name,password,picture,last_login,isBanned,loginAttempt,hasStore,store
         return username + ","
                 + role + ","

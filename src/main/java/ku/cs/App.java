@@ -10,7 +10,7 @@ import com.github.saacsos.FXRouter;
 import java.io.IOException;
 
 public class App extends Application {
-    private String appName = "MERCURY";
+    public static String appName = "MERCURY";
     private static int S_WIDTH = 450;
     private static int L_WIDTH = 1024;
     private static int HEIGHT = 768;

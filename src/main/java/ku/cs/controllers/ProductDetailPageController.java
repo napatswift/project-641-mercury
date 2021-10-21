@@ -19,6 +19,8 @@ import ku.cs.models.components.CategoryListPane;
 import ku.cs.models.components.ProductCard;
 import ku.cs.models.components.RatingStars;
 import ku.cs.models.components.ReviewCard;
+import ku.cs.models.components.dialogs.AlertDialog;
+import ku.cs.models.components.dialogs.TextDialog;
 import ku.cs.service.DataSource;
 
 import java.io.IOException;
@@ -202,17 +204,35 @@ public class ProductDetailPageController {
         for(Review review: selectedProduct.getReviews())
             if (review.getAuthor().getUsername().equals(currUser.getUsername())) {
                 resetReviewForm();
+                TextDialog dialog = new TextDialog("Sorry", "You have already review this product");
+                dialog.show();
                 return;
             }
         String title = reviewTitleTF.getText();
         String detail = detailReviewTA.getText();
+
+        if (newReviewRating < 1){
+            TextDialog dialog = new TextDialog("Sorry", "Please rate this product. By clicking at the star.");
+            dialog.show();
+            return;
+        }
+        if (title.isBlank() || title.isEmpty()) {
+            TextDialog dialog = new TextDialog("Sorry", "Please enter title of the review.");
+            dialog.show();
+            return;
+        }
+        if (detail.isEmpty() || detail.isBlank()) {
+            TextDialog dialog = new TextDialog("Sorry", "Please enter detail of the review.");
+            dialog.show();
+            return;
+        }
+
         reviewList.addReview(title, detail, newReviewRating,
                 currUser, dataSource.getProducts().getSelectedProduct());
         populateReview();
         resetReviewForm();
         dataSource.saveReview();
         dataSource.saveProduct();
-        newReviewRating = -1;
     }
 
 
@@ -220,7 +240,6 @@ public class ProductDetailPageController {
         resetStar();
         /* reset amount to 1 */
         amountTF.setText("1");
-        /* clear boxes */
 
         /* set product information */
         productNameLabel.setText(selectedProduct.getName());
@@ -237,8 +256,12 @@ public class ProductDetailPageController {
         storeImageIV.setImage(new Image(owner.getPicturePath()));
 
         /* set bread crumbs info */
-        categoryBreadcrumbsLabel.setText(selectedProduct.getCategory().getName());
-        categoryBreadcrumbsLabel.setOnMouseReleased(this::handleCategoryBreadcrumbsLabel);
+        if (selectedProduct.getCategories().size() > 0) {
+            categoryBreadcrumbsLabel.setText(selectedProduct.getCategory().getName());
+            categoryBreadcrumbsLabel.setOnMouseReleased(this::handleCategoryBreadcrumbsLabel);
+        } else {
+            categoryBreadcrumbsLabel.setText("Category");
+        }
         productNameBreadcrumbsLabel.setText(selectedProduct.getName());
 
         /* handling in stock label and icon */
@@ -358,7 +381,8 @@ public class ProductDetailPageController {
         Store store = (Store) source.getUserData();
         if (storeProductPageTab == null)
             storeProductPageTab = new Tab("storeProductPage");
-        productTP.getTabs().add(storeProductPageTab);
+        if (!productTP.getTabs().contains(storeProductPageTab))
+            productTP.getTabs().add(storeProductPageTab);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ku/cs/store_product_page.fxml"));
 

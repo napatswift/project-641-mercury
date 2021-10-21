@@ -1,6 +1,8 @@
 package ku.cs.models;
 
-public class Store implements Comparable<Store> {
+import ku.cs.models.io.CSVFile;
+
+public class Store implements Comparable<Store>, CSVFile {
     private final User owner;
     private final String nameStore;
     private int stockLowerBound;
@@ -36,7 +38,8 @@ public class Store implements Comparable<Store> {
         return product.getStock() <= stockLowerBound;
     }
 
-    public String toCsv(){
+    @Override
+    public String toCSV(){
        return owner.getUsername() + ","
                + "\"" + nameStore.replace("\"", "\"\"") + "\"" + ","
                + stockLowerBound;

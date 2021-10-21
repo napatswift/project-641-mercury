@@ -1,6 +1,8 @@
 package ku.cs.models;
 
-public class Review implements Comparable<Review>{
+import ku.cs.models.io.CSVFile;
+
+public class Review implements Comparable<Review>, CSVFile {
     private final String title;
     private final String id;
     private final String detail;
@@ -39,8 +41,8 @@ public class Review implements Comparable<Review>{
     public User getAuthor()      { return author; }
     public String getProductId() { return product.getId(); }
 
-    // id,productId,title,detail,rating,reviewerUsername
-    public String toCsv(){
+    @Override
+    public String toCSV(){
         return id + ","
                 + product.getId() + ","
                 + "\"" + title.replace("\"", "\"\"") + "\"" + ","

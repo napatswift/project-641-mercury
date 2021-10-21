@@ -8,6 +8,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import ku.cs.App;
 import ku.cs.models.User;
 import ku.cs.models.UserList;
 import ku.cs.models.components.theme.ThemeMenu;
@@ -41,7 +42,7 @@ public class LoginController {
         dataSource = new DataSource("data");
         dataSource.parseAccount();
         userList = dataSource.getUserList();
-        appNameText.setText("MERCURY");
+        appNameText.setText(App.appName);
 
         addThemeMenu();
         passwordTF.setOnKeyReleased(this::handlePassword);

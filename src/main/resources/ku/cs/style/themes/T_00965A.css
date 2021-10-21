@@ -18,4 +18,5 @@
     primary-overlay : rgba(0, 150, 90, 0.16);
     primary-overlay-hover : rgba(0, 133, 78, 0.32);
     primary-med-overlay : rgba(0, 150, 90, 0.6);
+    drop-shadow-color: rgba(0, 0, 0, 0.12);
 }

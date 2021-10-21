@@ -15,11 +15,11 @@ public class MinimumQuantityPercentDiscount extends Coupon implements CouponType
 
     @Override
     public double use(String code, Order order) {
-        if(minimumQuantity > order.getQuantity())
-            return -1;
-
-        if(super.checkCoupon(code, order) != 1)
+        if(super.checkCoupon(code, order) < 0)
             return super.checkCoupon(code, order);
+
+        if(minimumQuantity > order.getQuantity())
+            return -2;
 
         return order.getTotal() - (order.getTotal() * percentDiscount);
     }
@@ -35,8 +35,8 @@ public class MinimumQuantityPercentDiscount extends Coupon implements CouponType
     }
 
     @Override
-    public String toCsv(){
-        return super.toCsv() + ","
+    public String toCSV(){
+        return super.toCSV() + ","
                 + String.format("%.4f", percentDiscount) + ","
                 + null + ","
                 + minimumQuantity + ","

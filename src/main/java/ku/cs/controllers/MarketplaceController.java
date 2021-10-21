@@ -213,6 +213,7 @@ public class MarketplaceController {
             if (!productTP.getTabs().contains(myAccountTab))
                 productTP.getTabs().add(myAccountTab);
             productTP.getSelectionModel().select(myAccountTab);
+            setBodyToggle();
         } catch (IOException e) {
             e.printStackTrace();
         }
